@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { Toolbar, Typography, Container, Divider, Box } from '@mui/material';
+import { Typography, Container, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Link from 'next/link';
+import './order.scss';
 
 interface Order {
   id: string;
@@ -20,34 +21,36 @@ const orders: Order[] = [
 const MyOrders: FC = () => {
   return (
     <>
-      <Toolbar>
-        <Typography fontWeight="500" sx={{ flexGrow: 1, textAlign: 'center', fontSize: { xs: '14px', md: '22px' } }}>
-          My Orders
-        </Typography>
-      </Toolbar>
-      <Container>
-        {orders.map((order: Order) => (
-          <Box key={order.id} sx={{ my: 2 }}>
-            <Box display="flex" sx={{ py: 2, minHeight: '85px' }} justifyContent="space-between" alignItems="center">
-              <Box>
-                <Typography variant="body1" fontSize="13px" fontWeight="500">
-                  Order #{order.id}
-                </Typography>
-                <Typography variant="body2" fontSize="12px" color="#494947">
-                  Date: {order.date}
-                </Typography>
-                <Typography variant="body2" fontSize="12px" color="#494947">
-                  Status: {order.status}
-                </Typography>
+      <Box className="user-profile">
+        <Container>
+          <Typography className="page-title" variant="h2" align="center">
+            My Orders
+          </Typography>
+
+          <Box className="order-product__items">
+            {orders.map((order: Order) => (
+              <Box
+                className="order-product__item"
+                key={order.id}
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Box>
+                  <Typography gutterBottom variant="h2">
+                    Order #{order.id}
+                  </Typography>
+                  <Typography variant="body1">Date: {order.date}</Typography>
+                  <Typography variant="body1">Status: {order.status}</Typography>
+                </Box>
+                <Link href={`/my-orders/${order.id}`}>
+                  <ArrowForwardIcon />
+                </Link>
               </Box>
-              <Link href={`/my-orders/${order.id}`}>
-                <ArrowForwardIcon sx={{ color: 'black' }} />
-              </Link>
-            </Box>
-            <Divider />
+            ))}
           </Box>
-        ))}
-      </Container>
+        </Container>
+      </Box>
     </>
   );
 };

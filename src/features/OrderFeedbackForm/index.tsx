@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Btn from '@/components/Button/CommonBtn';
 import * as z from 'zod';
@@ -46,90 +46,56 @@ const OrderFeedbackForm = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
-        <Typography sx={{ fontSize: { xs: '16px', md: '20px' }, fontWeight: '500', marginBottom: '10px' }}>
-          Feedback
-        </Typography>
-        <Typography sx={{ fontSize: { xs: '13px', md: '18px', marginBottom: '8px' }, fontWeight: '500' }}>
-          URL of the related social post
-        </Typography>
-        <InputTextFormField
-          name="socialPostUrl"
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="feedback-form">
+      <Typography variant="h2" mb={2}>
+        Feedback
+      </Typography>
+      <Typography mb={1} variant="body1">
+        URL of the related social post
+      </Typography>
+      <InputTextFormField
+        name="socialPostUrl"
+        control={control}
+        placeholder="https://instagram.com/postID"
+        errors={errors}
+      />
+      <Typography mb={1} variant="body1">
+        Upload a screenshot of your post
+      </Typography>
+      <Box mb={6} className="feedback-form__uploader">
+        <Controller
+          name="screenshot"
           control={control}
-          placeholder="https://instagram.com/postID"
-          errors={errors}
-        />
-        <Typography sx={{ fontSize: { xs: '13px', md: '18px', marginBottom: '8px' }, fontWeight: '500' }}>
-          Upload a screenshot of your post
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Controller
-            name="screenshot"
-            control={control}
-            // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-            render={({ field: { onChange, value, ...field } }) => (
-              <Button
-                sx={{
-                  color: 'black',
-                  minWidth: '300px',
-                  width: '100%',
-                  minHeight: '150px',
-                  border: '1px solid #D1D1CB',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
+          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+          render={({ field: { onChange, value, ...field } }) => (
+            <Button component="label" startIcon={!fileName && <UploadFileIcon />} {...field}>
+              {fileName ? (
+                <Box>
+                  <CheckCircleOutlineIcon color="success" />
+                  <Typography textAlign="center">{fileName}</Typography>
+                </Box>
+              ) : (
+                'Upload a file'
+              )}
+              <input
+                type="file"
+                hidden
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    onChange(file);
+                    setFileName(file.name);
+                  }
                 }}
-                component="label"
-                startIcon={!fileName && <UploadFileIcon />}
-                {...field}
-              >
-                {fileName ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      m: 2,
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <CheckCircleOutlineIcon color="success" sx={{ mr: 1 }} />
-                    <Typography
-                      textAlign="center"
-                      sx={{ fontSize: { xs: '13px', md: '18px', marginBottom: '8px' }, fontWeight: '500' }}
-                    >
-                      {fileName}
-                    </Typography>
-                  </Box>
-                ) : (
-                  'Upload a file'
-                )}
-                <input
-                  type="file"
-                  hidden
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      onChange(file);
-                      setFileName(file.name);
-                    }
-                  }}
-                />
-              </Button>
-            )}
-          />
-        </Box>
-        {errors.screenshot && (
-          <Typography sx={{ fontSize: '0.75rem', mb: '2px', mx: '14px' }} color="error">
-            {errors.screenshot.message}
-          </Typography>
-        )}
-        <Btn look="light" width="100%" type="submit" disabled={btnDisable}>
-          Submit
-        </Btn>
-      </Container>
+              />
+            </Button>
+          )}
+        />
+      </Box>
+      {errors.screenshot && <Typography color="error">{errors.screenshot.message}</Typography>}
+      <Btn look="light" width="100%" type="submit" className="button button--white" disabled={btnDisable}>
+        Submit
+      </Btn>
     </Box>
   );
 };

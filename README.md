@@ -36,4 +36,3 @@
     run below command to run development server:
         - if you are running first time : yarn install && yarn run dev
         - If you are not running first time : yarn run dev
-# vipsuite-staging

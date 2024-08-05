@@ -55,9 +55,10 @@ header.site-header {
   &__user {
     min-height: rem(40);
     @include flex(center, center);
-    button {
+    a {
       color: var(--color-textBlack);
       line-height: 1.4;
+      font-weight: 500;
       &:first-child {
         padding: 0;
         margin-right: rem(24);

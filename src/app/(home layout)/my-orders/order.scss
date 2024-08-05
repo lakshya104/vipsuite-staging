@@ -1,0 +1,95 @@
+/*
+* Address page style.
+*/
+
+@import '../../../styles/mixins';
+
+.user-profile {
+  margin: rem(23) 0 rem(120);
+  @media only screen and (min-width: 768px) {
+    margin: rem(72) 0;
+  }
+  .page-title {
+    padding: rem(23) 0;
+    border-bottom: rem(1) solid var(--color-textBlack-10);
+    @include relative;
+    a {
+      @include absolute(left 0);
+    }
+  }
+  .MuiTypography-body1 {
+    color: var(--color-textBlack-80);
+    @media only screen and (max-width: 767px) {
+      line-height: 1.33;
+      letter-spacing: -0.01em;
+      @include fontSize(12);
+    }
+  }
+}
+
+.order-product {
+  &__items {
+    margin-bottom: rem(32);
+  }
+  &__item {
+    padding: rem(16) 0;
+    gap: rem(20);
+    &:last-of-type {
+      border-bottom: rem(1) solid var(--color-textBlack-10);
+      margin-bottom: rem(20);
+    }
+    .order-details-page & {
+      border-top: rem(1) solid var(--color-textBlack-10);
+    }
+    svg {
+      align-self: center;
+      justify-self: flex-end;
+      width: rem(28);
+      height: rem(28);
+    }
+    h2 {
+      @media only screen and (max-width: 767px) {
+        margin-bottom: rem(6);
+        line-height: 1.38;
+        letter-spacing: -0.02em;
+        @include fontSize(13);
+      }
+    }
+    img {
+      flex: 1 0 rem(110);
+      max-width: rem(110);
+      @media only screen and (max-width: 767px) {
+        flex: 1 0 rem(54);
+        max-width: rem(54);
+      }
+    }
+  }
+}
+
+.feedback-form {
+  h2 {
+    @media only screen and (max-width: 767px) {
+      line-height: 1.16;
+      letter-spacing: -0.02em;
+      @include fontSize(16);
+    }
+  }
+  .MuiTypography-body1 {
+    font-weight: 500;
+    @media only screen and (max-width: 767px) {
+      line-height: 1.54;
+      @include fontSize(13);
+    }
+  }
+  &__uploader {
+    height: rem(149);
+    padding: rem(9) rem(16) rem(11) rem(20);
+    border: rem(1) solid var(--color-textBlack-20);
+    @include border-radius(10px);
+    @include flex(center, center);
+  }
+  .button {
+    padding-top: rem(9);
+    padding-bottom: rem(9);
+  }
+}

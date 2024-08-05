@@ -28,7 +28,7 @@ export const login = async (values: LoginFormValues) => {
         default:
           errorMessage = String(error);
           match = errorMessage.match(/Invalid email or password\./);
-          errorMessage = match ? match[0] : 'Authentication failed';
+          errorMessage = match ? match[0] : String(error.cause?.err);
       }
       return { error: errorMessage };
     }

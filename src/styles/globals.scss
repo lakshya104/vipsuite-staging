@@ -126,7 +126,7 @@ form {
   .MuiSelect-select,
   fieldset.MuiOutlinedInput-notchedOutline {
     box-sizing: border-box;
-    padding: rem(12) rem(20) rem(15) rem(24);
+    padding: rem(8.8) rem(20) rem(15) rem(24);
     height: rem(53);
     font-weight: 400;
     line-height: 1.42;
@@ -234,7 +234,7 @@ form {
     input.MuiInputBase-input,
     .MuiSelect-select {
       color: var(--color-white);
-      padding: rem(10) rem(30) rem(8);
+      padding: rem(8.8) rem(30) rem(8);
       height: rem(48);
     }
     input {

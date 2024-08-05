@@ -13,6 +13,7 @@ export const loginApi = async ({ username, password }: LoginFormValues) => {
     return response.data;
   } catch (error) {
     console.error('Error during authentication:', error);
+
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || 'An error occurred during login';
       throw errorMessage;

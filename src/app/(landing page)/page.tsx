@@ -7,15 +7,12 @@ import EventCard from '@/components/EventsCards/EventsCards';
 import Partner from '@/components/Partner/Partner';
 import Opportunity from '@/components/Opportunity/Opportunity';
 import Testimonial from '@/components/Testimonial/Testimonial';
-import { auth } from '@/auth';
+import Footer from '@/components/Footer';
 
 export default async function Home() {
-  const session = await auth();
-  const isLoggedIn = session?.user ? true : false;
-
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header />
       <Box>
         <HeroSection />
         <Box component="section" className="site-card">
@@ -33,6 +30,7 @@ export default async function Home() {
         <Testimonial />
         <Opportunity />
       </Box>
+      <Footer />
     </>
   );
 }

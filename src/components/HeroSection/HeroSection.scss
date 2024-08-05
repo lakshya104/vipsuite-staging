@@ -18,10 +18,17 @@
     }
   }
   a {
-    line-height: 1.25;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
     text-align: center;
+    text-decoration: none;
     text-transform: capitalize;
-    padding: rem(14.6) rem(32) rem(11.8);
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
     @include fontSize(16);
   }
 }

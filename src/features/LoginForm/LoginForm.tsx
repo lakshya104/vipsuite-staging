@@ -1,25 +1,34 @@
 'use client';
-import * as React from 'react';
+import React, { useState, useTransition } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '@/libs/actions';
 import InputForm from '@/components/InputForm/InputForm';
 import { LoginFormValues, LoginSchema } from './loginTypes';
-import VIPSuiteDialog from '@/components/VIPSuiteDialog';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
+import DialogBox from '@/components/Dialog/Dialog';
+import Link from 'next/link';
 
 const LoginForm = () => {
-  const [isPending, startTransition] = React.useTransition();
-  const [error, setError] = React.useState('');
-  const [isDialogopen, setIsDialogOpen] = React.useState(false);
-  const [toasterOpen, setToasterOpen] = React.useState(false);
-  const DialogBtns = [
-    { href: '/signup/vip', text: 'Apply as VIP' },
-    { href: '/signup/agent', text: 'Apply as Agent' },
-    { href: '/signup/brand', text: 'Apply as Brand' },
-  ];
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string>('');
+  const [toasterOpen, setToasterOpen] = useState<boolean>(false);
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
+
+  const dialogBoxContent = {
+    title: 'Thank You!',
+    subTitle: 'Application in Review',
+    description:
+      'Thank you for your application. The concierge team will review your submission and will be in touch in due course with their decision.',
+    buttonText: 'Done',
+    isCrossIcon: true,
+  };
+
+  const handleDialogBoxDataChange = (open: boolean) => {
+    setIsReviewDialogOpen(open);
+  };
 
   const {
     register,
@@ -37,12 +46,20 @@ const LoginForm = () => {
     console.log({ values });
     setError('');
     startTransition(() => {
-      login(values).then((data) => {
-        if (data && data.error) {
-          setError(data?.error);
+      login(values)
+        .then((data) => {
+          if (data && data.error && data.error !== 'Error: Your account is not approved') {
+            setError(data?.error);
+            setToasterOpen(true);
+          } else if (data && data.error === 'Error: Your account is not approved') {
+            setIsReviewDialogOpen(true);
+          }
+        })
+        .catch((error) => {
+          console.error('Error during login:', error);
+          setError('An unexpected error occurred');
           setToasterOpen(true);
-        }
-      });
+        });
     });
   };
   return (
@@ -68,28 +85,23 @@ const LoginForm = () => {
       </Button>
       <Typography className="signup-text">
         Don&apos;t have an account?{' '}
-        <Button
-          color="inherit"
-          sx={{
-            textTransform: 'capitalize',
+        <Link
+          href={'/onboarding'}
+          style={{
             textDecoration: 'underline',
-            p: 0,
-            m: 0,
-            '&:focus': {
-              outline: 'none',
-            },
+            padding: 0,
+            margin: 0,
+            color: 'white',
           }}
-          onClick={() => setIsDialogOpen(true)}
         >
           Apply here
-        </Button>
-        <VIPSuiteDialog
-          isOpen={isDialogopen}
-          onClose={() => setIsDialogOpen(false)}
-          withLogo={false}
-          buttonsArray={DialogBtns}
-        />
+        </Link>
       </Typography>
+      <DialogBox
+        isDialogOpen={isReviewDialogOpen}
+        onDataChange={handleDialogBoxDataChange}
+        content={dialogBoxContent}
+      />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
     </Box>
   );

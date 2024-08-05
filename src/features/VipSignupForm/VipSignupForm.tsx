@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useTransition } from 'react';
 import { Box, Button, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import InputForm from '../../components/InputForm/InputForm';
@@ -26,14 +26,14 @@ const dialogBoxContent = {
 
 const VipSignupForm = () => {
   const router = useRouter();
-  const [isPending, startTransition] = React.useTransition();
-  const [error, setError] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [toasterOpen, setToasterOpen] = React.useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [toasterOpen, setToasterOpen] = useState<boolean>(false);
 
-  const handleDialogBoxDataChange = (data: boolean) => {
-    setIsDialogOpen(data);
+  const handleDialogBoxDataChange = (open: boolean) => {
+    setIsDialogOpen(open);
     router.push('/');
   };
 
