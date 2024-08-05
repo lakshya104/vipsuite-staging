@@ -12,9 +12,12 @@ export const loginApi = async ({ username, password }: LoginFormValues) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error during authentication:', error);
-    const errorMessage = 'An error occurred during signup';
-    throw errorMessage;
+    console.error('Error during signup:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred');
   }
 };
 
@@ -29,7 +32,10 @@ export const signup = async (formData: SignUpRequestBody) => {
     return response.data;
   } catch (error) {
     console.error('Error during signup:', error);
-    const errorMessage = 'An error occurred during signup';
-    throw new Error(errorMessage);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred');
   }
 };
