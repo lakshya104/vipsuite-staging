@@ -12,12 +12,11 @@ export const loginApi = async ({ username, password }: LoginFormValues) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error during authentication:', error);
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || 'An error occurred during login';
-      throw new Error(errorMessage);
+      throw errorMessage;
     }
-    throw new Error('An unexpected error occurred');
   }
 };
 
