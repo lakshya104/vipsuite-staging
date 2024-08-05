@@ -59,7 +59,6 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
         isOpen={open}
         onClose={() => setOpen(false)}
         withLogo={false}
-        withWhiteBg={true}
         buttonsArray={DialogBtns}
         title="Added to Basket"
       />

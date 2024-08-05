@@ -63,11 +63,6 @@ const LoginForm = () => {
         helperText={errors.password?.message}
         autoComplete="current-password"
       />
-      {/* {error && (
-        <Typography color="error" variant="body2">
-          {error}
-        </Typography>
-      )} */}
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
         {isPending ? 'Loading...' : 'Continue'}
       </Button>
@@ -92,7 +87,6 @@ const LoginForm = () => {
           isOpen={isDialogopen}
           onClose={() => setIsDialogOpen(false)}
           withLogo={false}
-          withWhiteBg={true}
           buttonsArray={DialogBtns}
         />
       </Typography>

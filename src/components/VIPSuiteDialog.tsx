@@ -6,20 +6,12 @@ import Link from 'next/link';
 interface VIPSuiteDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  withLogo: boolean;
+  withLogo?: boolean;
   buttonsArray: { href: string; text: string }[];
-  withWhiteBg?: boolean;
   title?: string;
 }
 
-const VIPSuiteDialog: React.FC<VIPSuiteDialogProps> = ({
-  isOpen,
-  onClose,
-  withLogo,
-  buttonsArray,
-  withWhiteBg,
-  title,
-}) => {
+const VIPSuiteDialog: React.FC<VIPSuiteDialogProps> = ({ isOpen, onClose, withLogo, buttonsArray, title }) => {
   return (
     <Dialog className="site-dialog" open={isOpen} onClose={onClose}>
       <DialogContent className="site-dialog__inner">
@@ -28,7 +20,7 @@ const VIPSuiteDialog: React.FC<VIPSuiteDialogProps> = ({
             <Box className="site-dialog__image">
               <Image
                 alt="VipLogo"
-                src="/VIPSLogo.png"
+                src="/Logo.svg"
                 fill
                 sizes="(max-width: 300px) 100vw, 300px"
                 style={{ objectFit: 'contain' }}
@@ -47,7 +39,7 @@ const VIPSuiteDialog: React.FC<VIPSuiteDialogProps> = ({
                 fullWidth
                 key={index}
                 variant="contained"
-                className={`button ${withWhiteBg ? 'button--black' : ''}`}
+                className="button  button--black"
                 LinkComponent={Link}
                 href={button.href}
               >

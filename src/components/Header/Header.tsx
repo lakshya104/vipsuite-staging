@@ -84,13 +84,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
                 <Button variant="outlined" color="inherit" onClick={() => setOpen(true)}>
                   Apply
                 </Button>
-                <VIPSuiteDialog
-                  isOpen={open}
-                  onClose={() => setOpen(false)}
-                  withLogo={true}
-                  withWhiteBg={false}
-                  buttonsArray={DialogBtns}
-                />
+                <VIPSuiteDialog isOpen={open} onClose={() => setOpen(false)} buttonsArray={DialogBtns} />
               </>
             )}
           </Box>
