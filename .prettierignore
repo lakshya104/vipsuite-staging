@@ -1,0 +1,5 @@
+# ignore generated type file
+/.next/
+/node_modules
+bitbucket-pipelines.yml
+tsconfig.json

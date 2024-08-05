@@ -1,0 +1,16 @@
+/*
+* Header Top style.
+*/
+
+@import '../../styles/mixins';
+
+.headerTop {
+  background-color: var(--color-textBlack);
+  min-height: rem(28);
+  @include flex(center, center);
+  p,
+  a {
+    color: var(--color-white);
+    @include fontSize(11);
+  }
+}

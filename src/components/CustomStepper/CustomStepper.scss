@@ -1,0 +1,36 @@
+/*
+* Custom Stepper style.
+*/
+
+@import '../../styles/mixins';
+
+.custom-stepper {
+  margin-top: auto;
+  padding-top: rem(48);
+  background-color: var(--color-white);
+  @include flex(space-between, center);
+  button {
+    width: rem(87);
+    height: rem(40);
+    border: rem(1) solid var(--color-textBlack);
+    background-color: var(--color-textBlack);
+    color: var(--color-white);
+    @include border-radius(60px);
+    &:hover {
+      background-color: var(--color-white);
+      color: var(--color-textBlack);
+    }
+    &[type='button'] {
+      background-color: var(--color-white);
+      color: var(--color-textBlack);
+      opacity: 0.3;
+      &:hover {
+        background-color: var(--color-textBlack);
+        color: var(--color-white);
+      }
+    }
+  }
+  p {
+    font-weight: 500;
+  }
+}

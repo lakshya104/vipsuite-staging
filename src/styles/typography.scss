@@ -1,0 +1,32 @@
+/* Graphik-Regular */
+@font-face {
+  font-family: 'Graphik';
+  src:
+    url('../../public/fonts/Graphik-Regular-Web.woff2') format('woff2'),
+    url('../../public/fonts/Graphik-Regular-Web.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src:
+    url('../../public/fonts/Graphik-Medium-Web.woff2') format('woff2'),
+    url('../../public/fonts/Graphik-Medium-Web.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src:
+    url('../../public/fonts/Graphik-Bold-Web.woff2') format('woff2'),
+    url('../../public/fonts/Graphik-Bold-Web.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+$font-family: 'Graphik', serif;

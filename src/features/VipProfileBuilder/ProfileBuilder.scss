@@ -1,0 +1,117 @@
+/*
+* Profile Form style.
+*/
+
+@import '../../styles/mixins';
+
+.profile-builder {
+  &__form {
+    width: 100%;
+    max-width: rem(350);
+    margin-top: rem(30);
+    flex-direction: column;
+    @include flex();
+    @media only screen and (min-width: 768px) {
+      max-width: rem(450);
+    }
+    &-row {
+      margin-bottom: rem(16);
+      .step1-form &,
+      .step5-form & {
+        flex-wrap: wrap;
+        @include flex(center);
+      }
+      h3 {
+        @media only screen and (max-width: 767px) {
+          margin-bottom: rem(8);
+          line-height: 1.07;
+          @include fontSize(16);
+        }
+      }
+      p {
+        margin-bottom: rem(16);
+        @media only screen and (max-width: 767px) {
+          line-height: 1.428;
+          letter-spacing: -0.01em;
+          @include fontSize(14);
+        }
+      }
+      .MuiFormControl-root {
+        margin: 0 0 rem(16);
+      }
+    }
+  }
+  &__search,
+  &__head {
+    gap: rem(20);
+    width: 100%;
+    margin-bottom: rem(32);
+    flex-direction: column;
+    @include flex(center);
+    h3 {
+      @include fontSize(14);
+      @media only screen and (min-width: 768px) {
+        @include fontSize(20);
+      }
+    }
+  }
+  &__main {
+    h2 {
+      line-height: 1.07;
+      @include fontSize(24);
+      @media only screen and (min-width: 768px) {
+        @include fontSize(30);
+      }
+    }
+    .step1-form,
+    .step5-form {
+      label {
+        margin: rem(5);
+        padding: rem(4) rem(13.5);
+        border: rem(1) solid var(--color-textBlack);
+        background-color: transparent;
+        color: var(--color-textBlack);
+        @include border-radius(50px);
+        @media only screen and (max-width: 767px) {
+          font-weight: 400;
+          line-height: 1.33;
+          @include fontSize(15);
+        }
+        & .MuiFormControlLabel-label {
+          font-weight: normal;
+        }
+        &:has(.Mui-checked) {
+          background-color: var(--color-textBlack);
+          border-color: var(--color-textBlack);
+          color: var(--color-white);
+        }
+      }
+      .MuiCheckbox-root {
+        padding: 0;
+        margin-right: rem(6);
+        &:before {
+          content: '';
+          width: rem(7);
+          height: rem(7);
+          display: inline-block;
+          border: rem(1) solid var(--color-textBlack);
+          background-color: var(--color-white);
+          margin-top: rem(-1);
+          @include border-radius(50%);
+        }
+        &.Mui-checked {
+          &:before {
+            background-color: var(--color-white);
+            border-color: transparent;
+          }
+        }
+        &.Mui-disabled {
+          color: var(--color-textBlack-60);
+        }
+        .MuiSvgIcon-root {
+          display: none;
+        }
+      }
+    }
+  }
+}

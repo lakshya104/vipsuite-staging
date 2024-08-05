@@ -1,0 +1,62 @@
+/*
+* Partner style.
+*/
+
+@import '../../styles/mixins';
+
+.search-box {
+  width: 100%;
+  @include relative;
+  @include flex(center, center);
+  &__popover {
+    width: 91%;
+    background-color: var(--color-white);
+    box-shadow: 0 0 rem(3) rgba(27, 27, 27, 0.8);
+    @include border-radius(0 0 7px 7px);
+    @include absolute(top 100% z-index 1);
+  }
+  .MuiOutlinedInput-root {
+    padding-left: rem(20);
+    padding-right: rem(20);
+  }
+  input {
+    width: 90%;
+    margin: auto;
+    padding: 0;
+    height: rem(48);
+    background-color: $white;
+    @include border-radius(38px);
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 rem(38) transparent !important;
+      -webkit-text-fill-color: var(--color-textBlack) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      @include border-radius(38px);
+    }
+    &.MuiInputBase-input {
+      padding-left: 0;
+      border-radius: 0 !important;
+      padding-top: rem(14);
+    }
+  }
+  fieldset {
+    padding: 0;
+    border-color: var(--color-textBlack);
+    @include border-radius(38px);
+  }
+  button {
+    color: $white;
+    background-color: var(--color-textBlack-60);
+    padding: 0;
+    width: rem(16);
+    height: rem(16);
+    margin-top: rem(-5);
+    &:hover {
+      background-color: var(--color-textBlack);
+    }
+    svg {
+      width: rem(12);
+      height: rem(12);
+    }
+  }
+}

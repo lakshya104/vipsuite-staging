@@ -1,0 +1,27 @@
+/*
+* Hero style.
+*/
+
+@import '../../styles/mixins';
+
+.site-hero {
+  text-align: center;
+  margin-bottom: rem(64);
+  @media only screen and (min-width: 768px) {
+    margin-bottom: rem(72);
+  }
+  h1 {
+    text-align: center;
+    margin: rem(37) 0 rem(40);
+    @media only screen and (min-width: 768px) {
+      margin: rem(55) 0;
+    }
+  }
+  a {
+    line-height: 1.25;
+    text-align: center;
+    text-transform: capitalize;
+    padding: rem(14.6) rem(32) rem(11.8);
+    @include fontSize(16);
+  }
+}

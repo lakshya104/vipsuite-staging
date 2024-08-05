@@ -1,0 +1,62 @@
+/*
+* Basket style.
+*/
+
+@import '../../styles/mixins';
+
+.basket-page {
+  margin: rem(28) 0;
+  @media only screen and (min-width: 768px) {
+    margin: rem(72) 0;
+  }
+  img {
+    height: auto;
+  }
+  h2 {
+    @media only screen and (max-width: 767px) {
+      margin-bottom: rem(6);
+      line-height: 1.38;
+      letter-spacing: -0.02em;
+      @include fontSize(13);
+    }
+  }
+  p {
+    color: var(--color-textBlack-80);
+    @media only screen and (max-width: 767px) {
+      line-height: 1.33;
+      letter-spacing: -0.01em;
+      @include fontSize(12);
+    }
+  }
+}
+.basket-product {
+  &__items {
+    margin-bottom: rem(50);
+    button {
+      @media only screen and (min-width: 768px) {
+        max-width: rem(200);
+        float: right;
+      }
+    }
+  }
+  &__item {
+    display: grid;
+    grid-template-columns: 60px auto 60px;
+    gap: rem(20);
+    padding: rem(16) rem(8);
+    border-top: rem(1) solid var(--color-textBlack-10);
+    &:last-of-type {
+      border-bottom: rem(1) solid var(--color-textBlack-10);
+      margin-bottom: rem(20);
+    }
+    @media only screen and (min-width: 768px) {
+      grid-template-columns: 120px auto 60px;
+    }
+    svg {
+      align-self: center;
+      justify-self: flex-end;
+      width: rem(28);
+      height: rem(28);
+    }
+  }
+}

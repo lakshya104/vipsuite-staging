@@ -1,0 +1,43 @@
+/*
+* Events Cards style.
+*/
+
+@import '../../styles/mixins';
+
+.site-card {
+  margin-bottom: rem(18);
+  @media only screen and (min-width: 768px) {
+    margin-bottom: rem(32);
+  }
+  &__item {
+    &.MuiPaper-root {
+      border: 0 none;
+      box-shadow: 0 0 0 transparent;
+      border-radius: 0;
+    }
+  }
+  &__image {
+    overflow: hidden;
+    @include border-radius(4px);
+    img {
+      height: auto;
+    }
+  }
+  &__content {
+    &.MuiCardContent-root {
+      padding: rem(20) 0;
+    }
+    h2 {
+      line-height: 1.28;
+      letter-spacing: -0.03em;
+      margin-bottom: rem(12);
+      @include fontSize(25);
+    }
+    p {
+      line-height: 1.57;
+      margin-bottom: rem(24);
+      color: rgba($textBlack, 0.8);
+      letter-spacing: normal;
+    }
+  }
+}

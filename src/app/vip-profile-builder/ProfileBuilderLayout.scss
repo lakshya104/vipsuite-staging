@@ -1,0 +1,36 @@
+/*
+* Profile Form style.
+*/
+
+@import '../../styles/mixins';
+
+.profile-builder {
+  &__page {
+    background-color: var(--color-white);
+    min-height: 100vh;
+    position: relative;
+    flex-direction: column;
+    @include flex;
+  }
+  &__header {
+    border-bottom: 1px solid rgba($black, 0.8);
+    background-color: var(--color-white);
+    position: sticky;
+    text-align: center;
+    top: 0;
+    z-index: 99;
+    padding: rem(10);
+    img {
+      max-width: rem(115);
+      height: auto;
+      @media only screen and (min-width: 768px) {
+        max-width: rem(260);
+      }
+    }
+  }
+  &__main {
+    flex: 1;
+    padding: 0 rem(15) rem(56);
+    @include flex(center);
+  }
+}

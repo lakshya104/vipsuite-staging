@@ -1,0 +1,41 @@
+/*
+* Styled Card style.
+*/
+
+@import '../../styles/mixins';
+
+div.styled-card {
+  padding: rem(92) rem(24) rem(42);
+  text-align: center;
+  background-color: var(--color-textBlack-10);
+  box-shadow: 0 0 0 transparent;
+  @include border-radius(8px);
+  &__image {
+    margin-bottom: rem(52);
+  }
+  &__content {
+    &.MuiCardContent-root {
+      padding: 0;
+    }
+    h3 {
+      font-weight: 500;
+      line-height: 1.77;
+      letter-spacing: -0.03em;
+      color: var(--color-textBlack);
+      @include fontSize(18);
+    }
+    h4 {
+      font-weight: 500;
+      line-height: 2.28;
+      letter-spacing: -0.03em;
+      margin-bottom: rem(16);
+      color: var(--color-textBlack);
+      @include fontSize(14);
+    }
+    p {
+      line-height: 1.57;
+      color: var(--color-textBlack-80);
+      letter-spacing: normal;
+    }
+  }
+}

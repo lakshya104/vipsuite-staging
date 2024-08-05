@@ -1,0 +1,299 @@
+@import 'reboot';
+@import 'mixins';
+@import 'typography';
+
+:root {
+  --color-white: #ffffff;
+  --color-marble: #fffff7;
+  --color-black: #000000;
+  --color-light-gray: #e1e1e1;
+  --color-gray: #d9d9d9;
+  --color-gray-99: #999999;
+  --color-textBlack: rgb(27, 27, 27);
+  --color-textBlack-10: #ebebe3;
+  --color-textBlack-20: #d1d1cb;
+  --color-textBlack-40: #a4a49f;
+  --color-textBlack-60: #767673;
+  --color-textBlack-80: rgba(27, 27, 27, 0.8);
+  --color-red: #de4b23;
+  --font-family: 'Graphik', serif;
+}
+
+body {
+  line-height: 1.4;
+  font-family: var(--font-family);
+  color: var(--color-textBlack);
+}
+
+h1,
+.h1 {
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.05em;
+  @include fontSize(70);
+}
+
+h2,
+.h2 {
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  @include fontSize(30);
+}
+
+a,
+button {
+  font-family: var(--font-family);
+  color: var(--color-textBlack);
+  &[disable] {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+img {
+  max-width: 100%;
+}
+
+a.button,
+button.button {
+  font-family: var(--font-family);
+  color: var(--color-textBlack);
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  padding: rem(14) rem(32) rem(13);
+  border: rem(1.5) solid var(--color-textBlack);
+  text-decoration: none;
+  text-transform: none;
+  @include border-radius(38px);
+  @include fontSize(16);
+  &:hover {
+    color: var(--color-white);
+    background-color: var(--color-textBlack);
+  }
+  + .button {
+    margin-top: rem(15);
+  }
+  &--black {
+    background-color: var(--color-textBlack);
+    color: var(--color-white);
+    &:hover {
+      background-color: var(--color-white);
+      color: var(--color-textBlack);
+    }
+  }
+  &--white {
+    background-color: var(--color-white);
+    &:hover {
+      background-color: var(--color-textBlack);
+      color: var(--color-white);
+    }
+  }
+}
+
+.page-title {
+  margin-bottom: rem(28);
+  @media only screen and (max-width: 767px) {
+    line-height: 1.07;
+    letter-spacing: -0.03em;
+    @include fontSize(14);
+  }
+}
+
+.login__page {
+  min-height: 100vh;
+  padding: rem(16);
+  width: 100%;
+  flex-direction: column;
+  @include flex(center, center);
+  &-logo {
+    max-width: rem(184);
+    width: 100%;
+    @include relative;
+    @media only screen and (min-width: 992px) {
+      max-width: rem(300);
+    }
+  }
+}
+
+form {
+  .MuiFormControl-root,
+  .MuiFormGroup-root {
+    margin-bottom: rem(32);
+    width: 100%;
+  }
+  input.MuiInputBase-input,
+  .MuiSelect-select,
+  fieldset.MuiOutlinedInput-notchedOutline {
+    box-sizing: border-box;
+    padding: rem(12) rem(20) rem(15) rem(24);
+    height: rem(53);
+    font-weight: 400;
+    line-height: 1.42;
+    border-radius: rem(37.5) !important;
+    border-color: var(--color-textBlack-20) !important;
+    @include fontSize(15);
+  }
+  input {
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 rem(38) transparent !important;
+      -webkit-text-fill-color: var(--color-textBlack) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      @include border-radius(38px);
+    }
+  }
+  .MuiSelect-select {
+    padding-top: rem(15);
+  }
+  label.MuiFormLabel-root {
+    left: rem(18.8);
+    font-weight: 400;
+    line-height: 1.42;
+    top: rem(2);
+    @include fontSize(14);
+    &:not(.MuiInputLabel-shrink) {
+      top: 0;
+      left: rem(10);
+    }
+  }
+  .MuiBox-root {
+    @include relative;
+  }
+  .input-text {
+    padding: 0 rem(14);
+    margin-top: rem(4);
+    width: 100%;
+    @include flex(space-between, center);
+    @include absolute(bottom 14px left 0);
+    p {
+      color: var(--color-textBlack-60);
+      font-weight: 400;
+      line-height: 1.27;
+      @include fontSize(11);
+    }
+  }
+  .date-picker {
+    button {
+      margin-top: rem(-5);
+      margin-right: 0;
+      outline: 0 none;
+    }
+  }
+  .form-checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+    label {
+      margin-bottom: rem(5);
+      font-weight: 400;
+      line-height: 1.38;
+      @include fontSize(13);
+    }
+    span {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    svg {
+      width: rem(27);
+      height: rem(27);
+      fill: var(--color-textBlack-20);
+    }
+    &.Mui-checked {
+      svg {
+        fill: var(--color-textBlack);
+      }
+    }
+  }
+  .Mui-error {
+    color: var(--color-red);
+    input.MuiInputBase-input,
+    .MuiSelect-select,
+    fieldset.MuiOutlinedInput-notchedOutline {
+      border-color: var(--color-red) !important;
+    }
+    svg {
+      fill: var(--color-red);
+    }
+  }
+  &.login-form,
+  &.signup-form {
+    .MuiOutlinedInput-root {
+      &.Mui-focused,
+      &:hover {
+        fieldset.MuiOutlinedInput-notchedOutline {
+          border-color: var(--color-white);
+        }
+      }
+    }
+    input.MuiInputBase-input,
+    .MuiSelect-select,
+    fieldset.MuiOutlinedInput-notchedOutline {
+      box-sizing: border-box;
+    }
+    input.MuiInputBase-input,
+    .MuiSelect-select {
+      color: var(--color-white);
+      padding: rem(10) rem(30) rem(8);
+      height: rem(48);
+    }
+    input {
+      &:-webkit-autofill {
+        -webkit-text-fill-color: var(--color-white) !important;
+      }
+    }
+    fieldset.MuiOutlinedInput-notchedOutline {
+      font-family: var(--font-family);
+      font-weight: 400;
+      line-height: 1.14;
+      border: rem(1) solid #555555;
+      @include border-radius(38px);
+      @include fontSize(14);
+    }
+    .button--white {
+      background-color: var(--color-white);
+      color: var(--color-textBlack);
+      font-family: var(--font-family);
+      font-weight: 500;
+      line-height: 1.25;
+      text-transform: none;
+      margin-top: rem(8);
+      @include fontSize(16);
+      &:hover {
+        background-color: var(--color-textBlack);
+        color: var(--color-white);
+        border-color: var(--color-white);
+      }
+    }
+  }
+}
+
+.site-dialog {
+  .MuiDialog-paper {
+    max-width: rem(495);
+    margin: 0;
+    @include border-radius(20px 20px 0 0);
+    @media only screen and (min-width: 768px) {
+      @include border-radius(20px);
+    }
+  }
+  &__inner {
+    padding: rem(24) rem(20);
+  }
+  &__image {
+    width: rem(300);
+    height: rem(80);
+    margin: 0 auto rem(10);
+    @include relative;
+  }
+}
+.MuiDialog-container {
+  @media only screen and (max-width: 767px) {
+    align-items: flex-end;
+  }
+  > .MuiPaper-root {
+    @media only screen and (max-width: 767px) {
+      align-items: flex-end;
+    }
+  }
+}

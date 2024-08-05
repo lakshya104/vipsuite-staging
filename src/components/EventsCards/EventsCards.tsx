@@ -1,0 +1,30 @@
+import React from 'react';
+import { Card, CardContent, Typography, Box, Link } from '@mui/material';
+import Image from 'next/image';
+import './EventsCards.scss';
+
+interface EventCardProps {
+  title: string;
+  description: string;
+}
+
+const EventCard: React.FC<EventCardProps> = ({ title, description }) => {
+  return (
+    <Card className="site-card__item">
+      <Box className="site-card__image">
+        <Image src="/img/card.jpg" alt={title} height={672} width={1256} />
+      </Box>
+      <CardContent className="site-card__content">
+        <Typography variant="h6" component="h2">
+          {title}
+        </Typography>
+        <Typography variant="body1">{description}</Typography>
+        <Link href="" className="button button--border">
+          Find Out More
+        </Link>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default EventCard;

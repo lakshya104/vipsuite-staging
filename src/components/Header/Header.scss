@@ -1,0 +1,106 @@
+/*
+* Header style.
+*/
+
+@import '../../styles/mixins';
+
+header.site-header {
+  background-color: var(--color-white);
+  color: var(--color-textBlack);
+  box-shadow: 0 0 0 transparent;
+  border-bottom: rem(1) solid var(--color-light-gray);
+  .navbar-toggler {
+    @media only screen and (min-width: 768px) {
+      display: none;
+    }
+    button {
+      padding: 0;
+    }
+  }
+}
+.site-header {
+  &__wrapper {
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 100%;
+    max-width: rem(1276);
+  }
+  &__navbar {
+    display: none;
+    @media only screen and (min-width: 768px) {
+      display: block;
+    }
+    @media only screen and (max-width: 767px) {
+      background-color: var(--color-white);
+      width: 100%;
+      margin-top: rem(1);
+      @include absolute(left 0 top 100%);
+    }
+    &.showMenu {
+      display: block;
+    }
+  }
+  &__navigation {
+    @media only screen and (min-width: 768px) {
+      @include flex;
+    }
+    a {
+      font-weight: 500;
+      @include fontSize(16);
+      @media only screen and (min-width: 768px) {
+        @include fontSize(13);
+      }
+    }
+  }
+  &__user {
+    min-height: rem(40);
+    @include flex(center, center);
+    button {
+      color: var(--color-textBlack);
+      line-height: 1.4;
+      &:first-child {
+        padding: 0;
+        margin-right: rem(24);
+        min-width: unset;
+        @include fontSize(13);
+        @media only screen and (max-width: 767px) {
+          display: none;
+        }
+      }
+      &:last-child {
+        padding: rem(6) rem(14) rem(7);
+        border: rem(1.5) solid var(--color-textBlack);
+        text-transform: capitalize;
+        line-height: 1.07;
+        @include border-radius(29px);
+        @include fontSize(11);
+        @include relative;
+        @media only screen and (min-width: 768px) {
+          margin-left: rem(24);
+          padding: rem(11) 1.5rem rem(9);
+          min-width: rem(121);
+          @include fontSize(14);
+          &:after {
+            content: '';
+            width: rem(1);
+            height: rem(40);
+            background-color: var(--color-gray);
+            display: inline-block;
+            @include absolute(left -25px);
+          }
+        }
+      }
+    }
+  }
+  &__brand {
+    @media only screen and (max-width: 767px) {
+      @include align(true, true, absolute);
+      a {
+        max-width: rem(113);
+        display: block;
+        height: rem(14);
+        overflow: hidden;
+      }
+    }
+  }
+}
