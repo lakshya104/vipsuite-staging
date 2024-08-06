@@ -3,7 +3,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Typography, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
-import { useRouter } from 'next/navigation';
 import { interestsStep5 } from '@/data';
 import DialogBox from '@/components/Dialog/Dialog';
 import { FormValues, interestSchema } from './schema';
@@ -33,13 +32,11 @@ const Step5Form = () => {
       interests: [],
     },
   });
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
-    router.push('/');
   };
 
   const handleChange = (event: { target: { value: React.SetStateAction<string> } }) => {

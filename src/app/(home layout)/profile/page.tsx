@@ -1,20 +1,34 @@
 import React from 'react';
-import HomeHeader from '@/components/Header/HomeHeader';
-import HomeFooter from '@/components/HomeFooter';
+import { BioComponent, ContactsComponent, SocialComponent } from '@/components/ProfileComponents';
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 import ProfilePageTabs from '@/components/ProfileTabs';
 import './profile.scss';
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import Link from 'next/link';
 
-export default function ProfileLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+interface SearchParams {
+  [key: string]: string | string[];
+}
+
+interface PageProps {
+  searchParams: SearchParams;
+}
+
+export default function Page({ searchParams }: PageProps) {
+  const section = searchParams?.section;
+  const renderSection = () => {
+    switch (section) {
+      case 'bio':
+        return <BioComponent />;
+      case 'social':
+        return <SocialComponent />;
+      case 'contacts':
+        return <ContactsComponent />;
+      default:
+        return <BioComponent />;
+    }
+  };
+
   return (
     <>
-      <HomeHeader />
       <Box className="user-profile">
         <Container>
           <Typography className="page-title" variant="h2" align="center">
@@ -36,10 +50,9 @@ export default function ProfileLayout({
           <Box>
             <ProfilePageTabs />
           </Box>
-          <Box className="user-profile__details">{children}</Box>
+          <Box className="user-profile__details">{renderSection()}</Box>
         </Container>
       </Box>
-      <HomeFooter />
     </>
   );
 }
