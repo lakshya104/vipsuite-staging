@@ -8,7 +8,7 @@ export const VipSignupSchema = z.object({
     message: 'Last Name must be at least 2 characters long',
   }),
   email: z.string().email({
-    message: 'Invalid email format',
+    message: 'Please enter a valid email',
   }),
   password: z.string().min(6, {
     message: 'Password must be at least 6 characters long',
@@ -16,12 +16,7 @@ export const VipSignupSchema = z.object({
   phone: z.string().regex(/^\d{10}$/, {
     message: 'Phone number must be 10 digits',
   }),
-  secondary_email: z
-    .string()
-    .email({
-      message: 'Invalid secondary email format',
-    })
-    .optional(),
+  secondary_email: z.string().email({ message: 'Please enter a valid email' }).optional().or(z.literal('')),
   instagram_handle: z.string().min(3, {
     message: 'Instagram username is required',
   }),
@@ -29,3 +24,14 @@ export const VipSignupSchema = z.object({
     message: 'TikTok username is required',
   }),
 });
+
+export const defaultValues = {
+  first_name: '',
+  last_name: '',
+  email: '',
+  password: '',
+  secondary_email: '',
+  phone: '',
+  instagram_handle: '',
+  tiktok_handle: '',
+};

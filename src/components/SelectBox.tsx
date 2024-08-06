@@ -9,7 +9,6 @@ type SelectBoxProps<T extends FieldValues> = {
   options: { value: string; label: string }[] | undefined;
   label: string;
   errors: FieldErrors<T>;
-  darkMode?: boolean | undefined;
 };
 
 const SelectBox = <T extends FieldValues>({
@@ -19,7 +18,6 @@ const SelectBox = <T extends FieldValues>({
   options,
   label,
   errors,
-  darkMode,
 }: SelectBoxProps<T>) => {
   return (
     <FormControl fullWidth error={!!errors[name]}>
@@ -33,11 +31,6 @@ const SelectBox = <T extends FieldValues>({
             displayEmpty
             inputProps={{ 'aria-label': 'Without label' }}
             error={!!errors[name]}
-            {...(darkMode && {
-              MenuProps: {
-                PaperProps: {},
-              },
-            })}
           >
             <MenuItem value="">{label}</MenuItem>
             {options?.map((option) => (

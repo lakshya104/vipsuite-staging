@@ -12,7 +12,7 @@ const HeroSection = () => {
           <Typography component="h1" variant="h1">
             {heroSectionLine}
           </Typography>
-          <Link href={'/signup-onboarding'}>Apply Today</Link>
+          <Link href={'/onboarding'}>Apply Today</Link>
         </Container>
       </Box>
     </>

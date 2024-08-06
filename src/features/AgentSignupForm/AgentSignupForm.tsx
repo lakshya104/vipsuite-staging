@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useTransition } from 'react';
 import { Box, Button, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import InputForm from '../../components/InputForm/InputForm';
@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import DialogBox from '@/components/Dialog/Dialog';
 import { AgentSignUpFormFields } from '@/data';
 import './AgentSignupForm.scss';
-import { AgentSignupSchema, AgentSignupValues } from './agentSignupTypes';
+import { AgentSignupSchema, AgentSignupValues, defaultValues } from './agentSignupTypes';
 import SelectBox from '@/components/SelectBox';
 import { signup } from '@/libs/api';
 import Toaster from '@/components/Toaster';
@@ -26,11 +26,11 @@ const dialogBoxContent = {
 
 const AgentSignupForm = () => {
   const router = useRouter();
-  const [isPending, startTransition] = React.useTransition();
-  const [error, setError] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [toasterOpen, setToasterOpen] = React.useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [toasterOpen, setToasterOpen] = useState<boolean>(false);
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
@@ -43,16 +43,7 @@ const AgentSignupForm = () => {
     formState: { errors },
   } = useForm<AgentSignupValues>({
     resolver: zodResolver(AgentSignupSchema),
-    defaultValues: {
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      phone: '',
-      company_name: '',
-      type_of_representation: '',
-      vip_managed: '',
-    },
+    defaultValues: defaultValues,
   });
 
   const onSubmit = async (formData: AgentSignupValues) => {
@@ -105,7 +96,6 @@ const AgentSignupForm = () => {
                 options={options}
                 label={label || 'select'}
                 errors={errors}
-                darkMode={true}
               />
             ) : (
               <Controller
@@ -153,6 +143,11 @@ const AgentSignupForm = () => {
               <Box className="input-text">
                 <Typography>Add a PA or Staff Email</Typography>
                 <Typography>Optional</Typography>
+              </Box>
+            )}
+            {name === 'phone' && !errors[name] && (
+              <Box className="input-text">
+                <Typography>Including Country Code</Typography>
               </Box>
             )}
           </Box>

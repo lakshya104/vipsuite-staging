@@ -230,6 +230,7 @@ form {
     .MuiSelect-select,
     fieldset.MuiOutlinedInput-notchedOutline {
       box-sizing: border-box;
+      @include flex(auto, center);
     }
     input.MuiInputBase-input,
     .MuiSelect-select {

@@ -3,7 +3,7 @@ import React, { useState, useTransition } from 'react';
 import { Box, Button, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import InputForm from '../../components/InputForm/InputForm';
-import { VipSignupSchema } from '@/features/VipSignupForm/vipSignupTypes';
+import { VipSignupSchema, defaultValues } from '@/features/VipSignupForm/vipSignupTypes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -43,16 +43,7 @@ const VipSignupForm = () => {
     formState: { errors },
   } = useForm<SignUpRequestBody>({
     resolver: zodResolver(VipSignupSchema),
-    defaultValues: {
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      secondary_email: '',
-      phone: '',
-      instagram_handle: '',
-      tiktok_handle: '',
-    },
+    defaultValues: defaultValues,
   });
 
   const onSubmit = async (formData: SignUpRequestBody) => {
