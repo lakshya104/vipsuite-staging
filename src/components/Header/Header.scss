@@ -64,7 +64,7 @@ header.site-header {
         min-width: unset;
         margin-right: rem(24);
         @include fontSize(13);
-          margin-left: rem(24);
+        margin-left: rem(24);
         @media only screen and (max-width: 991px) {
           display: none;
         }

@@ -10,29 +10,21 @@ interface FeedItemCardProps {
 const FeedItemCard: React.FC<FeedItemCardProps> = ({ item }) => {
   return (
     <Card
-      className='landing-product__item-inner'
+      className="landing-product__item-inner"
       sx={{
         backgroundImage: `url(${item.imagePath})`,
       }}
     >
       <FeedLikeIcon />
-      {item.byRequest && (
-        <Chip label="BY REQUEST ONLY"/>
-      )}
-      <CardContent
-        className='landing-product__item-content'
-      >
-        <Typography variant="h2">
-          {item.heading}
-        </Typography>
+      {item.byRequest && <Chip label="BY REQUEST ONLY" />}
+      <CardContent className="landing-product__item-content">
+        <Typography variant="h2">{item.heading}</Typography>
         {item.description && (
           <Typography variant="body2" mb={2}>
             {item.description}
           </Typography>
         )}
-        <Typography variant="body2">
-          {item.type.join(' | ')}
-        </Typography>
+        <Typography variant="body2">{item.type.join(' | ')}</Typography>
       </CardContent>
     </Card>
   );

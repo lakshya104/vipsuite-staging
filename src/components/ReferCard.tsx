@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Card, CardContent, Typography, styled } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import EastIcon from '@mui/icons-material/East';
 import Link from 'next/link';
 
@@ -12,12 +12,10 @@ interface ReferCardProps {
 
 const ReferCard: React.FC<ReferCardProps> = ({ heading, text, href }) => {
   return (
-    <Card className='gray-card__item'>
+    <Card className="gray-card__item">
       <CardContent>
-        <Typography variant='h2'>
-          {heading}
-        </Typography>
-        <Typography variant='body1'>{text}</Typography>
+        <Typography variant="h2">{heading}</Typography>
+        <Typography variant="body1">{text}</Typography>
         <Link href={href}>
           <EastIcon />
         </Link>

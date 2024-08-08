@@ -1,14 +1,13 @@
 'use client';
 import React, { useMemo } from 'react';
-import { Tabs, Tab, Box, styled, SxProps, Theme } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface SearchFilterTabsProps {
   searchQuery: string | false | string[] | undefined;
-  sx?: SxProps<Theme>;
 }
 
-const SearchFilterTabs: React.FC<SearchFilterTabsProps> = ({ searchQuery, sx }) => {
+const SearchFilterTabs: React.FC<SearchFilterTabsProps> = ({ searchQuery }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabs = useMemo(() => ['all', 'newest', 'expiringSoon'], []);

@@ -7,7 +7,6 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import React from 'react';
 import './Home.scss';
 
-
 export default function Page({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const searchQuery = typeof searchParams.name === 'string' ? searchParams.name : '';
   const searchFilter = typeof searchParams.filter === 'string' ? searchParams.filter : '';
@@ -22,7 +21,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
   });
 
   return (
-    <Box component={'main'} className='landing-page'>
+    <Box component={'main'} className="landing-page">
       <Container>
         <SearchEvent searchParams={searchQuery && searchQuery} />
         {searchQuery ? (
@@ -30,16 +29,16 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
             <Grid container mb={2.5}>
               <Grid item xs={12}>
                 <Box width="100%">
-                  <Typography variant='h3' component='h2' mb={1}>
+                  <Typography variant="h3" component="h2" mb={1}>
                     {filterFeedItems.length} Results for {searchQuery}
                   </Typography>
                 </Box>
                 <SearchFilterTabs searchQuery={searchQuery} />
               </Grid>
             </Grid>
-            <Grid className='landing-product' container spacing={2.5}>
+            <Grid className="landing-product" container spacing={2.5}>
               {filterFeedItems.length < 1 ? (
-                <Typography variant='h2'>No results found</Typography>
+                <Typography variant="h2">No results found</Typography>
               ) : (
                 filterFeedItems.map((item, index) => (
                   <Grid item xs={12} sm={6} lg={4} key={index}>
@@ -53,12 +52,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
           </>
         ) : (
           <>
-            <Box
-              className="gray-card"
-              display={'flex'}
-              justifyContent={'space-between'}
-              gap={2.5}
-            >
+            <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
               <ReferCard
                 heading="Refer a VIP"
                 text="Lorem ipsum dolor sit amet, sed in posse primis, ius te putant molestie sapientem."
@@ -70,9 +64,9 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
                 href="/"
               />
             </Box>
-            <Grid className='landing-product' container spacing={2.5}>
+            <Grid className="landing-product" container spacing={2.5}>
               {feedItems.map((item, index) => (
-                <Grid item xs={12} sm={6} lg={4} key={index} className='landing-product__item'>
+                <Grid item xs={12} sm={6} lg={4} key={index} className="landing-product__item">
                   <FeedItemCard item={item} />
                 </Grid>
               ))}

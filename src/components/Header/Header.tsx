@@ -53,8 +53,12 @@ const Header = () => {
             </MenuList>
           </Box>
           <Box className="site-header__user">
-            <Link href={'/login'} className='button button--link'>Login</Link>
-            <Link href={'/onboarding'} className='button button--white'>Apply</Link>
+            <Link href={'/login'} className="button button--link">
+              Login
+            </Link>
+            <Link href={'/onboarding'} className="button button--white">
+              Apply
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>

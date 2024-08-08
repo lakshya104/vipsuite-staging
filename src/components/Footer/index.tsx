@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <Box className="site-footer" py={2}>
       <Container>
-        <Typography variant="body1" align='center'>
+        <Typography variant="body1" align="center">
           {'Copyright © '}
           <Link color="inherit" href="/">
             The VIP Suite
