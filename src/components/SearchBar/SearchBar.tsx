@@ -50,7 +50,7 @@ const SearchBar: FC<SearchBarProps> = ({
         onFocus={() => setIsMenuOpen(true)}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment className='search-box__icon' position="start">
               <SearchIcon color="action" />
             </InputAdornment>
           ),

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Box, Container, Link, Typography } from '@mui/material';
+import './Footer.scss';
 
 const Footer = () => {
   return (
-    <Box className="landing-footer">
-      <Container maxWidth="sm">
-        <Typography variant="body2" color="text.secondary">
+    <Box className="site-footer" py={2}>
+      <Container>
+        <Typography variant="body1" align='center'>
           {'Copyright © '}
           <Link color="inherit" href="/">
-            Your Website
+            The VIP Suite
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}

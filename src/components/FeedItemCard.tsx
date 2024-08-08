@@ -10,50 +10,27 @@ interface FeedItemCardProps {
 const FeedItemCard: React.FC<FeedItemCardProps> = ({ item }) => {
   return (
     <Card
+      className='landing-product__item-inner'
       sx={{
-        position: 'relative',
-        maxWidth: '350px',
-        mb: 3,
-        height: '440px',
         backgroundImage: `url(${item.imagePath})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
       }}
     >
       <FeedLikeIcon />
+      {item.byRequest && (
+        <Chip label="BY REQUEST ONLY"/>
+      )}
       <CardContent
-        sx={{
-          position: 'absolute',
-          color: '#fff',
-          bottom: 0,
-          left: 0,
-        }}
+        className='landing-product__item-content'
       >
-        {item.byRequest && (
-          <Chip
-            label="BY REQUEST ONLY"
-            sx={{ bgcolor: 'white', fontWeight: '600', fontSize: '8px', borderRadius: '3px', mb: 1 }}
-          />
-        )}
-        <Typography
-          variant="h5"
-          sx={{ fontSize: '20px', lineHeight: '24px', fontWeight: '600', color: '#FFFFF7' }}
-          component="div"
-        >
+        <Typography variant="h2">
           {item.heading}
         </Typography>
         {item.description && (
-          <Typography
-            variant="body2"
-            sx={{ fontSize: '12px', lineHeight: '24px', fontWeight: '400', color: '#FFFFF7' }}
-          >
+          <Typography variant="body2" mb={2}>
             {item.description}
           </Typography>
         )}
-        <Typography
-          variant="body2"
-          sx={{ mt: 1, fontSize: '12px', lineHeight: '24px', fontWeight: '400', color: '#FFFFF7' }}
-        >
+        <Typography variant="body2">
           {item.type.join(' | ')}
         </Typography>
       </CardContent>

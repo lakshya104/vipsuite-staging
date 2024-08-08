@@ -17,7 +17,7 @@ export default async function Home() {
         <HeroSection />
         <Box component="section" className="site-card">
           <Container>
-            <Grid container spacing={3}>
+            <Grid container spacing={2.5}>
               {eventCardData.map((event) => (
                 <Grid key={event.id} item xs={12} md={6}>
                   <EventCard title={event.title} description={event.description} />

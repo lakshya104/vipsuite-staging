@@ -1,0 +1,10 @@
+/*
+* Header style.
+*/
+
+@import '../../styles/mixins';
+
+.site-footer {
+  background-color: var(--color-textBlack);
+  color: var(--color-white);
+}

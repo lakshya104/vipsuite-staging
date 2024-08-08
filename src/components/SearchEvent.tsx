@@ -38,7 +38,7 @@ const SearchEvent: React.FC<SearchEventProps> = ({ searchParams }) => {
   };
 
   return (
-    <Box sx={{ pt: 2, mb: '30px' }}>
+    <Box mb={2.5}>
       <SearchBar
         searchTerm={searchTerm}
         placeholder="Search for anything..."
