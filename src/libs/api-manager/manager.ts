@@ -4,11 +4,14 @@ import { Endpoints } from './constants';
 import { Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
-import { get } from 'lodash';
+
+interface User {
+  token: string;
+}
 
 export const GetToken = async () => {
   const session = await auth();
-  const token = get(session, 'user.token', '');
+  const token = (session?.user as User)?.token;
   return token;
 };
 
