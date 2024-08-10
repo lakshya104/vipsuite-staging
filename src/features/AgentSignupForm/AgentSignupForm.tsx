@@ -12,8 +12,8 @@ import { AgentSignUpFormFields } from '@/data';
 import './AgentSignupForm.scss';
 import { AgentSignupSchema, AgentSignupValues, defaultValues } from './agentSignupTypes';
 import SelectBox from '@/components/SelectBox';
-import { signup } from '@/libs/api';
 import Toaster from '@/components/Toaster';
+import { SignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -55,7 +55,7 @@ const AgentSignupForm = () => {
       };
       startTransition(async () => {
         try {
-          const response = await signup(data);
+          const response = await SignUp(data);
           if (response && response.error) {
             setError(response.error);
             setToasterOpen(true);
