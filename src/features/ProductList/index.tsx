@@ -1,18 +1,35 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import ProductCard from '@/components/ProductCard';
 import './ProductList.scss';
-import { products } from '@/data';
+import { GetBrandProducts } from '@/libs/api-manager/manager';
+import { BrandProduct } from '@/interfaces/brand';
 
-const ProductList = () => {
+const ProductList = async ({ brandId }: { brandId: number }) => {
+  const id = brandId;
+  console.log({ id });
+  const brandProducts = await GetBrandProducts(12);
+
   return (
     <Box className="product-listing">
       <Grid container spacing={2.5}>
-        {products.map((product) => (
-          <Grid item xs={6} sm={4} key={product.id}>
-            <ProductCard data={product} />
+        {brandProducts.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography variant="h6" align="center">
+              No products available for this brand.
+            </Typography>
           </Grid>
-        ))}
+        ) : brandProducts.length < 1 ? (
+          <Grid item xs={12} container justifyContent="center">
+            <CircularProgress />
+          </Grid>
+        ) : (
+          brandProducts.map((product: BrandProduct) => (
+            <Grid item xs={6} sm={4} key={product.id}>
+              <ProductCard data={product} />
+            </Grid>
+          ))
+        )}
       </Grid>
     </Box>
   );

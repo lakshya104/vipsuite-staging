@@ -1,28 +1,19 @@
-'use client';
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, Typography } from '@mui/material';
-import Btn from '@/components/Button/CommonBtn';
-import { ProductDetail } from '@/interfaces/product';
+import { Box, Card, CardContent, Typography } from '@mui/material';
+import { BrandProduct } from '@/interfaces/brand';
+import Link from 'next/link';
+import Btn from '../Button/CommonBtn';
+import { truncateDescription } from '@/helpers/utils';
 
-interface ProductProps {
-  data: ProductDetail;
-}
-
-const ProductCard: React.FC<ProductProps> = ({ data }) => {
-  const { id, name, description, imageUrl, requestOnly } = data;
-  const router = useRouter();
-
-  const handleViewItemClick = (id: number) => {
-    router.push(`/products/${id}`);
-  };
-
+const ProductCard = ({ data }: { data: BrandProduct }) => {
+  const { id, name, short_description } = data;
+  const productDesctiption = truncateDescription(short_description, 18);
   return (
     <Card className="product-card">
-      <Image src={imageUrl} alt={name} height={768} width={768} />
+      <Image src="/img/product_1.jpg" alt={name} height={768} width={768} />
       <CardContent className="product-card__content">
-        {requestOnly && (
+        {false && (
           <Typography variant="overline" display="block" gutterBottom>
             Request Only
           </Typography>
@@ -30,13 +21,13 @@ const ProductCard: React.FC<ProductProps> = ({ data }) => {
         <Typography gutterBottom variant="h5" component="h3">
           {name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
+        <Box dangerouslySetInnerHTML={{ __html: productDesctiption }} />
       </CardContent>
-      <Btn look="dark-filled" width="100%" onClick={() => handleViewItemClick(id)}>
-        View Item
-      </Btn>
+      <Link href={`/products/${id}`}>
+        <Btn look="dark-filled" width="100%">
+          View Item
+        </Btn>
+      </Link>
     </Card>
   );
 };

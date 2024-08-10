@@ -9,7 +9,7 @@ import Opportunity from '@/components/Opportunity/Opportunity';
 import Testimonial from '@/components/Testimonial/Testimonial';
 import Footer from '@/components/Footer';
 
-export default async function Home() {
+export default async function Page() {
   return (
     <>
       <Header />

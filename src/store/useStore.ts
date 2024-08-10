@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Product } from '@/interfaces/product';
+import { BrandProductDetails } from '@/interfaces/brand';
 
 interface StoreState {
-  basket: Product[];
-  addProduct: (product: Product) => void;
+  basket: BrandProductDetails[];
+  addProduct: (product: BrandProductDetails) => void;
   removeProduct: (id: number) => void;
   clearBasket: () => void;
 }

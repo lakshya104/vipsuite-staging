@@ -16,8 +16,9 @@ const LoginForm = () => {
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
 
-  const dialogBoxContent = {
+  const reviewDialogBoxContent = {
     title: 'Thank You!',
     subTitle: 'Application in Review',
     description:
@@ -25,9 +26,19 @@ const LoginForm = () => {
     buttonText: 'Done',
     isCrossIcon: true,
   };
-
-  const handleDialogBoxDataChange = (open: boolean) => {
+  const rejectDialogBoxContent = {
+    title: 'Sorry!',
+    subTitle: 'Your Application was Rejected',
+    description:
+      'lorem ipsum dolor sit am lorem, sed diam lorem, sed diam lorem, sed diam lorem, sed diam lorem, sed diam lore lorem, sed diam lorem.',
+    buttonText: 'Done',
+    isCrossIcon: true,
+  };
+  const handleReviewDialogBoxDataChange = (open: boolean) => {
     setIsReviewDialogOpen(open);
+  };
+  const handleRejectDialogBoxDataChange = (open: boolean) => {
+    setIsRejectDialogOpen(open);
   };
 
   const {
@@ -48,11 +59,18 @@ const LoginForm = () => {
     startTransition(() => {
       login(values)
         .then((data) => {
-          if (data && data.error && data.error !== 'Error: Your account is not approved') {
-            setError(data?.error);
-            setToasterOpen(true);
-          } else if (data && data.error === 'Error: Your account is not approved') {
-            setIsReviewDialogOpen(true);
+          if (data && data.error) {
+            switch (data.error) {
+              case 'Error: Your account was rejected':
+                setIsRejectDialogOpen(true);
+                break;
+              case 'Error: Your account is not approved':
+                setIsReviewDialogOpen(true);
+                break;
+              default:
+                setError(data.error);
+                setToasterOpen(true);
+            }
           }
         })
         .catch((error) => {
@@ -99,8 +117,13 @@ const LoginForm = () => {
       </Typography>
       <DialogBox
         isDialogOpen={isReviewDialogOpen}
-        onDataChange={handleDialogBoxDataChange}
-        content={dialogBoxContent}
+        onDataChange={handleReviewDialogBoxDataChange}
+        content={reviewDialogBoxContent}
+      />
+      <DialogBox
+        isDialogOpen={isRejectDialogOpen}
+        onDataChange={handleRejectDialogBoxDataChange}
+        content={rejectDialogBoxContent}
       />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
     </Box>

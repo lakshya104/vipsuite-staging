@@ -30,7 +30,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
               <Grid item xs={12}>
                 <Box width="100%">
                   <Typography variant="h3" component="h2" mb={1}>
-                    {filterFeedItems.length} Results for {searchQuery}
+                    {filterFeedItems.length} Results for &quot;{searchQuery}&quot;
                   </Typography>
                 </Box>
                 <SearchFilterTabs searchQuery={searchQuery} />
@@ -38,7 +38,11 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
             </Grid>
             <Grid className="landing-product" container spacing={2.5}>
               {filterFeedItems.length < 1 ? (
-                <Typography variant="h2">No results found</Typography>
+                <Container>
+                  <Typography marginTop={5} variant="h2" textAlign="center">
+                    No results found
+                  </Typography>
+                </Container>
               ) : (
                 filterFeedItems.map((item, index) => (
                   <Grid item xs={12} sm={6} lg={4} key={index}>

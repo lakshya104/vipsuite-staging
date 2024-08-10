@@ -1,18 +1,60 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
 
-const bioData = [
-  { label: 'Date of Birth', value: '31 Jan 1990' },
-  { label: 'Born', value: 'London, United Kingdom' },
-  { label: 'Resides', value: 'London, United Kingdom' },
-  {
-    label: 'Interests',
-    value:
-      'Animals, Body Positivity, Dogs, Environment, Feminism, Foodie, Health, Music, Race Issues, Tennis, Theatre, Wrestling, Yoga',
-  },
-];
+interface ProfileDetails {
+  first_name: string;
+  last_name: string;
+  created_by: number;
+  created_by_type: string;
+  type_of_representation: string;
+  avg_engagement: string;
+  instagram_handle: string;
+  tiktok_handle: string;
+  known_for: string[];
+  event_contacts: {
+    [key: string]: string;
+  };
+  stylist_contacts: {
+    [key: string]: string;
+  };
+  gifting_contacts: {
+    [key: string]: string;
+  };
+  date_of_birth: string;
+  birth_place: string;
+  nationality: string;
+  ethnicity: string;
+  number_of_childs: string;
+  child_info: {
+    [key: string]: string;
+  }[];
+  pets: string;
+  home_post_code: string;
+  habits: string[];
+  sports_play: string;
+  other_sports: string;
+  sports_follow: string;
+  skills: string;
+  look_feel_of_socials: string;
+  interests: string[];
+  associated_brands: boolean;
+  secondary_email: string;
+  phone: string;
+}
+interface ProfileComponentProps {
+  profileDetails: ProfileDetails;
+}
 
-export const BioComponent = () => {
+export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+  const bioData = [
+    { label: 'Date of Birth', value: profileDetails?.date_of_birth || 'N/A' },
+    { label: 'Born', value: profileDetails?.birth_place || 'N/A' },
+    { label: 'Resides', value: profileDetails?.nationality || 'N/A' },
+    {
+      label: 'Interests',
+      value: profileDetails.interests.length > 0 ? profileDetails.interests.join(', ') : 'N/A',
+    },
+  ];
   return (
     <Grid container>
       {bioData.map((item, index) => (
@@ -35,14 +77,11 @@ export const BioComponent = () => {
   );
 };
 
-const socialData = [
-  { platform: 'Twitter', handle: '@example' },
-  { platform: 'Instagram', handle: '@example' },
-  { platform: 'LinkedIn', handle: 'example-linkedin' },
-  { platform: 'Facebook', handle: 'example-facebook' },
-];
-
-export const SocialComponent = () => {
+export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+  const socialData = [
+    { platform: 'Instagram', handle: profileDetails?.instagram_handle },
+    { platform: 'LinkedIn', handle: profileDetails?.tiktok_handle },
+  ];
   return (
     <Grid container>
       {socialData.map((item, index) => (
@@ -65,13 +104,12 @@ export const SocialComponent = () => {
   );
 };
 
-const contactData = [
-  { type: 'Email', value: 'example@example.com' },
-  { type: 'Phone', value: '+1234567890' },
-  { type: 'Address', value: '123 Example Street, London, UK' },
-];
-
-export const ContactsComponent = () => {
+export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+  const contactData = [
+    { type: 'Email', value: 'example@example.com' },
+    { type: 'Phone', value: profileDetails?.phone },
+    { type: 'Address', value: '123 Example Street, London, UK' },
+  ];
   return (
     <Grid container>
       {contactData.map((item, index) => (

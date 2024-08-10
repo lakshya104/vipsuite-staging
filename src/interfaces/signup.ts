@@ -9,10 +9,3 @@ export type SignUpRequestBody = {
   instagram_handle?: string;
   tiktok_handle?: string;
 };
-
-export type SignUpResponse = {
-  success: boolean;
-  message: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: any;
-};

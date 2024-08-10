@@ -13,7 +13,7 @@ import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
 import { SignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
-import { signup } from '@/libs/api';
+import { SignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -55,7 +55,7 @@ const VipSignupForm = () => {
       };
       startTransition(async () => {
         try {
-          const response = await signup(data);
+          const response = await SignUp(data);
           if (response && response.error) {
             setError(response.error);
             setToasterOpen(true);
@@ -104,7 +104,7 @@ const VipSignupForm = () => {
                       ? {
                           endAdornment: (
                             <InputAdornment position="end">
-                              <Button
+                              <Box
                                 sx={{
                                   p: 0,
                                   m: 0,
@@ -119,7 +119,7 @@ const VipSignupForm = () => {
                                 ) : (
                                   <RemoveRedEyeIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
                                 )}
-                              </Button>
+                              </Box>
                             </InputAdornment>
                           ),
                         }

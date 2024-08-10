@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { loginApi } from './libs/api';
+import { Login } from './libs/api-manager/manager';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
@@ -25,19 +25,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         let user = null;
-        const res = await loginApi({
+        const res = await Login({
           username: credentials.username,
           password: credentials.password,
         });
         user = res;
-        if (res && res.is_account_approved === '0') {
+        if (res && res.account_status !== 'approved') {
           throw new Error(res.message);
         }
         if (res && user) {
           return user;
-        }
-        if (!res.data) {
-          throw new Error(res.message);
         }
         return null;
       },

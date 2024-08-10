@@ -15,13 +15,13 @@ const BasketCard = () => {
         <>
           {basket.map((product) => (
             <Box className="basket-product__item" key={product.id}>
-              <Image src={product.imageUrl} alt={product.name} height={110} width={110} />
+              <Image src="/img/product_1.jpg" alt={product.name} height={110} width={110} />
               <Box className="product-info">
                 <Typography gutterBottom variant="h2">
-                  {product.category}
+                  {product.name}
                 </Typography>
                 <Typography variant="body1">{product.name}</Typography>
-                <Typography variant="body1">Size: {product.size}</Typography>
+                <Typography variant="body1">Size: {product?.attributes[0]?.name || 'Default'}</Typography>
               </Box>
               <DeleteOutlinedIcon onClick={() => removeProduct(product.id)} />
             </Box>

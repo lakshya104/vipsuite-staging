@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -7,20 +7,29 @@ interface SearchFilterTabsProps {
   searchQuery: string | false | string[] | undefined;
 }
 
+const tabs = ['all', 'newest', 'expiringSoon'];
+
 const SearchFilterTabs: React.FC<SearchFilterTabsProps> = ({ searchQuery }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tabs = useMemo(() => ['all', 'newest', 'expiringSoon'], []);
 
   const currentFilter = searchParams.get('filter') || 'all';
   const currentTabIndex = tabs.indexOf(currentFilter);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    const newFilter = tabs[newValue];
-    if (typeof searchQuery === 'string') {
-      router.push(`/home?name=${encodeURIComponent(searchQuery)}&filter=${newFilter}`);
-    }
-  };
+  const encodedSearchQuery = useMemo(
+    () => (typeof searchQuery === 'string' ? encodeURIComponent(searchQuery) : ''),
+    [searchQuery],
+  );
+
+  const handleChange = useCallback(
+    (event: React.SyntheticEvent, newValue: number) => {
+      const newFilter = tabs[newValue];
+      if (encodedSearchQuery) {
+        router.push(`/home?name=${encodedSearchQuery}&filter=${newFilter}`);
+      }
+    },
+    [router, encodedSearchQuery],
+  );
 
   return (
     <Box>
@@ -33,4 +42,4 @@ const SearchFilterTabs: React.FC<SearchFilterTabsProps> = ({ searchQuery }) => {
   );
 };
 
-export default SearchFilterTabs;
+export default React.memo(SearchFilterTabs);

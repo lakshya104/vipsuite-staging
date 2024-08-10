@@ -3,6 +3,8 @@ import { BioComponent, ContactsComponent, SocialComponent } from '@/components/P
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 import ProfilePageTabs from '@/components/ProfileTabs';
 import './profile.scss';
+import { GetProfile } from '@/libs/api-manager/manager';
+import { calculateAge } from '@/helpers/utils';
 
 interface SearchParams {
   [key: string]: string | string[];
@@ -12,18 +14,21 @@ interface PageProps {
   searchParams: SearchParams;
 }
 
-export default function Page({ searchParams }: PageProps) {
+export default async function Page({ searchParams }: PageProps) {
+  const profileDetails = await GetProfile();
+  const age = calculateAge(profileDetails.acf.date_of_birth);
+
   const section = searchParams?.section;
   const renderSection = () => {
     switch (section) {
       case 'bio':
-        return <BioComponent />;
+        return <BioComponent profileDetails={profileDetails.acf} />;
       case 'social':
-        return <SocialComponent />;
+        return <SocialComponent profileDetails={profileDetails.acf} />;
       case 'contacts':
-        return <ContactsComponent />;
+        return <ContactsComponent profileDetails={profileDetails.acf} />;
       default:
-        return <BioComponent />;
+        return <BioComponent profileDetails={profileDetails.acf} />;
     }
   };
 
@@ -38,10 +43,10 @@ export default function Page({ searchParams }: PageProps) {
           <Box className="user-profile__info" textAlign={'center'} mb={3}>
             <Avatar src="/img/aiavatar.png" alt="User Avtar image" className="user-profile__avtar" />
             <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
-              Sarah Jacobs
+              {profileDetails.name}
             </Typography>
             <Typography variant="body2" mb={2}>
-              Age 34 | Female | Married
+              Age {age} | Female | Married
             </Typography>
             <Button variant="text" size="small">
               Edit Profile

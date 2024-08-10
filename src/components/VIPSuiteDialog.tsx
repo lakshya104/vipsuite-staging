@@ -7,7 +7,7 @@ interface VIPSuiteDialogProps {
   isOpen: boolean;
   onClose: () => void;
   withLogo?: boolean;
-  buttonsArray: { href: string; text: string }[];
+  buttonsArray: { href?: string; text: string; onClick?: () => void }[];
   title?: string;
 }
 
@@ -42,6 +42,7 @@ const VIPSuiteDialog: React.FC<VIPSuiteDialogProps> = ({ isOpen, onClose, withLo
                 className="button  button--black"
                 LinkComponent={Link}
                 href={button.href}
+                onClick={button.onClick}
               >
                 {button.text}
               </Button>

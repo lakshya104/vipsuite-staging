@@ -7,23 +7,20 @@ import VIPSuiteDialog from '@/components/VIPSuiteDialog';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { ProductDetail } from '@/interfaces/product';
 import { useStore } from '@/store/useStore';
-
-const DialogBtns = [
-  { href: '/products', text: 'Continue Browsing' },
-  { href: '/basket', text: 'Go to Basket' },
-];
+import { BrandProductDetails } from '@/interfaces/brand';
+import { useRouter } from 'next/navigation';
 
 interface ItemRequestFormProps {
-  options: { value: string; label: string }[] | undefined;
-  data: ProductDetail;
+  options: { value: string; label: string }[] | undefined | null;
+  data: BrandProductDetails;
 }
 
 const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
   const addProduct = useStore((state) => state.addProduct);
   const [open, setOpen] = useState(false);
   const [basket, setBasket] = useState(data);
+  const router = useRouter();
   const {
     handleSubmit,
     control,
@@ -33,8 +30,17 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
     defaultValues: defaultValues,
   });
 
+  const DialogBtns = [
+    {
+      text: 'Continue Browsing',
+      onClick: () => {
+        router.back();
+      },
+    },
+    { href: '/basket', text: 'Go to Basket' },
+  ];
   const onSubmit = (size: ProductFormValues) => {
-    basket.size = size.size;
+    basket.attributes[0].name = size.size;
     setBasket(basket);
     addProduct(basket);
     setOpen(true);
@@ -43,15 +49,29 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="product-size">
-        <SelectBox
-          name={'size'}
-          control={control}
-          placeholder={'Select sizes...'}
-          options={options}
-          label={'Select sizes...'}
-          errors={errors}
-        />
-        <Btn look="dark-filled" width="100%" type="submit" fullWidth>
+        {options && (
+          <SelectBox
+            name={'size'}
+            control={control}
+            placeholder={'Select sizes...'}
+            options={options}
+            label={'Select sizes...'}
+            errors={errors}
+          />
+        )}
+        <Btn
+          look="dark-filled"
+          width="100%"
+          onClick={() => {
+            if (options === null) {
+              setBasket(basket);
+              addProduct(basket);
+              setOpen(true);
+            }
+          }}
+          type="submit"
+          fullWidth
+        >
           Request
         </Btn>
       </Box>

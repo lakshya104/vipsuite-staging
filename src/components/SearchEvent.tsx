@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState, useEffect } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { Box } from '@mui/material';
@@ -22,23 +22,24 @@ const SearchEvent: React.FC<SearchEventProps> = ({ searchParams }) => {
     }
   }, [searchParams, searchTerm, router]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  };
+  }, []);
 
-  const handleSearch = () => {
-    if (typeof searchTerm === 'string' && searchTerm.trim()) {
-      router.push(`/home?name=${encodeURIComponent(searchTerm)}&filter=all`);
+  const handleSearch = useCallback(() => {
+    const trimmedTerm = searchTerm?.trim();
+    if (trimmedTerm) {
+      router.push(`/home?name=${encodeURIComponent(trimmedTerm)}&filter=all`);
     }
-  };
+  }, [searchTerm, router]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setSearchTerm('');
     router.push('/home');
-  };
+  }, [router]);
 
   return (
-    <Box mb={2.5}>
+    <Box my={2.5}>
       <SearchBar
         searchTerm={searchTerm}
         placeholder="Search for anything..."
