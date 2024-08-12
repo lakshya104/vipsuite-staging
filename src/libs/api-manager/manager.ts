@@ -11,7 +11,7 @@ interface User {
 
 export const GetToken = async () => {
   const session = await auth();
-  const token = (session?.user as User)?.token;
+  const token = (session?.user as User).token;
   return token;
 };
 
@@ -43,9 +43,8 @@ export const Login = async (data: LoginFormValues) => {
   }
 };
 
-export const GetProfile = async () => {
+export const GetProfile = async (token: string) => {
   try {
-    const token = await GetToken();
     const response = await Instance.get(Endpoints.getProfile, {
       headers: {
         Authorization: `Bearer ${token}`,
