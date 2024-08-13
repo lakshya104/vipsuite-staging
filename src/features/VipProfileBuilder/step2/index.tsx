@@ -3,14 +3,25 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Typography, TextField } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { defaultValues, FormValues, vipStep2Schema } from './schema';
+import { FormValues, vipStep2Schema } from './schema';
 import { contacts } from '@/data';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
+import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
+import { UpdateProfile } from '@/libs/api-manager/manager';
+import { removeEmptyStrings } from '@/helpers/utils';
 
-const Step2Form = () => {
-  const router = useRouter();
+const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, token, id }) => {
+  // Populate default values based on existing profile detail data
+  const defaultValues: FormValues = {
+    eventsEmail: profileDetail.event_contacts?.email || '',
+    eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
+    stylistEmail: profileDetail.stylist_contacts?.email || '',
+    stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
+    giftingEmail: profileDetail.gifting_contacts?.email || '',
+    giftingSecondaryEmail: profileDetail.gifting_contacts?.secondary_email || '',
+  };
+
   const {
     register,
     handleSubmit,
@@ -20,9 +31,27 @@ const Step2Form = () => {
     defaultValues: defaultValues,
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Form data:', data);
-    router.push('/vip-profile-builder/step3');
+  const onSubmit = async (data: FormValues) => {
+    console.log('Step 2 data:', data);
+    // Update the profile detail with the form data
+    const updatedProfileDetail: ACF = {
+      ...profileDetail,
+      event_contacts: {
+        email: data.eventsEmail || '',
+        secondary_email: data.eventsSecondaryEmail || '',
+      },
+      stylist_contacts: {
+        email: data.stylistEmail || '',
+        secondary_email: data.stylistSecondaryEmail || '',
+      },
+      gifting_contacts: {
+        email: data.giftingEmail || '',
+        secondary_email: data.giftingSecondaryEmail || '',
+      },
+    };
+
+    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    onNext(updatedProfileDetail);
   };
 
   return (
@@ -62,7 +91,7 @@ const Step2Form = () => {
         </Box>
       ))}
 
-      <CustomStepper currentStep={2} totalSteps={5} />
+      <CustomStepper currentStep={2} totalSteps={5} onPrev={onPrev} />
     </Box>
   );
 };

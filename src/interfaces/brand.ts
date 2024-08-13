@@ -214,3 +214,19 @@ export interface BrandProductDetails {
     }[];
   };
 }
+
+export interface Brand {
+  id: number;
+  title: {
+    rendered: string;
+  };
+  acf?: {
+    associated_brand: number;
+    brand_image: number;
+    brand_name: string;
+    contact_name: string;
+    type_of_business: string;
+    short_description?: string;
+  };
+  'brand-category': string[];
+}

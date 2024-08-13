@@ -3,12 +3,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Typography, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
-import { interestsStep5 } from '@/data';
 import DialogBox from '@/components/Dialog/Dialog';
 import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
+import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
+import { removeEmptyStrings } from '@/helpers/utils';
+import { UpdateProfile } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -19,7 +21,17 @@ const dialogBoxContent = {
   isCrossIcon: true,
 };
 
-const Step5Form = () => {
+const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
+  profileBuilderOptions,
+  profileDetail,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  onNext,
+  onPrev,
+  token,
+  id,
+}) => {
+  const interestOptions = profileBuilderOptions.interests_options;
+  const interests = profileDetail.interests;
   const {
     register,
     handleSubmit,
@@ -29,7 +41,7 @@ const Step5Form = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(interestSchema),
     defaultValues: {
-      interests: [],
+      interests: interests,
     },
   });
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -47,8 +59,8 @@ const Step5Form = () => {
     setSearchTerm('');
   };
 
-  const filteredInterests = interestsStep5.filter((interest) =>
-    interest.label.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredInterests = interestOptions.filter((interest: string) =>
+    interest.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const watchInterests = watch('interests');
@@ -64,8 +76,15 @@ const Step5Form = () => {
     }
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log('Selected interests:', data.interests);
+    const updatedProfileDetail: ACF = {
+      ...profileDetail,
+      interests: data.interests,
+    };
+
+    console.log('updatedProfileDetail:', updatedProfileDetail);
+    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
     setIsDialogOpen(true);
   };
 
@@ -89,20 +108,20 @@ const Step5Form = () => {
         <FormGroup className="profile-builder__form-group">
           <Box className="profile-builder__form-row">
             {filteredInterests.length > 0 ? (
-              filteredInterests.map((interest) => (
+              filteredInterests.map((interest: string) => (
                 <FormControlLabel
-                  key={interest.value}
-                  checked={watchInterests.includes(interest.value)}
+                  key={interest}
+                  checked={watchInterests.includes(interest)}
                   control={
                     <Checkbox
-                      checked={watchInterests.includes(interest.value)}
-                      onClick={() => toggleInterest(interest.value)}
+                      checked={watchInterests.includes(interest)}
+                      onClick={() => toggleInterest(interest)}
                       {...register('interests')}
-                      value={interest.value}
-                      disabled={watchInterests.length >= maxSelection && !watchInterests.includes(interest.value)}
+                      value={interest}
+                      disabled={watchInterests.length >= maxSelection && !watchInterests.includes(interest)}
                     />
                   }
-                  label={interest.label}
+                  label={interest}
                 />
               ))
             ) : (
@@ -111,7 +130,7 @@ const Step5Form = () => {
           </Box>
         </FormGroup>
         {errors.interests && <Typography color="error">{errors.interests.message}</Typography>}
-        <CustomStepper currentStep={5} totalSteps={5} />
+        <CustomStepper currentStep={5} totalSteps={5} onPrev={onPrev} />
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
     </>

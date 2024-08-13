@@ -319,45 +319,6 @@ export const interestOptions = [
   { value: 'film_tv', label: 'Film & TV' },
 ];
 
-export const vipStep4formFields = [
-  {
-    name: 'interests',
-    label: 'Interests',
-    type: 'checkBox',
-    options: interestOptions,
-  },
-  {
-    name: 'sportsPlay',
-    label: 'Sports You Play',
-    type: 'select',
-    options: sportsPlayOptions,
-  },
-  {
-    name: 'sports',
-    label: 'Sports',
-    type: 'text',
-    placeholder: 'Other Sport',
-  },
-  {
-    name: 'sportsFollow',
-    label: 'Sports You Follow',
-    type: 'select',
-    options: sportsFollowOptions,
-  },
-  {
-    name: 'skills',
-    label: 'Skills',
-    type: 'select',
-    options: skillsOptions,
-  },
-  {
-    name: 'socialLook',
-    label: 'Look & feel of your socials',
-    type: 'select',
-    options: socialLookOptions,
-  },
-];
-
 export const contacts = [
   {
     section: 'Events',

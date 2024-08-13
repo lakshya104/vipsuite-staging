@@ -44,6 +44,7 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
@@ -54,7 +55,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = (values: LoginFormValues) => {
-    console.log({ values });
     setError('');
     startTransition(() => {
       login(values)
@@ -63,9 +63,11 @@ const LoginForm = () => {
             switch (data.error) {
               case 'Error: Your account was rejected':
                 setIsRejectDialogOpen(true);
+                reset();
                 break;
               case 'Error: Your account is not approved':
                 setIsReviewDialogOpen(true);
+                reset();
                 break;
               default:
                 setError(data.error);

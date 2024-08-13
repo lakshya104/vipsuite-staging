@@ -20,3 +20,23 @@ export function truncateDescription(description: string, maxLength: number): str
   }
   return words.slice(0, maxLength).join(' ') + '...';
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function removeEmptyStrings(obj: any): any {
+  // Iterate over the keys in the object
+  for (const key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      // Recursively apply the function to nested objects
+      obj[key] = removeEmptyStrings(obj[key]);
+
+      // If the nested object becomes empty, delete the key
+      if (Object.keys(obj[key]).length === 0) {
+        delete obj[key];
+      }
+    } else if (obj[key] === '') {
+      // If the value is an empty string, delete the key
+      delete obj[key];
+    }
+  }
+  return obj;
+}

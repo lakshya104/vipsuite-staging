@@ -21,9 +21,9 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label }: FormDat
           <DatePicker
             className="date-picker"
             label={label}
-            format="DD/MM/YYYY"
+            format="YYYY-MM-DD"
             value={value ? dayjs(value as string) : null}
-            onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : '')}
+            onChange={(newValue) => onChange(newValue ? newValue.toISOString() : '')}
             slotProps={{
               textField: {
                 error: !!error,

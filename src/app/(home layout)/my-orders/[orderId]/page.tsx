@@ -3,8 +3,8 @@ import Link from 'next/link';
 import React from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Image from 'next/image';
-import OrderFeedbackForm from '@/features/OrderFeedbackForm';
 import '../order.scss';
+import FeedbackForm from '@/features/FeedbackForm';
 
 export default function OrderPage({ params }: { params: { orderId: number } }) {
   const orderId = params['orderId'];
@@ -41,7 +41,7 @@ export default function OrderPage({ params }: { params: { orderId: number } }) {
             </Box>
           ))}
         </Box>
-        <OrderFeedbackForm />
+        <FeedbackForm type="order" />
       </Container>
     </Box>
   );

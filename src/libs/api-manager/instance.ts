@@ -1,10 +1,28 @@
 import axios from 'axios';
 
 const Instance = axios.create({
-  baseURL: process.env.BASE_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-export { Instance };
+const FetchInstance = async (url: string, options: RequestInit = {}) => {
+  const baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
+  const response = await fetch(`${baseURL}${url}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'An error occurred');
+  }
+
+  return response.json();
+};
+
+export { Instance, FetchInstance };

@@ -43,7 +43,9 @@
       font-family: var(--font-family);
       text-align: center;
     }
-
+    h2 {
+      margin-bottom: 40px;
+    }
     &-links {
       flex-direction: column;
       gap: rem(16);

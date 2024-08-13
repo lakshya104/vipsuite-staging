@@ -9,3 +9,11 @@ export type SignUpRequestBody = {
   instagram_handle?: string;
   tiktok_handle?: string;
 };
+
+export interface SignupContent {
+  vip_intro_copy: string;
+  agent_intro_copy: string;
+  brand_intro_copy: string;
+  representation_options: string[];
+  business_options: string[];
+}

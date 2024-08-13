@@ -3,38 +3,109 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Box, Typography, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { vipStep4formFields } from '@/data';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
-import { useRouter } from 'next/navigation';
-import { defaultValues, formSchema, Step3FormValues } from './schema';
+import { formSchema, Step4FormValues } from './schema';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
+import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
+import { UpdateProfile } from '@/libs/api-manager/manager';
+import { removeEmptyStrings } from '@/helpers/utils';
 
-type FormFieldNames =
-  | 'interests'
-  | 'sportsPlay'
-  | 'sports'
-  | 'sportsFollow'
-  | 'skills'
-  | 'socialLook'
-  | `interests.${number}`;
+type FormFieldNames = 'interests' | 'sportsPlay' | 'sports' | 'sportsFollow' | 'skills' | 'socialLook';
 
-const Step4Form = () => {
-  const router = useRouter();
+const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
+  profileBuilderOptions,
+  profileDetail,
+  onNext,
+  onPrev,
+  token,
+  id,
+}) => {
+  // Map options from profileBuilderOptions
+  const {
+    habits_options = [],
+    sports_play_options = [],
+    sports_follow_options = [],
+    skills_options = [],
+    look_feel_of_socials_options = [],
+  } = profileBuilderOptions;
+
+  const vipStep4formFields = [
+    {
+      name: 'habits',
+      label: 'Habits',
+      type: 'checkBox',
+      options: habits_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'sportsPlay',
+      label: 'Sports You Play',
+      type: 'select',
+      options: sports_play_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'sports',
+      label: 'Sports',
+      type: 'text',
+      placeholder: 'Other Sport',
+    },
+    {
+      name: 'sportsFollow',
+      label: 'Sports You Follow',
+      type: 'select',
+      options: sports_follow_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'skills',
+      label: 'Skills',
+      type: 'select',
+      options: skills_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'socialLook',
+      label: 'Look & feel of your socials',
+      type: 'select',
+      options: look_feel_of_socials_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+  ];
+
+  // Default values populated from profileDetail
+  const defaultValues: Step4FormValues = {
+    habits: profileDetail.habits || [],
+    sportsPlay: profileDetail.sports_play || '',
+    sports: profileDetail.other_sports || '',
+    sportsFollow: profileDetail.sports_follow || '',
+    skills: profileDetail.skills || '',
+    socialLook: profileDetail.look_feel_of_socials || '',
+  };
+
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Step3FormValues>({
+  } = useForm<Step4FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
 
-  const onSubmit = (data: Step3FormValues) => {
+  const onSubmit = async (data: Step4FormValues) => {
     console.log('Form data:', data);
-    router.push('/vip-profile-builder/step5');
+
+    const updatedProfileDetail: ACF = {
+      ...profileDetail,
+      habits: data.habits,
+      sports_play: data.sportsPlay,
+      other_sports: data.sports,
+      sports_follow: data.sportsFollow,
+      skills: data.skills,
+      look_feel_of_socials: data.socialLook,
+    };
+
+    console.log('updatedProfileDetail:', updatedProfileDetail);
+    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    onNext(updatedProfileDetail);
   };
 
   return (
@@ -53,7 +124,7 @@ const Step4Form = () => {
                   options.map((option: { value: string; label: string }) => (
                     <Box key={option.value}>
                       <Controller
-                        name="interests"
+                        name={name as FormFieldNames}
                         control={control}
                         render={({ field }) => (
                           <FormControlLabel
@@ -61,12 +132,11 @@ const Step4Form = () => {
                               <Checkbox
                                 size="medium"
                                 {...field}
-                                checked={field.value && field.value.includes(option.value)}
+                                checked={field.value.includes(option.value)}
                                 onChange={() => {
-                                  const newValue =
-                                    field.value && field.value.includes(option.value)
-                                      ? field.value.filter((value: string) => value !== option.value)
-                                      : [...(field.value || []), option.value];
+                                  const newValue = field.value.includes(option.value)
+                                    ? field.value.filter((value: string) => value !== option.value)
+                                    : [...field.value, option.value];
                                   field.onChange(newValue);
                                 }}
                               />
@@ -101,7 +171,7 @@ const Step4Form = () => {
         </Box>
       ))}
 
-      <CustomStepper currentStep={4} totalSteps={5} />
+      <CustomStepper currentStep={4} totalSteps={5} onPrev={onPrev} />
     </Box>
   );
 };

@@ -3,101 +3,145 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { vipStep3formFields } from '@/data';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
-import { useRouter } from 'next/navigation';
-import { defaultValues, formSchema, Step3FormValues } from './schema';
+import { formSchema, Step3FormValues } from './schema';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
+import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
+import { removeEmptyStrings } from '@/helpers/utils';
+import { UpdateProfile } from '@/libs/api-manager/manager';
 
 interface FormField {
-  name: string;
+  name: keyof Step3FormValues;
   label: string;
-  type: string;
-  placeholder?: string | undefined;
-  options?: undefined | { value: string; label: string }[];
+  type: 'select' | 'date' | 'text';
+  placeholder?: string;
+  options?: { value: string; label: string }[];
 }
 
-const Step3Form = () => {
-  const router = useRouter();
+const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
+  profileBuilderOptions,
+  profileDetail,
+  onNext,
+  onPrev,
+  token,
+  id,
+}) => {
+  // Map options from profileBuilderOptions
+  const {
+    nationality_options = [],
+    ethnicity_options = [],
+    number_of_childs_options = ['0', '1', '2', '3', '4', '5+'], // Assuming if not provided
+    gender = [
+      { value: 'male', label: 'Male' },
+      { value: 'female', label: 'Female' },
+    ],
+  } = profileBuilderOptions;
+
+  // Define form fields with options
+  const vipStep3formFields: FormField[] = [
+    {
+      name: 'dateOfBirth',
+      label: 'Date of Birth',
+      type: 'date',
+      placeholder: 'Date of Birth',
+    },
+    {
+      name: 'birthplace',
+      label: 'Birthplace',
+      type: 'text',
+      placeholder: 'Birthplace',
+    },
+    {
+      name: 'nationality',
+      label: 'Nationality',
+      type: 'select',
+      options: nationality_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'ethnicity',
+      label: 'Ethnicity',
+      type: 'select',
+      options: ethnicity_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'numberOfChildren',
+      label: 'Number of Children',
+      type: 'select',
+      options: number_of_childs_options.map((opt: string) => ({ value: opt, label: opt })),
+    },
+    {
+      name: 'ageOfChild',
+      label: 'Age of Child',
+      type: 'date',
+    },
+    {
+      name: 'pets',
+      label: 'Pets',
+      type: 'text',
+      placeholder: 'Pets',
+    },
+    {
+      name: 'homePostcode',
+      label: 'Home Postcode',
+      type: 'text',
+      placeholder: 'Home Postcode',
+    },
+  ];
+
+  // Default values populated from profileDetail
+  const defaultValues: Step3FormValues = {
+    dateOfBirth: profileDetail.date_of_birth || '',
+    birthplace: profileDetail.birth_place || '',
+    nationality: profileDetail.nationality || '',
+    ethnicity: profileDetail.ethnicity || '',
+    numberOfChildren: profileDetail.number_of_childs || '',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ageOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: any) => child.dob) : [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    genderOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: any) => child.gender) : [],
+    pets: profileDetail.pets || '',
+    homePostcode: profileDetail.home_post_code || '',
+  };
+
   const {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm<Step3FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
 
-  const onSubmit = (data: Step3FormValues) => {
+  const onSubmit = async (data: Step3FormValues) => {
     console.log('Form data:', data);
-    router.push('/vip-profile-builder/step4');
+
+    // Process the form data here
+    const updatedProfileDetail: ACF = {
+      ...profileDetail,
+      date_of_birth: data.dateOfBirth,
+      birth_place: data.birthplace,
+      nationality: data.nationality,
+      ethnicity: data.ethnicity,
+      number_of_childs: data.numberOfChildren,
+      pets: data.pets,
+      home_post_code: data.homePostcode,
+      child_info: data.ageOfChild?.map((dob, index) => ({
+        dob: dob,
+        gender: data.genderOfChild?.[index],
+      })),
+    };
+
+    console.log('updatedProfileDetail:', updatedProfileDetail);
+    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    onNext(updatedProfileDetail);
   };
 
-  const renderFormField = ({ name, label, type, options, placeholder }: FormField) => {
-    switch (type) {
-      case 'select':
-        return (
-          <SelectBox
-            name={
-              name as
-                | 'dateOfBirth'
-                | 'birthplace'
-                | 'nationality'
-                | 'ethnicity'
-                | 'numberOfChildren'
-                | 'ageOfChild'
-                | 'pets'
-                | 'homePostcode'
-            }
-            control={control}
-            placeholder={placeholder}
-            options={options}
-            label={label}
-            errors={errors}
-          />
-        );
-      case 'date':
-        return (
-          <FormDatePicker
-            name={
-              name as
-                | 'dateOfBirth'
-                | 'birthplace'
-                | 'nationality'
-                | 'ethnicity'
-                | 'numberOfChildren'
-                | 'ageOfChild'
-                | 'pets'
-                | 'homePostcode'
-            }
-            control={control}
-            label={label}
-          />
-        );
-      default:
-        return (
-          <InputTextFormField
-            name={
-              name as
-                | 'dateOfBirth'
-                | 'birthplace'
-                | 'nationality'
-                | 'ethnicity'
-                | 'numberOfChildren'
-                | 'ageOfChild'
-                | 'pets'
-                | 'homePostcode'
-            }
-            placeholder={placeholder}
-            control={control}
-            errors={errors}
-          />
-        );
-    }
-  };
+  // Watch number of children to dynamically show age and gender fields
+  const numberOfChildren = watch('numberOfChildren');
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
@@ -106,23 +150,77 @@ const Step3Form = () => {
           Your Details
         </Typography>
       </Box>
-      {vipStep3formFields.map((field) => (
-        <Box key={field.name} width="100%">
-          {renderFormField(field)}
-          {field.name === 'pets' && !errors[field.name] && (
-            <Box className="input-text">
-              <Typography>Separate with commas</Typography>
-            </Box>
-          )}
-          {field.name === 'homePostcode' && !errors[field.name] && (
-            <Box className="input-text">
-              <Typography>You can enter the first part only e.g. EC1</Typography>
-            </Box>
-          )}
-        </Box>
-      ))}
+      {vipStep3formFields.map((field) => {
+        // Conditionally render ageOfChild and genderOfChild fields based on numberOfChildren
+        if (field.name === 'ageOfChild') {
+          const numChildren = parseInt(numberOfChildren || '0', 10);
+          if (numChildren > 0) {
+            return Array.from({ length: numChildren }).map((_, index) => (
+              <React.Fragment key={`${field.name}-${index}`}>
+                <Box width="100%">
+                  <FormDatePicker
+                    name={`ageOfChild.${index}` as const}
+                    control={control}
+                    label={`Child ${index + 1} Date of Birth`}
+                    errors={errors}
+                  />
+                </Box>
+                <Box width="100%">
+                  <SelectBox
+                    name={`genderOfChild.${index}` as const}
+                    control={control}
+                    label={`Child ${index + 1} Gender`}
+                    options={gender}
+                    errors={errors}
+                  />
+                </Box>
+              </React.Fragment>
+            ));
+          }
+          return null;
+        }
 
-      <CustomStepper currentStep={3} totalSteps={5} />
+        const commonProps = {
+          name: field.name,
+          control,
+          label: field.label,
+          errors,
+        };
+
+        switch (field.type) {
+          case 'select':
+            return (
+              <Box key={field.name} width="100%">
+                <SelectBox {...commonProps} options={field.options || []} placeholder={field.placeholder} />
+              </Box>
+            );
+          case 'date':
+            return (
+              <Box key={field.name} width="100%">
+                <FormDatePicker {...commonProps} />
+              </Box>
+            );
+          case 'text':
+          default:
+            return (
+              <Box key={field.name} width="100%">
+                <InputTextFormField {...commonProps} placeholder={field.placeholder} />
+                {field.name === 'pets' && !errors[field.name] && (
+                  <Box className="input-text">
+                    <Typography>Separate with commas</Typography>
+                  </Box>
+                )}
+                {field.name === 'homePostcode' && !errors[field.name] && (
+                  <Box className="input-text">
+                    <Typography>You can enter the first part only e.g. EC1</Typography>
+                  </Box>
+                )}
+              </Box>
+            );
+        }
+      })}
+
+      <CustomStepper currentStep={3} totalSteps={5} onPrev={onPrev} />
     </Box>
   );
 };

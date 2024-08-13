@@ -1,10 +1,11 @@
 import React from 'react';
 import { BioComponent, ContactsComponent, SocialComponent } from '@/components/ProfileComponents';
-import { Avatar, Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import './profile.scss';
 import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 import { calculateAge } from '@/helpers/utils';
+import Image from 'next/image';
 
 interface SearchParams {
   [key: string]: string | string[];
@@ -42,7 +43,13 @@ export default async function Page({ searchParams }: PageProps) {
           </Typography>
 
           <Box className="user-profile__info" textAlign={'center'} mb={3}>
-            <Avatar src="/img/aiavatar.png" alt="User Avtar image" className="user-profile__avtar" />
+            <Image
+              src="/img/aiavatar.png"
+              width={150}
+              height={150}
+              alt="User Avtar image"
+              style={{ borderRadius: '50%', marginTop: '10px' }}
+            />
             <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
               {profileDetails?.name}
             </Typography>

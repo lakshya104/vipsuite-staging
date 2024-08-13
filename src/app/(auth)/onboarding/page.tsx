@@ -12,9 +12,6 @@ const Onboarding = () => {
           <Image alt="VipLogo" src="/VIPSLogo.png" width={300} height={60} style={{ objectFit: 'contain' }} priority />
         </Box>
         <Typography variant="h2">Apply as</Typography>
-        <Typography component="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
-        </Typography>
         <Box className="onboarding__page-links">
           <Link href="/signup/vip" className="onboarding__link" passHref>
             VIP

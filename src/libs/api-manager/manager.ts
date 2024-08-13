@@ -1,18 +1,25 @@
 import axios from 'axios';
-import { SignUpRequestBody } from '@/interfaces/signup';
+import { SignUpRequestBody, UserProfile } from '@/interfaces';
 import { Endpoints } from './constants';
-import { Instance } from './instance';
+import { FetchInstance, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 
 interface User {
   token: string;
+  vip_profile_id: number;
 }
 
 export const GetToken = async () => {
   const session = await auth();
   const token = (session?.user as User).token;
   return token;
+};
+
+export const GetLoginUserId = async () => {
+  const session = await auth();
+  const id = (session?.user as User).vip_profile_id;
+  return id;
 };
 
 export const SignUp = async (formData: SignUpRequestBody) => {
@@ -113,22 +120,68 @@ export const GetBrandProducts = async (id: number) => {
   }
 };
 
+// export const GetBrandProductDetail = async (id: number) => {
+//   try {
+//     const token = await GetToken();
+//     const response = await Instance.get(`${Endpoints.getBrandProductDetails}/${id}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error during fetching brand product details:', error);
+//     if (axios.isAxiosError(error)) {
+//       console.error(error);
+//       const errorMessage = error.response?.data?.message || 'An error occurred during fetching brand product details';
+//       throw new Error(errorMessage);
+//     }
+//     throw new Error('An unexpected error occurred');
+//   }
+// };
+
 export const GetBrandProductDetail = async (id: number) => {
+  const token = await GetToken();
+  return await FetchInstance(`${Endpoints.getBrandProductDetails}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetSignupContent = async () => {
+  return await FetchInstance(Endpoints.getSignupContent);
+};
+
+export const GetVipEvents = async () => {
+  const token = await GetToken();
+  return await FetchInstance(Endpoints.getVipEvents, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetProfileBuilderContent = async () => {
+  return await FetchInstance(Endpoints.getProfileBuilderContent);
+};
+
+export const UpdateProfile = async (id: number, token: string, profile: UserProfile) => {
   try {
-    const token = await GetToken();
-    const response = await Instance.get(`${Endpoints.getBrandProductDetails}/${id}`, {
+    console.log('API call for update profile------', id, token, profile);
+    const response = await Instance.post(`${Endpoints.updateProfile}/${id}`, profile, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log('response-----------------', response);
     return response.data;
   } catch (error) {
-    console.error('Error during fetching brand product details:', error);
+    console.error('Error during update profile:', error);
+
     if (axios.isAxiosError(error)) {
-      console.error(error);
-      const errorMessage = error.response?.data?.message || 'An error occurred during fetching brand product details';
-      throw new Error(errorMessage);
+      const errorMessage = error.response?.data?.message || 'An error occurred during update profile';
+      throw errorMessage;
     }
-    throw new Error('An unexpected error occurred');
   }
 };

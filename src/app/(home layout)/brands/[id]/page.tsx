@@ -1,11 +1,13 @@
-import React from 'react';
-import { Box, Button, Card, Container, Typography } from '@mui/material';
+import React, { Suspense } from 'react';
+import { Box, Card, Container, Typography } from '@mui/material';
 import { GetBrandDetails } from '@/libs/api-manager/manager';
 import FeedLikeIcon from '@/components/FeedLikeIcon';
 import '../Brand.scss';
 import ReferCard from '@/components/ReferCard';
 import ProductList from '@/features/ProductList';
 import { BrandDetails } from '@/interfaces/brand';
+import RequestItemFormButton from '@/components/RequestItemFormButton';
+import CustomLoader from '@/components/CustomLoader';
 
 interface Params {
   id: string;
@@ -31,15 +33,15 @@ export default async function Page({ params }: PageProps) {
           text="Download the latest Lookbook from Boda Skins to view the whole collection"
           href="/"
         />
-        <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
-          <Button className="button">Request Items from Lookbook</Button>
-        </Box>
+        <RequestItemFormButton />
         <Box className="product-list__page">
           <Container>
             <Typography variant="h2" gutterBottom>
               Products
             </Typography>
-            <ProductList brandId={brandDetails.id} />
+            <Suspense fallback={<CustomLoader />}>
+              <ProductList brandId={brandDetails.id} />
+            </Suspense>
           </Container>
         </Box>
       </Container>

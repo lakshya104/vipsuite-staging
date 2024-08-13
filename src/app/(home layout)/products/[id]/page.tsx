@@ -16,8 +16,6 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const brandProductDetails: BrandProductDetails = await GetBrandProductDetail(parseInt(params.id));
-  console.log(brandProductDetails.type);
-
   if (!brandProductDetails) {
     return (
       <Box className="product-details__page">

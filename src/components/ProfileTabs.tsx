@@ -12,7 +12,7 @@ const TABS = [
 const ProfileTabs: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     router.push(`/profile?section=${TABS[newValue].section}`);
   };
@@ -22,12 +22,7 @@ const ProfileTabs: React.FC = () => {
 
   return (
     <Box>
-      <Tabs
-        value={currentTabIndex}
-        onChange={handleChange}
-        aria-label="profile tabs"
-        className="user-profile__tabs"
-      >
+      <Tabs value={currentTabIndex} onChange={handleChange} aria-label="profile tabs" className="user-profile__tabs">
         {TABS.map((tab) => (
           <Tab key={tab.section} label={tab.label} />
         ))}

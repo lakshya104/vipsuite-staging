@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useTransition } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import InputForm from '../../components/InputForm/InputForm';
@@ -26,11 +26,11 @@ const dialogBoxContent = {
 
 const VipSignupForm = () => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const handleDialogBoxDataChange = (open: boolean) => {
     setIsDialogOpen(open);
@@ -40,6 +40,7 @@ const VipSignupForm = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<SignUpRequestBody>({
     resolver: zodResolver(VipSignupSchema),
@@ -47,27 +48,25 @@ const VipSignupForm = () => {
   });
 
   const onSubmit = async (formData: SignUpRequestBody) => {
+    setIsPending(true);
     setError('');
     try {
       const data = {
         ...formData,
         user_type: 'vip',
       };
-      startTransition(async () => {
-        try {
-          const response = await SignUp(data);
-          if (response && response.error) {
-            setError(response.error);
-            setToasterOpen(true);
-          } else {
-            setIsDialogOpen(true);
-          }
-        } catch (error) {
-          handleError(error);
-        }
-      });
+      const response = await SignUp(data);
+      setIsPending(false);
+      if (response?.error) {
+        setError(response.error);
+        setToasterOpen(true);
+      } else {
+        setIsDialogOpen(true);
+        reset();
+      }
     } catch (error) {
       handleError(error);
+      setIsPending(false);
     }
   };
 
