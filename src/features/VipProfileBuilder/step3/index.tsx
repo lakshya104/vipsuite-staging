@@ -37,10 +37,10 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     nationality_options = [],
     ethnicity_options = [],
     number_of_childs_options = ['0', '1', '2', '3', '4', '5+'], // Assuming if not provided
-    gender = [
-      { value: 'male', label: 'Male' },
-      { value: 'female', label: 'Female' },
-    ],
+    // gender = [
+    //   { value: 'male', label: 'Male' },
+    //   { value: 'female', label: 'Female' },
+    // ],
   } = profileBuilderOptions;
 
   // Define form fields with options
@@ -113,7 +113,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     handleSubmit,
     control,
     formState: { errors },
-    watch,
+    // watch,
   } = useForm<Step3FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
@@ -164,7 +164,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     return <CustomLoader />;
   }
   // Watch number of children to dynamically show age and gender fields
-  const numberOfChildren = watch('numberOfChildren');
+  // const numberOfChildren = watch('numberOfChildren');
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
