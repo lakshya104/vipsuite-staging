@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Typography, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { Box, Typography, Checkbox, FormGroup, FormControlLabel, CircularProgress, Backdrop } from '@mui/material';
 import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
@@ -10,7 +10,6 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
-import CustomLoader from '@/components/CustomLoader';
 
 const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
@@ -22,7 +21,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
 }) => {
   const knownForOptions = profileBuilderOptions?.known_for_options || [];
   const knownFor = profileDetail.known_for || [];
-
   const {
     register,
     handleSubmit,
@@ -85,9 +83,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
     onNext(updatedProfileDetail);
     setIsLoading(false);
   };
-  if (isLoading) {
-    return <CustomLoader />;
-  }
 
   return (
     <Box
@@ -140,6 +135,9 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
         </Typography>
       )}
       <CustomStepper currentStep={1} totalSteps={5} onPrev={onPrev} />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Box, Typography, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
+import { Box, Typography, FormGroup, FormControlLabel, Checkbox, CircularProgress, Backdrop } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import _ from 'lodash';
 import SelectBox from '@/components/SelectBox';
@@ -13,7 +13,6 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
-import CustomLoader from '@/components/CustomLoader';
 
 type FormFieldNames =
   | 'sportsPlay'
@@ -139,9 +138,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     onNext(updatedProfileDetail);
     setIsLoading(false);
   };
-  if (isLoading) {
-    return <CustomLoader />;
-  }
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
@@ -200,8 +196,10 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           )}
         </Box>
       ))}
-
       <CustomStepper currentStep={4} totalSteps={5} onPrev={onPrev} />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

@@ -27,8 +27,7 @@ export const login = async (values: LoginFormValues) => {
           break;
         default:
           errorMessage = String(error);
-          console.log({ errorMessage });
-          match = errorMessage.match(/Invalid email or password\./) || errorMessage.match(/Invalid user credentials\./);
+          match = errorMessage.match(/Invalid (email or password|user credentials)\./);
           errorMessage = match ? match[0] : String(error.cause?.err);
       }
       return { error: errorMessage };

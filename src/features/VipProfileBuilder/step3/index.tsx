@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
@@ -12,7 +12,6 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { removeEmptyStrings } from '@/helpers/utils';
 import { UpdateProfile } from '@/libs/api-manager/manager';
-import CustomLoader from '@/components/CustomLoader';
 
 interface FormField {
   name: keyof Step3FormValues;
@@ -37,10 +36,10 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     nationality_options = [],
     ethnicity_options = [],
     number_of_childs_options = ['0', '1', '2', '3', '4', '5+'], // Assuming if not provided
-    // gender = [
-    //   { value: 'male', label: 'Male' },
-    //   { value: 'female', label: 'Female' },
-    // ],
+    gender = [
+      { value: 'male', label: 'Male' },
+      { value: 'female', label: 'Female' },
+    ],
   } = profileBuilderOptions;
 
   // Define form fields with options
@@ -113,7 +112,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     handleSubmit,
     control,
     formState: { errors },
-    // watch,
+    watch,
   } = useForm<Step3FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
@@ -160,11 +159,8 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     setIsLoading(false);
   };
 
-  if (isLoading) {
-    return <CustomLoader />;
-  }
   // Watch number of children to dynamically show age and gender fields
-  // const numberOfChildren = watch('numberOfChildren');
+  const numberOfChildren = watch('numberOfChildren');
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
@@ -242,8 +238,10 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
             );
         }
       })}
-
       <CustomStepper currentStep={3} totalSteps={5} onPrev={onPrev} />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

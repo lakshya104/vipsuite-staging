@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Typography, TextField } from '@mui/material';
+import { Box, Typography, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormValues, vipStep2Schema } from './schema';
 import { contacts } from '@/data';
@@ -10,7 +10,6 @@ import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
-import CustomLoader from '@/components/CustomLoader';
 
 const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, token, id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,9 +74,6 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     setIsLoading(false);
   };
 
-  if (isLoading) {
-    return <CustomLoader />;
-  }
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
@@ -114,6 +110,9 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
         </Box>
       ))}
       <CustomStepper currentStep={2} totalSteps={5} onPrev={onPrev} />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };
