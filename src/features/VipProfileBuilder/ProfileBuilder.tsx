@@ -31,61 +31,78 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
   if (!profileBuilderOptions) {
     return <Box>Loading....</Box>;
   }
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <Step1Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+          />
+        );
+      case 2:
+        return (
+          <Step2Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+          />
+        );
+      case 3:
+        return (
+          <Step3Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+          />
+        );
+      case 4:
+        return (
+          <Step4Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+          />
+        );
+      case 5:
+        return (
+          <Step5Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+          />
+        );
+      default:
+        return (
+          <Step1Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+          />
+        );
+    }
+  };
 
-  return (
-    <>
-      {step === 1 && (
-        <Step1Form
-          profileBuilderOptions={profileBuilderOptions}
-          profileDetail={profileDetail}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          token={token}
-          id={id}
-        />
-      )}
-      {step === 2 && (
-        <Step2Form
-          profileBuilderOptions={profileBuilderOptions}
-          profileDetail={profileDetail}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          token={token}
-          id={id}
-        />
-      )}
-      {step === 3 && (
-        <Step3Form
-          profileBuilderOptions={profileBuilderOptions}
-          profileDetail={profileDetail}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          token={token}
-          id={id}
-        />
-      )}
-      {step === 4 && (
-        <Step4Form
-          profileBuilderOptions={profileBuilderOptions}
-          profileDetail={profileDetail}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          token={token}
-          id={id}
-        />
-      )}
-      {step === 5 && (
-        <Step5Form
-          profileBuilderOptions={profileBuilderOptions}
-          profileDetail={profileDetail}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          token={token}
-          id={id}
-        />
-      )}
-    </>
-  );
+  return <>{renderStep()}</>;
 };
 
 export default ProfileBuilder;

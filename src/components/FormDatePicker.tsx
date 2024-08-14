@@ -19,6 +19,7 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label }: FormDat
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            disableFuture
             className="date-picker"
             label={label}
             format="YYYY-MM-DD"

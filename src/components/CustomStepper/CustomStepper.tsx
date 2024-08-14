@@ -17,7 +17,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({ currentStep, totalSteps, 
 
   return (
     <Box className="custom-stepper">
-      <IconButton onClick={onPrevious}>
+      <IconButton sx={{ visibility: currentStep === 1 ? 'hidden' : 'visible' }} onClick={onPrevious}>
         <ArrowBackIcon />
       </IconButton>
       <Typography variant="body1">

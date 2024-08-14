@@ -20,15 +20,6 @@
       background-color: var(--color-white);
       color: var(--color-textBlack);
     }
-    &[type='button'] {
-      background-color: var(--color-white);
-      color: var(--color-textBlack);
-      opacity: 0.3;
-      &:hover {
-        background-color: var(--color-textBlack);
-        color: var(--color-white);
-      }
-    }
   }
   p {
     font-weight: 500;

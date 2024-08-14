@@ -82,9 +82,15 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       ...profileDetail,
       interests: data.interests,
     };
-
+    const profile = {
+      acf: {
+        first_name: profileDetail.first_name,
+        last_name: profileDetail.last_name,
+        interests: data.interests,
+      },
+    };
     console.log('updatedProfileDetail:', updatedProfileDetail);
-    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    await UpdateProfile(id, token, removeEmptyStrings(profile));
     setIsDialogOpen(true);
   };
 

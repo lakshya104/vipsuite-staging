@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,7 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { removeEmptyStrings } from '@/helpers/utils';
 import { UpdateProfile } from '@/libs/api-manager/manager';
+import CustomLoader from '@/components/CustomLoader';
 
 interface FormField {
   name: keyof Step3FormValues;
@@ -29,6 +30,8 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   token,
   id,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // Map options from profileBuilderOptions
   const {
     nationality_options = [],
@@ -117,6 +120,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   });
 
   const onSubmit = async (data: Step3FormValues) => {
+    setIsLoading(true);
     console.log('Form data:', data);
 
     // Process the form data here
@@ -134,12 +138,31 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         gender: data.genderOfChild?.[index],
       })),
     };
-
-    console.log('updatedProfileDetail:', updatedProfileDetail);
-    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    const profile = {
+      acf: {
+        first_name: profileDetail.first_name,
+        last_name: profileDetail.last_name,
+        date_of_birth: data.dateOfBirth,
+        birth_place: data.birthplace,
+        nationality: data.nationality,
+        ethnicity: data.ethnicity,
+        number_of_childs: data.numberOfChildren,
+        pets: data.pets,
+        home_post_code: data.homePostcode,
+        child_info: data.ageOfChild?.map((dob, index) => ({
+          dob: dob,
+          gender: data.genderOfChild?.[index],
+        })),
+      },
+    };
+    await UpdateProfile(id, token, removeEmptyStrings(profile));
     onNext(updatedProfileDetail);
+    setIsLoading(false);
   };
 
+  if (isLoading) {
+    return <CustomLoader />;
+  }
   // Watch number of children to dynamically show age and gender fields
   const numberOfChildren = watch('numberOfChildren');
 
@@ -152,33 +175,33 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       </Box>
       {vipStep3formFields.map((field) => {
         // Conditionally render ageOfChild and genderOfChild fields based on numberOfChildren
-        if (field.name === 'ageOfChild') {
-          const numChildren = parseInt(numberOfChildren || '0', 10);
-          if (numChildren > 0) {
-            return Array.from({ length: numChildren }).map((_, index) => (
-              <React.Fragment key={`${field.name}-${index}`}>
-                <Box width="100%">
-                  <FormDatePicker
-                    name={`ageOfChild.${index}` as const}
-                    control={control}
-                    label={`Child ${index + 1} Date of Birth`}
-                    errors={errors}
-                  />
-                </Box>
-                <Box width="100%">
-                  <SelectBox
-                    name={`genderOfChild.${index}` as const}
-                    control={control}
-                    label={`Child ${index + 1} Gender`}
-                    options={gender}
-                    errors={errors}
-                  />
-                </Box>
-              </React.Fragment>
-            ));
-          }
-          return null;
-        }
+        // if (field.name === 'ageOfChild') {
+        //   const numChildren = parseInt(numberOfChildren || '0', 10);
+        //   if (numChildren > 0) {
+        //     return Array.from({ length: numChildren }).map((_, index) => (
+        //       <React.Fragment key={`${field.name}-${index}`}>
+        //         <Box width="100%">
+        //           <FormDatePicker
+        //             name={`ageOfChild.${index}` as const}
+        //             control={control}
+        //             label={`Child ${index + 1} Date of Birth`}
+        //             errors={errors}
+        //           />
+        //         </Box>
+        //         <Box width="100%">
+        //           <SelectBox
+        //             name={`genderOfChild.${index}` as const}
+        //             control={control}
+        //             label={`Child ${index + 1} Gender`}
+        //             options={gender}
+        //             errors={errors}
+        //           />
+        //         </Box>
+        //       </React.Fragment>
+        //     ));
+        //   }
+        //   return null;
+        // }
 
         const commonProps = {
           name: field.name,

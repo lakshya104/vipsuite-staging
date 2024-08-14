@@ -10,6 +10,7 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
+import CustomLoader from '@/components/CustomLoader';
 
 const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
@@ -35,7 +36,8 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
     },
   });
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleChange = (event: { target: { value: React.SetStateAction<string> } }) => {
     setSearchTerm(event.target.value);
@@ -58,26 +60,42 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       setValue(
         'interests',
         currentInterests.filter((i) => i !== value),
-      ); // Remove if already selected
+      );
     } else if (currentInterests.length < maxSelection) {
-      setValue('interests', [...currentInterests, value]); // Add if not selected and under the max limit
+      setValue('interests', [...currentInterests, value]);
     }
   };
 
   const onSubmit = async (data: FormValues) => {
+    setIsLoading(true);
     console.log('Selected known for step 1:', data.interests);
     const updatedProfileDetail: ACF = {
       ...profileDetail,
       known_for: data.interests,
     };
-
+    const profile = {
+      acf: {
+        first_name: profileDetail.first_name,
+        last_name: profileDetail.last_name,
+        known_for: data.interests,
+      },
+    };
     console.log('updatedProfileDetail:', updatedProfileDetail);
-    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    await UpdateProfile(id, token, removeEmptyStrings(profile));
     onNext(updatedProfileDetail);
+    setIsLoading(false);
   };
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step1-form">
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{ position: 'relative' }}
+      className="profile-builder__form step1-form"
+    >
       <Box className="profile-builder__search">
         <Typography variant="h2" textAlign="center">
           What are you known for?
@@ -117,7 +135,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
         </Box>
       </FormGroup>
       {errors.interests && (
-        <Typography color="error" textAlign="center">
+        <Typography color="error" textAlign="center" sx={{ position: 'absolute', bottom: '20%', left: '25%' }}>
           {errors.interests.message}
         </Typography>
       )}

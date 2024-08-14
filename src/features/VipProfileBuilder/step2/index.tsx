@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Typography, TextField } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,8 +10,10 @@ import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
+import CustomLoader from '@/components/CustomLoader';
 
 const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, token, id }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // Populate default values based on existing profile detail data
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
@@ -32,6 +34,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   });
 
   const onSubmit = async (data: FormValues) => {
+    setIsLoading(true);
     console.log('Step 2 data:', data);
     // Update the profile detail with the form data
     const updatedProfileDetail: ACF = {
@@ -49,11 +52,32 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
         secondary_email: data.giftingSecondaryEmail || '',
       },
     };
-
-    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    const profile = {
+      acf: {
+        first_name: profileDetail.first_name,
+        last_name: profileDetail.last_name,
+        event_contacts: {
+          email: data.eventsEmail || '',
+          secondary_email: data.eventsSecondaryEmail || '',
+        },
+        stylist_contacts: {
+          email: data.stylistEmail || '',
+          secondary_email: data.stylistSecondaryEmail || '',
+        },
+        gifting_contacts: {
+          email: data.giftingEmail || '',
+          secondary_email: data.giftingSecondaryEmail || '',
+        },
+      },
+    };
+    await UpdateProfile(id, token, removeEmptyStrings(profile));
     onNext(updatedProfileDetail);
+    setIsLoading(false);
   };
 
+  if (isLoading) {
+    return <CustomLoader />;
+  }
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
@@ -61,7 +85,6 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           Additional Contacts
         </Typography>
       </Box>
-
       {contacts.map(({ section, description }) => (
         <Box className="profile-builder__form-row" key={section}>
           <Typography variant="h3" gutterBottom>
@@ -90,7 +113,6 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           />
         </Box>
       ))}
-
       <CustomStepper currentStep={2} totalSteps={5} onPrev={onPrev} />
     </Box>
   );

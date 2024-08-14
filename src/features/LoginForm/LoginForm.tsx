@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useTransition } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '@/libs/actions';
@@ -128,6 +128,9 @@ const LoginForm = () => {
         content={rejectDialogBoxContent}
       />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

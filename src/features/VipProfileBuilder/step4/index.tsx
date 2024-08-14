@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Box, Typography, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
+import _ from 'lodash';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
@@ -12,8 +13,16 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
+import CustomLoader from '@/components/CustomLoader';
 
-type FormFieldNames = 'interests' | 'sportsPlay' | 'sports' | 'sportsFollow' | 'skills' | 'socialLook';
+type FormFieldNames =
+  | 'sportsPlay'
+  | 'sports'
+  | 'sportsFollow'
+  | 'skills'
+  | 'socialLook'
+  | 'habits'
+  | `habits.${number}`;
 
 const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
@@ -23,6 +32,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   token,
   id,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // Map options from profileBuilderOptions
   const {
     habits_options = [],
@@ -89,8 +99,19 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
+  const handleCheckboxChange = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    field: any,
+    optionValue: string,
+  ) => {
+    const newValue = _.includes(field.value, optionValue)
+      ? _.filter(field.value, (value: string) => value !== optionValue)
+      : _.union(field.value, [optionValue]);
 
+    field.onChange(newValue);
+  };
   const onSubmit = async (data: Step4FormValues) => {
+    setIsLoading(true);
     console.log('Form data:', data);
 
     const updatedProfileDetail: ACF = {
@@ -102,11 +123,25 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       skills: data.skills,
       look_feel_of_socials: data.socialLook,
     };
-
-    console.log('updatedProfileDetail:', updatedProfileDetail);
-    await UpdateProfile(id, token, removeEmptyStrings(updatedProfileDetail));
+    const profile = {
+      acf: {
+        first_name: profileDetail.first_name,
+        last_name: profileDetail.last_name,
+        habits: data.habits,
+        sports_play: data.sportsPlay,
+        other_sports: data.sports,
+        sports_follow: data.sportsFollow,
+        skills: data.skills,
+        look_feel_of_socials: data.socialLook,
+      },
+    };
+    await UpdateProfile(id, token, removeEmptyStrings(profile));
     onNext(updatedProfileDetail);
+    setIsLoading(false);
   };
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
@@ -132,13 +167,8 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
                               <Checkbox
                                 size="medium"
                                 {...field}
-                                checked={field.value.includes(option.value)}
-                                onChange={() => {
-                                  const newValue = field.value.includes(option.value)
-                                    ? field.value.filter((value: string) => value !== option.value)
-                                    : [...field.value, option.value];
-                                  field.onChange(newValue);
-                                }}
+                                checked={field.value?.includes(option.value)}
+                                onChange={() => handleCheckboxChange(field, option.value)}
                               />
                             }
                             label={option.label}
