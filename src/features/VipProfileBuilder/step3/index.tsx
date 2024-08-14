@@ -171,33 +171,33 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       </Box>
       {vipStep3formFields.map((field) => {
         // Conditionally render ageOfChild and genderOfChild fields based on numberOfChildren
-        // if (field.name === 'ageOfChild') {
-        //   const numChildren = parseInt(numberOfChildren || '0', 10);
-        //   if (numChildren > 0) {
-        //     return Array.from({ length: numChildren }).map((_, index) => (
-        //       <React.Fragment key={`${field.name}-${index}`}>
-        //         <Box width="100%">
-        //           <FormDatePicker
-        //             name={`ageOfChild.${index}` as const}
-        //             control={control}
-        //             label={`Child ${index + 1} Date of Birth`}
-        //             errors={errors}
-        //           />
-        //         </Box>
-        //         <Box width="100%">
-        //           <SelectBox
-        //             name={`genderOfChild.${index}` as const}
-        //             control={control}
-        //             label={`Child ${index + 1} Gender`}
-        //             options={gender}
-        //             errors={errors}
-        //           />
-        //         </Box>
-        //       </React.Fragment>
-        //     ));
-        //   }
-        //   return null;
-        // }
+        if (field.name === 'ageOfChild') {
+          const numChildren = parseInt(numberOfChildren || '0', 10);
+          if (numChildren > 0) {
+            return Array.from({ length: numChildren }).map((_, index) => (
+              <React.Fragment key={`${field.name}-${index}`}>
+                <Box width="100%">
+                  <FormDatePicker
+                    name={`ageOfChild.${index}` as const}
+                    control={control}
+                    label={`Child ${index + 1} Date of Birth`}
+                    errors={errors}
+                  />
+                </Box>
+                <Box width="100%">
+                  <SelectBox
+                    name={`genderOfChild.${index}` as const}
+                    control={control}
+                    label={`Child ${index + 1} Gender`}
+                    options={gender}
+                    errors={errors}
+                  />
+                </Box>
+              </React.Fragment>
+            ));
+          }
+          return null;
+        }
 
         const commonProps = {
           name: field.name,

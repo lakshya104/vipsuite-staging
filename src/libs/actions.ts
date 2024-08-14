@@ -3,7 +3,6 @@
 import { AuthError } from 'next-auth';
 import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
-import { revalidatePath } from 'next/cache';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -38,5 +37,4 @@ export const login = async (values: LoginFormValues) => {
 
 export const signOutAction = async () => {
   await signOut();
-  revalidatePath('/');
 };

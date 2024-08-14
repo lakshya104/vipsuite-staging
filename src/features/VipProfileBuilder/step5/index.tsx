@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Typography, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { Box, Typography, Checkbox, FormGroup, FormControlLabel, Backdrop, CircularProgress } from '@mui/material';
 import DialogBox from '@/components/Dialog/Dialog';
 import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar/SearchBar';
@@ -30,6 +30,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   token,
   id,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const interestOptions = profileBuilderOptions.interests_options;
   const interests = profileDetail.interests;
   const {
@@ -77,7 +78,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   };
 
   const onSubmit = async (data: FormValues) => {
-    console.log('Selected interests:', data.interests);
+    setIsLoading(true);
     const updatedProfileDetail: ACF = {
       ...profileDetail,
       interests: data.interests,
@@ -91,12 +92,18 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
     };
     console.log('updatedProfileDetail:', updatedProfileDetail);
     await UpdateProfile(id, token, removeEmptyStrings(profile));
+    setIsLoading(false);
     setIsDialogOpen(true);
   };
 
   return (
     <>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step5-form">
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ position: 'relative' }}
+        className="profile-builder__form step5-form"
+      >
         <Box className="profile-builder__search">
           <Typography variant="h2" textAlign="center">
             Your Interests
@@ -135,10 +142,21 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
             )}
           </Box>
         </FormGroup>
-        {errors.interests && <Typography color="error">{errors.interests.message}</Typography>}
+        {errors.interests && (
+          <Typography
+            color="error"
+            textAlign="center"
+            sx={{ position: 'absolute', bottom: '20%', left: { xs: '25%', md: '30%' } }}
+          >
+            {errors.interests.message}
+          </Typography>
+        )}
         <CustomStepper currentStep={5} totalSteps={5} onPrev={onPrev} />
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

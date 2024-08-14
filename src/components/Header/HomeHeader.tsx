@@ -7,7 +7,7 @@ import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
-import { signOutAction } from '@/libs/actions';
+import { signOut } from "next-auth/react"
 
 const navLinks = [
   {
@@ -126,7 +126,7 @@ const HomeHeader = () => {
                   borderBottom: '1px solid #e0e0e0',
                   cursor: 'pointer',
                 }}
-                onClick={() => signOutAction()}
+                onClick={() => signOut()}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />

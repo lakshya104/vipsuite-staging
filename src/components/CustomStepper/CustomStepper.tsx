@@ -14,10 +14,20 @@ const CustomStepper: React.FC<CustomStepperProps> = ({ currentStep, totalSteps, 
   const onPrevious = () => {
     onPrev();
   };
-
+  const disableBtn = currentStep === 1;
   return (
     <Box className="custom-stepper">
-      <IconButton sx={{ visibility: currentStep === 1 ? 'hidden' : 'visible' }} onClick={onPrevious}>
+      <IconButton
+        sx={{
+          color: disableBtn ? 'gray' : 'black',
+          opacity: disableBtn ? 0.3 : 1,
+          pointerEvents: disableBtn ? 'none' : 'auto',
+          '&:hover': {
+            backgroundColor: disableBtn ? 'transparent' : '',
+          },
+        }}
+        onClick={onPrevious}
+      >
         <ArrowBackIcon />
       </IconButton>
       <Typography variant="body1">
