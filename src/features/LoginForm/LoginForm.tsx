@@ -60,18 +60,16 @@ const LoginForm = () => {
       login(values)
         .then((data) => {
           if (data && data.error) {
-            switch (data.error) {
-              case 'Error: Your account was rejected':
-                setIsRejectDialogOpen(true);
-                reset();
-                break;
-              case 'Error: Your account is not approved.':
-                setIsReviewDialogOpen(true);
-                reset();
-                break;
-              default:
-                setError(data.error);
-                setToasterOpen(true);
+            const errorMessage = data.error;
+            if (errorMessage.includes('Your account was rejected')) {
+              setIsRejectDialogOpen(true);
+              reset();
+            } else if (errorMessage.includes('Your account is not approved')) {
+              setIsReviewDialogOpen(true);
+              reset();
+            } else {
+              setError(errorMessage);
+              setToasterOpen(true);
             }
           }
         })
