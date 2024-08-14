@@ -65,7 +65,7 @@ const LoginForm = () => {
                 setIsRejectDialogOpen(true);
                 reset();
                 break;
-              case 'Error: Your account is not approved':
+              case 'Error: Your account is not approved.':
                 setIsReviewDialogOpen(true);
                 reset();
                 break;
