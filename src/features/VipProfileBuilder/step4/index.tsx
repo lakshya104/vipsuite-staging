@@ -13,6 +13,8 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '@/components/Toaster';
 
 type FormFieldNames =
   | 'sportsPlay'
@@ -32,7 +34,8 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   id,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // Map options from profileBuilderOptions
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+
   const {
     habits_options = [],
     sports_play_options = [],
@@ -80,7 +83,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     },
   ];
 
-  // Default values populated from profileDetail
   const defaultValues: Step4FormValues = {
     habits: profileDetail.habits || [],
     sportsPlay: profileDetail.sports_play || '',
@@ -111,32 +113,36 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   };
   const onSubmit = async (data: Step4FormValues) => {
     setIsLoading(true);
-    console.log('Form data:', data);
-
-    const updatedProfileDetail: ACF = {
-      ...profileDetail,
-      habits: data.habits,
-      sports_play: data.sportsPlay,
-      other_sports: data.sports,
-      sports_follow: data.sportsFollow,
-      skills: data.skills,
-      look_feel_of_socials: data.socialLook,
-    };
-    const profile = {
-      acf: {
-        first_name: profileDetail.first_name,
-        last_name: profileDetail.last_name,
+    try {
+      const updatedProfileDetail: ACF = {
+        ...profileDetail,
         habits: data.habits,
         sports_play: data.sportsPlay,
         other_sports: data.sports,
         sports_follow: data.sportsFollow,
         skills: data.skills,
         look_feel_of_socials: data.socialLook,
-      },
-    };
-    await UpdateProfile(id, token, removeEmptyStrings(profile));
-    onNext(updatedProfileDetail);
-    setIsLoading(false);
+      };
+      const profile = {
+        acf: {
+          first_name: profileDetail.first_name,
+          last_name: profileDetail.last_name,
+          habits: data.habits,
+          sports_play: data.sportsPlay,
+          other_sports: data.sports,
+          sports_follow: data.sportsFollow,
+          skills: data.skills,
+          look_feel_of_socials: data.socialLook,
+        },
+      };
+      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      onNext(updatedProfileDetail);
+    } catch (error) {
+      console.error('Error during profile update:', error);
+      openToaster('Error during profile update. ' + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -200,6 +206,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </Box>
   );
 };

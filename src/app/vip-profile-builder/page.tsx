@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetProfileBuilderContent, GetProfile, GetToken, GetLoginUserId } from '@/libs/api-manager/manager';
-import ProfileBuilder from '@/features/VipProfileBuilder/ProfileBuilder';
+import ProfileBuilder from '@/features/VipProfileBuilder';
 import { ProfileBuilderOptions, UserProfile } from '@/interfaces';
 
 const VIPProfileBuilder = async () => {

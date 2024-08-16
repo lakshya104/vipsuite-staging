@@ -34,7 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error(res.message);
         }
         if (res && res.acf.profile_status == 'rejected') {
-          throw new Error("Your account was rejected");
+          throw new Error('Your account was rejected');
         }
         if (res && user) {
           return user;

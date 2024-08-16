@@ -7,7 +7,7 @@ import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
-import { signOut } from "next-auth/react"
+import { signOut } from 'next-auth/react';
 
 const navLinks = [
   {

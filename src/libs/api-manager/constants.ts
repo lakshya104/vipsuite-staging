@@ -10,6 +10,8 @@ const Endpoints = {
   getVipEvents: '/wp/v2/events',
   getProfileBuilderContent: '/wp/v2/profile-builder-content',
   updateProfile: '/wp/v2/vip-profile',
+  forgotPassword: '/wp/v2/password-forgot',
+  resetPassword: 'wp/v2/password-reset',
 };
 
 export { Endpoints };

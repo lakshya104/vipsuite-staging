@@ -10,6 +10,8 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
+import Toaster from '@/components/Toaster';
+import UseToaster from '@/hooks/useToaster';
 
 const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
@@ -36,6 +38,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const handleChange = (event: { target: { value: React.SetStateAction<string> } }) => {
     setSearchTerm(event.target.value);
@@ -66,22 +69,26 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    console.log('Selected known for step 1:', data.interests);
-    const updatedProfileDetail: ACF = {
-      ...profileDetail,
-      known_for: data.interests,
-    };
-    const profile = {
-      acf: {
-        first_name: profileDetail.first_name,
-        last_name: profileDetail.last_name,
+    try {
+      const updatedProfileDetail: ACF = {
+        ...profileDetail,
         known_for: data.interests,
-      },
-    };
-    console.log('updatedProfileDetail:', updatedProfileDetail);
-    await UpdateProfile(id, token, removeEmptyStrings(profile));
-    onNext(updatedProfileDetail);
-    setIsLoading(false);
+      };
+      const profile = {
+        acf: {
+          first_name: profileDetail.first_name,
+          last_name: profileDetail.last_name,
+          known_for: data.interests,
+        },
+      };
+      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      onNext(updatedProfileDetail);
+    } catch (error) {
+      console.error('Error during profile update:', error);
+      openToaster('Error during profile update. ' + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -138,6 +145,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </Box>
   );
 };

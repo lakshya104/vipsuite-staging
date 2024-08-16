@@ -168,19 +168,41 @@ export const GetProfileBuilderContent = async () => {
 
 export const UpdateProfile = async (id: number, token: string, profile: UserProfile) => {
   try {
-    console.log('API call for update profile------', id, token, profile);
     const response = await Instance.post(`${Endpoints.updateProfile}/${id}`, profile, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('response-----------------', response);
     return response.data;
   } catch (error) {
-    console.error('Error during update profile:', error);
-
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || 'An error occurred during update profile';
+      throw errorMessage;
+    }
+  }
+};
+
+export const ForgotPassword = async ({ email }: { email: string }) => {
+  try {
+    const response = await Instance.post(Endpoints.forgotPassword, { email });
+    return response.data;
+  } catch (error) {
+    console.error('Error during sending link:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during login';
+      throw errorMessage;
+    }
+  }
+};
+
+export const ResetPassword = async ({ email, code, password }: { email: string; code: string; password: string }) => {
+  try {
+    const response = await Instance.post(Endpoints.resetPassword, { email, code, password });
+    return response.data;
+  } catch (error) {
+    console.error('Error during resetting password:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during password reset';
       throw errorMessage;
     }
   }

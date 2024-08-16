@@ -37,7 +37,7 @@ const LoginForm = () => {
   const handleReviewDialogBoxDataChange = (open: boolean) => {
     setIsReviewDialogOpen(open);
   };
-  const handleRejectDialogBoxDataChange = (open: boolean) => {
+  const handleRejectDialogBoxDataChange = (open: boolean): void => {
     setIsRejectDialogOpen(open);
   };
 
@@ -101,10 +101,17 @@ const LoginForm = () => {
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
         {isPending ? 'Loading...' : 'Continue'}
       </Button>
+      <Box className="forgot-password">
+        <Typography className="forgot-password__text">
+          <Link href="/forgot-password" className="forgot-password__link">
+            Forgot Password?
+          </Link>
+        </Typography>
+      </Box>
       <Typography className="signup-text">
         Don&apos;t have an account?{' '}
         <Link
-          href={'/onboarding'}
+          href={'/on-boarding'}
           style={{
             textDecoration: 'underline',
             padding: 0,

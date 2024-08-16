@@ -56,7 +56,7 @@ const Header = () => {
             <Link href={'/login'} className="button button--link">
               Login
             </Link>
-            <Link href={'/onboarding'} className="button button--white">
+            <Link href={'/on-boarding'} className="button button--white">
               Apply
             </Link>
           </Box>

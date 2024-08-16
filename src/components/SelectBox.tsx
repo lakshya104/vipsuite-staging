@@ -5,7 +5,7 @@ import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-
 type SelectBoxProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
-  placeholder: string | undefined;
+  placeholder?: string | undefined;
   options: { value: string; label: string }[] | undefined;
   label: string;
   errors: FieldErrors<T>;
@@ -26,6 +26,7 @@ const SelectBox = <T extends FieldValues>({
         control={control}
         render={({ field }) => (
           <Select
+            defaultValue=""
             {...field}
             label={placeholder}
             displayEmpty

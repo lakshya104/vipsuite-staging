@@ -11,7 +11,7 @@ export default function AuthLayout({
   return (
     <Box className="profile-builder__page">
       <Box className="profile-builder__header">
-        <Image alt="VipLogo" src="/Logo.svg" width={260} height={70} style={{ objectFit: 'contain' }} />
+        <Image alt="VipLogo" src="/Logo.svg" width={260} height={70} priority style={{ objectFit: 'contain' }} />
       </Box>
       <Box className="profile-builder__main">{children}</Box>
     </Box>

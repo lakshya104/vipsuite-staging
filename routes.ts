@@ -1,6 +1,14 @@
 export const publicRoutes = ['/'];
 
-export const authRoutes = ['/login', '/signup/vip', '/signup/agent', '/signup/brand', '/onboarding'];
+export const authRoutes = [
+  '/login',
+  '/forgot-password',
+  '/reset-password',
+  '/on-boarding',
+  '/signup/vip',
+  '/signup/agent',
+  '/signup/brand',
+];
 
 export const DEFAULT_LOGIN_REDIRECT = '/home';
 

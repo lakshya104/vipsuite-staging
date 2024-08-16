@@ -10,10 +10,13 @@ import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { removeEmptyStrings } from '@/helpers/utils';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '@/components/Toaster';
 
 const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, token, id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // Populate default values based on existing profile detail data
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
     eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
@@ -34,27 +37,9 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    console.log('Step 2 data:', data);
-    // Update the profile detail with the form data
-    const updatedProfileDetail: ACF = {
-      ...profileDetail,
-      event_contacts: {
-        email: data.eventsEmail || '',
-        secondary_email: data.eventsSecondaryEmail || '',
-      },
-      stylist_contacts: {
-        email: data.stylistEmail || '',
-        secondary_email: data.stylistSecondaryEmail || '',
-      },
-      gifting_contacts: {
-        email: data.giftingEmail || '',
-        secondary_email: data.giftingSecondaryEmail || '',
-      },
-    };
-    const profile = {
-      acf: {
-        first_name: profileDetail.first_name,
-        last_name: profileDetail.last_name,
+    try {
+      const updatedProfileDetail: ACF = {
+        ...profileDetail,
         event_contacts: {
           email: data.eventsEmail || '',
           secondary_email: data.eventsSecondaryEmail || '',
@@ -67,11 +52,33 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           email: data.giftingEmail || '',
           secondary_email: data.giftingSecondaryEmail || '',
         },
-      },
-    };
-    await UpdateProfile(id, token, removeEmptyStrings(profile));
-    onNext(updatedProfileDetail);
-    setIsLoading(false);
+      };
+      const profile = {
+        acf: {
+          first_name: profileDetail.first_name,
+          last_name: profileDetail.last_name,
+          event_contacts: {
+            email: data.eventsEmail || '',
+            secondary_email: data.eventsSecondaryEmail || '',
+          },
+          stylist_contacts: {
+            email: data.stylistEmail || '',
+            secondary_email: data.stylistSecondaryEmail || '',
+          },
+          gifting_contacts: {
+            email: data.giftingEmail || '',
+            secondary_email: data.giftingSecondaryEmail || '',
+          },
+        },
+      };
+      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      onNext(updatedProfileDetail);
+    } catch (error) {
+      console.error('Error during profile update:', error);
+      openToaster('Error during profile update. ' + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -113,6 +120,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </Box>
   );
 };

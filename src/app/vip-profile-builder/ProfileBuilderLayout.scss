@@ -23,6 +23,7 @@
     img {
       max-width: rem(115);
       height: auto;
+      width: auto;
       @media only screen and (min-width: 768px) {
         max-width: rem(260);
       }

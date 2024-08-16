@@ -8,9 +8,12 @@ import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
-import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
+import { ProfileBuilderStepsProps } from '@/interfaces';
 import { removeEmptyStrings } from '@/helpers/utils';
 import { UpdateProfile } from '@/libs/api-manager/manager';
+import { signOut } from 'next-auth/react';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '@/components/Toaster';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -21,15 +24,7 @@ const dialogBoxContent = {
   isCrossIcon: true,
 };
 
-const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
-  profileBuilderOptions,
-  profileDetail,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  onNext,
-  onPrev,
-  token,
-  id,
-}) => {
+const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, profileDetail, onPrev, token, id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const interestOptions = profileBuilderOptions.interests_options;
   const interests = profileDetail.interests;
@@ -47,9 +42,11 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   });
   const [searchTerm, setSearchTerm] = React.useState('');
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
+    signOut();
   };
 
   const handleChange = (event: { target: { value: React.SetStateAction<string> } }) => {
@@ -79,21 +76,22 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    const updatedProfileDetail: ACF = {
-      ...profileDetail,
-      interests: data.interests,
-    };
-    const profile = {
-      acf: {
-        first_name: profileDetail.first_name,
-        last_name: profileDetail.last_name,
-        interests: data.interests,
-      },
-    };
-    console.log('updatedProfileDetail:', updatedProfileDetail);
-    await UpdateProfile(id, token, removeEmptyStrings(profile));
-    setIsLoading(false);
-    setIsDialogOpen(true);
+    try {
+      const profile = {
+        acf: {
+          first_name: profileDetail.first_name,
+          last_name: profileDetail.last_name,
+          interests: data.interests,
+        },
+      };
+      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      setIsDialogOpen(true);
+    } catch (error) {
+      console.error('Error during profile update:', error);
+      openToaster('Error during profile update. ' + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -157,6 +155,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };

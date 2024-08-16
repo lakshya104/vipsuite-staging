@@ -14,6 +14,7 @@ import './VipSignupForm.scss';
 import { SignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
 import { SignUp } from '@/libs/api-manager/manager';
+import Link from 'next/link';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -138,6 +139,20 @@ const VipSignupForm = () => {
         <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}
         </Button>
+        <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
+          Already have an account?{' '}
+          <Link
+            href={'/login'}
+            style={{
+              textDecoration: 'underline',
+              padding: 0,
+              margin: 0,
+              color: 'white',
+            }}
+          >
+            Login here
+          </Link>
+        </Typography>
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>

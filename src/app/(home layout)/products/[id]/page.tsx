@@ -5,25 +5,25 @@ import ItemRequestForm from '@/features/ItemRequestForm';
 import './ProductDetails.scss';
 import { GetBrandProductDetail } from '@/libs/api-manager/manager';
 import { BrandProductDetails } from '@/interfaces/brand';
-import type { Metadata, ResolvingMetadata } from 'next'
- 
+import type { Metadata, ResolvingMetadata } from 'next';
+
 type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
- 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const product = await GetBrandProductDetail(parseInt(params.id));
   const previousImages = (await parent).openGraph?.images || [];
   return {
     title: product.title,
     openGraph: {
-      images: ['/https://images.unsplash.com/photo-1523275335684-37898b6baf30?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D', ...previousImages],
+      images: [
+        '/https://images.unsplash.com/photo-1523275335684-37898b6baf30?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D',
+        ...previousImages,
+      ],
     },
-  }
+  };
 }
 
 interface Params {

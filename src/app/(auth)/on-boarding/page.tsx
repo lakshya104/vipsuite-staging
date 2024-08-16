@@ -24,7 +24,7 @@ const Onboarding = () => {
           </Link>
         </Box>
       </Box>
-      <Typography className="onboarding__text">
+      <Typography sx={{ fontSize: '0.8rem', my: 3 }} className="onboarding__text">
         Already have an account?{' '}
         <Link
           href={'/login'}

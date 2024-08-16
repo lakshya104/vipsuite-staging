@@ -12,6 +12,8 @@ import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { removeEmptyStrings } from '@/helpers/utils';
 import { UpdateProfile } from '@/libs/api-manager/manager';
+import Toaster from '@/components/Toaster';
+import UseToaster from '@/hooks/useToaster';
 
 interface FormField {
   name: keyof Step3FormValues;
@@ -30,19 +32,13 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   id,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // Map options from profileBuilderOptions
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const {
     nationality_options = [],
     ethnicity_options = [],
-    number_of_childs_options = ['0', '1', '2', '3', '4', '5+'], // Assuming if not provided
-    gender = [
-      { value: 'male', label: 'Male' },
-      { value: 'female', label: 'Female' },
-    ],
+    number_of_childs_options = ['0', '1', '2', '3', '4', '5+'],
   } = profileBuilderOptions;
 
-  // Define form fields with options
   const vipStep3formFields: FormField[] = [
     {
       name: 'dateOfBirth',
@@ -93,7 +89,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     },
   ];
 
-  // Default values populated from profileDetail
   const defaultValues: Step3FormValues = {
     dateOfBirth: profileDetail.date_of_birth || '',
     birthplace: profileDetail.birth_place || '',
@@ -120,27 +115,20 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
 
   const onSubmit = async (data: Step3FormValues) => {
     setIsLoading(true);
-    console.log('Form data:', data);
+    const childInfo =
+      data.numberOfChildren === '0'
+        ? data.ageOfChild?.map(() => ({
+            dob: null,
+            gender: null,
+          })) || []
+        : data.ageOfChild?.map((dob, index) => ({
+            dob: dob,
+            gender: data.genderOfChild?.[index],
+          })) || [];
 
-    // Process the form data here
-    const updatedProfileDetail: ACF = {
-      ...profileDetail,
-      date_of_birth: data.dateOfBirth,
-      birth_place: data.birthplace,
-      nationality: data.nationality,
-      ethnicity: data.ethnicity,
-      number_of_childs: data.numberOfChildren,
-      pets: data.pets,
-      home_post_code: data.homePostcode,
-      child_info: data.ageOfChild?.map((dob, index) => ({
-        dob: dob,
-        gender: data.genderOfChild?.[index],
-      })),
-    };
-    const profile = {
-      acf: {
-        first_name: profileDetail.first_name,
-        last_name: profileDetail.last_name,
+    try {
+      const updatedProfileDetail: ACF = {
+        ...profileDetail,
         date_of_birth: data.dateOfBirth,
         birth_place: data.birthplace,
         nationality: data.nationality,
@@ -148,15 +136,31 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         number_of_childs: data.numberOfChildren,
         pets: data.pets,
         home_post_code: data.homePostcode,
-        child_info: data.ageOfChild?.map((dob, index) => ({
-          dob: dob,
-          gender: data.genderOfChild?.[index],
-        })),
-      },
-    };
-    await UpdateProfile(id, token, removeEmptyStrings(profile));
-    onNext(updatedProfileDetail);
-    setIsLoading(false);
+        child_info: childInfo,
+      };
+
+      const profile = {
+        acf: {
+          first_name: profileDetail.first_name,
+          last_name: profileDetail.last_name,
+          date_of_birth: data.dateOfBirth,
+          birth_place: data.birthplace,
+          nationality: data.nationality,
+          ethnicity: data.ethnicity,
+          number_of_childs: data.numberOfChildren,
+          pets: data.pets,
+          home_post_code: data.homePostcode,
+          child_info: childInfo,
+        },
+      };
+      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      onNext(updatedProfileDetail);
+    } catch (error) {
+      console.error('Error during profile update:', error);
+      openToaster('Error during profile update. ' + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Watch number of children to dynamically show age and gender fields
@@ -181,7 +185,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
                     name={`ageOfChild.${index}` as const}
                     control={control}
                     label={`Child ${index + 1} Date of Birth`}
-                    errors={errors}
                   />
                 </Box>
                 <Box width="100%">
@@ -189,7 +192,10 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
                     name={`genderOfChild.${index}` as const}
                     control={control}
                     label={`Child ${index + 1} Gender`}
-                    options={gender}
+                    options={[
+                      { value: 'male', label: 'Male' },
+                      { value: 'female', label: 'Female' },
+                    ]}
                     errors={errors}
                   />
                 </Box>
@@ -242,6 +248,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </Box>
   );
 };

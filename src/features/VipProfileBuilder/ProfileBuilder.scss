@@ -15,7 +15,28 @@
       max-width: rem(450);
     }
     &-row {
+      @media only screen and (max-width: 767px) {
+        margin-bottom: rem(10);
+        overflow-y: auto;
+        max-height: rem(280);
+      }
       margin-bottom: rem(16);
+      overflow-y: auto;
+      max-height: rem(350);
+      &::-webkit-scrollbar {
+        width: rem(8);
+      }
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #b3b2b2;
+        border-radius: rem(4);
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: #999898;
+        cursor: pointer;
+      }
       .step1-form &,
       .step5-form & {
         flex-wrap: wrap;
