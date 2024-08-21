@@ -1,48 +1,9 @@
+import { ACF } from '@/interfaces';
 import { Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
 
-interface ProfileDetails {
-  first_name: string;
-  last_name: string;
-  created_by: number;
-  created_by_type: string;
-  type_of_representation: string;
-  avg_engagement: string;
-  instagram_handle: string;
-  tiktok_handle: string;
-  known_for: string[];
-  event_contacts: {
-    [key: string]: string;
-  };
-  stylist_contacts: {
-    [key: string]: string;
-  };
-  gifting_contacts: {
-    [key: string]: string;
-  };
-  date_of_birth: string;
-  birth_place: string;
-  nationality: string;
-  ethnicity: string;
-  number_of_childs: string;
-  child_info: {
-    [key: string]: string;
-  }[];
-  pets: string;
-  home_post_code: string;
-  habits: string[];
-  sports_play: string;
-  other_sports: string;
-  sports_follow: string;
-  skills: string;
-  look_feel_of_socials: string;
-  interests: string[];
-  associated_brands: boolean;
-  secondary_email: string;
-  phone: string;
-}
 interface ProfileComponentProps {
-  profileDetails: ProfileDetails;
+  profileDetails: ACF;
 }
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
@@ -52,7 +13,8 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
     { label: 'Resides', value: profileDetails?.nationality || 'N/A' },
     {
       label: 'Interests',
-      value: profileDetails.interests.length > 0 ? profileDetails.interests.join(', ') : 'N/A',
+      value:
+        profileDetails.interests && profileDetails.interests.length > 0 ? profileDetails.interests.join(', ') : 'N/A',
     },
   ];
   return (

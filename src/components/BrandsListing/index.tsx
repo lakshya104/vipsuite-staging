@@ -1,11 +1,13 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import { GetBrands } from '@/libs/api-manager/manager';
 import BrandCard from './BrandCard';
 import { Brand } from '@/interfaces/brand';
 
-export default async function BrandsListing() {
-  const brands: Brand[] = await GetBrands();
+interface BrandsListingProps {
+  brands: Brand[];
+}
+
+const BrandsListing: React.FC<BrandsListingProps> = ({ brands }) => {
   return (
     <Grid className="landing-product" container spacing={2.5}>
       {brands.map((item) => (
@@ -15,4 +17,6 @@ export default async function BrandsListing() {
       ))}
     </Grid>
   );
-}
+};
+
+export default BrandsListing;

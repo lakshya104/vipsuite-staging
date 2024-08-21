@@ -74,7 +74,6 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
       await UpdateProfile(id, token, removeEmptyStrings(profile));
       onNext(updatedProfileDetail);
     } catch (error) {
-      console.error('Error during profile update:', error);
       openToaster('Error during profile update. ' + error);
     } finally {
       setIsLoading(false);

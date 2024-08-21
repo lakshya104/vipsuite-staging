@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Box, IconButton, MenuItem, MenuList, Drawer, Typography } from '@mui/material';
+import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ const navLinks = [
   },
   {
     label: 'Events',
-    href: '/events?type=events',
+    href: '/events',
   },
   {
     label: 'Inbox',
@@ -36,9 +36,13 @@ const menuItems = [
   {
     label: 'My Profile',
     icon: <Image src="/img/user.svg" alt="Logo" width={20} height={20} />,
-    href: '/profile?section=bio',
+    href: '/profile',
   },
-  { label: 'My Orders', icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} />, href: '/my-orders' },
+  {
+    label: 'My Orders',
+    icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
+    href: '/my-orders',
+  },
   { label: 'My Events', icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />, href: '/my-events' },
   { label: 'My Addresses', icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />, href: '/' },
   { label: 'My Interests', icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />, href: '/' },
@@ -67,26 +71,20 @@ const HomeHeader = () => {
           <Box className="site-header__navbar">
             <MenuList className="site-header__navigation">
               {navLinks.map((link) => (
-                <MenuItem key={link.href}>
-                  <Link href={link.href} title={link.label}>
-                    {link.label}
-                  </Link>
-                </MenuItem>
+                <Link href={link.href} title={link.label} key={link.href}>
+                  <MenuItem>{link.label}</MenuItem>
+                </Link>
               ))}
             </MenuList>
           </Box>
 
           <Box>
-            <IconButton
-              size="large"
+            <MenuIcon
+              onClick={toggleDrawer(true)}
               aria-label="account of current user"
               aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={toggleDrawer(true)}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
+              sx={{ cursor: 'pointer' }}
+            />
           </Box>
           <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)} sx={{ width: '100vw' }}>
             <Box sx={{ width: 250 }} role="presentation">
@@ -94,28 +92,27 @@ const HomeHeader = () => {
                 <CloseIcon sx={{ cursor: 'pointer' }} onClick={toggleDrawer(false)} />
               </Box>
               {menuItems.map((item) => (
-                <Box
-                  key={item.label}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    p: 2,
-                    borderBottom: '1px solid #e0e0e0',
-                    cursor: 'pointer',
-                  }}
-                  onClick={toggleDrawer(false)}
-                >
-                  <Link href={item.href}>
+                <Link href={item.href} key={item.label}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      p: 2,
+                      borderBottom: '1px solid #e0e0e0',
+                      cursor: 'pointer',
+                    }}
+                    onClick={toggleDrawer(false)}
+                  >
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       {item.icon}
                       <Typography variant="body1" sx={{ ml: 2, fontSize: '13px' }}>
                         {item.label}
                       </Typography>
                     </Box>
-                  </Link>
-                  <ChevronRightIcon />
-                </Box>
+                    <ChevronRightIcon />
+                  </Box>
+                </Link>
               ))}
               <Box
                 sx={{

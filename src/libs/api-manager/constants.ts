@@ -8,10 +8,13 @@ const Endpoints = {
   getBrandProductDetails: '/wc/v3/products',
   getSignupContent: '/wp/v2/signup-content',
   getVipEvents: '/wp/v2/events',
+  getVipEventDetails: '/wp/v2/events',
   getProfileBuilderContent: '/wp/v2/profile-builder-content',
   updateProfile: '/wp/v2/vip-profile',
   forgotPassword: '/wp/v2/password-forgot',
   resetPassword: 'wp/v2/password-reset',
+  getAllOrders: '/wc/v3/orders',
+  getOrderById: '/wc/v3/orders',
 };
 
 export { Endpoints };

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Typography, Checkbox, FormGroup, FormControlLabel, CircularProgress, Backdrop } from '@mui/material';
 import { FormValues, interestSchema } from './schema';
-import SearchBar from '@/components/SearchBar/SearchBar';
+import SearchBar from '@/components/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
@@ -84,7 +84,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       await UpdateProfile(id, token, removeEmptyStrings(profile));
       onNext(updatedProfileDetail);
     } catch (error) {
-      console.error('Error during profile update:', error);
       openToaster('Error during profile update. ' + error);
     } finally {
       setIsLoading(false);
@@ -109,7 +108,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
           searchTerm={searchTerm}
           handleChange={handleChange}
           handleClear={handleClear}
-          placeholder="Search for interests"
+          placeholder="Search for an attribute"
         />
       </Box>
 

@@ -1,42 +1,43 @@
 'use client';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useState, useEffect } from 'react';
-import SearchBar from './SearchBar/SearchBar';
+import SearchBar from './SearchBar';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 interface SearchEventProps {
   searchParams?: string | false | string[] | undefined;
+  type: 'event' | 'brand';
 }
 
-const SearchEvent: React.FC<SearchEventProps> = ({ searchParams }) => {
-  const [searchTerm, setSearchTerm] = useState<string | undefined>(
-    typeof searchParams === 'string' ? searchParams : '',
-  );
+const SearchEvent: React.FC<SearchEventProps> = ({ searchParams, type }) => {
+  const [searchTerm, setSearchTerm] = useState<string>(typeof searchParams === 'string' ? searchParams : '');
   const router = useRouter();
 
-  useEffect(() => {
-    if (searchParams && searchTerm === '') {
-      setSearchTerm('');
-      router.push('/home');
-    }
-  }, [searchParams, searchTerm, router]);
+  const href = useMemo(() => (type === 'event' ? 'events' : 'home'), [type]);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   }, []);
 
   const handleSearch = useCallback(() => {
-    const trimmedTerm = searchTerm?.trim();
+    const trimmedTerm = searchTerm.trim();
     if (trimmedTerm) {
-      router.push(`/home?name=${encodeURIComponent(trimmedTerm)}&filter=all`);
+      router.push(`/${href}?name=${encodeURIComponent(trimmedTerm)}`);
     }
-  }, [searchTerm, router]);
+  }, [searchTerm, router, href]);
 
   const handleClear = useCallback(() => {
     setSearchTerm('');
-    router.push('/home');
-  }, [router]);
+    router.push(`/${href}`);
+  }, [router, href]);
+
+  useEffect(() => {
+    if (typeof searchParams === 'string' && searchParams !== searchTerm) {
+      setSearchTerm(searchParams);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   return (
     <Box my={2.5}>
@@ -46,6 +47,7 @@ const SearchEvent: React.FC<SearchEventProps> = ({ searchParams }) => {
         handleChange={handleChange}
         handleSearch={handleSearch}
         handleClear={handleClear}
+        aria-label="Search events"
         searchWithSuggestions={true}
       />
     </Box>

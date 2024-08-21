@@ -1,39 +1,36 @@
 import React from 'react';
-import { BioComponent, ContactsComponent, SocialComponent } from '@/components/ProfileComponents';
 import { Box, Button, Container, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import './profile.scss';
 import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 import { calculateAge } from '@/helpers/utils';
 import Image from 'next/image';
+import ErrorToaster from '@/components/ErrorToaster';
+import { get } from 'lodash';
 
-interface SearchParams {
-  [key: string]: string | string[];
-}
-
-interface PageProps {
-  searchParams: SearchParams;
-}
-
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page() {
   const token = await GetToken();
-  const profileDetails = await GetProfile(token);
-  const age = calculateAge(profileDetails?.acf.date_of_birth);
-
-  const section = searchParams?.section;
-  const renderSection = () => {
-    switch (section) {
-      case 'bio':
-        return <BioComponent profileDetails={profileDetails?.acf} />;
-      case 'social':
-        return <SocialComponent profileDetails={profileDetails?.acf} />;
-      case 'contacts':
-        return <ContactsComponent profileDetails={profileDetails?.acf} />;
-      default:
-        return <BioComponent profileDetails={profileDetails?.acf} />;
+  let profileDetails = null;
+  try {
+    profileDetails = await GetProfile(token);
+  } catch (error) {
+    const message = get(error, 'message', '');
+    if ((message as string) === 'Expired token') {
+      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
+    } else {
+      return <ErrorToaster message="Profile not found!" errorMessage={String(error)} />;
     }
-  };
-
+  }
+  if (!profileDetails) {
+    return (
+      <Container>
+        <Typography align="center" variant="h4" marginTop={5}>
+          Profile not found.
+        </Typography>
+      </Container>
+    );
+  }
+  const age = calculateAge(profileDetails?.acf.date_of_birth);
   return (
     <>
       <Box className="user-profile">
@@ -61,9 +58,8 @@ export default async function Page({ searchParams }: PageProps) {
             </Button>
           </Box>
           <Box>
-            <ProfileTabs />
+            <ProfileTabs profileData={profileDetails.acf} />
           </Box>
-          <Box className="user-profile__details">{renderSection()}</Box>
         </Container>
       </Box>
     </>

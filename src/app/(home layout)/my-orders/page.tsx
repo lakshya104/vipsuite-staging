@@ -1,34 +1,45 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Typography, Container, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Link from 'next/link';
+// import Link from 'next/link';
 import './order.scss';
+import { GetAllOrders } from '@/libs/api-manager/manager';
+import { Order } from '@/interfaces';
+import { formatDate } from '@/helpers/utils';
+import ErrorToaster from '@/components/ErrorToaster';
+import { get } from 'lodash';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
-interface Order {
-  id: string;
-  date: string;
-  status: string;
-}
-
-const orders: Order[] = [
-  { id: '123456', date: '20/05/2024', status: 'Processing' },
-  { id: '123455', date: '19/05/2024', status: 'Processing' },
-  { id: '123454', date: '19/04/2024', status: 'Delivered' },
-  { id: '123453', date: '13/04/2024', status: 'Delivered' },
-  { id: '123452', date: '11/03/2024', status: 'Delivered' },
-];
-
-const MyOrders: FC = () => {
+const MyOrders: React.FC = async () => {
+  let allOrders: Order[] | null = null;
+  try {
+    allOrders = await GetAllOrders();
+  } catch (error) {
+    const message = get(error, 'message', '');
+    if ((message as string) === 'Expired token') {
+      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
+    } else {
+      return <ErrorToaster message="Orders not found!" errorMessage={String(error)} />;
+    }
+  }
+  if (!allOrders) {
+    return (
+      <Container>
+        <Typography align="center" variant="h4" marginTop={5}>
+          Orders not found.
+        </Typography>
+      </Container>
+    );
+  }
   return (
-    <>
-      <Box className="user-profile">
-        <Container>
-          <Typography className="page-title" variant="h2" align="center">
-            My Orders
-          </Typography>
-
-          <Box className="order-product__items">
-            {orders.map((order: Order) => (
+    <Box className="user-profile">
+      <Container>
+        <Typography className="page-title" variant="h2" align="center">
+          My Orders
+        </Typography>
+        <Box className="order-product__items">
+          {allOrders.length > 0 ? (
+            allOrders.map((order: Order) => (
               <Box
                 className="order-product__item"
                 key={order.id}
@@ -40,18 +51,22 @@ const MyOrders: FC = () => {
                   <Typography gutterBottom variant="h2">
                     Order #{order.id}
                   </Typography>
-                  <Typography variant="body1">Date: {order.date}</Typography>
+                  <Typography variant="body1">Date: {formatDate(order.date_created)}</Typography>
                   <Typography variant="body1">Status: {order.status}</Typography>
                 </Box>
-                <Link href={`/my-orders/${order.id}`}>
+                <ProgressBarLink href={`/my-orders/${order.id}`}>
                   <ArrowForwardIcon />
-                </Link>
+                </ProgressBarLink>
               </Box>
-            ))}
-          </Box>
-        </Container>
-      </Box>
-    </>
+            ))
+          ) : (
+            <Typography variant="body1" my={5} align="center">
+              No orders found.
+            </Typography>
+          )}
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

@@ -207,3 +207,30 @@ export const ResetPassword = async ({ email, code, password }: { email: string; 
     }
   }
 };
+
+export const GetAllOrders = async () => {
+  const token = await GetToken();
+  return await FetchInstance(Endpoints.getAllOrders, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetOrderById = async (id: number) => {
+  const token = await GetToken();
+  return await FetchInstance(`${Endpoints.getOrderById}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetVipEventDetails = async (id: number) => {
+  const token = await GetToken();
+  return await FetchInstance(`${Endpoints.getVipEventDetails}/${id}?_fields=id,title,acf`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

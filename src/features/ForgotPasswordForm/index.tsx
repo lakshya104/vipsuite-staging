@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +11,7 @@ import './ForgotPasswordForm.scss';
 import { useRouter } from 'next/navigation';
 import { ForgotPassword } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
+import Link from 'next/link';
 
 const ForgotPasswordForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -59,7 +60,6 @@ const ForgotPasswordForm = () => {
       setIsPending(false);
       setIsDialogOpen(true);
     } catch (error) {
-      console.error('Error during forgot password request:', error);
       openToaster('Error during profile update. ' + error);
     } finally {
       setIsPending(false);
@@ -79,6 +79,20 @@ const ForgotPasswordForm = () => {
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
         {isPending ? 'Sending...' : 'Send Reset Link'}
       </Button>
+      <Typography className="signup-text">
+        Don&apos;t have an account?{' '}
+        <Link
+          href={'/on-boarding'}
+          style={{
+            textDecoration: 'underline',
+            padding: 0,
+            margin: 0,
+            color: 'white',
+          }}
+        >
+          Apply here
+        </Link>
+      </Typography>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />

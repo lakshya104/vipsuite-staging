@@ -34,8 +34,8 @@
   &__item {
     padding: rem(16) 0;
     gap: rem(20);
+    border-bottom: rem(1) solid var(--color-textBlack-10);
     &:last-of-type {
-      border-bottom: rem(1) solid var(--color-textBlack-10);
       margin-bottom: rem(20);
     }
     .order-details-page & {

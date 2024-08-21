@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import FeedLikeIcon from '../FeedLikeIcon';
-import Link from 'next/link';
 import { Brand } from '@/interfaces/brand';
+import { ProgressBarLink } from '../ProgressBar';
 
 interface BrandCardProps {
   item: Brand;
@@ -17,7 +17,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
       }}
     >
       <FeedLikeIcon />
-      <Link href={`/brands/${item.id}`}>
+      <ProgressBarLink href={`/brands/${item.id}`}>
         {' '}
         <CardContent className="landing-product__item-content">
           <Typography variant="h2">{item?.title?.rendered}</Typography>
@@ -28,7 +28,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
           )}
           <Typography variant="body2">{item['brand-category'].join(' | ')}</Typography>
         </CardContent>
-      </Link>
+      </ProgressBarLink>
     </Card>
   );
 };

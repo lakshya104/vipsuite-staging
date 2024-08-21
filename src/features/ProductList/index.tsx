@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import ProductCard from '@/components/ProductCard';
 import './ProductList.scss';
 import { GetBrandProducts } from '@/libs/api-manager/manager';
@@ -7,8 +7,7 @@ import { BrandProduct } from '@/interfaces/brand';
 
 const ProductList = async ({ brandId }: { brandId: number }) => {
   const id = brandId;
-  console.log({ id });
-  const brandProducts = await GetBrandProducts(12);
+  const brandProducts = await GetBrandProducts(id);
 
   return (
     <Box className="product-listing">
@@ -18,10 +17,6 @@ const ProductList = async ({ brandId }: { brandId: number }) => {
             <Typography variant="h6" align="center">
               No products available for this brand.
             </Typography>
-          </Grid>
-        ) : brandProducts.length < 1 ? (
-          <Grid item xs={12} container justifyContent="center">
-            <CircularProgress />
           </Grid>
         ) : (
           brandProducts.map((product: BrandProduct) => (

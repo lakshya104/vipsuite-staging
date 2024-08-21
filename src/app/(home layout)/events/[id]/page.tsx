@@ -1,29 +1,29 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
-import './Home.scss';
-import BrandsPage from '@/components/BrandsPage';
-import { GetBrands } from '@/libs/api-manager/manager';
-import { Brand } from '@/interfaces/brand';
+import '../Event.scss';
+import { GetVipEventDetails } from '@/libs/api-manager/manager';
+import { EventDetails } from '@/interfaces/events';
+import EventDetailsPage from '@/components/EventDetails';
 import ErrorToaster from '@/components/ErrorToaster';
 import { get } from 'lodash';
 
-export default async function Page() {
-  let brands: Brand[] | null = null;
+export default async function Page({ params }: { params: { id: number } }) {
+  let eventDetails: EventDetails | null = null;
   try {
-    brands = await GetBrands();
+    eventDetails = await GetVipEventDetails(Number(params?.id));
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
       return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
     } else {
-      return <ErrorToaster message="Brands not found!" errorMessage={String(error)} />;
+      return <ErrorToaster message="Event Details not found!" errorMessage={String(error)} />;
     }
   }
-  if (!brands) {
+  if (!eventDetails) {
     return (
       <Container>
         <Typography align="center" variant="h4" marginTop={5}>
-          Brands not found.
+          Event Details not found.
         </Typography>
       </Container>
     );
@@ -31,7 +31,7 @@ export default async function Page() {
   return (
     <Box component={'main'} className="landing-page">
       <Container>
-        <BrandsPage brands={brands} />
+        <EventDetailsPage event={eventDetails} />
       </Container>
     </Box>
   );

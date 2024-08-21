@@ -25,9 +25,9 @@ const SearchBar: FC<SearchBarProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = () => {
     setIsMenuOpen(true);
-    if (event.key === 'Enter' && handleSearch) {
+    if (handleSearch) {
       handleSearch();
       setIsMenuOpen(false);
     }
@@ -51,7 +51,7 @@ const SearchBar: FC<SearchBarProps> = ({
         InputProps={{
           startAdornment: (
             <InputAdornment className="search-box__icon" position="start">
-              <SearchIcon color="action" />
+              <SearchIcon sx={{ color: 'black' }} />
             </InputAdornment>
           ),
           endAdornment: searchTerm && handleClear && (
@@ -66,7 +66,7 @@ const SearchBar: FC<SearchBarProps> = ({
       {searchTerm && searchWithSuggestions && isMenuOpen && (
         <Box className="search-box__popover">
           <MenuItem onClick={handleMenuClick}>
-            Search for&nbsp;<Typography>{searchTerm}</Typography>
+            Search for&nbsp;<Typography fontWeight="500">{searchTerm}</Typography>
           </MenuItem>
         </Box>
       )}

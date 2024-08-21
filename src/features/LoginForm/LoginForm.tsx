@@ -10,6 +10,7 @@ import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
 import DialogBox from '@/components/Dialog/Dialog';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -17,6 +18,7 @@ const LoginForm = () => {
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   const reviewDialogBoxContent = {
     title: 'Thank You!',
@@ -36,9 +38,11 @@ const LoginForm = () => {
   };
   const handleReviewDialogBoxDataChange = (open: boolean) => {
     setIsReviewDialogOpen(open);
+    router.push('/');
   };
   const handleRejectDialogBoxDataChange = (open: boolean): void => {
     setIsRejectDialogOpen(open);
+    router.push('/');
   };
 
   const {
@@ -74,8 +78,7 @@ const LoginForm = () => {
           }
         })
         .catch((error) => {
-          console.error('Error during login:', error);
-          setError('An unexpected error occurred');
+          setError('An unexpected error occurred' + error);
           setToasterOpen(true);
         });
     });

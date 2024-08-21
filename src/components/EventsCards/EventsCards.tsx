@@ -12,7 +12,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, description }) => {
   return (
     <Card className="site-card__item">
       <Box className="site-card__image">
-        <Image src="/img/card.jpg" alt={title} height={672} width={1256} />
+        <Image src="/img/card.jpg" alt={title} height={672} width={1256} priority />
       </Box>
       <CardContent className="site-card__content">
         <Typography variant="h6" component="h2">

@@ -1,11 +1,12 @@
 import React from 'react';
-import { GetVipEvents } from '@/libs/api-manager/manager';
 import { Grid } from '@mui/material';
-import { Event } from '@/interfaces/enents';
 import EventCard from './EventCard';
+import { Event } from '@/interfaces/events';
 
-const EventsListing = async () => {
-  const events: Event[] = await GetVipEvents();
+interface EventListingProps {
+  events: Event[];
+}
+const EventsListing: React.FC<EventListingProps> = ({ events }) => {
   return (
     <Grid className="landing-product" container spacing={2.5}>
       {events.map((item) => (

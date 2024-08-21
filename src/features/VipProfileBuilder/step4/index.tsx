@@ -138,7 +138,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       await UpdateProfile(id, token, removeEmptyStrings(profile));
       onNext(updatedProfileDetail);
     } catch (error) {
-      console.error('Error during profile update:', error);
       openToaster('Error during profile update. ' + error);
     } finally {
       setIsLoading(false);
@@ -149,7 +148,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
-          More About You...
+          Interested in
         </Typography>
       </Box>
       {vipStep4formFields.map(({ name, label, type, options, placeholder }) => (

@@ -118,14 +118,13 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     const childInfo =
       data.numberOfChildren === '0'
         ? data.ageOfChild?.map(() => ({
-            dob: null,
-            gender: null,
+            dob: '',
+            gender: '',
           })) || []
         : data.ageOfChild?.map((dob, index) => ({
             dob: dob,
             gender: data.genderOfChild?.[index],
           })) || [];
-
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
@@ -138,7 +137,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         home_post_code: data.homePostcode,
         child_info: childInfo,
       };
-
       const profile = {
         acf: {
           first_name: profileDetail.first_name,
@@ -156,16 +154,15 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       await UpdateProfile(id, token, removeEmptyStrings(profile));
       onNext(updatedProfileDetail);
     } catch (error) {
-      console.error('Error during profile update:', error);
       openToaster('Error during profile update. ' + error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Watch number of children to dynamically show age and gender fields
   const numberOfChildren = watch('numberOfChildren');
-
+  const homePostcodeValue = watch('homePostcode');
+  const petsValue = watch('pets');
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
@@ -174,7 +171,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         </Typography>
       </Box>
       {vipStep3formFields.map((field) => {
-        // Conditionally render ageOfChild and genderOfChild fields based on numberOfChildren
         if (field.name === 'ageOfChild') {
           const numChildren = parseInt(numberOfChildren || '0', 10);
           if (numChildren > 0) {
@@ -204,14 +200,12 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           }
           return null;
         }
-
         const commonProps = {
           name: field.name,
           control,
           label: field.label,
           errors,
         };
-
         switch (field.type) {
           case 'select':
             return (
@@ -230,12 +224,12 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
             return (
               <Box key={field.name} width="100%">
                 <InputTextFormField {...commonProps} placeholder={field.placeholder} />
-                {field.name === 'pets' && !errors[field.name] && (
+                {field.name === 'pets' && !errors[field.name] && !petsValue && (
                   <Box className="input-text">
                     <Typography>Separate with commas</Typography>
                   </Box>
                 )}
-                {field.name === 'homePostcode' && !errors[field.name] && (
+                {field.name === 'homePostcode' && !errors[field.name] && !homePostcodeValue && (
                   <Box className="input-text">
                     <Typography>You can enter the first part only e.g. EC1</Typography>
                   </Box>

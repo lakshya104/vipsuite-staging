@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import '../styles/globals.scss';
 import theme from './theme';
 import { ThemeProvider } from '@mui/material/styles';
+import { ProgressBar } from '@/components/ProgressBar';
 
 export const metadata: Metadata = {
   title: 'THE VIP SUITE',
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <ProgressBar>{children}</ProgressBar>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

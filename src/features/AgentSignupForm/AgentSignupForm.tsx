@@ -72,7 +72,6 @@ const AgentSignupForm = () => {
   };
 
   const handleError = (error: unknown) => {
-    console.error('Signup error:', error);
     if (error instanceof Error) {
       setError(error.message);
     } else if (typeof error === 'string') {
