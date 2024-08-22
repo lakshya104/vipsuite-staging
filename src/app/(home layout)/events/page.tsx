@@ -19,10 +19,10 @@ export default async function Page() {
       return <ErrorToaster message="Events not found!" errorMessage={String(error)} />;
     }
   }
-  if (!events) {
+  if (!events || events.length === 0) {
     return (
       <Container>
-        <Typography align="center" variant="h4" marginTop={5}>
+        <Typography align="center" variant="h6" marginTop={5}>
           Currently there are no events.
         </Typography>
       </Container>
