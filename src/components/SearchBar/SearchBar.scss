@@ -23,7 +23,7 @@
     // width: 90%;
     margin: auto;
     padding: 0;
-    height: rem(48);
+    height: rem(44);
     background-color: $white;
     @include border-radius(38px);
     &:-webkit-autofill {
@@ -40,7 +40,9 @@
   }
   fieldset {
     padding: 0;
-    border-color: var(--color-textBlack);
+    border: rem(1) solid var(--color-textBlack-20) !important;
+    height: rem(49);
+    top: rem(-4);
     @include border-radius(38px);
   }
   button {

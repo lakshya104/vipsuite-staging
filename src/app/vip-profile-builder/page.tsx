@@ -4,8 +4,8 @@ import ProfileBuilder from '@/features/VipProfileBuilder';
 import { ProfileBuilderOptions, UserProfile } from '@/interfaces';
 
 const VIPProfileBuilder = async () => {
-  const token: string = await GetToken();
-  const id: number = await GetLoginUserId();
+  const token = await GetToken();
+  const id = await GetLoginUserId();
   const profileBuilderOptions: ProfileBuilderOptions = await GetProfileBuilderContent();
   const profileDetails: UserProfile = await GetProfile(token);
   return (

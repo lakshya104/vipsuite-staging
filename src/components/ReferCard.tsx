@@ -12,7 +12,7 @@ interface ReferCardProps {
 
 const ReferCard: React.FC<ReferCardProps> = ({ heading, text, href }) => {
   return (
-    <Card className="gray-card__item" sx={{ backgroundColor: ' #f0f0e5' }}>
+    <Card className="gray-card__item">
       <CardContent>
         <Typography variant="h2">{heading}</Typography>
         <Typography variant="body1">{text}</Typography>

@@ -1,24 +1,19 @@
 import axios from 'axios';
-import { SignUpRequestBody, UserProfile } from '@/interfaces';
+import { SignUpRequestBody, UserProfile, Session } from '@/interfaces';
 import { Endpoints } from './constants';
 import { FetchInstance, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 
-interface User {
-  token: string;
-  vip_profile_id: number;
-}
-
 export const GetToken = async () => {
   const session = await auth();
-  const token = (session?.user as User).token;
+  const token = (session?.user as unknown as Session).token;
   return token;
 };
 
 export const GetLoginUserId = async () => {
   const session = await auth();
-  const id = (session?.user as User).vip_profile_id;
+  const id = (session?.user as unknown as Session).vip_profile_id;
   return id;
 };
 

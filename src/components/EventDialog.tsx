@@ -25,57 +25,29 @@ const EventsDialog = ({ event }: { event: EventDetails }) => {
   return (
     <>
       <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          mt: 4,
-          pb: 10,
-        }}
       >
         <Button
           variant="contained"
-          sx={{
-            backgroundColor: 'black',
-            color: 'white',
-            borderRadius: '50px',
-            px: 15,
-            py: 2,
-            '&:hover': {
-              backgroundColor: 'black',
-            },
-          }}
+          className='button button--black'
           onClick={handleDialogOpen}
         >
           RSVP
         </Button>
       </Box>
 
-      <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
-        <IconButton
-          aria-label="close"
-          onClick={handleDialogClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+      <Dialog className="site-dialog" open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
         <DialogContent>
           <RSVP onClose={handleDialogClose} event={event} onConfirmation={handleConfirmationOpen} />
         </DialogContent>
       </Dialog>
 
-      <Dialog open={confirmationOpen} onClose={handleConfirmationClose} aria-labelledby="confirmation-dialog-title">
+      <Dialog className="site-dialog" open={confirmationOpen} onClose={handleConfirmationClose} aria-labelledby="confirmation-dialog-title">
         <DialogContent>
           <Typography
             id="confirmation-dialog-title"
             variant="h6"
             component="h1"
             gutterBottom
-            sx={{ fontWeight: 'bold', color: '#1B1B1B' }}
           >
             RSVP Confirmed!
           </Typography>
@@ -83,26 +55,16 @@ const EventsDialog = ({ event }: { event: EventDetails }) => {
             Please check your email for your event confirmation and details. If you have any additional questions,
             please contact one of the team on info@thevipsuite.co.uk
           </Typography>
+          <DialogActions>
+            <Button
+              variant="contained"
+              onClick={handleConfirmationClose}
+              className='button button--black'
+            >
+              Back to All Events
+            </Button>
+          </DialogActions>
         </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            onClick={handleConfirmationClose}
-            sx={{
-              backgroundColor: 'black',
-              color: 'white',
-              borderRadius: '50px',
-              px: 12,
-              py: 2,
-              border: '2px solid black',
-              '&:hover': {
-                backgroundColor: 'black',
-              },
-            }}
-          >
-            Back to All Events
-          </Button>
-        </DialogActions>
       </Dialog>
     </>
   );

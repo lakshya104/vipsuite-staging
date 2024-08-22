@@ -14,6 +14,7 @@ import { UpdateProfile } from '@/libs/api-manager/manager';
 import { signOut } from 'next-auth/react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
+import { useRouter } from 'next/navigation';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -28,6 +29,8 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const interestOptions = profileBuilderOptions.interests_options;
   const interests = profileDetail.interests;
+  const isApproved = profileDetail.profile_status === 'approved' ? true : false;
+
   const {
     register,
     handleSubmit,
@@ -40,8 +43,9 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
       interests: interests,
     },
   });
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState<string>('');
+  const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
+  const router = useRouter();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const handleDialogBoxDataChange = (data: boolean) => {
@@ -85,7 +89,11 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
         },
       };
       await UpdateProfile(id, token, removeEmptyStrings(profile));
-      setIsDialogOpen(true);
+      if (isApproved) {
+        router.push('/profile');
+      } else {
+        setIsDialogOpen(true);
+      }
     } catch (error) {
       openToaster('Error during profile update. ' + error);
     } finally {
@@ -154,7 +162,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity='error' />
     </>
   );
 };

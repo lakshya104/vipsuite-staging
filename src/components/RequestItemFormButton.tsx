@@ -46,7 +46,7 @@ const RequestItemFormButton: React.FC = () => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+      <Box className="request-button">
         <Button className="button" onClick={handleClickOpen}>
           Request Items from Lookbook
         </Button>

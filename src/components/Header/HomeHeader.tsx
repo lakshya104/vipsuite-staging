@@ -16,7 +16,7 @@ const navLinks = [
   },
   {
     label: 'Opportunities',
-    href: '/opprotunities',
+    href: '/opportunities',
   },
   {
     label: 'Events',

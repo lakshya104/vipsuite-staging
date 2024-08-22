@@ -3,39 +3,45 @@ import { Box, Card, Container, Typography } from '@mui/material';
 import FeedLikeIcon from '@/components/FeedLikeIcon';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
+import './EventDetails.scss';
 
 const EventDetailsPage = ({ event }: { event: EventDetails }) => {
   const eventImageUrl = event.acf.event_image.sizes['1536x1536'];
   return (
-    <Container>
-      <EventContainer imageUrl={eventImageUrl} />
-      <Typography variant="h6" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+    <Box className="product-detail">
+      <Typography className="page-title" variant="h2" component="h1" align="center">
         {event.title.rendered}
       </Typography>
-      <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-        <Box component="span" sx={{ fontWeight: 'bold' }}>
-          Date:
-        </Box>{' '}
-        {event.acf.event_start_date} - {event.acf.event_end_date}
-      </Typography>
-      <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-        <Box component="span" sx={{ fontWeight: 'bold' }}>
-          Location:
-        </Box>{' '}
-        {event.acf.event_location}
-      </Typography>
-      <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: '#1B1B1B' }}>
-        Quick Overview
-      </Typography>
-      <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-        {event.acf.event_quick_overview}
-      </Typography>
-      <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: '#1B1B1B' }}>
-        Details
-      </Typography>
-      <Box dangerouslySetInnerHTML={{ __html: event.acf.event_details }} sx={{ color: '#494947' }} />
+      <EventContainer imageUrl={eventImageUrl} />
+      <Box className="product-detail__content">
+        <Typography variant="h2" gutterBottom>
+          {event.title.rendered}
+        </Typography>
+        <Typography variant="body1">
+          <Box component="strong">
+            Date:
+          </Box>{' '}
+          {event.acf.event_start_date} - {event.acf.event_end_date}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          <Box component="strong">
+            Location:
+          </Box>{' '}
+          {event.acf.event_location}
+        </Typography>
+        <Typography variant="h6" component="h3" gutterBottom>
+          Quick Overview
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {event.acf.event_quick_overview}
+        </Typography>
+        <Typography variant="h6" component="h3" gutterBottom>
+          Details
+        </Typography>
+        <Box dangerouslySetInnerHTML={{ __html: event.acf.event_details }} />
+      </Box>
       <EventsDialog event={event} />
-    </Container>
+    </Box>
   );
 };
 interface EventContainerProps {
@@ -45,7 +51,7 @@ interface EventContainerProps {
 const EventContainer = ({ imageUrl }: EventContainerProps) => {
   return (
     <Card
-      className="landing-product__item-inner"
+      className="product-detail__item"
       sx={{
         backgroundImage: `url(${imageUrl})`,
       }}

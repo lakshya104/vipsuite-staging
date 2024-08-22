@@ -1,4 +1,5 @@
-export function calculateAge(dateOfBirth: string): number {
+export function calculateAge(dateOfBirth: string | undefined): number {
+  if (!dateOfBirth) return 0;
   const today = new Date();
   const birthDate = new Date(dateOfBirth);
 

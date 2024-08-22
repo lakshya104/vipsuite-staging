@@ -59,6 +59,8 @@ const theme = createTheme(baseTheme, {
         root: {
           '&.MuiContainer-maxWidthLg': {
             maxWidth: '1324px',
+            paddingLeft: '20px',
+            paddingRight: '20px'
           },
         },
       },

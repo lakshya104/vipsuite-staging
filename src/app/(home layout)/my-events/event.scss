@@ -84,7 +84,7 @@
   &__uploader {
     height: rem(149);
     padding: rem(9) rem(16) rem(11) rem(20);
-    border: rem(1) solid var(--color-textBlack-20);
+    border: rem(1) solid var(--color-textBlack);
     @include border-radius(10px);
     @include flex(center, center);
   }

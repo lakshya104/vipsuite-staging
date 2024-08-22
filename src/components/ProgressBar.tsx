@@ -43,9 +43,9 @@ export function ProgressBar({ children }: { children: React.ReactNode }) {
               color: 'black',
               top: 0,
               position: 'fixed',
-              height: '4px',
+              height: '5px',
               backgroundColor: 'black',
-              opacity: 0.75,
+              opacity: 0.8,
             }}
             exit={{ opacity: 0 }}
           />

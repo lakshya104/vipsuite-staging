@@ -33,45 +33,49 @@ export default async function Page({ params }: PageProps) {
   }
   if (!brandDetails) {
     return (
-      <Container>
-        <Typography align="center" variant="h4" marginTop={5}>
-          Details not found.
-        </Typography>
-      </Container>
+      <Box component={'main'} className="product-detail">
+        <Container>
+          <Typography className="page-title" variant="h2" component="h1" align="center">
+            Details not found.
+          </Typography>
+        </Container>
+      </Box>
     );
   }
 
   return (
-    <Container>
-      <Typography variant="h2" align="center" sx={{ py: 1 }}>
-        {brandDetails.title.rendered}
-      </Typography>
-      <BrandContainer item={brandDetails} />
-      <Typography sx={{ py: 2 }}>{brandDetails.acf.short_description}</Typography>
-      <ReferCard
-        heading="Spring/Summer '24 Lookbook"
-        text="Download the latest Lookbook from Boda Skins to view the whole collection"
-        href="/"
-      />
-      <RequestItemFormButton />
-      <Box className="product-list__page">
-        <Container>
+    <Box component={'main'} className="product-detail">
+      <Container>
+        <Typography className="page-title" variant="h2" component="h1" align="center">
+          {brandDetails.title.rendered}
+        </Typography>
+        <BrandContainer item={brandDetails} />
+        <Typography className='product-detail__content'>{brandDetails.acf.short_description}</Typography>
+        <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
+          <ReferCard
+            heading="Spring/Summer '24 Lookbook"
+            text="Download the latest Lookbook from Boda Skins to view the whole collection"
+            href="/"
+          />
+        </Box>
+        <RequestItemFormButton />
+        <Box className="product-list__page">
           <Typography variant="h2" gutterBottom>
             Products
           </Typography>
           <Suspense fallback={<CustomLoader />}>
             <ProductList brandId={brandDetails.acf.associated_brand} />
           </Suspense>
-        </Container>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 
 const BrandContainer = ({ item }: { item: BrandDetails }) => {
   return (
     <Card
-      className="landing-product__item-inner"
+      className="product-detail__item"
       sx={{
         backgroundImage: `url(${item.acf.brand_image.sizes.large})`,
       }}

@@ -42,7 +42,7 @@
     margin-bottom: rem(17);
     @include border-radius(6px);
     @media only screen and (max-width: 767px) {
-      min-height: auto;
+      min-height: auto !important;
     }
     [aria-label='profile tabs'] {
       justify-content: space-between;

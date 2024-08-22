@@ -21,15 +21,17 @@ export default async function Page({ params }: { params: { id: number } }) {
   }
   if (!eventDetails) {
     return (
-      <Container>
-        <Typography align="center" variant="h4" marginTop={5}>
-          Event Details not found.
-        </Typography>
-      </Container>
+      <Box component={'main'} className="product-detail">
+        <Container>
+          <Typography className="page-title" variant="h2" align="center">
+            Event Details not found.
+          </Typography>
+        </Container>
+      </Box>
     );
   }
   return (
-    <Box component={'main'} className="landing-page">
+    <Box component={'main'} className="product-detail">
       <Container>
         <EventDetailsPage event={eventDetails} />
       </Container>

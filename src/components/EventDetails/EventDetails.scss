@@ -1,0 +1,61 @@
+/*
+* Home style.
+*/
+
+@import '../../styles/mixins';
+
+main.product-detail {
+  margin: rem(23) 0 rem(120);
+  @media only screen and (min-width: 768px) {
+    margin: rem(72) 0;
+  }
+  .page-title {
+    padding: rem(23) 0;
+  }
+  .request-button {
+    margin-bottom: rem(26);
+    text-align: center;
+  }
+  button {
+    @media only screen and (max-width: 767px) {
+      width: 100%;
+    }
+  }
+}
+div.product-detail {
+  &__content {
+    padding: rem(20) 0;
+    p {
+      color: var(--color-textBlack-80);
+      @media only screen and (max-width: 767px) {
+        line-height: 1.54;
+        letter-spacing: -0.01em;
+        @include fontSize(13);
+      }
+    }
+    h2 {
+      margin-bottom: rem(10);
+    }
+    h3 {
+      @media only screen and (max-width: 767px) {
+        margin-bottom: rem(8);
+        font-weight: 500;
+        line-height: 1.07;
+        letter-spacing: -0.03em;
+        @include fontSize(16);
+      }
+    }
+  }
+  &__item {
+    position: relative;
+    height: 485px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 0 transparent;
+    @include border-radius(8px);
+    .MuiChip-filled {
+      background: var(--color-white);
+      @include absolute(left 12px top 12px);
+    }
+  }
+}

@@ -39,13 +39,20 @@ export interface ACF {
   associated_brands?: boolean;
   secondary_email?: string | null;
   phone?: string;
+  profile_status?: string;
 }
 
 export interface UserProfile {
-  id?: number;
-  name?: string;
+  id: number;
+  name: string;
   acf: ACF;
-  vip_profile_id?: number;
-  account_status?: string;
-  role?: string;
+  vip_profile_id: number;
+  account_status: string;
+  role: string;
 }
+
+export interface AuthToken {
+  token: string;
+}
+
+export type Session = UserProfile & AuthToken;

@@ -1,0 +1,53 @@
+/*
+* Address page style.
+*/
+
+@import '../../../styles/mixins';
+
+.opportunities {
+  margin: rem(23) 0 rem(120);
+  @media only screen and (min-width: 768px) {
+    margin: rem(72) 0;
+  }
+  .page-title {
+    padding: rem(13) 0;
+    border-bottom: rem(1) solid var(--color-textBlack-10);
+    @include relative;
+    a {
+      @include absolute(left 0);
+    }
+  }
+  .MuiTypography-body1 {
+    color: var(--color-textBlack-80);
+    @media only screen and (max-width: 767px) {
+      line-height: 1.33;
+      letter-spacing: -0.01em;
+      @include fontSize(12);
+    }
+  }
+}
+.opportunities-card {
+  margin-bottom: rem(40);
+  &__item {
+    &-inner {
+      position: relative;
+      height: 350px;
+      background-size: cover;
+      background-position: center;
+      .MuiChip-filled {
+        background: var(--color-white);
+        @include absolute(left 12px top 12px);
+      }
+    }
+    &-content {
+      padding: rem(12) !important;
+      color: var(--color-marble);
+      @include absolute(bottom 0 left 0);
+      p {
+        @media only screen and (max-width: 767px) {
+          @include fontSize(12);
+        }
+      }
+    }
+  }
+}

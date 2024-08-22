@@ -1,26 +1,16 @@
 import React from 'react';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Container, Link, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import './profile.scss';
-import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 import { calculateAge } from '@/helpers/utils';
 import Image from 'next/image';
-import ErrorToaster from '@/components/ErrorToaster';
-import { get } from 'lodash';
+import { UserProfile } from '@/interfaces';
+import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 
-export default async function Page() {
+const Profile = async() => {
   const token = await GetToken();
-  let profileDetails = null;
-  try {
-    profileDetails = await GetProfile(token);
-  } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Profile not found!" errorMessage={String(error)} />;
-    }
-  }
+  const profileDetails: UserProfile = await GetProfile(token);
+
   if (!profileDetails) {
     return (
       <Container>
@@ -51,11 +41,11 @@ export default async function Page() {
               {profileDetails?.name}
             </Typography>
             <Typography variant="body2" mb={2}>
-              Age {age} | Female | Married
+              Age {age}
             </Typography>
-            <Button variant="text" size="small">
+            <Link href={'/vip-profile-builder'} className="button button--link">
               Edit Profile
-            </Button>
+            </Link>
           </Box>
           <Box>
             <ProfileTabs profileData={profileDetails.acf} />
@@ -65,3 +55,5 @@ export default async function Page() {
     </>
   );
 }
+
+export default Profile;

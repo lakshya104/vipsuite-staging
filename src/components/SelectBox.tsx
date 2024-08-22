@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, FormHelperText, MenuItem, Select } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-form';
 
 type SelectBoxProps<T extends FieldValues> = {
@@ -11,33 +11,31 @@ type SelectBoxProps<T extends FieldValues> = {
   errors: FieldErrors<T>;
 };
 
-const SelectBox = <T extends FieldValues>({
-  name,
-  control,
-  options,
-  label,
-  errors,
-}: SelectBoxProps<T>) => {
+const SelectBox = <T extends FieldValues>({ name, control, options, label, errors }: SelectBoxProps<T>) => {
   return (
     <FormControl fullWidth error={!!errors[name]}>
       <Controller
         name={name}
         control={control}
         render={({ field }) => (
-          <Select
-            {...field}
-            label={label}
-            value={field.value || ''}
-            displayEmpty
-            error={!!errors[name]}
-          >
-            <MenuItem value="">{label}</MenuItem>
-            {options?.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
+          <>
+            <InputLabel>{label}</InputLabel>
+            <Select
+              defaultValue=""
+              {...field}
+              label={label}
+              value={field.value || ''}
+              inputProps={{ 'aria-label': ' label' }}
+              error={!!errors[name]}
+            >
+              <MenuItem value="">{label}</MenuItem>
+              {options?.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </>
         )}
       />
       {errors[name] && <FormHelperText>{errors[name]?.message as string}</FormHelperText>}
