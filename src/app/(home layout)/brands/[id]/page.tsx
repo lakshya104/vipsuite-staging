@@ -46,7 +46,7 @@ export default async function Page({ params }: PageProps) {
       <Typography variant="h2" align="center" sx={{ py: 1 }}>
         {brandDetails.title.rendered}
       </Typography>
-      <BrandContainer />
+      <BrandContainer item={brandDetails} />
       <Typography sx={{ py: 2 }}>{brandDetails.acf.short_description}</Typography>
       <ReferCard
         heading="Spring/Summer '24 Lookbook"
@@ -68,12 +68,12 @@ export default async function Page({ params }: PageProps) {
   );
 }
 
-const BrandContainer = () => {
+const BrandContainer = ({ item }: { item: BrandDetails }) => {
   return (
     <Card
       className="landing-product__item-inner"
       sx={{
-        backgroundImage: `url(/img/bodaSkins.png)`,
+        backgroundImage: `url(${item.acf.brand_image.sizes.large})`,
       }}
     >
       <FeedLikeIcon />

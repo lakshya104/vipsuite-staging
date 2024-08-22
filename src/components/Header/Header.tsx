@@ -53,7 +53,7 @@ const Header = () => {
             </MenuList>
           </Box>
           <Box className="site-header__user">
-            <Link href={'/login'} className="button button--link">
+            <Link href={'/login'} style={{ paddingTop: '20px', paddingBottom: '20px' }} className="button button--link">
               Login
             </Link>
             <Link href={'/on-boarding'} className="button button--white">

@@ -14,7 +14,6 @@ type SelectBoxProps<T extends FieldValues> = {
 const SelectBox = <T extends FieldValues>({
   name,
   control,
-  placeholder,
   options,
   label,
   errors,
@@ -26,11 +25,10 @@ const SelectBox = <T extends FieldValues>({
         control={control}
         render={({ field }) => (
           <Select
-            defaultValue=""
             {...field}
-            label={placeholder}
+            label={label}
+            value={field.value || ''}
             displayEmpty
-            inputProps={{ 'aria-label': 'Without label' }}
             error={!!errors[name]}
           >
             <MenuItem value="">{label}</MenuItem>

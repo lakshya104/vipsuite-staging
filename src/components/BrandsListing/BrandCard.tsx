@@ -13,7 +13,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
     <Card
       className="landing-product__item-inner"
       sx={{
-        backgroundImage: `url(/img/bodaSkins.png)`,
+        backgroundImage: `url(${item.acf?.brand_image.url})`,
       }}
     >
       <FeedLikeIcon />

@@ -143,7 +143,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
           <Typography
             color="error"
             textAlign="center"
-            sx={{ position: 'absolute', bottom: '20%', left: { xs: '25%', md: '30%' } }}
+            sx={{ position: 'absolute', zIndex: 999, bottom: '10%', left: { xs: '24%', md: '30%' } }}
           >
             {errors.interests.message}
           </Typography>

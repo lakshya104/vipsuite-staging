@@ -23,7 +23,7 @@ const InputTextFormField = <T extends FieldValues>({
         <TextField
           fullWidth
           type="text"
-          placeholder={placeholder}
+          label={placeholder}
           onChange={onChange}
           onBlur={onBlur}
           value={value}

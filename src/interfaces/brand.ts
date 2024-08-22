@@ -1,3 +1,5 @@
+import { EventImage } from './events';
+
 export interface BrandDetails {
   id: number;
   date?: string;
@@ -23,7 +25,7 @@ export interface BrandDetails {
     contact_name: string;
     type_of_business: string;
     short_description: string;
-    brand_image: number;
+    brand_image: EventImage;
   };
   _links: {
     self: Array<{
@@ -222,7 +224,7 @@ export interface Brand {
   };
   acf?: {
     associated_brand: number;
-    brand_image: number;
+    brand_image: EventImage;
     brand_name: string;
     contact_name: string;
     type_of_business: string;

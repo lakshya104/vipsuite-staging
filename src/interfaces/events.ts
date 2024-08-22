@@ -1,4 +1,4 @@
-interface EventImageSizes {
+export interface EventImageSizes {
   thumbnail: string;
   thumbnailWidth: number;
   thumbnailHeight: number;
@@ -26,33 +26,6 @@ interface EventImageSizes {
   woocommerceGalleryThumbnail: string;
   woocommerceGalleryThumbnailWidth: number;
   woocommerceGalleryThumbnailHeight: number;
-}
-
-interface EventImage {
-  ID: number;
-  id: number;
-  title: string;
-  filename: string;
-  filesize: number;
-  url: string;
-  link: string;
-  alt: string;
-  author: string;
-  description: string;
-  caption: string;
-  name: string;
-  status: string;
-  uploaded_to: number;
-  date: string;
-  modified: string;
-  menu_order: number;
-  mime_type: string;
-  type: string;
-  subtype: string;
-  icon: string;
-  width: number;
-  height: number;
-  sizes: EventImageSizes;
 }
 
 interface EventACF {
@@ -134,7 +107,7 @@ export interface EventDetails {
   _links: Links;
 }
 
-interface EventImage {
+export interface EventImage {
   ID: number;
   id: number;
   title: string;

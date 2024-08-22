@@ -97,7 +97,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           </Typography>
           <TextField
             fullWidth
-            placeholder="Email"
+            label="Email"
             variant="outlined"
             margin="normal"
             {...register(`${section.toLowerCase()}Email` as keyof FormValues)}
@@ -106,7 +106,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           />
           <TextField
             fullWidth
-            placeholder="Secondary Email"
+            label="Secondary Email"
             variant="outlined"
             margin="normal"
             {...register(`${section.toLowerCase()}SecondaryEmail` as keyof FormValues)}

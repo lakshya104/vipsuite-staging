@@ -68,7 +68,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       name: 'numberOfChildren',
       label: 'Number of Children',
       type: 'select',
-      options: number_of_childs_options.map((opt: string) => ({ value: opt, label: opt })),
+      options: number_of_childs_options.map((opt: string) => ({ value: opt, label: `${opt} Child` })),
     },
     {
       name: 'ageOfChild',
@@ -116,15 +116,21 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const onSubmit = async (data: Step3FormValues) => {
     setIsLoading(true);
     const childInfo =
-      data.numberOfChildren === '0'
-        ? data.ageOfChild?.map(() => ({
-            dob: '',
-            gender: '',
-          })) || []
-        : data.ageOfChild?.map((dob, index) => ({
-            dob: dob,
-            gender: data.genderOfChild?.[index],
-          })) || [];
+      parseInt(data.numberOfChildren || '0', 10) === 0
+        ? []
+        : data.ageOfChild?.map((dob, index) => {
+            if (index < parseInt(data.numberOfChildren || '0', 10)) {
+              return {
+                dob: dob || '',
+                gender: data.genderOfChild?.[index] || '',
+              };
+            } else {
+              return {
+                dob: '',
+                gender: '',
+              };
+            }
+          }) || [];
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
@@ -151,6 +157,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           child_info: childInfo,
         },
       };
+      console.log({ profile });
       await UpdateProfile(id, token, removeEmptyStrings(profile));
       onNext(updatedProfileDetail);
     } catch (error) {
