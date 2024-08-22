@@ -50,7 +50,7 @@ export default async function Page({ params }: PageProps) {
           {brandDetails.title.rendered}
         </Typography>
         <BrandContainer item={brandDetails} />
-        <Typography className='product-detail__content'>{brandDetails.acf.short_description}</Typography>
+        <Typography className="product-detail__content">{brandDetails.acf.short_description}</Typography>
         <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
           <ReferCard
             heading="Spring/Summer '24 Lookbook"

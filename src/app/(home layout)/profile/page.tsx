@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { UserProfile } from '@/interfaces';
 import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 
-const Profile = async() => {
+const Profile = async () => {
   const token = await GetToken();
   const profileDetails: UserProfile = await GetProfile(token);
 
@@ -54,6 +54,6 @@ const Profile = async() => {
       </Box>
     </>
   );
-}
+};
 
 export default Profile;

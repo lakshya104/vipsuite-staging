@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Card, Container, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import FeedLikeIcon from '@/components/FeedLikeIcon';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
@@ -18,16 +18,10 @@ const EventDetailsPage = ({ event }: { event: EventDetails }) => {
           {event.title.rendered}
         </Typography>
         <Typography variant="body1">
-          <Box component="strong">
-            Date:
-          </Box>{' '}
-          {event.acf.event_start_date} - {event.acf.event_end_date}
+          <Box component="strong">Date:</Box> {event.acf.event_start_date} - {event.acf.event_end_date}
         </Typography>
         <Typography variant="body1" paragraph>
-          <Box component="strong">
-            Location:
-          </Box>{' '}
-          {event.acf.event_location}
+          <Box component="strong">Location:</Box> {event.acf.event_location}
         </Typography>
         <Typography variant="h6" component="h3" gutterBottom>
           Quick Overview

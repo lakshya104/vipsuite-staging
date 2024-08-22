@@ -162,7 +162,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity='error' />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };

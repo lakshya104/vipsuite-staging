@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Box, Button, Dialog, DialogContent, DialogActions, IconButton, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box, Button, Dialog, DialogContent, DialogActions, Typography } from '@mui/material';
 import RSVP from './RSVP';
 import { EventDetails } from '@/interfaces/events';
 import { useRouter } from 'next/navigation';
@@ -24,13 +23,8 @@ const EventsDialog = ({ event }: { event: EventDetails }) => {
 
   return (
     <>
-      <Box
-      >
-        <Button
-          variant="contained"
-          className='button button--black'
-          onClick={handleDialogOpen}
-        >
+      <Box>
+        <Button variant="contained" className="button button--black" onClick={handleDialogOpen}>
           RSVP
         </Button>
       </Box>
@@ -41,14 +35,14 @@ const EventsDialog = ({ event }: { event: EventDetails }) => {
         </DialogContent>
       </Dialog>
 
-      <Dialog className="site-dialog" open={confirmationOpen} onClose={handleConfirmationClose} aria-labelledby="confirmation-dialog-title">
+      <Dialog
+        className="site-dialog"
+        open={confirmationOpen}
+        onClose={handleConfirmationClose}
+        aria-labelledby="confirmation-dialog-title"
+      >
         <DialogContent>
-          <Typography
-            id="confirmation-dialog-title"
-            variant="h6"
-            component="h1"
-            gutterBottom
-          >
+          <Typography id="confirmation-dialog-title" variant="h6" component="h1" gutterBottom>
             RSVP Confirmed!
           </Typography>
           <Typography variant="body1" paragraph>
@@ -56,11 +50,7 @@ const EventsDialog = ({ event }: { event: EventDetails }) => {
             please contact one of the team on info@thevipsuite.co.uk
           </Typography>
           <DialogActions>
-            <Button
-              variant="contained"
-              onClick={handleConfirmationClose}
-              className='button button--black'
-            >
+            <Button variant="contained" onClick={handleConfirmationClose} className="button button--black">
               Back to All Events
             </Button>
           </DialogActions>
