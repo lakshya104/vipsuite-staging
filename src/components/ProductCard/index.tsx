@@ -2,9 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { BrandProduct } from '@/interfaces/brand';
-import Link from 'next/link';
 import Btn from '../Button/CommonBtn';
 import { truncateDescription } from '@/helpers/utils';
+import { ProgressBarLink } from '../ProgressBar';
 
 const ProductCard = ({ data }: { data: BrandProduct }) => {
   const { id, name, short_description } = data;
@@ -23,11 +23,11 @@ const ProductCard = ({ data }: { data: BrandProduct }) => {
         </Typography>
         <Box dangerouslySetInnerHTML={{ __html: productDesctiption }} />
       </CardContent>
-      <Link href={`/products/${id}`}>
+      <ProgressBarLink href={`/products/${id}`}>
         <Btn look="dark-filled" width="100%">
           View Item
         </Btn>
-      </Link>
+      </ProgressBarLink>
     </Card>
   );
 };

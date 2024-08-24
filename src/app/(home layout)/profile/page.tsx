@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Container, Link, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import './profile.scss';
 import { calculateAge } from '@/helpers/utils';
 import Image from 'next/image';
 import { UserProfile } from '@/interfaces';
 import { GetProfile, GetToken } from '@/libs/api-manager/manager';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
 const Profile = async () => {
   const token = await GetToken();
@@ -43,9 +44,9 @@ const Profile = async () => {
             <Typography variant="body2" mb={2}>
               Age {age}
             </Typography>
-            <Link href={'/vip-profile-builder'} className="button button--link">
+            <ProgressBarLink href={'/vip-profile-builder'} className="button button--link">
               Edit Profile
-            </Link>
+            </ProgressBarLink>
           </Box>
           <Box>
             <ProfileTabs profileData={profileDetails.acf} />

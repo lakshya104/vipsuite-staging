@@ -7,9 +7,9 @@ import ReferCard from '@/components/ReferCard';
 import ProductList from '@/features/ProductList';
 import { BrandDetails } from '@/interfaces/brand';
 import RequestItemFormButton from '@/components/RequestItemFormButton';
-import CustomLoader from '@/components/CustomLoader';
 import ErrorToaster from '@/components/ErrorToaster';
 import { get } from 'lodash';
+import ProductCardLoading from '@/components/ProductCard/ProductCardLoading';
 
 interface Params {
   id: string;
@@ -63,7 +63,7 @@ export default async function Page({ params }: PageProps) {
           <Typography variant="h2" gutterBottom>
             Products
           </Typography>
-          <Suspense fallback={<CustomLoader />}>
+          <Suspense fallback={<ProductCardLoading />}>
             <ProductList brandId={brandDetails.acf.associated_brand} />
           </Suspense>
         </Box>

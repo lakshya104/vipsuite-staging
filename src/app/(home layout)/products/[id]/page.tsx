@@ -6,6 +6,8 @@ import './ProductDetails.scss';
 import { GetBrandProductDetail } from '@/libs/api-manager/manager';
 import { BrandProductDetails } from '@/interfaces/brand';
 import type { Metadata, ResolvingMetadata } from 'next';
+import ErrorToaster from '@/components/ErrorToaster';
+import { get } from 'lodash';
 
 type Props = {
   params: { id: string };
@@ -17,9 +19,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   const previousImages = (await parent).openGraph?.images || [];
   return {
     title: product.title,
+    description: product.short_description || product.description.slice(0, 160),
     openGraph: {
       images: [
-        '/https://images.unsplash.com/photo-1523275335684-37898b6baf30?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D',
+        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D',
         ...previousImages,
       ],
     },
@@ -35,7 +38,17 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
-  const brandProductDetails: BrandProductDetails = await GetBrandProductDetail(parseInt(params.id));
+  let brandProductDetails: BrandProductDetails | null = null;
+  try {
+    brandProductDetails = await GetBrandProductDetail(parseInt(params.id));
+  } catch (error) {
+    const message = get(error, 'message', '');
+    if ((message as string) === 'Expired token') {
+      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
+    } else {
+      return <ErrorToaster message="Product Not Found!" errorMessage={String(error)} />;
+    }
+  }
   if (!brandProductDetails) {
     return (
       <Box className="product-details__page">

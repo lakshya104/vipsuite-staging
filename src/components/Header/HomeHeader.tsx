@@ -8,6 +8,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
 import { signOut } from 'next-auth/react';
+import { ProgressBarLink } from '../ProgressBar';
 
 const navLinks = [
   {
@@ -71,9 +72,9 @@ const HomeHeader = () => {
           <Box className="site-header__navbar">
             <MenuList className="site-header__navigation">
               {navLinks.map((link) => (
-                <Link href={link.href} title={link.label} key={link.href}>
+                <ProgressBarLink href={link.href} title={link.label} key={link.href}>
                   <MenuItem>{link.label}</MenuItem>
-                </Link>
+                </ProgressBarLink>
               ))}
             </MenuList>
           </Box>
@@ -92,7 +93,7 @@ const HomeHeader = () => {
                 <CloseIcon sx={{ cursor: 'pointer' }} onClick={toggleDrawer(false)} />
               </Box>
               {menuItems.map((item) => (
-                <Link href={item.href} key={item.label}>
+                <ProgressBarLink href={item.href} key={item.label}>
                   <Box
                     sx={{
                       display: 'flex',
@@ -112,7 +113,7 @@ const HomeHeader = () => {
                     </Box>
                     <ChevronRightIcon />
                   </Box>
-                </Link>
+                </ProgressBarLink>
               ))}
               <Box
                 sx={{

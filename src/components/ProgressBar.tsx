@@ -57,12 +57,24 @@ export function ProgressBar({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function ProgressBarLink({ href, children, ...rest }: { href: string; children: React.ReactNode }) {
+export function ProgressBarLink({
+  href,
+  children,
+  className,
+  title,
+  ...rest
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  title?: string;
+}) {
   const progress = useProgressBar();
   const router = useRouter();
 
   return (
     <Link
+      title={title}
       href={href}
       prefetch={true}
       onClick={(e) => {
@@ -75,6 +87,7 @@ export function ProgressBarLink({ href, children, ...rest }: { href: string; chi
         });
       }}
       {...rest}
+      className={className}
     >
       {children}
     </Link>
