@@ -68,7 +68,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       name: 'numberOfChildren',
       label: 'Number of Children',
       type: 'select',
-      options: number_of_childs_options.map((opt: string) => ({ value: opt, label: opt })),
+      options: number_of_childs_options.map((opt: string) => ({ value: opt, label: `${opt} Child` })),
     },
     {
       name: 'ageOfChild',
@@ -88,6 +88,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       placeholder: 'Home Postcode',
     },
   ];
+console.log({profileDetail});
 
   const defaultValues: Step3FormValues = {
     dateOfBirth: profileDetail.date_of_birth || '',

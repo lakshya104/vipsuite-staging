@@ -62,10 +62,7 @@ export default async function Page({ params }: PageProps) {
   }
   // const isRequestOnlyValue =
   //   brandProductDetails.meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
-  const productImage =
-    brandProductDetails.images.find((item) => item.name === 'placeholder-image-large')?.src ??
-    'https://archive.org/download/placeholder-image/placeholder-image.jpg';
-
+  const productImage = brandProductDetails.images[0].src
   const sizes = brandProductDetails.type === 'variable' ? brandProductDetails.attributes[0].options : [];
   const newSizes =
     brandProductDetails.type === 'variable'

@@ -67,7 +67,13 @@ export const GetProfile = async (token: string) => {
 
 export const GetBrands = async () => {
   try {
-    const response = await Instance.get(Endpoints.getBrands);
+    const token = await GetToken();
+    const response = await Instance.get(Endpoints.getBrands , {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+      });
+    console.log({response});
     return response.data;
   } catch (error) {
     console.error('Error during fetching brands:', error);
@@ -82,7 +88,12 @@ export const GetBrands = async () => {
 
 export const GetBrandDetails = async (id: number) => {
   try {
-    const response = await Instance.get(`${Endpoints.getBrandDetails}/${id}?_fields=id,title,acf&_embed=acf:user`);
+    const token = await GetToken();
+    const response = await Instance.get(`${Endpoints.getBrandDetails}/${id}?_fields=id,title,acf&_embed=acf:user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+      });
     return response.data;
   } catch (error) {
     console.error('Error during fetching brand details:', error);

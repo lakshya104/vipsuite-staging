@@ -2,8 +2,12 @@ import React from 'react';
 import { Box } from '@mui/material';
 import Image from 'next/image';
 import LoginForm from '@/features/LoginForm/LoginForm';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
-const LoginPage = () => {
+const LoginPage = async () => {
+  const session = await auth();
+  if (session) redirect('/home');
   return (
     <Box className="login__page">
       <Box flexGrow={1} className="login__page-logo">

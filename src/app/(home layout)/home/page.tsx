@@ -16,9 +16,12 @@ export default async function Page() {
     if ((message as string) === 'Expired token') {
       return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
     } else {
-      return <ErrorToaster message="Brands not found!" errorMessage={String(error)} />;
+      return <ErrorToaster message="Not able to show brands currently!" errorMessage={String(error)} />;
     }
   }
+
+  console.log({brands});
+  
   if (!brands) {
     return (
       <Container>

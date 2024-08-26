@@ -54,14 +54,6 @@
         max-width: 60%;
       }
     }
-    fieldset.MuiOutlinedInput-notchedOutline {
-      height: rem(48);
-      top: 0;
-    }
-    legend {
-      opacity: 0;
-      @include absolute;
-    }
     p {
       text-align: right;
     }

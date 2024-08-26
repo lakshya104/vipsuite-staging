@@ -14,6 +14,7 @@
     height: 100%;
     @include flex;
     @include relative;
+    justify-content: space-between;
     img {
       height: auto;
     }
