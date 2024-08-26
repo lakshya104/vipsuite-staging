@@ -8,8 +8,12 @@ import Partner from '@/components/Partner/Partner';
 import Opportunity from '@/components/Opportunity/Opportunity';
 import Testimonial from '@/components/Testimonial/Testimonial';
 import Footer from '@/components/Footer';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
+  const session = await auth();
+  if (session) redirect('/home');
   return (
     <>
       <Header />

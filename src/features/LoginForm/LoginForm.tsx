@@ -88,6 +88,7 @@ const LoginForm = () => {
       <InputForm
         {...register('username')}
         placeholder="Username"
+        label="Username"
         type="text"
         error={!!errors.username}
         helperText={errors.username?.message}
@@ -96,6 +97,7 @@ const LoginForm = () => {
       <InputForm
         {...register('password')}
         placeholder="Password"
+        label="Password"
         type="password"
         error={!!errors.password}
         helperText={errors.password?.message}

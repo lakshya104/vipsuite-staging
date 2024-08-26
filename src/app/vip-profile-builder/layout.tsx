@@ -19,7 +19,7 @@ export default async function AuthLayout({
     <Box className="profile-builder__page">
       <Box className="profile-builder__header">
         <ProgressBarLink href={homeLink}>
-          <Image alt="VipLogo" src="/Logo.svg" width={260} height={70} priority style={{ objectFit: 'contain' }} />
+          <Image alt="VipLogo" src="/vipsblack.png" width={120} height={30} priority style={{ objectFit: 'contain' }} />
         </ProgressBarLink>
       </Box>
       <Box className="profile-builder__main">{children}</Box>

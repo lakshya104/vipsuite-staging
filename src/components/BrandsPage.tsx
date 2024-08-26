@@ -7,11 +7,11 @@ import { Brand } from '@/interfaces/brand';
 import BrandsListing from './BrandsListing';
 import ReferCard from './ReferCard';
 
-interface EventsPageProps {
+interface BrandsPageProps {
   brands: Brand[];
 }
 
-const EventsPage: React.FC<EventsPageProps> = ({ brands }) => {
+const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredBrands = useMemo(() => {
@@ -82,4 +82,4 @@ const EventsPage: React.FC<EventsPageProps> = ({ brands }) => {
   );
 };
 
-export default EventsPage;
+export default BrandsPage;

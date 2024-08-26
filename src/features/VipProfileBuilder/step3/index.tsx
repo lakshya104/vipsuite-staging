@@ -88,7 +88,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       placeholder: 'Home Postcode',
     },
   ];
-console.log({profileDetail});
+  console.log({ profileDetail });
 
   const defaultValues: Step3FormValues = {
     dateOfBirth: profileDetail.date_of_birth || '',

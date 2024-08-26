@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Box, Card, Container, Typography } from '@mui/material';
-import { GetBrandDetails } from '@/libs/api-manager/manager';
+import { GetBrandDetails, GetToken } from '@/libs/api-manager/manager';
 import FeedLikeIcon from '@/components/FeedLikeIcon';
 import '../Brand.scss';
 import ReferCard from '@/components/ReferCard';
@@ -21,8 +21,9 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   let brandDetails: BrandDetails | null = null;
+  const token = await GetToken();
   try {
-    brandDetails = await GetBrandDetails(parseInt(params.id, 10));
+    brandDetails = await GetBrandDetails(parseInt(params.id, 10), token);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {

@@ -242,17 +242,24 @@ type VipSignUpFormField = {
   placeholder: string;
   autocomplete: string;
   type: string;
+  label: string;
 };
 
 export const VIPSignUpFormFields: VipSignUpFormField[] = [
-  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
-  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
-  { name: 'email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
-  { name: 'password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
-  { name: 'secondary_email', placeholder: 'Secondary Email', autocomplete: 'email', type: 'email' },
-  { name: 'phone', placeholder: 'Phone', autocomplete: 'tel', type: 'tel' },
-  { name: 'instagram_handle', placeholder: 'Instagram', autocomplete: 'off', type: 'text' },
-  { name: 'tiktok_handle', placeholder: 'TikTok', autocomplete: 'off', type: 'text' },
+  { name: 'first_name', label: 'First Name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
+  { name: 'last_name', label: 'Last Name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
+  { name: 'email', label: 'Email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
+  { name: 'password', label: 'Password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
+  {
+    name: 'secondary_email',
+    label: 'Secondary Email',
+    placeholder: 'Secondary Email',
+    autocomplete: 'email',
+    type: 'email',
+  },
+  { name: 'phone', label: 'Phone', placeholder: 'Phone', autocomplete: 'tel', type: 'tel' },
+  { name: 'instagram_handle', label: 'Instagram', placeholder: 'Instagram', autocomplete: 'off', type: 'text' },
+  { name: 'tiktok_handle', label: 'TikTok', placeholder: 'TikTok', autocomplete: 'off', type: 'text' },
 ];
 
 type AgentSignUpFormField = {

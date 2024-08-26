@@ -2,15 +2,16 @@ import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import './Home.scss';
 import BrandsPage from '@/components/BrandsPage';
-import { GetBrands } from '@/libs/api-manager/manager';
+import { GetBrands, GetToken } from '@/libs/api-manager/manager';
 import { Brand } from '@/interfaces/brand';
 import ErrorToaster from '@/components/ErrorToaster';
 import { get } from 'lodash';
 
 export default async function Page() {
   let brands: Brand[] | null = null;
+  const token = await GetToken();
   try {
-    brands = await GetBrands();
+    brands = await GetBrands(token);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -20,8 +21,6 @@ export default async function Page() {
     }
   }
 
-  console.log({brands});
-  
   if (!brands) {
     return (
       <Container>

@@ -12,7 +12,7 @@ interface ProductListProps {
 }
 const ProductList: React.FC<ProductListProps> = async ({ brandId }) => {
   let brandProducts = null;
-  
+
   try {
     brandProducts = await GetBrandProducts(brandId);
   } catch (error) {

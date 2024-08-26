@@ -65,15 +65,13 @@ export const GetProfile = async (token: string) => {
   }
 };
 
-export const GetBrands = async () => {
+export const GetBrands = async (token: string) => {
   try {
-    const token = await GetToken();
-    const response = await Instance.get(Endpoints.getBrands , {
+    const response = await Instance.get(Endpoints.getBrands, {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
-      });
-    console.log({response});
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error during fetching brands:', error);
@@ -86,14 +84,13 @@ export const GetBrands = async () => {
   }
 };
 
-export const GetBrandDetails = async (id: number) => {
+export const GetBrandDetails = async (id: number, token: string) => {
   try {
-    const token = await GetToken();
     const response = await Instance.get(`${Endpoints.getBrandDetails}/${id}?_fields=id,title,acf&_embed=acf:user`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
-      });
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error during fetching brand details:', error);
@@ -125,26 +122,6 @@ export const GetBrandProducts = async (id: number) => {
     throw new Error('An unexpected error occurred');
   }
 };
-
-// export const GetBrandProductDetail = async (id: number) => {
-//   try {
-//     const token = await GetToken();
-//     const response = await Instance.get(`${Endpoints.getBrandProductDetails}/${id}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error during fetching brand product details:', error);
-//     if (axios.isAxiosError(error)) {
-//       console.error(error);
-//       const errorMessage = error.response?.data?.message || 'An error occurred during fetching brand product details';
-//       throw new Error(errorMessage);
-//     }
-//     throw new Error('An unexpected error occurred');
-//   }
-// };
 
 export const GetBrandProductDetail = async (id: number) => {
   const token = await GetToken();

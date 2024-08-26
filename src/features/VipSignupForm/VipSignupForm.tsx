@@ -85,7 +85,7 @@ const VipSignupForm = () => {
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
-        {VIPSignUpFormFields.map(({ name, placeholder, autocomplete, type }) => (
+        {VIPSignUpFormFields.map(({ name, label, placeholder, autocomplete, type }) => (
           <Box key={name}>
             <Controller
               name={name}
@@ -94,6 +94,7 @@ const VipSignupForm = () => {
                 <InputForm
                   {...field}
                   placeholder={placeholder}
+                  label={label}
                   type={name === 'password' && showPassword ? 'text' : type}
                   error={!!errors[name]}
                   helperText={errors[name]?.message}
