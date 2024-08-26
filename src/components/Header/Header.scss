@@ -15,6 +15,9 @@ header.site-header {
     }
     button {
       padding: 0;
+      &:focus {
+        outline: 0 none;
+      }
     }
   }
 }
@@ -98,7 +101,7 @@ header.site-header {
       a {
         max-width: rem(113);
         display: block;
-        height: rem(14);
+        height: rem(16);
         width: auto;
         overflow: hidden;
       }
