@@ -36,7 +36,7 @@ export default async function Page({ params }: PageProps) {
       <Box component={'main'} className="product-detail">
         <Container>
           <Typography className="page-title" variant="h2" component="h1" align="center">
-            Details not found.
+            Brand details not available currently.
           </Typography>
         </Container>
       </Box>

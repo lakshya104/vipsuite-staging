@@ -60,6 +60,11 @@ export default async function Page({ params }: PageProps) {
       </Box>
     );
   }
+  // const isRequestOnlyValue =
+  //   brandProductDetails.meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
+  const productImage =
+    brandProductDetails.images.find((item) => item.name === 'placeholder-image-large')?.src ??
+    'https://archive.org/download/placeholder-image/placeholder-image.jpg';
 
   const sizes = brandProductDetails.type === 'variable' ? brandProductDetails.attributes[0].options : [];
   const newSizes =
@@ -74,7 +79,7 @@ export default async function Page({ params }: PageProps) {
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <Image src="/img/product_1.jpg" alt={brandProductDetails.name} height={500} width={500} />
+            <Image src={productImage} alt={brandProductDetails.name} height={500} width={500} />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="body1" gutterBottom>

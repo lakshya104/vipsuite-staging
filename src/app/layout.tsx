@@ -2,9 +2,8 @@ import React from 'react';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import type { Metadata } from 'next';
 import '../styles/globals.scss';
-import theme from './theme';
-import { ThemeProvider } from '@mui/material/styles';
 import { ProgressBar } from '@/components/ProgressBar';
+import ThemeRegistry from './ThemeRegistry';
 
 export const metadata: Metadata = {
   title: 'THE VIP SUITE',
@@ -20,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
+          <ThemeRegistry options={{ key: 'mui-theme' }}>
             <ProgressBar>{children}</ProgressBar>
-          </ThemeProvider>
+          </ThemeRegistry>
         </AppRouterCacheProvider>
       </body>
     </html>

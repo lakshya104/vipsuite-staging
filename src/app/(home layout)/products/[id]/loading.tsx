@@ -11,7 +11,7 @@ const ProductDetailsSkeleton = () => {
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <Skeleton variant="rectangular" width={500} height={500} />
+            <Skeleton variant="rectangular" width={500} height="100%" />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="body1" gutterBottom>

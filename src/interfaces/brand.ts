@@ -108,6 +108,14 @@ export interface BrandProduct {
   low_stock_amount: number | null;
   sold_individually: boolean;
   weight: string;
+  meta_data:ProductMetaData[];
+  images: ProductImage[];
+}
+
+export interface ProductMetaData {
+  id: number;
+  key: string;
+  value: string;
 }
 
 export interface ProductImage {
@@ -215,6 +223,7 @@ export interface BrandProductDetails {
       href: string;
     }[];
   };
+  images: ProductImage[];
 }
 
 export interface Brand {

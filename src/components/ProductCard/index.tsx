@@ -7,13 +7,17 @@ import { truncateDescription } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
 
 const ProductCard = ({ data }: { data: BrandProduct }) => {
-  const { id, name, short_description } = data;
+  const { id, name, short_description, meta_data, images } = data;
+  const isRequestOnlyValue = meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
+  const productImage =
+    images.find((item) => item.name === 'placeholder-image-large')?.src ??
+    'https://archive.org/download/placeholder-image/placeholder-image.jpg';
   const productDesctiption = truncateDescription(short_description, 18);
   return (
     <Card className="product-card">
-      <Image src="/img/product_1.jpg" alt={name} height={768} width={768} />
+      <Image src={productImage} alt={name} height={768} width={768} />
       <CardContent className="product-card__content">
-        {false && (
+        {isRequestOnlyValue === '1' && (
           <Typography variant="overline" display="block" gutterBottom>
             Request Only
           </Typography>

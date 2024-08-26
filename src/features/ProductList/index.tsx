@@ -1,13 +1,38 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import ProductCard from '@/components/ProductCard';
 import './ProductList.scss';
 import { GetBrandProducts } from '@/libs/api-manager/manager';
 import { BrandProduct } from '@/interfaces/brand';
+import { get } from 'lodash';
+import ErrorToaster from '@/components/ErrorToaster';
 
-const ProductList = async ({ brandId }: { brandId: number }) => {
-  const id = brandId;
-  const brandProducts = await GetBrandProducts(id);
+interface ProductListProps {
+  brandId: number;
+}
+const ProductList: React.FC<ProductListProps> = async ({ brandId }) => {
+  let brandProducts = null;
+  try {
+    brandProducts = await GetBrandProducts(brandId);
+  } catch (error) {
+    const message = get(error, 'message', '');
+    if ((message as string) === 'Expired token') {
+      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
+    } else {
+      return <ErrorToaster message="Products not found!" errorMessage={String(error)} />;
+    }
+  }
+  if (!brandProducts) {
+    return (
+      <Box component={'main'} className="product-detail">
+        <Container>
+          <Typography className="page-title" variant="h2" component="h1" align="center">
+            Products not available currently.
+          </Typography>
+        </Container>
+      </Box>
+    );
+  }
 
   return (
     <Box className="product-listing">
