@@ -26,11 +26,14 @@ export function truncateDescription(description: string, maxLength: number): str
 export function removeEmptyStrings(obj: any): any {
   // Iterate over the keys in the object
   for (const key in obj) {
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
+    if (Array.isArray(obj[key])) {
+      // If the value is an array, do not modify it (keep empty arrays)
+      obj[key] = obj[key].map(removeEmptyStrings);
+    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
       // Recursively apply the function to nested objects
       obj[key] = removeEmptyStrings(obj[key]);
 
-      // If the nested object becomes empty, delete the key
+      // If the nested object becomes empty (no keys), delete the key
       if (Object.keys(obj[key]).length === 0) {
         delete obj[key];
       }

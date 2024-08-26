@@ -88,14 +88,13 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       placeholder: 'Home Postcode',
     },
   ];
-  console.log({ profileDetail });
 
   const defaultValues: Step3FormValues = {
     dateOfBirth: profileDetail.date_of_birth || '',
     birthplace: profileDetail.birth_place || '',
     nationality: profileDetail.nationality || '',
     ethnicity: profileDetail.ethnicity || '',
-    numberOfChildren: profileDetail.number_of_childs || '',
+    numberOfChildren: profileDetail.number_of_children || '',
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ageOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: any) => child.dob) : [],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,10 +117,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     setIsLoading(true);
     const childInfo =
       data.numberOfChildren === '0'
-        ? data.ageOfChild?.map(() => ({
-            dob: '',
-            gender: '',
-          })) || []
+        ? []
         : data.ageOfChild?.map((dob, index) => ({
             dob: dob,
             gender: data.genderOfChild?.[index],
@@ -133,7 +129,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         birth_place: data.birthplace,
         nationality: data.nationality,
         ethnicity: data.ethnicity,
-        number_of_childs: data.numberOfChildren,
+        number_of_children: data.numberOfChildren,
         pets: data.pets,
         home_post_code: data.homePostcode,
         child_info: childInfo,
@@ -146,7 +142,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           birth_place: data.birthplace,
           nationality: data.nationality,
           ethnicity: data.ethnicity,
-          number_of_childs: data.numberOfChildren,
+          number_of_children: data.numberOfChildren,
           pets: data.pets,
           home_post_code: data.homePostcode,
           child_info: childInfo,

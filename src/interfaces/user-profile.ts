@@ -25,7 +25,7 @@ export interface ACF {
   birth_place?: string;
   nationality?: string;
   ethnicity?: string;
-  number_of_childs?: string;
+  number_of_children?: string;
   child_info?: ChildInfo[];
   pets?: string;
   home_post_code?: string;
