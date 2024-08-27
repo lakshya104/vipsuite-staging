@@ -10,6 +10,27 @@ import Testimonial from '@/components/Testimonial/Testimonial';
 import Footer from '@/components/Footer';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import { Metadata, ResolvingMetadata } from 'next';
+
+export async function generateMetadata( parent: ResolvingMetadata): Promise<Metadata> {
+  try {
+    const previousImages = (await parent).openGraph?.images || [];
+
+    return {
+      title: 'Welcome to VIP Suite',
+      description: 'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today!',
+      openGraph: {
+        images: ['https://vipsuite-staging.vercel.app/Logo.svg', ...previousImages],
+      },
+    };
+  } catch (error) {
+    return {
+      title: 'Welcome to VIP Suite',
+      description: 'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today!',
+    };
+  }
+}
+
 
 export default async function Page() {
   const session = await auth();

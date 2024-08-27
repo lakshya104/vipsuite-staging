@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Link from 'next/link';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
@@ -64,9 +63,9 @@ const HomeHeader = () => {
       <AppBar className="site-header" position="sticky">
         <Toolbar className="site-header__wrapper">
           <Box className="site-header__brand">
-            <Link href={'/home'} title={'THE VIP SUITE'}>
+            <ProgressBarLink href={'/home'} title={'THE VIP SUITE'}>
               <Image src="/Logo.svg" alt="The VIP Suite Site logo" height={25} width={122} priority />
-            </Link>
+            </ProgressBarLink>
           </Box>
 
           <Box className="site-header__navbar">

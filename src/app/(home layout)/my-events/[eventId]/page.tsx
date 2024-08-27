@@ -1,18 +1,18 @@
 import { Box, Container, Typography } from '@mui/material';
-import Link from 'next/link';
 import React from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../event.scss';
 import FeedbackForm from '@/features/FeedbackForm';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
 export default function OrderPage() {
   return (
     <Box className="user-profile order-details-page">
       <Container>
         <Typography className="page-title" variant="h2" align="center">
-          <Link href={'/my-orders'}>
+          <ProgressBarLink href={'/my-orders'}>
             <ArrowBackIcon />
-          </Link>
+          </ProgressBarLink>
           Event Title
         </Typography>
         <Box mb={2.5}>

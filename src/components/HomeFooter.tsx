@@ -1,7 +1,16 @@
 import React from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
+import { ProgressBarLink } from './ProgressBar';
+import { map } from 'lodash';
+
+const footerItems = [
+  { href: '/', src: '/img/home.svg', alt: 'Home', label: 'Home' },
+  { href: '/events', src: '/img/event.svg', alt: 'Events', label: 'Events' },
+  { href: '/opportunities', src: '/img/opportunity.svg', alt: 'Opportunities', label: 'Opportunities' },
+  { href: '/inbox', src: '/img/inbox.svg', alt: 'Inbox', label: 'Inbox' },
+  { href: '/basket', src: '/img/cart.svg', alt: 'Basket', label: 'Basket' },
+];
 
 const HomeFooter = () => {
   return (
@@ -20,36 +29,14 @@ const HomeFooter = () => {
         borderColor: 'divider',
       }}
     >
-      <Stack alignItems="center">
-        <Link href="/" passHref>
-          <Image src="/img/home.svg" alt="Home" width={24} height={24} />
-        </Link>
-        <Typography variant="caption">Home</Typography>
-      </Stack>
-      <Stack alignItems="center">
-        <Link href="/events" passHref>
-          <Image src="/img/event.svg" alt="Events" width={24} height={24} />
-        </Link>
-        <Typography variant="caption">Events</Typography>
-      </Stack>
-      <Stack alignItems="center">
-        <Link href="/opportunities" passHref>
-          <Image src="/img/opportunity.svg" alt="Opportunities" width={24} height={24} />
-        </Link>
-        <Typography variant="caption">Opportunities</Typography>
-      </Stack>
-      <Stack alignItems="center">
-        <Link href="/inbox" passHref>
-          <Image src="/img/inbox.svg" alt="Inbox" width={24} height={24} />
-        </Link>
-        <Typography variant="caption">Inbox</Typography>
-      </Stack>
-      <Stack alignItems="center">
-        <Link href="/basket" passHref>
-          <Image src="/img/cart.svg" alt="Basket" width={24} height={24} />
-        </Link>
-        <Typography variant="caption">Basket</Typography>
-      </Stack>
+      {map(footerItems, (item) => (
+        <Stack key={item.href} alignItems="center">
+          <ProgressBarLink href={item.href}>
+            <Image src={item.src} alt={item.alt} width={24} height={24} />
+          </ProgressBarLink>
+          <Typography variant="caption">{item.label}</Typography>
+        </Stack>
+      ))}
     </Box>
   );
 };

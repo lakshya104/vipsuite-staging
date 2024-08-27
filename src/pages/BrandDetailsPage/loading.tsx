@@ -1,18 +1,15 @@
 import React from 'react';
 import { Box, Container, Typography, Skeleton } from '@mui/material';
-import '../Brand.scss';
 import ProductCardLoading from '@/components/ProductCard/ProductCardLoading';
 
-const BrandPageSkeleton = () => {
+const BrandDetailsPageLoading = () => {
   return (
-    <Box component={'main'} className="product-detail">
       <Container>
         <Typography className="page-title" variant="h2" component="h1" align="center">
           <Box display="flex" justifyContent="center">
             <Skeleton width="25%" height={50} />
           </Box>
         </Typography>
-
         <Box className="product-detail__item">
           <Skeleton variant="rectangular" width="100%" height="100%" />
         </Box>
@@ -36,8 +33,7 @@ const BrandPageSkeleton = () => {
           <ProductCardLoading />
         </Box>
       </Container>
-    </Box>
   );
 };
 
-export default BrandPageSkeleton;
+export default BrandDetailsPageLoading;

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Typography, Container, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Link from 'next/link';
 import './event.scss';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
 interface Order {
   id: string;
@@ -45,9 +45,9 @@ const MyOrders: FC = () => {
                   <Typography variant="body1">Time: {order.time}</Typography>
                   <Typography variant="body1">Location: {order.location}</Typography>
                 </Box>
-                <Link href={`/my-events/${order.id}`}>
+                <ProgressBarLink href={`/my-events/${order.id}`}>
                   <ArrowForwardIcon />
-                </Link>
+                </ProgressBarLink>
               </Box>
             ))}
           </Box>

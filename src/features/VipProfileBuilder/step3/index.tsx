@@ -157,7 +157,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
               };
             })
             .filter((info) => info !== false) || [];
-
     if (childInfo.length === 0) {
       childInfo = false;
     }
@@ -200,6 +199,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const homePostcodeValue = watch('homePostcode');
   const petsValue = watch('pets');
   const vipStep3formFields = getVipStep3FormFields(Number(numberOfChildren));
+
   useEffect(() => {
     if (numberOfChildren !== undefined) {
       const newAgeOfChild: string[] = [];
@@ -212,6 +212,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       clearErrors(['ageOfChild', 'genderOfChild']);
     }
   }, [numberOfChildren, reset, getValues, clearErrors]);
+
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import EastIcon from '@mui/icons-material/East';
-import Link from 'next/link';
+import { ProgressBarLink } from './ProgressBar';
 
 interface ReferCardProps {
   heading: string;
@@ -16,9 +16,9 @@ const ReferCard: React.FC<ReferCardProps> = ({ heading, text, href }) => {
       <CardContent>
         <Typography variant="h2">{heading}</Typography>
         <Typography variant="body1">{text}</Typography>
-        <Link href={href}>
+        <ProgressBarLink href={href}>
           <EastIcon />
-        </Link>
+        </ProgressBarLink>
       </CardContent>
     </Card>
   );

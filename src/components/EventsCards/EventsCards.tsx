@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Link } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import Image from 'next/image';
 import './EventsCards.scss';
+import { ProgressBarLink } from '../ProgressBar';
 
 interface EventCardProps {
   title: string;
@@ -19,9 +20,9 @@ const EventCard: React.FC<EventCardProps> = ({ title, description }) => {
           {title}
         </Typography>
         <Typography variant="body1">{description}</Typography>
-        <Link href="" className="button button--border">
+        <ProgressBarLink href="" className="button button--border">
           Find Out More
-        </Link>
+        </ProgressBarLink>
       </CardContent>
     </Card>
   );
