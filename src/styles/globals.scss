@@ -294,6 +294,7 @@ form {
       font-weight: 400;
       line-height: 1.14;
       border: rem(1) solid #494947;
+      top: rem(-3);
       @include border-radius(38px);
       @include fontSize(14);
     }
