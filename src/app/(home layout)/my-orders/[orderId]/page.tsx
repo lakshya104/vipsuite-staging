@@ -3,8 +3,8 @@ import React, { Suspense } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../order.scss';
 import { ProgressBarLink } from '@/components/ProgressBar';
-import MyOrderDetailPage from '@/pages/MyOrderDetailPage';
-import MyOrderDetailLoading from '@/pages/MyOrderDetailPage/loading';
+import MyOrderDetailLoading from '@/sitePages/MyOrderDetailPage/loading';
+import MyOrderDetailPage from '@/sitePages/MyOrderDetailPage';
 
 export default async function OrderPage({ params }: { params: { orderId: number } }) {
   const orderId = params['orderId'];

@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import './order.scss';
-import MyOrdersPage from '@/pages/MyOrdersPage';
 import { Box, Container, Typography } from '@mui/material';
-import MyOrdersLoading from '@/pages/MyOrdersPage/loading';
+import MyOrdersLoading from '@/sitePages/MyOrdersPage/loading';
+import MyOrdersPage from '@/sitePages/MyOrdersPage';
 
 const MyOrders: React.FC = () => {
   return (

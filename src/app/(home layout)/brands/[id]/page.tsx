@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Box } from '@mui/material';
 import '../Brand.scss';
-import BrandDetailsPage from '@/pages/BrandDetailsPage';
-import BrandDetailsPageLoading from '@/pages/BrandDetailsPage/loading';
+import BrandDetailsPageLoading from '@/sitePages/BrandDetailsPage/loading';
+import BrandDetailsPage from '@/sitePages/BrandDetailsPage';
 
 interface Params {
   id: string;

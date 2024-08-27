@@ -3,8 +3,8 @@ import { Box } from '@mui/material';
 import './ProductDetails.scss';
 import { GetBrandProductDetail } from '@/libs/api-manager/manager';
 import type { Metadata, ResolvingMetadata } from 'next';
-import ProductDetailsPage from '@/pages/ProductDetailsPage';
-import ProductDetailsPageLoading from '@/pages/ProductDetailsPage/loading';
+import ProductDetailsPageLoading from '@/sitePages/ProductDetailsPage/loading';
+import ProductDetailsPage from '@/sitePages/ProductDetailsPage';
 
 type Props = {
   params: { id: string };
