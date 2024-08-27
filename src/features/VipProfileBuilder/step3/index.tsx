@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,58 +36,78 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const {
     nationality_options = [],
     ethnicity_options = [],
-    number_of_childs_options = ['0', '1', '2', '3', '4', '5+'],
+    number_of_childs_options = ['0', '1', '2', '3', '4', '5'],
   } = profileBuilderOptions;
 
-  const vipStep3formFields: FormField[] = [
-    {
-      name: 'dateOfBirth',
-      label: 'Date of Birth',
-      type: 'date',
-      placeholder: 'Date of Birth',
-    },
-    {
-      name: 'birthplace',
-      label: 'Birthplace',
-      type: 'text',
-      placeholder: 'Birthplace',
-    },
-    {
-      name: 'nationality',
-      label: 'Nationality',
-      type: 'select',
-      options: nationality_options.map((opt: string) => ({ value: opt, label: opt })),
-    },
-    {
-      name: 'ethnicity',
-      label: 'Ethnicity',
-      type: 'select',
-      options: ethnicity_options.map((opt: string) => ({ value: opt, label: opt })),
-    },
-    {
-      name: 'numberOfChildren',
-      label: 'Number of Children',
-      type: 'select',
-      options: number_of_childs_options.map((opt: string) => ({ value: opt, label: `${opt} Child` })),
-    },
-    {
-      name: 'ageOfChild',
-      label: 'Age of Child',
-      type: 'date',
-    },
-    {
-      name: 'pets',
-      label: 'Pets',
-      type: 'text',
-      placeholder: 'Pets',
-    },
-    {
-      name: 'homePostcode',
-      label: 'Home Postcode',
-      type: 'text',
-      placeholder: 'Home Postcode',
-    },
-  ];
+  const getVipStep3FormFields = (numberOfChildren: number): FormField[] => {
+    const baseFields: FormField[] = [
+      {
+        name: 'dateOfBirth',
+        label: 'Date of Birth',
+        type: 'date',
+        placeholder: 'Date of Birth',
+      },
+      {
+        name: 'birthplace',
+        label: 'Birthplace',
+        type: 'text',
+        placeholder: 'Birthplace',
+      },
+      {
+        name: 'nationality',
+        label: 'Nationality',
+        type: 'select',
+        options: nationality_options.map((opt: string) => ({ value: opt, label: opt })),
+      },
+      {
+        name: 'ethnicity',
+        label: 'Ethnicity',
+        type: 'select',
+        options: ethnicity_options.map((opt: string) => ({ value: opt, label: opt })),
+      },
+      {
+        name: 'numberOfChildren',
+        label: 'Number of Children',
+        type: 'select',
+        options: number_of_childs_options.map((opt: string) => ({ value: opt, label: `${opt} Child` })),
+      },
+    ];
+    const childFields: FormField[] = [];
+    for (let i = 0; i < numberOfChildren; i++) {
+      childFields.push(
+        {
+          name: `ageOfChild[${i}]` as keyof Step3FormValues,
+          label: `Age of Child ${i + 1}`,
+          type: 'date',
+          placeholder: `Date of Birth for Child ${i + 1}`,
+        },
+        {
+          name: `genderOfChild[${i}]` as keyof Step3FormValues,
+          label: `Gender of Child ${i + 1}`,
+          type: 'select',
+          options: [
+            { value: 'male', label: 'Male' },
+            { value: 'female', label: 'Female' },
+          ],
+        },
+      );
+    }
+    const otherFields: FormField[] = [
+      {
+        name: 'pets',
+        label: 'Pets',
+        type: 'text',
+        placeholder: 'Pets',
+      },
+      {
+        name: 'homePostcode',
+        label: 'Home Postcode',
+        type: 'text',
+        placeholder: 'Home Postcode',
+      },
+    ];
+    return [...baseFields, ...childFields, ...otherFields];
+  };
 
   const defaultValues: Step3FormValues = {
     dateOfBirth: profileDetail.date_of_birth || '',
@@ -108,20 +128,39 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     control,
     formState: { errors },
     watch,
+    getValues,
+    clearErrors,
+    reset,
   } = useForm<Step3FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
+  interface ChildInfo {
+    dob: string;
+    gender: string;
+  }
 
   const onSubmit = async (data: Step3FormValues) => {
     setIsLoading(true);
-    const childInfo =
+    let childInfo: ChildInfo[] | false =
       data.numberOfChildren === '0'
         ? []
-        : data.ageOfChild?.map((dob, index) => ({
-            dob: dob,
-            gender: data.genderOfChild?.[index],
-          })) || [];
+        : data.ageOfChild
+            ?.map((dob, index) => {
+              const gender = data.genderOfChild?.[index] || '';
+              if (!dob && !gender) {
+                return false;
+              }
+              return {
+                dob: dob || '',
+                gender: gender,
+              };
+            })
+            .filter((info) => info !== false) || [];
+
+    if (childInfo.length === 0) {
+      childInfo = false;
+    }
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
@@ -160,6 +199,19 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const numberOfChildren = watch('numberOfChildren');
   const homePostcodeValue = watch('homePostcode');
   const petsValue = watch('pets');
+  const vipStep3formFields = getVipStep3FormFields(Number(numberOfChildren));
+  useEffect(() => {
+    if (numberOfChildren !== undefined) {
+      const newAgeOfChild: string[] = [];
+      const newGenderOfChild: string[] = [];
+      reset({
+        ...getValues(),
+        ageOfChild: newAgeOfChild,
+        genderOfChild: newGenderOfChild,
+      });
+      clearErrors(['ageOfChild', 'genderOfChild']);
+    }
+  }, [numberOfChildren, reset, getValues, clearErrors]);
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
@@ -168,35 +220,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         </Typography>
       </Box>
       {vipStep3formFields.map((field) => {
-        if (field.name === 'ageOfChild') {
-          const numChildren = parseInt(numberOfChildren || '0', 10);
-          if (numChildren > 0) {
-            return Array.from({ length: numChildren }).map((_, index) => (
-              <React.Fragment key={`${field.name}-${index}`}>
-                <Box width="100%">
-                  <FormDatePicker
-                    name={`ageOfChild.${index}` as const}
-                    control={control}
-                    label={`Child ${index + 1} Date of Birth`}
-                  />
-                </Box>
-                <Box width="100%">
-                  <SelectBox
-                    name={`genderOfChild.${index}` as const}
-                    control={control}
-                    label={`Child ${index + 1} Gender`}
-                    options={[
-                      { value: 'male', label: 'Male' },
-                      { value: 'female', label: 'Female' },
-                    ]}
-                    errors={errors}
-                  />
-                </Box>
-              </React.Fragment>
-            ));
-          }
-          return null;
-        }
         const commonProps = {
           name: field.name,
           control,
@@ -207,7 +230,14 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           case 'select':
             return (
               <Box key={field.name} width="100%">
-                <SelectBox {...commonProps} options={field.options || []} placeholder={field.placeholder} />
+                <SelectBox
+                  {...commonProps}
+                  options={field.options || []}
+                  placeholder={field.placeholder}
+                  getValues={getValues}
+                  clearErrors={clearErrors}
+                  numberOfChildren={numberOfChildren}
+                />
               </Box>
             );
           case 'date':

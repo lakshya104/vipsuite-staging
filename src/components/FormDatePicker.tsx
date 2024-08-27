@@ -29,7 +29,7 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label }: FormDat
               field: { clearable: true },
               textField: {
                 error: !!error,
-                helperText: error?.message,
+                helperText: error?.message && 'Please select a date',
               },
             }}
           />
