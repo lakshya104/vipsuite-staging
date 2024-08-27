@@ -52,6 +52,9 @@ const SelectBox = <T extends FieldValues>({
               }
             }}
           >
+            <MenuItem value="">
+              Select one
+            </MenuItem>
             {options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}

@@ -10,27 +10,31 @@ import Testimonial from '@/components/Testimonial/Testimonial';
 import Footer from '@/components/Footer';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 
-export async function generateMetadata( parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   try {
-    const previousImages = (await parent).openGraph?.images || [];
-
     return {
+      metadataBase: new URL('https://vipsuite-staging.vercel.app'),
       title: 'Welcome to VIP Suite',
-      description: 'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today!',
+      description:
+        'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today! Invite-only, private members portal for events, campaigns, gifting and more.',
       openGraph: {
-        images: ['https://vipsuite-staging.vercel.app/Logo.svg', ...previousImages],
+        images: ['/img/maldives.png'],
+      },
+      twitter: {
+        images: ['/img/maldives.png'],
       },
     };
   } catch (error) {
     return {
+      metadataBase: new URL('https://vipsuite-staging.vercel.app'),
       title: 'Welcome to VIP Suite',
-      description: 'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today!',
+      description:
+        'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today! Invite-only, private members portal for events, campaigns, gifting and more.',
     };
   }
 }
-
 
 export default async function Page() {
   const session = await auth();

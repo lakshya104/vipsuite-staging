@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Box, Container } from '@mui/material';
 import './Home.scss';
-import HomePageLoading from '@/sitePages/HomePage/loading';
-import HomePage from '@/sitePages/HomePage';
+import HomePage from '@/site-pages/HomePage';
+import HomePageLoading from '@/site-pages/HomePage/loading';
 
 export default async function Page() {
   return (

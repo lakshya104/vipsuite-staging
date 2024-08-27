@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Box, Typography, FormGroup, FormControlLabel, Checkbox, CircularProgress, Backdrop } from '@mui/material';
+import { Box, Typography, FormGroup, FormControlLabel, CircularProgress, Backdrop } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import _ from 'lodash';
 import SelectBox from '@/components/SelectBox';
@@ -165,8 +165,8 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
                         render={({ field }) => (
                           <FormControlLabel
                             control={
-                              <Checkbox
-                                size="medium"
+                              <input
+                                type="checkbox"
                                 {...field}
                                 checked={field.value?.includes(option.value)}
                                 onChange={() => handleCheckboxChange(field, option.value)}
