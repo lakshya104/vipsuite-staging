@@ -5,6 +5,8 @@ import { GetBrandProductDetail } from '@/libs/api-manager/manager';
 import type { Metadata, ResolvingMetadata } from 'next';
 import ProductDetailsPage from '@/site-pages/ProductDetailsPage';
 import ProductDetailsPageLoading from '@/site-pages/ProductDetailsPage/loading';
+import { BrandProductDetails } from '@/interfaces/brand';
+import { htmlToPlainText } from '@/helpers/utils';
 
 type Props = {
   params: { id: string };
@@ -13,12 +15,12 @@ type Props = {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   try {
-    const product = await GetBrandProductDetail(parseInt(params.id));
+    const product: BrandProductDetails = await GetBrandProductDetail(parseInt(params.id));
     const previousImages = (await parent).openGraph?.images || [];
 
     return {
-      title: product.title,
-      description: product.short_description || product.description.slice(0, 160),
+      title: product.name,
+      description: htmlToPlainText(product.short_description) || htmlToPlainText(product.description.slice(0, 160)),
       openGraph: {
         images: [product.images[0].src, ...previousImages],
       },

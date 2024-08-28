@@ -1,6 +1,16 @@
 'use client';
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  MenuItem,
+  MenuList,
+  Drawer,
+  Typography,
+  Backdrop,
+  CircularProgress,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -52,12 +62,17 @@ const menuItems = [
 ];
 
 const HomeHeader = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
-
+  const handleLogout = () => {
+    setDrawerOpen(false);
+    setIsLoading(true);
+    signOut();
+  };
   return (
     <>
       <AppBar className="site-header" position="sticky">
@@ -123,7 +138,7 @@ const HomeHeader = () => {
                   borderBottom: '1px solid #e0e0e0',
                   cursor: 'pointer',
                 }}
-                onClick={() => signOut()}
+                onClick={handleLogout}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
@@ -137,6 +152,9 @@ const HomeHeader = () => {
           </Drawer>
         </Toolbar>
       </AppBar>
+      <Backdrop sx={{ color: 'black', zIndex: 10000, height: '100vh' }} open={isLoading}>
+        <CircularProgress />
+      </Backdrop>
     </>
   );
 };

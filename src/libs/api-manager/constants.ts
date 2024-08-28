@@ -16,6 +16,8 @@ const Endpoints = {
   getAllOrders: '/wc/v3/orders',
   getOrderById: '/wc/v3/orders',
   getVipCart: '/wc/store/v1/cart',
+  removeVipCartItem: (key: string) => `/wc/store/v1/cart/remove-item?key=${key}`,
+  addItemToCart: (nonce: string) => `/wc/store/v1/cart/add-item?X-WC-Store-API-Nonce=${nonce}`,
 };
 
 export { Endpoints };

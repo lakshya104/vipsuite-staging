@@ -172,7 +172,7 @@ export const ForgotPassword = async ({ email }: { email: string }) => {
   } catch (error) {
     console.error('Error during sending link:', error);
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during login';
+      const errorMessage = error.response?.data?.message || 'An error occurred during sending link';
       throw errorMessage;
     }
   }
@@ -225,4 +225,22 @@ export const GetVipCart = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const RemoveVipCartItem = async (key: string, token: string) => {
+  try {
+    const response = await Instance.post(Endpoints.removeVipCartItem(key), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'X-WC-Store-API-Nonce': '08353d22df',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error during removing cart item:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error?.message || 'An error occurred during removing item';
+      throw errorMessage;
+    }
+  }
 };

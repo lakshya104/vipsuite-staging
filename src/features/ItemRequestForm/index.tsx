@@ -7,7 +7,7 @@ import VIPSuiteDialog from '@/components/VIPSuiteDialog';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useStore } from '@/store/useStore';
+// import { useStore } from '@/store/useStore';
 import { BrandProductDetails } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
 
@@ -17,7 +17,7 @@ interface ItemRequestFormProps {
 }
 
 const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
-  const addProduct = useStore((state) => state.addProduct);
+  // const addProduct = useStore((state) => state.addProduct);
   const [open, setOpen] = useState(false);
   const [basket, setBasket] = useState(data);
   const router = useRouter();
@@ -41,10 +41,21 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
     { href: '/basket', text: 'Go to Basket' },
   ];
   const onSubmit = (size: ProductFormValues) => {
-    basket.attributes[0].name = size.size;
     setBasket(basket);
-    addProduct(basket);
-    setOpen(true);
+    const item = {
+      id: basket.id,
+      quantity: 1,
+      variation: [
+        {
+          attribute: 'pa_size',
+          value: size.size,
+        },
+      ],
+    };
+    console.log({ item });
+
+    // addProduct(basket);
+    // setOpen(true);
   };
 
   return (
@@ -66,7 +77,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
           onClick={() => {
             if (options === null) {
               setBasket(basket);
-              addProduct(basket);
+              // addProduct(basket);
               setOpen(true);
             }
           }}

@@ -53,3 +53,8 @@ export function formatDate(timestamp: string) {
 
   return `${month}/${day}/${year}`;
 }
+
+export function htmlToPlainText(html: string) {
+  const text = html.replace(/<\/?[^>]+>/gi, '');
+  return text;
+}

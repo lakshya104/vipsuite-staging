@@ -16,7 +16,6 @@ const FetchInstance = async (url: string, options: RequestInit = {}) => {
       ...(options.headers || {}),
     },
   });
-
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message || 'An error occurred');
