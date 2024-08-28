@@ -15,6 +15,7 @@ const Endpoints = {
   resetPassword: 'wp/v2/password-reset',
   getAllOrders: '/wc/v3/orders',
   getOrderById: '/wc/v3/orders',
+  getVipCart: '/wc/store/v1/cart',
 };
 
 export { Endpoints };

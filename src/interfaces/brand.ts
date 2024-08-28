@@ -215,6 +215,7 @@ export interface BrandProductDetails {
   stock_status: string;
   has_options: boolean;
   post_password: string;
+  product_ordered: boolean;
   _links: {
     self: {
       href: string;

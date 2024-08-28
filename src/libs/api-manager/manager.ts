@@ -217,3 +217,12 @@ export const GetVipEventDetails = async (id: number) => {
     },
   });
 };
+
+export const GetVipCart = async () => {
+  const token = await GetToken();
+  return await FetchInstance(Endpoints.getVipCart, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

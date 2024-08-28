@@ -229,17 +229,49 @@ form {
       font-weight: 400;
       line-height: 1.38;
       @include fontSize(13);
-    }
-    span {
-      padding: 0;
-      background-color: transparent !important;
-      &.MuiTypography-body1 {
-        margin-left: rem(12);
+      input {
+        border: 0px solid;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0px;
+        white-space: nowrap;
+        width: 1px;
+        appearance: none;
+        @include absolute;
+        &:checked {
+          + span {
+            &:before {
+              border-color: var(--color-textBlack);
+              background-color: var(--color-textBlack);
+            }
+          }
+        }
       }
     }
-    svg {
-      width: rem(32);
-      height: rem(32);
+    span {
+      display: block;
+      padding-left: rem(32);
+      @include relative;
+      &:before {
+        content: '';
+        border: rem(1) solid var(--color-textBlack-20);
+        width: rem(20);
+        height: rem(20);
+        display: block;
+        @include absolute(left 0 top 2px);
+      }
+      &:after {
+        content: '';
+        border-bottom: 2px solid var(--color-white);
+        border-right: 2px solid var(--color-white);
+        width: rem(8);
+        height: rem(14);
+        display: block;
+        transform: rotate(45deg);
+        @include absolute(top 3px left 6px);
+      }
     }
     &.Mui-checked {
       svg {
@@ -294,7 +326,7 @@ form {
       font-weight: 400;
       line-height: 1.14;
       border: rem(1) solid #494947;
-      top: rem(-3);
+      top: rem(-4);
       @include border-radius(38px);
       @include fontSize(14);
     }

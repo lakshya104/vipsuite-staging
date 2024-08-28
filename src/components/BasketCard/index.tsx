@@ -4,16 +4,21 @@ import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ContinueToCartBtn from '@/components/ContinueToCartBtn';
-import { useStore } from '@/store/useStore';
+// import { useStore } from '@/store/useStore';
 import './Basket.scss';
+import { Cart } from '@/interfaces';
 
-const BasketCard = () => {
-  const { basket, removeProduct } = useStore();
+interface BasketCardProps {
+  cartData: Cart;
+}
+const BasketCard: React.FC<BasketCardProps> = ({ cartData }) => {
+  const cartItems = cartData.items;
+  // const { basket, removeProduct } = useStore();
   return (
     <Box className="basket-product__items">
-      {basket.length > 0 ? (
+      {cartItems.length > 0 ? (
         <>
-          {basket.map((product) => (
+          {cartItems.map((product) => (
             <Box className="basket-product__item" key={product.id}>
               <Image src="/img/product_1.jpg" alt={product.name} height={110} width={110} />
               <Box className="product-info">
@@ -21,9 +26,13 @@ const BasketCard = () => {
                   {product.name}
                 </Typography>
                 <Typography variant="body1">{product.name}</Typography>
-                <Typography variant="body1">Size: {product?.attributes[0]?.name || 'Default'}</Typography>
+                {product.type === 'variation' && (
+                  <Typography variant="body1">
+                    {product?.variation[0].attribute}: {product?.variation[0].value}
+                  </Typography>
+                )}
               </Box>
-              <DeleteOutlinedIcon onClick={() => removeProduct(product.id)} />
+              <DeleteOutlinedIcon onClick={() => {}} />
             </Box>
           ))}
           <ContinueToCartBtn />

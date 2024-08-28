@@ -21,6 +21,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
   const [open, setOpen] = useState(false);
   const [basket, setBasket] = useState(data);
   const router = useRouter();
+  const isProductOrdered = data.product_ordered;
   const {
     handleSubmit,
     control,
@@ -49,7 +50,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="product-size">
-        {options && (
+        {options && !isProductOrdered && (
           <SelectBox
             name={'size'}
             control={control}
@@ -71,8 +72,9 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
           }}
           type="submit"
           fullWidth
+          disabled={isProductOrdered}
         >
-          Request
+          {!isProductOrdered ? ' Request' : ' Requested'}
         </Btn>
       </Box>
       <VIPSuiteDialog

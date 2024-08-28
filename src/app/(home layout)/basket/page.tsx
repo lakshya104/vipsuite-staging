@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Box, Container, Typography } from '@mui/material';
-import BasketCard from '@/components/BasketCard';
+import BasketPage from '@/site-pages/BasketPage';
 
-const Basket = () => {
+export default async function Page() {
   return (
     <Box className="basket-page">
       <Container>
         <Typography className="page-title" variant="h2" align="center" component="h1">
           Basket
         </Typography>
-        <BasketCard />
+        <Suspense>
+          <BasketPage />
+        </Suspense>
       </Container>
     </Box>
   );
-};
-
-export default Basket;
+}

@@ -7,10 +7,22 @@ import Image from 'next/image';
 import { UserProfile } from '@/interfaces';
 import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 import { ProgressBarLink } from '@/components/ProgressBar';
+import { get } from 'lodash';
+import ErrorToaster from '@/components/ErrorToaster';
 
 const Profile = async () => {
   const token = await GetToken();
-  const profileDetails: UserProfile = await GetProfile(token);
+  let profileDetails: UserProfile | null = null;
+  try {
+    profileDetails = await GetProfile(token);
+  } catch (error) {
+    const message = get(error, 'message', '');
+    if ((message as string) === 'Expired token') {
+      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
+    } else {
+      return <ErrorToaster message="Profile does not exist" errorMessage={String(error)} />;
+    }
+  }
 
   if (!profileDetails) {
     return (

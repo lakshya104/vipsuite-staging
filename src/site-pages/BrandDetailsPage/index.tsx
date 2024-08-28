@@ -59,7 +59,7 @@ const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) =>
           Products
         </Typography>
         <Suspense fallback={<ProductCardLoading />}>
-          <ProductList brandId={brandDetails.acf.associated_brand} />
+          <ProductList brandId={brandDetails?.id} />
         </Suspense>
       </Box>
     </Container>
