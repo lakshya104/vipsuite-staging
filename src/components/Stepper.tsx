@@ -30,7 +30,7 @@ const DotsMobileStepper: React.FC<{ images: string[] }> = ({ images }) => {
         objectFit="cover"
       />
       <MobileStepper
-        className='slider-controller'
+        className="slider-controller"
         variant="dots"
         steps={maxSteps}
         position="static"

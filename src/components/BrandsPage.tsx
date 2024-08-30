@@ -36,10 +36,10 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
       <Box my={2.5}>
         <SearchBar
           searchTerm={searchQuery}
-          placeholder="Search for events..."
+          placeholder="Search for brands..."
           handleChange={handleChange}
           handleClear={handleClear}
-          aria-label="Search events"
+          aria-label="Search Brands"
         />
       </Box>
       {!searchQuery ? (

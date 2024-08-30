@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function calculateAge(dateOfBirth: string | undefined): number {
   if (!dateOfBirth) return 0;
   const today = new Date();
@@ -51,10 +53,25 @@ export function formatDate(timestamp: string) {
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
 
-  return `${month}/${day}/${year}`;
+  return `${day}/${month}/${year}`;
 }
 
 export function htmlToPlainText(html: string) {
   const text = html.replace(/<\/?[^>]+>/gi, '');
   return text;
 }
+
+export const formatDateWithOrdinal = (date: string | Date, withMonth: boolean): string => {
+  const momentDate = moment(date);
+
+  if (!momentDate.isValid()) {
+    return 'Invalid Date';
+  }
+
+  const dayOfWeek = momentDate.format('dddd');
+  const dayOfMonth = momentDate.format('Do'); // This includes the ordinal
+  const month = momentDate.format('MMMM');
+  // const time = momentDate.format('h:mma').toLowerCase();
+  const foormattedDate = withMonth ? ` ${dayOfWeek} ${dayOfMonth} ${month}` : ` ${dayOfWeek} ${dayOfMonth}`;
+  return foormattedDate;
+};

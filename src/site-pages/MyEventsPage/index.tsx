@@ -25,7 +25,7 @@ const MyEventsPage = async () => {
       <Box component={'main'} className="my-events">
         <Container>
           <Typography align="center" variant="h4" marginTop={5}>
-            RSVP Events not found.
+            No upcoming events found.
           </Typography>
         </Container>
       </Box>

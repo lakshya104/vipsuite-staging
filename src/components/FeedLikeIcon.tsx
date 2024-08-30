@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { Box, styled } from '@mui/material';
 import React from 'react';
@@ -6,6 +7,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
+  zIndex: 10000,
   top: 8,
   right: 8,
   cursor: 'pointer',
@@ -28,10 +30,12 @@ const AnimatedIcon = styled('div')({
   transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
 });
 
-const FeedLikeIcon = () => {
+const FeedLikeIcon = ({ onClick }: { onClick: any }) => {
   const [liked, setLiked] = React.useState(false);
 
-  const handleLike = () => {
+  const handleLike = (event: any) => {
+    event.stopPropagation();
+    if (onClick) onClick(event);
     setLiked(!liked);
   };
 

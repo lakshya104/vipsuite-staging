@@ -4,6 +4,7 @@ import FeedLikeIcon from '@/components/FeedLikeIcon';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
+import { formatDateWithOrdinal } from '@/helpers/utils';
 
 const EventDetailsCard = ({ event }: { event: EventDetails }) => {
   const eventImageUrl = event.acf.event_image.sizes['1536x1536'];
@@ -18,7 +19,8 @@ const EventDetailsCard = ({ event }: { event: EventDetails }) => {
           {event.title.rendered}
         </Typography>
         <Typography variant="body1">
-          <Box component="strong">Date:</Box> {event.acf.event_start_date} - {event.acf.event_end_date}
+          <Box component="strong">Date:</Box> {formatDateWithOrdinal(event.acf.event_start_date, false)} -
+          {formatDateWithOrdinal(event.acf.event_end_date, true)}
         </Typography>
         <Typography variant="body1" paragraph>
           <Box component="strong">Location:</Box> {event.acf.event_location}

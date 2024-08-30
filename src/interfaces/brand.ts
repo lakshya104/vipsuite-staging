@@ -1,4 +1,4 @@
-import { EventImage } from './events';
+import { EventImage, EventImageSizes } from './events';
 
 export interface BrandDetails {
   id: number;
@@ -26,6 +26,7 @@ export interface BrandDetails {
     type_of_business: string;
     short_description: string;
     brand_image: EventImage;
+    brand_logo?: BrandLogo;
   };
   _links: {
     self: Array<{
@@ -239,6 +240,34 @@ export interface Brand {
     contact_name: string;
     type_of_business: string;
     short_description?: string;
+    brand_logo?: BrandLogo;
   };
   'brand-category': string[];
+}
+
+interface BrandLogo {
+  ID: number;
+  id: number;
+  title: string;
+  filename: string;
+  filesize: number;
+  url: string;
+  link: string;
+  alt: string;
+  author: string;
+  description: string;
+  caption: string;
+  name: string;
+  status: string;
+  uploaded_to: number;
+  date: string;
+  modified: string;
+  menu_order: number;
+  mime_type: string;
+  type: string;
+  subtype: string;
+  icon: string;
+  width: number;
+  height: number;
+  sizes: EventImageSizes;
 }

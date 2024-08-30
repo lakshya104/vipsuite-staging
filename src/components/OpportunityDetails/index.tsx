@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
   const handleDialogOpen = () => setDialogOpen(true);
 
   return (
-    <Box className="opportunity-detail-page" component='main'>
+    <Box className="opportunity-detail-page" component="main">
       <Container>
         <Typography className="page-title" variant="h2" component="h1" align="center">
           Barbie x Heinz
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
         <Box>
           <DotsMobileStepper images={images} />
         </Box>
-        <CardContent className=''>
+        <CardContent className="">
           <OpportunityTabs />
         </CardContent>
         <Box>

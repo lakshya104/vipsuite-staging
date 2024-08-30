@@ -47,7 +47,7 @@ const ProfilePage = async () => {
           {profileDetails?.name}
         </Typography>
         <Typography variant="body2" mb={2}>
-          Age {age || 'N/A'}
+          Age {age}
         </Typography>
         <ProgressBarLink href={'/vip-profile-builder'} className="button button--link">
           <span style={{ textDecoration: 'underline' }}>Edit Profile</span>
