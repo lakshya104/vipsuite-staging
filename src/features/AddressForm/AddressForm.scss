@@ -1,0 +1,32 @@
+/*
+* Address page style.
+*/
+
+@import '../../styles/mixins';
+
+.address {
+  &-form {
+    margin: rem(23) 0;
+    @media only screen and (min-width: 768px) {
+      margin: rem(72) 0;
+    }
+    &__head {
+      margin-bottom: rem(28);
+      @include relative;
+      h1 {
+        margin: 0;
+        padding: rem(7.5) 0;
+        @media only screen and (max-width: 767px) {
+          padding: rem(5) 0;
+        }
+      }
+    }
+    form {
+      max-width: rem(350);
+      margin: 0 auto;
+      .MuiFormControl-root {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}

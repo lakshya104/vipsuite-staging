@@ -54,7 +54,11 @@ const menuItems = [
     href: '/my-orders',
   },
   { label: 'My Events', icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />, href: '/my-events' },
-  { label: 'My Addresses', icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />, href: '/' },
+  {
+    label: 'My Addresses',
+    icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
+    href: '/my-addresses',
+  },
   { label: 'My Interests', icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />, href: '/' },
   { label: 'Login & Security', icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />, href: '/' },
   { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/' },

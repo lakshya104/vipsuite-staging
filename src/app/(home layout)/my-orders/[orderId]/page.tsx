@@ -6,7 +6,7 @@ import { ProgressBarLink } from '@/components/ProgressBar';
 import MyOrderDetailPage from '@/site-pages/MyOrderDetailPage';
 import MyOrderDetailLoading from '@/site-pages/MyOrderDetailPage/loading';
 
-export default async function OrderPage({ params }: { params: { orderId: number } }) {
+export default async function Page({ params }: { params: { orderId: number } }) {
   const orderId = params['orderId'];
 
   return (

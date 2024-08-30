@@ -67,7 +67,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
             control={control}
             placeholder={'Select sizes...'}
             options={options}
-            label={'Select sizes...'}
+            label={'Select sizes'}
             errors={errors}
           />
         )}

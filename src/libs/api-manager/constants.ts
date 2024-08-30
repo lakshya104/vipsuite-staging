@@ -21,6 +21,8 @@ const Endpoints = {
   getVipOpportunities: '/wp/v2/opportunities?_fields=id,title,opportunity-category,acf.featured_image',
   sendRsvp: '/wp/v2/rsvp',
   logOut: '/wp/v2/logout',
+  getVipRsvpEvents: (vipId: number) => `/wp/v2/vip-profiles/${vipId}/rsvp-events`,
+  getAddresses: '/wp/v2/vip-profiles',
 };
 
 export { Endpoints };

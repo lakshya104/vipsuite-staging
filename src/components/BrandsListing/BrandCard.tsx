@@ -9,11 +9,12 @@ interface BrandCardProps {
 }
 
 const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
+  const productImage = item.acf?.brand_image?.url || '/img/placeholder-image.jpg';
   return (
     <Card
       className="landing-product__item-inner"
       sx={{
-        backgroundImage: `url(${item.acf?.brand_image.url})`,
+        backgroundImage: `url(${productImage})`,
       }}
     >
       <FeedLikeIcon />
@@ -21,9 +22,9 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
         {' '}
         <CardContent className="landing-product__item-content">
           <Typography variant="h2">{item?.title?.rendered}</Typography>
-          {item.acf && (
+          {item?.acf && (
             <Typography variant="body2" mb={2}>
-              {item.acf.short_description}
+              {item?.acf?.short_description}
             </Typography>
           )}
           <Typography variant="body2">{item['brand-category'].join(' | ')}</Typography>

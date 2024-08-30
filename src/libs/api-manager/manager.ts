@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SignUpRequestBody, UserProfile, Session } from '@/interfaces';
+import { SignUpRequestBody, UserProfile, Session, Address } from '@/interfaces';
 import { Endpoints } from './constants';
 import { FetchInstance, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
@@ -13,7 +13,7 @@ export const GetToken = async () => {
 
 export const GetLoginUserId = async () => {
   const session = await auth();
-  const id = (session?.user as Session).vip_profile_id;
+  const id = (session?.user as unknown as Session).vip_profile_id;
   return id;
 };
 
@@ -293,6 +293,50 @@ export const LogOut = async (token: string) => {
     console.error('Error during signing out:', error);
     if (axios.isAxiosError(error)) {
       const errorMessage = error?.message || 'An error occurred during signing out';
+      throw errorMessage;
+    }
+  }
+};
+
+export const GetVipRsvpEvents = async () => {
+  const token = await GetToken();
+  const id = await GetLoginUserId();
+  if (typeof id === 'number') {
+    return await FetchInstance(Endpoints.getVipRsvpEvents(id), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } else {
+    {
+      const errorMessage = 'An error occurred during fetching RSVP Events';
+      throw errorMessage;
+    }
+  }
+};
+
+export const GetAddresses = async (id: number) => {
+  const token = await GetToken();
+  return await FetchInstance(`${Endpoints.getAddresses}/${id}/addresses`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const addUpdateAddress = async (id: number, token: string, address: Address, addressId: number | undefined) => {
+  try {
+    let url = `${Endpoints.getAddresses}/${id}/addresses`;
+    if (addressId) url = `${Endpoints.getAddresses}/${id}/addresses/${addressId}`;
+    const response = await Instance.post(url, address, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during add address';
       throw errorMessage;
     }
   }

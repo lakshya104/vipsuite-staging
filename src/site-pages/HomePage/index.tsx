@@ -20,7 +20,7 @@ const HomePage = async () => {
     }
   }
 
-  if (!brands) {
+  if (!brands || brands.length === 0) {
     return (
       <Box component={'main'} className="landing-page">
         <Container>

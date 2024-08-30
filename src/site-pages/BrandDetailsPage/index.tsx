@@ -42,10 +42,10 @@ const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) =>
   return (
     <Container>
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        {brandDetails.title.rendered}
+        {brandDetails?.title?.rendered}
       </Typography>
       <DetailPageImageContainer item={brandDetails} />
-      <Typography className="product-detail__content">{brandDetails.acf.short_description}</Typography>
+      <Typography className="product-detail__content">{brandDetails?.acf?.short_description}</Typography>
       <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
         <ReferCard
           heading="Spring/Summer '24 Lookbook"

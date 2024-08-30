@@ -1,24 +1,28 @@
 import React from 'react';
 import { Box, Checkbox, Container, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import Btn from '@/components/Button/CommonBtn';
 import ConfirmOrderBtn from '@/components/ConfirmOrderBtn';
 import './address.scss';
+import { GetAddresses, GetLoginUserId } from '@/libs/api-manager/manager';
+import { Address } from '@/interfaces';
+import { get } from 'lodash';
+import ErrorToaster from '@/components/ErrorToaster';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
-const addresses = [
-  {
-    id: 1,
-    name: 'First Lastname',
-    address: '123 Road Name, City, County, AA11 1BC',
-  },
-  {
-    id: 2,
-    name: 'First Lastname',
-    address: '123 Road Name, City, County, AA11 1BC',
-  },
-];
+const AddressPage = async () => {
+  let addresses: Address[] = [];
+  const userId = await GetLoginUserId();
 
-const Address = () => {
+  try {
+    addresses = await GetAddresses(userId);
+  } catch (error) {
+    const message = get(error, 'message', '');
+    if ((message as string) === 'Expired token') {
+      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
+    } else {
+      return <ErrorToaster message="Address not found" errorMessage={String(error)} />;
+    }
+  }
   return (
     <Box className="address-page">
       <Container>
@@ -26,18 +30,18 @@ const Address = () => {
           <Typography className="page-title" variant="h2" align="center" component="h1">
             Select Address
           </Typography>
-          <Btn look="dark-filled" fullWidth>
+          <ProgressBarLink href="/addresses/add">
             Add <AddIcon />
-          </Btn>
+          </ProgressBarLink>
         </Box>
         {addresses.length > 0 ? (
-          addresses.map((add) => (
-            <Box className="address__list" key={add.id}>
+          addresses.map((add, index) => (
+            <Box className="address__list" key={index}>
               <Box className="address__list-info">
                 <Typography gutterBottom variant="h2">
-                  {add.name}
+                  {add.first_name} {add.last_name}
                 </Typography>
-                <Typography variant="body2">{add.address}</Typography>
+                <Typography variant="body2">{`${add.address_line_1}, ${add.address_line_2}, ${add.city}, ${add.state}, ${add.country}, ${add.postcode}`}</Typography>
               </Box>
               <Checkbox />
             </Box>
@@ -51,4 +55,4 @@ const Address = () => {
   );
 };
 
-export default Address;
+export default AddressPage;

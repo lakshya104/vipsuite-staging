@@ -2,7 +2,7 @@
 * Address page style.
 */
 
-@import '../../../../styles/mixins';
+@import '../../../styles/mixins';
 
 .address {
   &-page {
@@ -53,9 +53,9 @@
         }
       }
     }
-    h2 {
+    h3 {
       @media only screen and (max-width: 767px) {
-        margin-bottom: rem(6);
+        margin-bottom: rem(4);
         line-height: 1.38;
         letter-spacing: -0.02em;
         @include fontSize(13);
@@ -78,7 +78,7 @@
   }
   &__list {
     display: grid;
-    grid-template-columns: auto 28px;
+    grid-template-columns: auto 54px;
     gap: rem(20);
     padding: rem(16) 0;
     border-top: rem(1) solid var(--color-textBlack-10);
@@ -100,6 +100,15 @@
         svg {
           fill: var(--color-textBlack);
         }
+      }
+    }
+    &-action {
+      a {
+        display: inline-block;
+        margin-right: rem(5);
+      }
+      svg {
+        cursor: pointer;
       }
     }
   }

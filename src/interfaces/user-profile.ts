@@ -56,4 +56,11 @@ export interface AuthToken {
   token: string;
 }
 
-export type Session = UserProfile & AuthToken;
+export type Session = {
+  id: number;
+  acf: ACF;
+  vip_profile_id: number;
+  account_status: string;
+  role: string;
+  token: string;
+};

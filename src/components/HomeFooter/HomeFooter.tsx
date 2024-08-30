@@ -15,13 +15,7 @@ const footerItems = [
 
 const HomeFooter = () => {
   return (
-    <Box
-      className="footer-menu"
-      sx={{
-        bgcolor: 'background.paper',
-        borderColor: 'divider',
-      }}
-    >
+    <Box className="footer-menu">
       {map(footerItems, (item) => (
         <Stack key={item.href} alignItems="center">
           <ProgressBarLink href={item.href}>
