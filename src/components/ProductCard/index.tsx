@@ -9,8 +9,7 @@ import { ProgressBarLink } from '../ProgressBar';
 const ProductCard = ({ data }: { data: BrandProduct }) => {
   const { id, name, short_description, meta_data, images } = data;
   const isRequestOnlyValue = meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
-  const productImage =
-    images[0]?.src || 'https://vip.anktech.in/wordpress/wp-content/uploads/woocommerce-placeholder.png';
+  const productImage = images[0]?.src || '/img/placeholder-image.jpg';
   const productDesctiption = truncateDescription(short_description, 18);
   return (
     <Card className="product-card">

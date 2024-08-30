@@ -276,7 +276,7 @@ export const SendRsvp = async (data: string[], token: string) => {
   }
 };
 
-export const LogOut = async ( token: string) => {
+export const LogOut = async (token: string) => {
   try {
     const response = await Instance.post(
       Endpoints.logOut,
@@ -287,7 +287,7 @@ export const LogOut = async ( token: string) => {
         },
       },
     );
-    console.log("logged");
+    console.log('logged');
     return response.data;
   } catch (error) {
     console.error('Error during signing out:', error);
