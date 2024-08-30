@@ -5,7 +5,7 @@ import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 
-const EventDetailsPage = ({ event }: { event: EventDetails }) => {
+const EventDetailsCard = ({ event }: { event: EventDetails }) => {
   const eventImageUrl = event.acf.event_image.sizes['1536x1536'];
   return (
     <Box className="product-detail">
@@ -55,4 +55,4 @@ const EventContainer = ({ imageUrl }: EventContainerProps) => {
   );
 };
 
-export default EventDetailsPage;
+export default EventDetailsCard;

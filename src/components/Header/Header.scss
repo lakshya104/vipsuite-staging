@@ -9,9 +9,16 @@ header.site-header {
   color: var(--color-textBlack);
   box-shadow: 0 0 0 transparent;
   border-bottom: rem(1) solid var(--color-light-gray);
+  &:not(.site-header__logged) {
+    .navbar-toggler {
+      @media only screen and (min-width: 992px) {
+        display: none;
+      }
+    }
+  }
   .navbar-toggler {
-    @media only screen and (min-width: 992px) {
-      display: none;
+    svg {
+      cursor: pointer;
     }
     button {
       padding: 0;
@@ -104,6 +111,116 @@ header.site-header {
         height: rem(16);
         width: auto;
         overflow: hidden;
+      }
+    }
+  }
+  &__logged {
+    .navbar-toggler {
+      margin-left: auto;
+      line-height: 0;
+      width: rem(20);
+      height: rem(20);
+      cursor: pointer;
+      @include flex(center, center);
+      @media only screen and (min-width: 768px) {
+        width: rem(28);
+        height: rem(20);
+      }
+      span,
+      span::before,
+      span::after {
+        width: rem(15);
+        height: rem(2);
+        background-color: var(--color-textBlack);
+        transition: 0.4s;
+        display: block;
+        @include relative;
+        @media only screen and (min-width: 768px) {
+          width: rem(28);
+          height: rem(3);
+        }
+      }
+      span {
+        margin-top: rem(-11);
+        @media only screen and (min-width: 768px) {
+          margin-top: rem(-18);
+        }
+        &::before,
+        &::after {
+          content: '';
+          @include absolute(right 0);
+        }
+        &::before {
+          top: rem(5);
+          @media only screen and (min-width: 768px) {
+            top: rem(8);
+          }
+        }
+        &::after {
+          width: rem(11);
+          top: rem(10);
+          @media only screen and (min-width: 768px) {
+            top: rem(16);
+            width: rem(20);
+          }
+        }
+      }
+    }
+  }
+}
+.drawer-menu {
+  &__wrapper {
+    max-width: 100%;
+    width: 100vw;
+    @media only screen and (min-width: 768px) {
+      width: rem(350);
+    }
+  }
+  &__header {
+    padding: rem(20);
+    text-align: right;
+    line-height: 0;
+    border-bottom: rem(1) solid var(--color-textBlack-10);
+    margin-bottom: rem(30);
+    @include relative;
+    svg {
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .logo {
+      @include align(true, true, absolute);
+      @media only screen and (min-width: 768px) {
+        display: none;
+      }
+    }
+  }
+  &__list {
+    padding: 0 rem(20);
+    a {
+      &:first-child {
+        .drawer-menu__item {
+          padding-top: 0;
+        }
+      }
+    }
+  }
+  &__item {
+    cursor: pointer;
+    padding: rem(16) 0;
+    border-bottom: rem(1) solid var(--color-textBlack-10);
+    @include flex(space-between);
+    > .MuiBox-root {
+      flex: 1 0 auto;
+      @include flex(flex-start, center);
+      img {
+        margin-right: rem(16);
+      }
+      p {
+        @media only screen and (max-width: 767px) {
+          line-height: 1.16;
+          letter-spacing: -0.01em;
+          @include fontSize(13);
+        }
       }
     }
   }

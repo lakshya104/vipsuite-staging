@@ -12,7 +12,6 @@ import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
-import { removeEmptyStrings } from '@/helpers/utils';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 
@@ -135,7 +134,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           look_feel_of_socials: data.socialLook,
         },
       };
-      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);

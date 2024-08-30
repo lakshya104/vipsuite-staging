@@ -9,7 +9,6 @@ import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
-import { removeEmptyStrings } from '@/helpers/utils';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 
@@ -81,7 +80,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
           known_for: data.interests,
         },
       };
-      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);

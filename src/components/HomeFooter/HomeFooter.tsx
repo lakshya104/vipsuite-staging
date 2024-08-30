@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import Image from 'next/image';
-import { ProgressBarLink } from './ProgressBar';
+import { ProgressBarLink } from '../ProgressBar';
 import { map } from 'lodash';
+import './HomeFooter.scss';
 
 const footerItems = [
   { href: '/', src: '/img/home.svg', alt: 'Home', label: 'Home' },
@@ -15,26 +16,21 @@ const footerItems = [
 const HomeFooter = () => {
   return (
     <Box
+      className="footer-menu"
       sx={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        display: { xs: 'flex', md: 'none' },
-        justifyContent: 'space-around',
-        alignItems: 'center',
         bgcolor: 'background.paper',
-        py: 1,
-        borderTop: '1px solid',
         borderColor: 'divider',
       }}
     >
       {map(footerItems, (item) => (
         <Stack key={item.href} alignItems="center">
           <ProgressBarLink href={item.href}>
-            <Image src={item.src} alt={item.alt} width={24} height={24} />
+            <Box className="footer-menu__icon">
+              <Image src={item.src} alt={item.alt} width={24} height={24} />
+              <span className='label'>0</span>
+            </Box>
+            <Typography variant="caption">{item.label}</Typography>
           </ProgressBarLink>
-          <Typography variant="caption">{item.label}</Typography>
         </Stack>
       ))}
     </Box>

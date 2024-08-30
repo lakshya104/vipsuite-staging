@@ -75,7 +75,7 @@ const HomeHeader = () => {
   };
   return (
     <>
-      <AppBar className="site-header" position="sticky">
+      <AppBar className="site-header site-header__logged" position="sticky">
         <Toolbar className="site-header__wrapper">
           <Box className="site-header__brand">
             <ProgressBarLink href={'/home'} title={'THE VIP SUITE'}>
@@ -93,66 +93,58 @@ const HomeHeader = () => {
             </MenuList>
           </Box>
 
-          <Box>
-            <MenuIcon
-              onClick={toggleDrawer(true)}
+          <Box
+            className="navbar-toggler"
+            onClick={toggleDrawer(true)}
+          >
+            <span
               aria-label="account of current user"
               aria-controls="menu-appbar"
-              sx={{ cursor: 'pointer' }}
-            />
+            ></span>
           </Box>
-          <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)} sx={{ width: '100vw' }}>
-            <Box sx={{ width: 250 }} role="presentation">
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
-                <CloseIcon sx={{ cursor: 'pointer' }} onClick={toggleDrawer(false)} />
-              </Box>
-              {menuItems.map((item) => (
-                <ProgressBarLink href={item.href} key={item.label}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      p: 2,
-                      borderBottom: '1px solid #e0e0e0',
-                      cursor: 'pointer',
-                    }}
-                    onClick={toggleDrawer(false)}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      {item.icon}
-                      <Typography variant="body1" sx={{ ml: 2, fontSize: '13px' }}>
-                        {item.label}
-                      </Typography>
-                    </Box>
-                    <ChevronRightIcon />
-                  </Box>
+          <Drawer className='drawer-menu' anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+            <Box className="drawer-menu__wrapper" role="presentation">
+              <Box className="drawer-menu__header">
+                <ProgressBarLink href={'/home'} title={'THE VIP SUITE'} className='logo'>
+                  <Image src="/vipsblack.png" alt="The VIP Suite Site logo" height={13} width={114} priority />
                 </ProgressBarLink>
-              ))}
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  p: 2,
-                  borderBottom: '1px solid #e0e0e0',
-                  cursor: 'pointer',
-                }}
-                onClick={handleLogout}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
-                  <Typography variant="body1" sx={{ ml: 2, fontSize: '13px' }}>
-                    Sign Out
-                  </Typography>
+                <CloseIcon onClick={toggleDrawer(false)} />
+              </Box>
+              <Box className="drawer-menu__list">
+                {menuItems.map((item) => (
+                  <ProgressBarLink href={item.href} key={item.label}>
+                    <Box
+                      className="drawer-menu__item"
+                      onClick={toggleDrawer(false)}
+                    >
+                      <Box>
+                        {item.icon}
+                        <Typography variant="body1">
+                          {item.label}
+                        </Typography>
+                      </Box>
+                      <ChevronRightIcon />
+                    </Box>
+                  </ProgressBarLink>
+                ))}
+                <Box
+                  className="drawer-menu__item"
+                  onClick={handleLogout}
+                >
+                  <Box>
+                    <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
+                    <Typography variant="body1">
+                      Sign Out
+                    </Typography>
+                  </Box>
+                  <ChevronRightIcon />
                 </Box>
-                <ChevronRightIcon />
               </Box>
             </Box>
           </Drawer>
         </Toolbar>
       </AppBar>
-      <Backdrop sx={{ color: 'black', zIndex: 10000, height: '100vh' }} open={isLoading}>
+      <Backdrop open={isLoading}>
         <CircularProgress />
       </Backdrop>
     </>

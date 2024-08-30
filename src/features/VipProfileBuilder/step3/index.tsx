@@ -10,7 +10,6 @@ import { formSchema, Step3FormValues } from './schema';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
-import { removeEmptyStrings } from '@/helpers/utils';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
@@ -115,10 +114,8 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     nationality: profileDetail.nationality || '',
     ethnicity: profileDetail.ethnicity || '',
     numberOfChildren: profileDetail.number_of_children || '',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ageOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: any) => child.dob) : [],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    genderOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: any) => child.gender) : [],
+    ageOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: ChildInfo) => child.dob) : [],
+    genderOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: ChildInfo) => child.gender) : [],
     pets: profileDetail.pets || '',
     homePostcode: profileDetail.home_post_code || '',
   };
@@ -186,7 +183,9 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           child_info: childInfo,
         },
       };
-      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      console.log({ profile });
+
+      await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);

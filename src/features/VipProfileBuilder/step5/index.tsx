@@ -9,7 +9,6 @@ import SearchBar from '@/components/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps } from '@/interfaces';
-import { removeEmptyStrings } from '@/helpers/utils';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import { signOut } from 'next-auth/react';
 import UseToaster from '@/hooks/useToaster';
@@ -88,7 +87,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
           interests: data.interests,
         },
       };
-      await UpdateProfile(id, token, removeEmptyStrings(profile));
+      await UpdateProfile(id, token, profile);
       if (isApproved) {
         router.push('/profile');
       } else {

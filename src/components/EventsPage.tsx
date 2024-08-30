@@ -6,11 +6,11 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import EventsListing from './EventListing';
 import { Event } from '@/interfaces/events';
 
-interface EventsPageProps {
+interface EventCardsProps {
   eventsData: Event[];
 }
 
-const EventsPage: React.FC<EventsPageProps> = ({ eventsData }) => {
+const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredEvents = useMemo(() => {
@@ -67,4 +67,4 @@ const EventsPage: React.FC<EventsPageProps> = ({ eventsData }) => {
   );
 };
 
-export default EventsPage;
+export default EventCards;

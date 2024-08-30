@@ -1,0 +1,39 @@
+/*
+* Header Top style.
+*/
+
+@import '../../styles/mixins';
+
+.footer-menu {
+  padding: rem(13) rem(12);
+  width: 100%;
+  background-color: var(--color-marble);
+  border-top: rem(1) solid var(--color-textBlack-10);
+  @include flex(space-around, center);
+  @include fixed(left 0 bottom 0);
+  @media only screen and (min-width: 992px) {
+    display: none;
+  }
+  &__icon {
+    display: inline-block;
+    @include relative;
+    span {
+      text-align: center;
+      width: rem(14);
+      height: rem(14);
+      display: block;
+      color: var(--color-marble);
+      font-weight: 500;
+      background-color: var(--color-red);
+      @include border-radius(50%);
+      @include absolute(top 0 right -5px);
+      @include fontSize(10);
+    }
+  }
+  a {
+    text-align: center;
+    span {
+      display: block;
+    }
+  }
+}

@@ -6,13 +6,12 @@ import ContinueToCartBtn from '@/components/ContinueToCartBtn';
 import './Basket.scss';
 import { Cart } from '@/interfaces';
 import DeleteItemFromCartBtn from '../DeleteItemFromCartBtn';
-import { GetToken } from '@/libs/api-manager/manager';
 
 interface BasketCardProps {
   cartData: Cart;
+  token: string;
 }
-const BasketCard: React.FC<BasketCardProps> = async ({ cartData }) => {
-  const token = await GetToken();
+const BasketCard: React.FC<BasketCardProps> = async ({ cartData, token }) => {
   const cartItems = cartData.items;
   // const { basket, removeProduct } = useStore();
   return (

@@ -26,7 +26,8 @@ export interface ACF {
   nationality?: string;
   ethnicity?: string;
   number_of_children?: string;
-  child_info?: ChildInfo[] | false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  child_info?: any;
   pets?: string;
   home_post_code?: string;
   habits?: string[];
@@ -43,12 +44,12 @@ export interface ACF {
 }
 
 export interface UserProfile {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
   acf: ACF;
-  vip_profile_id: number;
-  account_status: string;
-  role: string;
+  vip_profile_id?: number;
+  account_status?: string;
+  role?: string;
 }
 
 export interface AuthToken {

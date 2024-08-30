@@ -68,9 +68,9 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [
-    { type: 'Email', value: 'example@example.com' },
+    { type: 'Email', value: 'N/A' },
     { type: 'Phone', value: profileDetails?.phone },
-    { type: 'Address', value: '123 Example Street, London, UK' },
+    // { type: 'Address', value: 'N/A' },
   ];
   return (
     <Grid container>

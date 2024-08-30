@@ -24,7 +24,7 @@ const ProductSkeletonItem = () => {
 const BasketPageLoading = () => {
   return (
     <Box>
-      {[...Array(4)].map((_, index) => (
+      {[...Array(6)].map((_, index) => (
         <ProductSkeletonItem key={index} />
       ))}
     </Box>

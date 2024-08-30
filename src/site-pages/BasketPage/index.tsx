@@ -1,6 +1,6 @@
 import React from 'react';
 import BasketCard from '@/components/BasketCard';
-import { GetVipCart } from '@/libs/api-manager/manager';
+import { GetToken, GetVipCart } from '@/libs/api-manager/manager';
 import { Cart } from '@/interfaces';
 import ErrorToaster from '@/components/ErrorToaster';
 import { get } from 'lodash';
@@ -8,8 +8,10 @@ import { Container, Typography } from '@mui/material';
 
 const BasketPage = async () => {
   let cartData: Cart | null = null;
+  let token = null;
   try {
     cartData = await GetVipCart();
+    token = await GetToken();
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -27,7 +29,7 @@ const BasketPage = async () => {
       </Container>
     );
   }
-  return <BasketCard cartData={cartData} />;
+  return <BasketCard cartData={cartData} token={token} />;
 };
 
 export default BasketPage;

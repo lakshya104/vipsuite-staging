@@ -18,6 +18,8 @@ const Endpoints = {
   getVipCart: '/wc/store/v1/cart',
   removeVipCartItem: (key: string) => `/wc/store/v1/cart/remove-item?key=${key}`,
   addItemToCart: (nonce: string) => `/wc/store/v1/cart/add-item?X-WC-Store-API-Nonce=${nonce}`,
+  getVipOpportunities: '/wp/v2/opportunities?_fields=id,title,opportunity-category,acf.featured_image',
+  sendRsvp: '/wp/v2/rsvp',
 };
 
 export { Endpoints };

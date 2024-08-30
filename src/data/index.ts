@@ -51,10 +51,6 @@ export const navLinks = [
     label: 'Contact',
     href: '/contact',
   },
-  {
-    label: 'Login',
-    href: '/login',
-  },
 ];
 
 export const heroSectionLine = 'Invite-only, private members portal for events, campaigns, gifting and more.';

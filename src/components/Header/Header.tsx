@@ -50,6 +50,11 @@ const Header = () => {
                   </Link>
                 </MenuItem>
               ))}
+              <MenuItem sx={{ display: { md: 'none' } }}>
+                <Link href="/login" title={'login'} onClick={handleCloseNavMenu}>
+                  Login
+                </Link>
+              </MenuItem>
             </MenuList>
           </Box>
           <Box className="site-header__user">

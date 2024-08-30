@@ -13,7 +13,7 @@ export const GetToken = async () => {
 
 export const GetLoginUserId = async () => {
   const session = await auth();
-  const id = (session?.user as unknown as Session).vip_profile_id;
+  const id = (session?.user as Session).vip_profile_id;
   return id;
 };
 
@@ -229,12 +229,16 @@ export const GetVipCart = async () => {
 
 export const RemoveVipCartItem = async (key: string, token: string) => {
   try {
-    const response = await Instance.post(Endpoints.removeVipCartItem(key), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'X-WC-Store-API-Nonce': '08353d22df',
+    const response = await Instance.post(
+      Endpoints.removeVipCartItem(key),
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'X-WC-Store-API-Nonce': '1e6447610f',
+        },
       },
-    });
+    );
     return response.data;
   } catch (error) {
     console.error('Error during removing cart item:', error);
@@ -242,5 +246,32 @@ export const RemoveVipCartItem = async (key: string, token: string) => {
       const errorMessage = error?.message || 'An error occurred during removing item';
       throw errorMessage;
     }
+  }
+};
+
+export const GetVipOpportunities = async () => {
+  const token = await GetToken();
+  return await FetchInstance(Endpoints.getVipOpportunities, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const SendRsvp = async (data: string[], token: string) => {
+  try {
+    const response = await Instance.post(Endpoints.sendRsvp, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error during signup:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred');
   }
 };
