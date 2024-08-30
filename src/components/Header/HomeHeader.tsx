@@ -11,7 +11,6 @@ import {
   Backdrop,
   CircularProgress,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
@@ -93,19 +92,13 @@ const HomeHeader = () => {
             </MenuList>
           </Box>
 
-          <Box
-            className="navbar-toggler"
-            onClick={toggleDrawer(true)}
-          >
-            <span
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-            ></span>
+          <Box className="navbar-toggler" onClick={toggleDrawer(true)}>
+            <span aria-label="account of current user" aria-controls="menu-appbar"></span>
           </Box>
-          <Drawer className='drawer-menu' anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+          <Drawer className="drawer-menu" anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
             <Box className="drawer-menu__wrapper" role="presentation">
               <Box className="drawer-menu__header">
-                <ProgressBarLink href={'/home'} title={'THE VIP SUITE'} className='logo'>
+                <ProgressBarLink href={'/home'} title={'THE VIP SUITE'} className="logo">
                   <Image src="/vipsblack.png" alt="The VIP Suite Site logo" height={13} width={114} priority />
                 </ProgressBarLink>
                 <CloseIcon onClick={toggleDrawer(false)} />
@@ -113,29 +106,19 @@ const HomeHeader = () => {
               <Box className="drawer-menu__list">
                 {menuItems.map((item) => (
                   <ProgressBarLink href={item.href} key={item.label}>
-                    <Box
-                      className="drawer-menu__item"
-                      onClick={toggleDrawer(false)}
-                    >
+                    <Box className="drawer-menu__item" onClick={toggleDrawer(false)}>
                       <Box>
                         {item.icon}
-                        <Typography variant="body1">
-                          {item.label}
-                        </Typography>
+                        <Typography variant="body1">{item.label}</Typography>
                       </Box>
                       <ChevronRightIcon />
                     </Box>
                   </ProgressBarLink>
                 ))}
-                <Box
-                  className="drawer-menu__item"
-                  onClick={handleLogout}
-                >
+                <Box className="drawer-menu__item" onClick={handleLogout}>
                   <Box>
                     <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
-                    <Typography variant="body1">
-                      Sign Out
-                    </Typography>
+                    <Typography variant="body1">Sign Out</Typography>
                   </Box>
                   <ChevronRightIcon />
                 </Box>

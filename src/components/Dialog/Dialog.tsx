@@ -1,8 +1,6 @@
 'use client';
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import CloseIcon from '@mui/icons-material/Close';
-import { Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from '@mui/material';
+import React from 'react';
+import { Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Image from 'next/image';
 import Btn from '../Button/CommonBtn';
 import { RefCallBack } from 'react-hook-form';
@@ -35,10 +33,7 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
       fullWidth
     >
       <Box mb={2}>
-        <DialogTitle
-          variant="h2"
-          id="customized-dialog-title"
-        >
+        <DialogTitle variant="h2" id="customized-dialog-title">
           {content.title}
         </DialogTitle>
         <DialogContent>
