@@ -1,13 +1,16 @@
 import React from 'react';
 import { Box, Container, Skeleton, Typography } from '@mui/material';
 
-const AddAddressesPageLoading = () => {
+interface AddAddressesPageLoadingProps {
+  type: 'Add' | 'Edit';
+}
+const AddAddressesPageLoading: React.FC<AddAddressesPageLoadingProps> = ({ type }) => {
   return (
     <Box className="address-form">
       <Container>
         <Box className="address-form__head">
           <Typography className="page-title" variant="h2" align="center" component="h1">
-            Add Address
+            {`${type} Address`}
           </Typography>
         </Box>
         <Box component="form" className="profile-builder__form">

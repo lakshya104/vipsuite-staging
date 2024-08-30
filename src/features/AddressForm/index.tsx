@@ -98,7 +98,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
       openToaster('Error during add address: ' + error);
     } finally {
       setIsLoading(false);
-      router.push('/addresses');
+      router.push('/my-addresses');
     }
   };
   return (
@@ -123,7 +123,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
           <Btn look="dark-filled" width="100%" fullWidth type="submit">
             Continue
           </Btn>
-          <Backdrop open={isLoading}>
+          <Backdrop sx={{ zIndex: 10000 }} open={isLoading}>
             <CircularProgress color="inherit" />
           </Backdrop>
           <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />

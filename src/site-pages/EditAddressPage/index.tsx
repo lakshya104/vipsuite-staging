@@ -5,7 +5,10 @@ import AddressForm from '@/features/AddressForm';
 import { get } from 'lodash';
 import ErrorToaster from '@/components/ErrorToaster';
 
-const EditAddressPage = async ({ id }: { id: number }) => {
+interface EditAddressPageProps {
+  id: number;
+}
+const EditAddressPage: React.FC<EditAddressPageProps> = async ({ id }) => {
   let addresses: Address[] = [];
   const userId = await GetLoginUserId();
   const token = await GetToken();
