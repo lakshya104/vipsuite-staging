@@ -15,7 +15,7 @@ export default async function HomeSectionLayout({
   const session = await auth();
   const profile_status = get(session, 'user.acf.profile_status', {});
   if (profile_status === 'pending') redirect('/vip-profile-builder');
-  const token = (session?.user as Session).token;
+  const token = (session?.user as unknown as Session).token;
   return (
     <>
       <HomeHeader token={token} />

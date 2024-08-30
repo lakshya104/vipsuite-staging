@@ -31,10 +31,10 @@ const OpportunitiesPage = async () => {
   }
 
   return (
-    <Box padding={2}>
+    <Box>
       <Grid container spacing={2}>
         {map(allOpportunities, (opportunity) => (
-          <Grid item xs={12} sm={6} md={6} key={opportunity.id}>
+          <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
             <OpportunitiesCard opportunity={opportunity} />
           </Grid>
         ))}

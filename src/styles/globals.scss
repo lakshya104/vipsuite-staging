@@ -23,6 +23,7 @@ body {
   line-height: 1.4;
   font-family: var(--font-family);
   color: var(--color-textBlack);
+  background-color: var(--color-marble);
 }
 
 h1,
@@ -48,9 +49,12 @@ a,
 button {
   font-family: var(--font-family);
   color: var(--color-textBlack);
-  &[disable] {
+  &[disable],
+  &.Mui-disabled.MuiButtonBase-root {
     opacity: 0.3;
+    color: var(--color-white);
     pointer-events: none;
+    background-color: var(--color-textBlack);
   }
 }
 img {

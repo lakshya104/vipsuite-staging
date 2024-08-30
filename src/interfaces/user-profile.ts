@@ -23,19 +23,19 @@ export interface ACF {
   gifting_contacts?: ContactInfo;
   date_of_birth?: string;
   birth_place?: string;
-  nationality?: string;
-  ethnicity?: string;
-  number_of_children?: string;
+  nationality?: string | null;
+  ethnicity?: string | null;
+  number_of_children?: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   child_info?: any;
   pets?: string;
   home_post_code?: string;
   habits?: string[];
-  sports_play?: string;
+  sports_play?: string | null;
   other_sports?: string;
-  sports_follow?: string;
-  skills?: string;
-  look_feel_of_socials?: string;
+  sports_follow?: string | null;
+  skills?: string | null;
+  look_feel_of_socials?: string | null;
   interests?: string[];
   associated_brands?: boolean;
   secondary_email?: string | null;

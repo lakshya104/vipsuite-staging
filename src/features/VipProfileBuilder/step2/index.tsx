@@ -70,8 +70,6 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           },
         },
       };
-      console.log({ profile });
-
       await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {

@@ -18,6 +18,8 @@ import './Header.scss';
 import { signOut } from 'next-auth/react';
 import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '../Toaster';
 
 const navLinks = [
   {
@@ -72,6 +74,7 @@ interface HomeHeaderProps {
 const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -83,9 +86,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
       await LogOut(token);
       signOut();
     } catch (error) {
-      console.error('Logout failed:', error);
-    } finally {
       setIsLoading(false);
+      openToaster('Error during logging out. ' + error);
     }
   };
 
@@ -147,6 +149,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
       <Backdrop sx={{ zIndex: 10000 }} open={isLoading}>
         <CircularProgress />
       </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };

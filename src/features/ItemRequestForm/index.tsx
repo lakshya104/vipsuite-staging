@@ -21,7 +21,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
   const [open, setOpen] = useState(false);
   const [basket, setBasket] = useState(data);
   const router = useRouter();
-  const isProductOrdered = data.product_ordered;
+  const isProductOrdered = data?.product_ordered;
   const {
     handleSubmit,
     control,

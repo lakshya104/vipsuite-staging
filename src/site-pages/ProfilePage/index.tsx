@@ -19,7 +19,7 @@ const ProfilePage = async () => {
     if ((message as string) === 'Expired token') {
       return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
     } else {
-      return <ErrorToaster message="Profile does not exist" errorMessage={String(error)} />;
+      return <ErrorToaster message="Profile not available currently" errorMessage={String(error)} />;
     }
   }
 
@@ -47,14 +47,14 @@ const ProfilePage = async () => {
           {profileDetails?.name}
         </Typography>
         <Typography variant="body2" mb={2}>
-          Age {age}
+          Age {age || 'N/A'}
         </Typography>
         <ProgressBarLink href={'/vip-profile-builder'} className="button button--link">
-          Edit Profile
+          <span style={{ textDecoration: 'underline' }}>Edit Profile</span>
         </ProgressBarLink>
       </Box>
       <Box>
-        <ProfileTabs profileData={profileDetails.acf} />
+        <ProfileTabs profileData={profileDetails?.acf} />
       </Box>
     </>
   );

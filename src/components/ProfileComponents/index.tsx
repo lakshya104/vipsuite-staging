@@ -14,7 +14,7 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
     {
       label: 'Interests',
       value:
-        profileDetails.interests && profileDetails.interests.length > 0 ? profileDetails.interests.join(', ') : 'N/A',
+        profileDetails?.interests && profileDetails.interests.length > 0 ? profileDetails.interests.join(', ') : 'N/A',
     },
   ];
   return (
@@ -41,8 +41,8 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
 
 export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const socialData = [
-    { platform: 'Instagram', handle: profileDetails?.instagram_handle },
-    { platform: 'LinkedIn', handle: profileDetails?.tiktok_handle },
+    { platform: 'Instagram', handle: profileDetails?.instagram_handle || 'N/A' },
+    { platform: 'LinkedIn', handle: profileDetails?.tiktok_handle || 'N/A' },
   ];
   return (
     <Grid container>
@@ -69,7 +69,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [
     { type: 'Email', value: 'N/A' },
-    { type: 'Phone', value: profileDetails?.phone },
+    { type: 'Phone', value: profileDetails?.phone || 'N/A' },
     // { type: 'Address', value: 'N/A' },
   ];
   return (
@@ -80,11 +80,11 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
             <Grid container>
               <Grid item xs={4}>
                 <Typography variant="body1" fontWeight="500">
-                  {item.type}
+                  {item?.type}
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography variant="body2">{item.value}</Typography>
+                <Typography variant="body2">{item?.value}</Typography>
               </Grid>
             </Grid>
           </Paper>

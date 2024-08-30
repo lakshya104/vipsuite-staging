@@ -1,0 +1,37 @@
+/*
+* Home style.
+*/
+
+@import '../../styles/mixins';
+
+.opportunity-detail-page {
+  margin: rem(23) 0 rem(50);
+  @media only screen and (min-width: 768px) {
+    margin: rem(50) 0;
+  }
+  .page-title {
+    padding: rem(23) 0;
+  }
+  button {
+    @media only screen and (max-width: 767px) {
+      width: 100%;
+    }
+  }
+  .slider-controller {
+    max-width: 100%;
+    padding: 0;
+    margin-bottom: rem(16);
+    @media only screen and (min-width: 768px) {
+      margin-bottom: rem(24);
+    }
+  }
+  .MuiCardContent-root {
+    padding: 0;
+  }
+  .opportunity__details {
+    margin: rem(16) 0;
+    @media only screen and (min-width: 768px) {
+      margin: rem(24) 0;
+    }
+  }
+}

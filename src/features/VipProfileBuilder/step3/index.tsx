@@ -175,16 +175,14 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           last_name: profileDetail.last_name,
           date_of_birth: data.dateOfBirth,
           birth_place: data.birthplace,
-          nationality: data.nationality,
-          ethnicity: data.ethnicity,
-          number_of_children: data.numberOfChildren,
+          nationality: data.nationality === '' ? null : data.nationality,
+          ethnicity: data.ethnicity === '' ? null : data.ethnicity,
+          number_of_children: data.numberOfChildren === '' ? null : data.numberOfChildren,
           pets: data.pets,
           home_post_code: data.homePostcode,
           child_info: childInfo,
         },
       };
-      console.log({ profile });
-
       await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {

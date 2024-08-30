@@ -2,9 +2,9 @@
 * Address page style.
 */
 
-@import '../../../styles/mixins';
+@import '../../styles/mixins';
 
-.user-profile {
+.opportunity {
   margin: rem(23) 0 rem(120);
   @media only screen and (min-width: 768px) {
     margin: rem(50) 0;
@@ -26,21 +26,9 @@
         @include fontSize(13);
       }
     }
-    a {
+    button {
       text-decoration: underline;
-      &:hover {
-        text-decoration: none;
-      }
     }
-    img {
-      margin-bottom: rem(16);
-    }
-  }
-  &__avtar {
-    display: inline-block;
-    width: rem(127);
-    height: rem(127);
-    margin-bottom: rem(16);
   }
   &__tabs {
     padding: rem(3);
@@ -50,14 +38,14 @@
     @media only screen and (max-width: 767px) {
       min-height: auto !important;
     }
-    [aria-label='profile tabs'] {
+    [aria-label='opportunity tabs'] {
       justify-content: space-between;
     }
     button {
       text-transform: capitalize;
       color: var(--color-textBlack);
-      flex: 1 0 33.333%;
-      max-width: 33.333%;
+      flex: 1 0 50%;
+      max-width: 50%;
       font-weight: 500;
       line-height: 2;
       letter-spacing: -0.03em;
@@ -93,27 +81,12 @@
     }
   }
   &__details {
-    &-item {
-      border-bottom: rem(1) solid var(--color-textBlack-20);
-      padding-top: rem(15);
-      padding-bottom: rem(17);
-      p {
-        &.MuiTypography-body1 {
-          font-weight: 500;
-          @media only screen and (max-width: 767px) {
-            line-height: 1.6;
-            letter-spacing: -0.02em;
-            @include fontSize(14);
-          }
-        }
-        &.MuiTypography-body2 {
-          font-weight: 400;
-          @media only screen and (max-width: 767px) {
-            line-height: 1.6;
-            letter-spacing: -0.01em;
-            @include fontSize(13);
-          }
-        }
+    p {
+      color: var(--color-textBlack-80);
+      @media only screen and (max-width: 767px) {
+        letter-spacing: -0.01em;
+        line-height: 1.38;
+        @include fontSize(13);
       }
     }
   }

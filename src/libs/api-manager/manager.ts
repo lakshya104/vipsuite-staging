@@ -178,7 +178,15 @@ export const ForgotPassword = async ({ email }: { email: string }) => {
   }
 };
 
-export const ResetPassword = async ({ email, code, password }: { email: string; code: string; password: string }) => {
+export const ResetPassword = async ({
+  email,
+  code,
+  password,
+}: {
+  email: string | null;
+  code: string;
+  password: string;
+}) => {
   try {
     const response = await Instance.post(Endpoints.resetPassword, { email, code, password });
     return response.data;
@@ -287,7 +295,6 @@ export const LogOut = async (token: string) => {
         },
       },
     );
-    console.log('logged');
     return response.data;
   } catch (error) {
     console.error('Error during signing out:', error);

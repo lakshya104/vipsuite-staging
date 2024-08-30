@@ -9,7 +9,7 @@ import SearchBar from '@/components/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps } from '@/interfaces';
-import { UpdateProfile } from '@/libs/api-manager/manager';
+import { LogOut, UpdateProfile } from '@/libs/api-manager/manager';
 import { signOut } from 'next-auth/react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
@@ -47,9 +47,16 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
   const router = useRouter();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
-  const handleDialogBoxDataChange = (data: boolean) => {
-    setIsDialogOpen(data);
-    signOut();
+  const handleDialogBoxDataChange = async (data: boolean) => {
+    try {
+      setIsDialogOpen(data);
+      setIsLoading(true);
+      await LogOut(token);
+      signOut();
+    } catch (error) {
+      setIsLoading(false);
+      openToaster('Error: ' + error);
+    }
   };
 
   const handleChange = (event: { target: { value: React.SetStateAction<string> } }) => {

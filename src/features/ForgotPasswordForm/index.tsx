@@ -17,6 +17,7 @@ const ForgotPasswordForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [resetPasswordLink, setResetPasswordLink] = useState<string>('');
   const router = useRouter();
 
   const dialogBoxContent = {
@@ -30,7 +31,8 @@ const ForgotPasswordForm = () => {
 
   const handleDialogBoxDataChange = (open: boolean) => {
     setIsDialogOpen(open);
-    router.push('/reset-password');
+    setIsPending(true);
+    router.push(resetPasswordLink);
   };
 
   const ForgotPasswordSchema = z.object({
@@ -56,6 +58,7 @@ const ForgotPasswordForm = () => {
     reset();
     try {
       const data = { email: values.email };
+      setResetPasswordLink(`/reset-password?email=${values.email}`);
       await ForgotPassword(data);
       setIsPending(false);
       setIsDialogOpen(true);
@@ -78,7 +81,7 @@ const ForgotPasswordForm = () => {
         autoComplete="email"
       />
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
-        {isPending ? 'Sending...' : 'Send Reset Link'}
+        {isPending ? 'Sending...' : 'Send Password Reset'}
       </Button>
       <Typography className="signup-text">
         Don&apos;t have an account?{' '}

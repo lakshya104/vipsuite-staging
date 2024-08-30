@@ -87,12 +87,12 @@ const LoginForm = () => {
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="login-form">
       <InputForm
         {...register('username')}
-        placeholder="Username"
-        label="Username"
+        placeholder="Email"
+        label="Email"
         type="text"
         error={!!errors.username}
         helperText={errors.username?.message}
-        autoComplete="username"
+        autoComplete="email"
       />
       <InputForm
         {...register('password')}

@@ -8,7 +8,7 @@
   &-page {
     margin: rem(23) 0;
     @media only screen and (min-width: 768px) {
-      margin: rem(72) 0;
+      margin: rem(50) 0;
     }
     &__head {
       margin-bottom: rem(28);
@@ -53,9 +53,9 @@
         }
       }
     }
-    h3 {
+    h2 {
       @media only screen and (max-width: 767px) {
-        margin-bottom: rem(4);
+        margin-bottom: rem(6);
         line-height: 1.38;
         letter-spacing: -0.02em;
         @include fontSize(13);

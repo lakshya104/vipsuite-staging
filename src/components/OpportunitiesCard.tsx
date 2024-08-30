@@ -17,8 +17,8 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunity }) =>
       }}
     >
       <Typography
+        className='opportunities-card__item-overline'
         variant="overline"
-        sx={{ backgroundColor: 'white', padding: '5px 10px', borderRadius: '3px', margin: 1, fontWeight: '500' }}
         gutterBottom
       >
         VIP Clup

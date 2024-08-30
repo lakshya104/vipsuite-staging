@@ -7,7 +7,7 @@ import InputForm from '@/components/InputForm/InputForm';
 import Toaster from '@/components/Toaster';
 import DialogBox from '@/components/Dialog/Dialog';
 import './ResetPasswordForm.scss';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ResetPassword } from '@/libs/api-manager/manager';
 import { defaultValues, ResetPasswordFormValues, ResetPasswordSchema } from './schema';
 import UseToaster from '@/hooks/useToaster';
@@ -17,6 +17,8 @@ const ResetPasswordForm = () => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
 
   const dialogBoxContent = {
     title: 'Password Updated Successfully!',
@@ -28,6 +30,7 @@ const ResetPasswordForm = () => {
 
   const handleDialogBoxDataChange = (open: boolean) => {
     setIsDialogOpen(open);
+    setIsPending(true);
     router.push('/login');
   };
 
@@ -46,7 +49,7 @@ const ResetPasswordForm = () => {
     reset();
     try {
       const data = {
-        email: values.email,
+        email: email,
         code: values.code,
         password: values.password,
       };
@@ -63,14 +66,6 @@ const ResetPasswordForm = () => {
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="forgot-password-form">
       <InputForm
-        {...register('email')}
-        placeholder="Email"
-        type="email"
-        error={!!errors.email}
-        helperText={errors.email?.message}
-        autoComplete="email"
-      />
-      <InputForm
         {...register('code')}
         placeholder="Reset Code"
         type="text"
@@ -80,14 +75,22 @@ const ResetPasswordForm = () => {
       />
       <InputForm
         {...register('password')}
-        placeholder="New Password"
+        placeholder="Password"
         type="password"
         error={!!errors.password}
         helperText={errors.password?.message}
         autoComplete="new-password"
       />
+      <InputForm
+        {...register('repeatPassword')}
+        placeholder="Repeat Password"
+        type="password"
+        error={!!errors.repeatPassword}
+        helperText={errors.repeatPassword?.message}
+        autoComplete="new-password"
+      />
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
-        {isPending ? 'Sending...' : 'Reset Password'}
+        {isPending ? 'Saving' : 'Save Password'}
       </Button>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>

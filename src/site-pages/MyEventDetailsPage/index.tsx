@@ -9,7 +9,6 @@ interface MyEventDetailsPageProps {
 }
 
 const MyEventDetailsPage: React.FC<MyEventDetailsPageProps> = async ({ eventId }) => {
-  console.log({ eventId });
   return (
     <Container>
       <Typography className="page-title" variant="h2" align="center" gutterBottom>

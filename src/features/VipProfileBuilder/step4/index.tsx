@@ -127,11 +127,11 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           first_name: profileDetail.first_name,
           last_name: profileDetail.last_name,
           habits: data.habits,
-          sports_play: data.sportsPlay,
+          sports_play: data.sportsPlay === '' ? null : data.sportsPlay,
           other_sports: data.sports,
-          sports_follow: data.sportsFollow,
-          skills: data.skills,
-          look_feel_of_socials: data.socialLook,
+          sports_follow: data.sportsFollow === '' ? null : data.sportsFollow,
+          skills: data.skills === '' ? null : data.skills,
+          look_feel_of_socials: data.socialLook === '' ? null : data.socialLook,
         },
       };
       await UpdateProfile(id, token, profile);

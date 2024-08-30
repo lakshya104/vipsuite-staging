@@ -36,7 +36,6 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event }) => {
   });
 
   const onSubmit: SubmitHandler<RsvpFormValues> = (data) => {
-    console.log(data);
     if (data.notAvailable === 'yes' || data.notInterested === 'yes') {
       onClose();
       reset();

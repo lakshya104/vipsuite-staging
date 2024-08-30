@@ -7,10 +7,11 @@
 .opportunities {
   margin: rem(23) 0 rem(120);
   @media only screen and (min-width: 768px) {
-    margin: rem(72) 0;
+    margin: rem(50) 0;
   }
   .page-title {
     padding: rem(13) 0;
+    margin-bottom: rem(20);
     border-bottom: rem(1) solid var(--color-textBlack-10);
     @include relative;
     a {
@@ -31,7 +32,7 @@
   &__item {
     &-inner {
       position: relative;
-      height: 350px;
+      padding-top: 100%;
       background-size: cover;
       background-position: center;
       .MuiChip-filled {
@@ -39,10 +40,36 @@
         @include absolute(left 12px top 12px);
       }
     }
+    &-overline.MuiTypography-root {
+      background-color: var(--color-marble);
+      padding: rem(6) rem(10);
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      display: inline-block;
+      line-height: 1.4;
+      @include absolute(top 12px left 12px);
+      @include border-radius(3px);
+      @media only screen and (max-width: 767px) {
+        line-height: 1.4;
+        @include fontSize(10);
+      }
+    }
     &-content {
       padding: rem(12) !important;
       color: var(--color-marble);
+      width: 100%;
       @include absolute(bottom 0 left 0);
+      &::after {
+        content: '';
+        width: 100%;
+        height: 115%;
+        opacity: 0.3;
+        background: linear-gradient(0deg, #1B1B1B 0%, rgba(27, 27, 27, 0) 100%);
+        @include absolute(bottom 0 left 0 z-index 0);
+      }
+      * {
+        @include relative(z-index 1);
+      }
       p {
         @media only screen and (max-width: 767px) {
           @include fontSize(12);

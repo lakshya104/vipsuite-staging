@@ -36,30 +36,30 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ productId
   }
   // const isRequestOnlyValue =
   //   brandProductDetails.meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
-  const productImage = brandProductDetails.images[0].src;
-  const sizes = brandProductDetails.type === 'variable' ? brandProductDetails.attributes[0].options : [];
+  const productImage = brandProductDetails?.images[0]?.src || '/img/placeholder-image.jpg';
+  const sizes = brandProductDetails?.type === 'variable' ? brandProductDetails?.attributes[0]?.options : [];
   const newSizes =
-    brandProductDetails.type === 'variable'
+    brandProductDetails?.type === 'variable'
       ? sizes.slice(0, 4).map((size: string) => ({ value: size, label: size }))
       : null;
   return (
     <Box className="product-details__page">
       <Container>
         <Typography variant="h2" component="h1" gutterBottom>
-          {brandProductDetails.name}
+          {brandProductDetails?.name}
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <Image src={productImage} alt={brandProductDetails.name} height={500} width={500} />
+            <Image src={productImage} alt={brandProductDetails?.name} height={500} width={500} />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="body1" gutterBottom>
-              {brandProductDetails.name}
+              {brandProductDetails?.name}
             </Typography>
             <Typography variant="h2" component="h2" gutterBottom>
-              {brandProductDetails.name}
+              {brandProductDetails?.name}
             </Typography>
-            <Box dangerouslySetInnerHTML={{ __html: brandProductDetails.description }} />
+            <Box dangerouslySetInnerHTML={{ __html: brandProductDetails?.description }} />
             <ItemRequestForm options={newSizes} data={brandProductDetails} />
           </Grid>
         </Grid>
