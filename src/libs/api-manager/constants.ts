@@ -20,6 +20,7 @@ const Endpoints = {
   addItemToCart: (nonce: string) => `/wc/store/v1/cart/add-item?X-WC-Store-API-Nonce=${nonce}`,
   getVipOpportunities: '/wp/v2/opportunities?_fields=id,title,opportunity-category,acf.featured_image',
   sendRsvp: '/wp/v2/rsvp',
+  logOut: '/wp/v2/logout',
 };
 
 export { Endpoints };

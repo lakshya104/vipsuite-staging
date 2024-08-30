@@ -275,3 +275,25 @@ export const SendRsvp = async (data: string[], token: string) => {
     throw new Error('An unexpected error occurred');
   }
 };
+
+export const LogOut = async ( token: string) => {
+  try {
+    const response = await Instance.post(
+      Endpoints.logOut,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    console.log("logged");
+    return response.data;
+  } catch (error) {
+    console.error('Error during signing out:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error?.message || 'An error occurred during signing out';
+      throw errorMessage;
+    }
+  }
+};

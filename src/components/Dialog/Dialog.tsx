@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import * as React from 'react';
 import { Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Image from 'next/image';
 import Btn from '../Button/CommonBtn';

@@ -27,7 +27,7 @@ const HomeFooter = () => {
           <ProgressBarLink href={item.href}>
             <Box className="footer-menu__icon">
               <Image src={item.src} alt={item.alt} width={24} height={24} />
-              <span className="label">0</span>
+              {(item.label === 'Inbox' || item.label === 'Basket') && <span className="label">0</span>}
             </Box>
             <Typography variant="caption">{item.label}</Typography>
           </ProgressBarLink>

@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { get } from 'lodash';
+import { Session } from '@/interfaces';
 
 export default async function HomeSectionLayout({
   children,
@@ -14,10 +15,10 @@ export default async function HomeSectionLayout({
   const session = await auth();
   const profile_status = get(session, 'user.acf.profile_status', {});
   if (profile_status === 'pending') redirect('/vip-profile-builder');
-
+  const token = (session?.user as Session).token;
   return (
     <>
-      <HomeHeader />
+      <HomeHeader token={token} />
       <Box pb={6}> {children}</Box>
       <HomeFooter />
     </>

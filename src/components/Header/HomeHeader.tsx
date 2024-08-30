@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
 import { signOut } from 'next-auth/react';
 import { ProgressBarLink } from '../ProgressBar';
+import { LogOut } from '@/libs/api-manager/manager';
 
 const navLinks = [
   {
@@ -60,18 +61,30 @@ const menuItems = [
   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/' },
 ];
 
-const HomeHeader = () => {
+interface HomeHeaderProps {
+  token: string;
+}
+
+const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
-  const handleLogout = () => {
-    setDrawerOpen(false);
-    setIsLoading(true);
-    signOut();
+  const handleLogout = async () => {
+    try {
+      setDrawerOpen(false);
+      setIsLoading(true);
+      await LogOut(token);
+      signOut();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <>
       <AppBar className="site-header site-header__logged" position="sticky">
@@ -127,7 +140,7 @@ const HomeHeader = () => {
           </Drawer>
         </Toolbar>
       </AppBar>
-      <Backdrop open={isLoading}>
+      <Backdrop sx={{ zIndex: 10000 }} open={isLoading}>
         <CircularProgress />
       </Backdrop>
     </>
