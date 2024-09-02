@@ -11,6 +11,7 @@ import Btn from '@/components/Button/CommonBtn';
 import UseToaster from '@/hooks/useToaster';
 import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
+import revalidateTag from '@/libs/actions';
 
 type FormFieldNames =
   | 'first_name'
@@ -98,6 +99,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
       openToaster('Error during add address: ' + error);
     } finally {
       setIsLoading(false);
+      revalidateTag('getAddress');
       router.push('/my-addresses');
     }
   };

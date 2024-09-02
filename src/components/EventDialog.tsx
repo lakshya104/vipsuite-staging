@@ -35,7 +35,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
 
       <Dialog className="site-dialog" open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
         <DialogContent>
-          <RSVP onClose={handleDialogClose} event={event} onConfirmation={handleConfirmationOpen} token={token}/>
+          <RSVP onClose={handleDialogClose} event={event} onConfirmation={handleConfirmationOpen} token={token} />
         </DialogContent>
       </Dialog>
 

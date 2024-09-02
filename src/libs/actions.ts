@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag as revalidate, revalidatePath } from 'next/cache';
 import { AuthError } from 'next-auth';
 import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
@@ -38,3 +39,11 @@ export const login = async (values: LoginFormValues) => {
 export const signOutAction = async () => {
   await signOut();
 };
+
+export async function revalidateTag(name: string) {
+  revalidate(name);
+}
+
+export default async function revalidatePathAction(path: string) {
+  revalidatePath(path);
+}

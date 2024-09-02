@@ -6,6 +6,7 @@ import { GetVipRsvpEvents } from '@/libs/api-manager/manager';
 import { get } from 'lodash';
 import ErrorToaster from '@/components/ErrorToaster';
 import { MyEvent } from '@/interfaces';
+import { formatDate } from '@/helpers/utils';
 
 const MyEventsPage = async () => {
   let vipRsvpEvents: MyEvent[] | null = null;
@@ -46,8 +47,7 @@ const MyEventsPage = async () => {
             <Typography gutterBottom variant="h2">
               {event?.post_title}
             </Typography>
-            <Typography variant="body1">{event?.acf?.event_start_date}</Typography>
-            {/* <Typography variant="body1">Time: {order.time}</Typography> */}
+            <Typography variant="body1">{formatDate(event?.acf?.event_start_date)}</Typography>
             <Typography variant="body1">Location: {event?.acf?.event_location}</Typography>
           </Box>
           <ProgressBarLink href={`/my-events/${event?.ID}`}>

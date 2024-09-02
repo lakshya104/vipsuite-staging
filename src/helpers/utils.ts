@@ -63,15 +63,24 @@ export function htmlToPlainText(html: string) {
 
 export const formatDateWithOrdinal = (date: string | Date, withMonth: boolean): string => {
   const momentDate = moment(date);
-
   if (!momentDate.isValid()) {
     return 'Invalid Date';
   }
-
   const dayOfWeek = momentDate.format('dddd');
   const dayOfMonth = momentDate.format('Do'); // This includes the ordinal
   const month = momentDate.format('MMMM');
-  // const time = momentDate.format('h:mma').toLowerCase();
   const foormattedDate = withMonth ? ` ${dayOfWeek} ${dayOfMonth} ${month}` : ` ${dayOfWeek} ${dayOfMonth}`;
   return foormattedDate;
+};
+
+export const formatDateWithOrdinalAndTime = (date: string | Date): string => {
+  const momentDate = moment(date);
+  if (!momentDate.isValid()) {
+    return 'Invalid Date';
+  }
+  const dayOfWeek = momentDate.format('dddd');
+  const dayOfMonth = momentDate.format('Do');
+  const month = momentDate.format('MMMM');
+  const time = momentDate.format('h:mma').toLowerCase();
+  return ` ${dayOfWeek} ${dayOfMonth} ${month} @ ${time}`;
 };

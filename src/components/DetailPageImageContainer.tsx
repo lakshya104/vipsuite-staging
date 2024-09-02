@@ -15,7 +15,12 @@ const DetailPageImageContainer = ({ item }: { item: BrandDetails }) => {
       }}
     >
       <FeedLikeIcon />
-      {brandLogo && <Box className="brand-logo"> <Image src={brandLogo} alt="brand logo" layout='fill' /></Box>}
+      {brandLogo && (
+        <Box className="brand-logo">
+          {' '}
+          <Image src={brandLogo} alt="brand logo" layout="fill" />
+        </Box>
+      )}
     </Card>
   );
 };

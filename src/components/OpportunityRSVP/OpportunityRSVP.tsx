@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button, CardContent } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
+import { formatDateWithOrdinalAndTime } from '@/helpers/utils';
+import { get } from 'lodash';
+import { SendRsvp } from '@/libs/api-manager/manager';
 
 interface RSVPProps {
   onClose: () => void;
   onConfirmation: () => void;
+  opportunity: OpportunityDetails;
+  token: string;
 }
 
 interface RsvpFormValues {
@@ -17,19 +23,46 @@ const defaultValues: RsvpFormValues = {
   notInterested: null,
 };
 
-const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation }) => {
+const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, token }) => {
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { handleSubmit, setValue, reset } = useForm<RsvpFormValues>({
     defaultValues,
   });
 
-  const onSubmit: SubmitHandler<RsvpFormValues> = (data) => {
+  const onSubmit: SubmitHandler<RsvpFormValues> = async (data) => {
     if (data.notAvailable === 'yes' || data.notInterested === 'yes') {
-      onClose();
-      reset();
+      const rsvp = {
+        post_type: 'opportunity',
+        rsvp_post: 605,
+        is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
+      };
+      console.log({ rsvp });
+      try {
+        await SendRsvp(rsvp, token);
+        onClose();
+        reset();
+      } catch (error) {
+        const errorMessage = get(error, 'message', 'Error sending RSVP');
+        console.error(errorMessage);
+      }
     } else {
-      onClose();
-      reset();
-      onConfirmation();
+      setIsPending(true);
+      const rsvp = {
+        post_type: 'opportunity',
+        rsvp_post: 605,
+        is_pleases: 'interested',
+      };
+      try {
+        await SendRsvp(rsvp, token);
+      } catch (error) {
+        const errorMessage = get(error, 'message', 'Error sending RSVP');
+        console.error(errorMessage);
+      } finally {
+        setIsPending(false);
+        onConfirmation();
+        onClose();
+        reset();
+      }
     }
   };
 
@@ -49,19 +82,19 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation }) => {
     <Box sx={{ maxWidth: { xs: '100%', sm: 600 }, margin: 'auto', px: { xs: 2, sm: 0 } }}>
       <CardContent>
         <Typography variant="h6" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-          Barbie x Heinz
+          {opportunity?.title?.rendered}
         </Typography>
         <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
           <Box component="span" sx={{ fontWeight: 'bold' }}>
             Date:
           </Box>{' '}
-          Wednesday 19th June @ 7pm
+          {formatDateWithOrdinalAndTime(opportunity.acf.date)}
         </Typography>
         <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
           <Box component="span" sx={{ fontWeight: 'bold' }}>
             Location:
           </Box>{' '}
-          123 London Street, London, EC1 AAA
+          {opportunity?.acf?.location}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, pb: 3 }}>
@@ -78,8 +111,9 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation }) => {
                   backgroundColor: 'black',
                 },
               }}
+              disabled={isPending || opportunity.acf.is_rsvp}
             >
-              RSVP
+              {opportunity?.acf?.is_rsvp ? ' Already Submitted' : 'RSVP'}
             </Button>
           </Box>
           <Box
@@ -92,6 +126,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation }) => {
             }}
           >
             <Button
+              type="submit"
               onClick={handleNotAvailable}
               variant="contained"
               sx={{
@@ -106,11 +141,13 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation }) => {
                   backgroundColor: 'white',
                 },
               }}
+              disabled={opportunity.acf.is_rsvp}
             >
               Not Available
             </Button>
             <Button
               onClick={handleNotInterested}
+              type="submit"
               variant="contained"
               sx={{
                 backgroundColor: 'white',
@@ -123,6 +160,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation }) => {
                   backgroundColor: 'white',
                 },
               }}
+              disabled={opportunity.acf.is_rsvp}
             >
               Not Interested
             </Button>

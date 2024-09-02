@@ -32,7 +32,7 @@ main.product-detail {
     @include relative;
     &::before {
       content: '';
-      background: linear-gradient(180deg, #1B1B1B -60.08%, rgba(27, 27, 27, 0) 95.25%);
+      background: linear-gradient(180deg, #1b1b1b -60.08%, rgba(27, 27, 27, 0) 95.25%);
       height: 95px;
       width: 100%;
       display: block;

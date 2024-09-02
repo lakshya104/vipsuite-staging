@@ -328,6 +328,7 @@ export const GetAddresses = async (id: number) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    next: { tags: ['getAddress'] },
   });
 };
 
@@ -364,8 +365,8 @@ export const DeleteAddress = async (vipId: number, addressId: number, token: str
     }
   }
 };
-export const GetVipOpportunityDetails = async (id: number) => {
-  const token = await GetToken();
+
+export const GetVipOpportunityDetails = async (id: number, token: string) => {
   return await FetchInstance(`${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf`, {
     headers: {
       Authorization: `Bearer ${token}`,

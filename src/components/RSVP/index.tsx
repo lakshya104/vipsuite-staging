@@ -38,7 +38,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
     formState: { errors },
   } = useForm<RsvpFormValues>({
     defaultValues: defaultValues,
-    resolver: zodResolver(RsvpFormSchema)
+    resolver: zodResolver(RsvpFormSchema),
   });
 
   const onSubmit: SubmitHandler<RsvpFormValues> = async (data) => {
@@ -69,8 +69,6 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
       };
       try {
         await SendRsvp(rsvp, token);
-        onClose();
-        reset();
         setIsPending(false);
       } catch (error) {
         const errorMessage = get(error, 'message', 'Error sending RSVP');
@@ -157,9 +155,9 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                     backgroundColor: 'black',
                   },
                 }}
-                disabled={isePending}
+                disabled={isePending || event?.acf?.is_rsvp}
               >
-                RSVP
+                {event?.acf?.is_rsvp ? 'Already Submitted' : 'RSVP'}
               </Button>
             </Box>
             <Box
@@ -187,6 +185,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                     backgroundColor: 'white',
                   },
                 }}
+                disabled={isePending || event?.acf?.is_rsvp}
               >
                 Not Available
               </Button>
@@ -205,6 +204,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                     backgroundColor: 'white',
                   },
                 }}
+                disabled={isePending || event?.acf?.is_rsvp}
               >
                 Not Interested
               </Button>

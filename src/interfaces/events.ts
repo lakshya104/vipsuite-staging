@@ -103,6 +103,7 @@ export interface EventDetails {
     event_details: string;
     payment_details: boolean;
     payment_status: string;
+    is_rsvp?: boolean;
   };
   _links: Links;
 }

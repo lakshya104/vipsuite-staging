@@ -3,13 +3,14 @@ import { Box, Container, Typography } from '@mui/material';
 import ErrorToaster from '@/components/ErrorToaster';
 import { get } from 'lodash';
 import OpportunityDetailsCard from '@/components/OpportunityDetails';
-import { GetVipOpportunityDetails } from '@/libs/api-manager/manager';
+import { GetToken, GetVipOpportunityDetails } from '@/libs/api-manager/manager';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 
 const OpportunityDetailsPage = async ({ id }: { id: number }) => {
   let opportunityDetails: OpportunityDetails | null = null;
+  const token = await GetToken();
   try {
-    opportunityDetails = await GetVipOpportunityDetails(Number(id));
+    opportunityDetails = await GetVipOpportunityDetails(Number(id), token);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -29,7 +30,7 @@ const OpportunityDetailsPage = async ({ id }: { id: number }) => {
       </Box>
     );
   }
-  return <OpportunityDetailsCard opportunity={opportunityDetails} />;
+  return <OpportunityDetailsCard opportunity={opportunityDetails} token={token} />;
 };
 
 export default OpportunityDetailsPage;

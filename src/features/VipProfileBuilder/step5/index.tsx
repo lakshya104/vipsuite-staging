@@ -14,6 +14,7 @@ import { signOut } from 'next-auth/react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter } from 'next/navigation';
+import revalidatePathAction from '@/libs/actions';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -95,6 +96,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
         },
       };
       await UpdateProfile(id, token, profile);
+      revalidatePathAction('/profile');
       if (isApproved) {
         router.push('/profile');
       } else {

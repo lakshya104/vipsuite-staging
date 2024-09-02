@@ -23,7 +23,10 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunity }) =>
         <FeedLikeIcon />
         <CardContent className="opportunities-card__item-content">
           <Typography variant="h2">{opportunity?.title?.rendered}</Typography>
-          <Typography variant="body2">{opportunity?.['opportunity-category']?.join(' | ')}</Typography>
+          <Typography
+            variant="body2"
+            dangerouslySetInnerHTML={{ __html: opportunity?.['opportunity-category']?.join(' | ') }}
+          />
         </CardContent>
       </Card>
     </ProgressBarLink>

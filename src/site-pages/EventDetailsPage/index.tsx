@@ -30,7 +30,7 @@ const EventDetailsPage = async ({ id }: { id: number }) => {
       </Box>
     );
   }
-  return <EventDetailsCard event={eventDetails} token={token}/>;
+  return <EventDetailsCard event={eventDetails} token={token} />;
 };
 
 export default EventDetailsPage;

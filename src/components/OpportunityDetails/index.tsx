@@ -8,7 +8,12 @@ import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import OppotunityRSVP from '../OpportunityRSVP/OpportunityRSVP';
 import ImageSlider from '../Slider';
 
-const OpportunityDetailsCard = ({ opportunity }: { opportunity: OpportunityDetails }) => {
+interface OpportunityDetailsCardProps {
+  opportunity: OpportunityDetails;
+  token: string;
+}
+
+const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity, token }) => {
   const images = ['/img/maldives.png', '/img/cycle.png', '/img/opportunity.svg', '/img/maldives.png'];
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -41,7 +46,12 @@ const OpportunityDetailsCard = ({ opportunity }: { opportunity: OpportunityDetai
       </Box>
       <Dialog open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>
         <DialogContent>
-          <OppotunityRSVP onClose={handleDialogClose} onConfirmation={handleConfirmationOpen} />
+          <OppotunityRSVP
+            token={token}
+            onClose={handleDialogClose}
+            onConfirmation={handleConfirmationOpen}
+            opportunity={opportunity}
+          />
         </DialogContent>
       </Dialog>
     </Box>
