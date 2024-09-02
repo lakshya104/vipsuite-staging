@@ -12,36 +12,41 @@ interface BasketCardProps {
   token: string;
 }
 const BasketCard: React.FC<BasketCardProps> = async ({ cartData, token }) => {
-  const cartItems = cartData.items;
+  const cartItems = cartData?.items;
   // const { basket, removeProduct } = useStore();
   return (
     <Box className="basket-product__items">
       {cartItems.length > 0 ? (
         <>
           {cartItems.map((product) => (
-            <Box className="basket-product__item" key={product.id}>
-              <Image src={product.images[0].src} alt={product.name} height={110} width={110} />
+            <Box className="basket-product__item" key={product?.id}>
+              <Image
+                src={product?.images[0]?.src || '/img/placeholder-image.jpg'}
+                alt={product?.name}
+                height={110}
+                width={110}
+              />
               <Box className="product-info">
                 <Typography gutterBottom variant="h2">
-                  {product.name}
+                  {product?.name}
                 </Typography>
-                <Typography variant="body1">{product.name}</Typography>
-                {product.type === 'variation' && (
+                <Typography variant="body1">{product?.name}</Typography>
+                {product?.type === 'variation' && (
                   <>
                     {product?.variation[0] && (
                       <Typography variant="body1">
-                        {product?.variation[0].attribute}: {product?.variation[0].value}
+                        {product?.variation[0]?.attribute}: {product?.variation[0]?.value}
                       </Typography>
                     )}
                     {product?.variation[1] && (
                       <Typography variant="body1">
-                        {product?.variation[1].attribute}: {product?.variation[1].value}
+                        {product?.variation[1]?.attribute}: {product?.variation[1]?.value}
                       </Typography>
                     )}
                   </>
                 )}
               </Box>
-              <DeleteItemFromCartBtn itemKey={product.key} token={token} />
+              <DeleteItemFromCartBtn itemKey={product?.key} token={token} />
             </Box>
           ))}
           <ContinueToCartBtn />

@@ -5,7 +5,11 @@ import RSVP from './RSVP';
 import { EventDetails } from '@/interfaces/events';
 import { useRouter } from 'next/navigation';
 
-const EventsDialog = ({ event }: { event: EventDetails }) => {
+interface EventsDialogProps {
+  event: EventDetails;
+  token: string;
+}
+const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const router = useRouter();
@@ -31,7 +35,7 @@ const EventsDialog = ({ event }: { event: EventDetails }) => {
 
       <Dialog className="site-dialog" open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
         <DialogContent>
-          <RSVP onClose={handleDialogClose} event={event} onConfirmation={handleConfirmationOpen} />
+          <RSVP onClose={handleDialogClose} event={event} onConfirmation={handleConfirmationOpen} token={token} />
         </DialogContent>
       </Dialog>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import FeedLikeIcon from '../FeedLikeIcon';
 import { Brand } from '@/interfaces/brand';
 import { ProgressBarLink } from '../ProgressBar';
@@ -25,7 +25,16 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
         }}
       >
         <FeedLikeIcon onClick={handleIconClick} />
-        {brandLogo && <Image src={brandLogo} width={50} height={50} alt="brand logo" />}{' '}
+        <Box className="brand-logo">
+          {brandLogo && (
+            <Image
+              src={brandLogo}
+              alt="brand logo"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          )}
+        </Box>
         <CardContent className="landing-product__item-content">
           <Typography variant="h2">{item?.title?.rendered}</Typography>
           {item?.acf && (

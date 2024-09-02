@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
-import { GetVipEventDetails } from '@/libs/api-manager/manager';
+import { GetToken, GetVipEventDetails } from '@/libs/api-manager/manager';
 import { EventDetails } from '@/interfaces/events';
 import EventDetailsCard from '@/components/EventDetails';
 import ErrorToaster from '@/components/ErrorToaster';
@@ -8,8 +8,9 @@ import { get } from 'lodash';
 
 const EventDetailsPage = async ({ id }: { id: number }) => {
   let eventDetails: EventDetails | null = null;
+  const token = await GetToken();
   try {
-    eventDetails = await GetVipEventDetails(Number(id));
+    eventDetails = await GetVipEventDetails(Number(id), token);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -29,7 +30,7 @@ const EventDetailsPage = async ({ id }: { id: number }) => {
       </Box>
     );
   }
-  return <EventDetailsCard event={eventDetails} />;
+  return <EventDetailsCard event={eventDetails} token={token} />;
 };
 
 export default EventDetailsPage;

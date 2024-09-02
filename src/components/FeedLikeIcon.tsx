@@ -30,7 +30,7 @@ const AnimatedIcon = styled('div')({
   transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
 });
 
-const FeedLikeIcon = ({ onClick }: { onClick: any }) => {
+const FeedLikeIcon = ({ onClick }: { onClick?: any }) => {
   const [liked, setLiked] = React.useState(false);
 
   const handleLike = (event: any) => {

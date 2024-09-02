@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
 import { Box, Typography } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import { GetAddresses, GetLoginUserId } from '@/libs/api-manager/manager';
+import { GetAddresses, GetLoginUserId, GetToken } from '@/libs/api-manager/manager';
 import { Address } from '@/interfaces';
 import { get } from 'lodash';
 import ErrorToaster from '@/components/ErrorToaster';
 import { ProgressBarLink } from '@/components/ProgressBar';
+import DeleteAddressBtn from './DeleteAddressBtn';
 
 const MyAddressesPage = async () => {
   let addresses: Address[] = [];
-  const userId = await GetLoginUserId();
+  const [vipId, token] = await Promise.all([GetLoginUserId(), GetToken()]);
   try {
-    addresses = await GetAddresses(userId);
+    addresses = await GetAddresses(vipId);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -21,7 +21,6 @@ const MyAddressesPage = async () => {
       return <ErrorToaster message="Address not found" errorMessage={String(error)} />;
     }
   }
-
   return (
     <Fragment>
       {addresses.length > 0 ? (
@@ -37,12 +36,12 @@ const MyAddressesPage = async () => {
               <ProgressBarLink href={`/my-addresses/edit/${index + 1}`}>
                 <EditOutlinedIcon />
               </ProgressBarLink>
-              <DeleteOutlinedIcon />
+              <DeleteAddressBtn token={token} vipId={vipId} addressId={index + 1} />
             </Box>
           </Box>
         ))
       ) : (
-        <Typography textAlign="center">No results found</Typography>
+        <Typography textAlign="center">No Address found</Typography>
       )}
     </Fragment>
   );

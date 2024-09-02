@@ -217,8 +217,7 @@ export const GetOrderById = async (id: number) => {
   });
 };
 
-export const GetVipEventDetails = async (id: number) => {
-  const token = await GetToken();
+export const GetVipEventDetails = async (id: number, token: string) => {
   return await FetchInstance(`${Endpoints.getVipEventDetails}/${id}?_fields=id,title,acf`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -266,7 +265,8 @@ export const GetVipOpportunities = async () => {
   });
 };
 
-export const SendRsvp = async (data: string[], token: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const SendRsvp = async (data: any, token: string) => {
   try {
     const response = await Instance.post(Endpoints.sendRsvp, data, {
       headers: {
@@ -275,7 +275,7 @@ export const SendRsvp = async (data: string[], token: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error during signup:', error);
+    console.error('Error during sending Rsvp:', error);
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || 'An error occurred during signup';
       throw new Error(errorMessage);
@@ -336,6 +336,22 @@ export const addUpdateAddress = async (id: number, token: string, address: Addre
     let url = `${Endpoints.getAddresses}/${id}/addresses`;
     if (addressId) url = `${Endpoints.getAddresses}/${id}/addresses/${addressId}`;
     const response = await Instance.post(url, address, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during add address';
+      throw errorMessage;
+    }
+  }
+};
+
+export const DeleteAddress = async (vipId: number, addressId: number, token: string) => {
+  try {
+    const response = await Instance.delete(Endpoints.deleteAddress(vipId, addressId), {
       headers: {
         Authorization: `Bearer ${token}`,
       },

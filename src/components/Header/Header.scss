@@ -113,6 +113,10 @@ header.site-header {
         overflow: hidden;
       }
     }
+    img {
+      height: auto;
+      width: auto;
+    }
   }
   &__logged {
     .navbar-toggler {
