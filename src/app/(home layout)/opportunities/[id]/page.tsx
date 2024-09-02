@@ -1,12 +1,17 @@
-import HomePage from '@/components/OpportunityDetails';
-import React from 'react';
+import React, { Suspense } from 'react';
+import { Box, Container } from '@mui/material';
+import '../opportunities.scss';
+import OpportunityDetailsPage from '@/site-pages/OpportunitiesDetailsPage';
+import OpportunityDetailsLoading from '@/site-pages/OpportunitiesDetailsPage/loading';
 
-const page = () => {
+export default async function Page({ params }: { params: { id: number } }) {
   return (
-    <div>
-      <HomePage />
-    </div>
+    <Box component={'main'} className="product-detail">
+      <Container>
+        <Suspense fallback={<OpportunityDetailsLoading />}>
+          <OpportunityDetailsPage id={params?.id} />
+        </Suspense>
+      </Container>
+    </Box>
   );
-};
-
-export default page;
+}

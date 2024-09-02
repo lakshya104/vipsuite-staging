@@ -44,7 +44,7 @@ const MyOrdersPage: React.FC = async () => {
               <Typography gutterBottom variant="h2">
                 Order #{order.id}
               </Typography>
-              <Typography variant="body1">{formatDate(order.date_created)}</Typography>
+              <Typography variant="body1">Date: {formatDate(order.date_created)}</Typography>
               <Typography variant="body1">Status: {order.status}</Typography>
             </Box>
             <ProgressBarLink href={`/my-orders/${order.id}`}>

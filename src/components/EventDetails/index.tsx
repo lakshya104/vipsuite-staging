@@ -16,30 +16,30 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
   return (
     <Box className="product-detail">
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        {event?.title?.rendered}
+        {event.title.rendered}
       </Typography>
       <EventContainer imageUrl={eventImageUrl} />
       <Box className="product-detail__content">
         <Typography variant="h2" gutterBottom>
-          {event?.title?.rendered}
+          {event.title.rendered}
         </Typography>
         <Typography variant="body1">
-          <Box component="strong">Date:</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -
-          {formatDateWithOrdinal(event?.acf?.event_end_date, true)}
+          <Box component="strong">Date:</Box> {formatDateWithOrdinal(event.acf.event_start_date, false)} -
+          {formatDateWithOrdinal(event.acf.event_end_date, true)}
         </Typography>
         <Typography variant="body1" paragraph>
-          <Box component="strong">Location:</Box> {event?.acf?.event_location}
+          <Box component="strong">Location:</Box> {event.acf.event_location}
         </Typography>
         <Typography variant="h6" component="h3" gutterBottom>
           Quick Overview
         </Typography>
         <Typography variant="body1" paragraph>
-          {event?.acf?.event_quick_overview}
+          {event.acf.event_quick_overview}
         </Typography>
         <Typography variant="h6" component="h3" gutterBottom>
           Details
         </Typography>
-        <Box dangerouslySetInnerHTML={{ __html: event?.acf?.event_details }} />
+        <Box dangerouslySetInnerHTML={{ __html: event.acf.event_details }} />
       </Box>
       <EventsDialog event={event} token={token}/>
     </Box>

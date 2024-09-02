@@ -14,7 +14,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
   const brandLogo = item.acf?.brand_logo?.url;
   const handleIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    event.preventDefault();
+    event.preventDefault(); 
   };
   return (
     <ProgressBarLink href={`/brands/${item.id}`}>
@@ -25,16 +25,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
         }}
       >
         <FeedLikeIcon onClick={handleIconClick} />
-        <Box className="brand-logo">
-          {brandLogo && (
-            <Image
-              src={brandLogo}
-              alt="brand logo"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          )}
-        </Box>
+        {brandLogo && <Box className="brand-logo"><Image src={brandLogo} alt="brand logo" layout='fill' /></Box>}{' '}
         <CardContent className="landing-product__item-content">
           <Typography variant="h2">{item?.title?.rendered}</Typography>
           {item?.acf && (

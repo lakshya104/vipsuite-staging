@@ -1,5 +1,5 @@
 import { BrandDetails } from '@/interfaces/brand';
-import { Card } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import React from 'react';
 import FeedLikeIcon from './FeedLikeIcon';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ const DetailPageImageContainer = ({ item }: { item: BrandDetails }) => {
       }}
     >
       <FeedLikeIcon />
-      {brandLogo && <Image src={brandLogo} width={50} height={50} alt="brand logo" />}
+      {brandLogo && <Box className="brand-logo"> <Image src={brandLogo} alt="brand logo" layout='fill' /></Box>}
     </Card>
   );
 };

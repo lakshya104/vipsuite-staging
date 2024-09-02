@@ -45,10 +45,6 @@
     gap: rem(20);
     padding: rem(16) rem(8);
     border-top: rem(1) solid var(--color-textBlack-10);
-    img {
-      height: auto;
-      width: auto;
-    }
     &:last-of-type {
       border-bottom: rem(1) solid var(--color-textBlack-10);
       margin-bottom: rem(20);

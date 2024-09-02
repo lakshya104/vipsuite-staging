@@ -24,6 +24,7 @@ const Endpoints = {
   getVipRsvpEvents: (vipId: number) => `/wp/v2/vip-profiles/${vipId}/rsvp-events`,
   getAddresses: '/wp/v2/vip-profiles',
   deleteAddress: (vipId: number, addressId: number) => `/wp/v2/vip-profiles/${vipId}/addresses/${addressId}`,
+  getVipOpportunityDetails: '/wp/v2/opportunities',
 };
 
 export { Endpoints };
