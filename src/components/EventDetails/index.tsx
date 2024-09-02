@@ -41,7 +41,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
         </Typography>
         <Box dangerouslySetInnerHTML={{ __html: event?.acf?.event_details }} />
       </Box>
-      <EventsDialog event={event} token={token} />
+      <EventsDialog event={event} token={token}/>
     </Box>
   );
 };

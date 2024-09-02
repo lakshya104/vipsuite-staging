@@ -38,7 +38,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
     formState: { errors },
   } = useForm<RsvpFormValues>({
     defaultValues: defaultValues,
-    resolver: zodResolver(RsvpFormSchema),
+    resolver: zodResolver(RsvpFormSchema)
   });
 
   const onSubmit: SubmitHandler<RsvpFormValues> = async (data) => {

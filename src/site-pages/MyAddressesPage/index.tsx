@@ -30,7 +30,7 @@ const MyAddressesPage = async () => {
               <Typography gutterBottom variant="h3" component="h2">
                 {add.first_name} {add.last_name}
               </Typography>
-              <Typography variant="body2">{`${add.address_line_1}, ${add.address_line_2}, ${add.city}, ${add.state}, ${add.country}, ${add.postcode}`}</Typography>
+              <Typography variant="body2">{`${add.address_line_1}, ${add.address_line_2}, ${add.city}, ${add.state}, ${add.country}, ${add.postcode} ${add.phone}`}</Typography>
             </Box>
             <Box className="address__list-action">
               <ProgressBarLink href={`/my-addresses/edit/${index + 1}`}>
