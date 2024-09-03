@@ -103,6 +103,10 @@ header.site-header {
     }
   }
   &__brand {
+    img {
+      height: auto;
+      width: auto;
+    }
     @media only screen and (max-width: 991px) {
       @include align(true, true, absolute);
       a {

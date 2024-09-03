@@ -36,7 +36,6 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         rsvp_post: 605,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
       };
-      console.log({ rsvp });
       try {
         await SendRsvp(rsvp, token);
         onClose();

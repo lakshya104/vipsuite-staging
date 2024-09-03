@@ -31,6 +31,7 @@ const HomePage = async () => {
       </Box>
     );
   }
+
   return <BrandsPage brands={brands} />;
 };
 

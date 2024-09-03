@@ -1,20 +1,21 @@
 import { ACF } from '@/interfaces';
 import { Grid, Paper, Typography } from '@mui/material';
+import { get } from 'lodash';
 import React from 'react';
 
 interface ProfileComponentProps {
   profileDetails: ACF;
 }
+const handleEmpty = (value: string | null) => (value === undefined || value === null || value === '' ? 'N/A' : value);
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const bioData = [
-    { label: 'Date of Birth', value: profileDetails?.date_of_birth || 'N/A' },
-    { label: 'Born', value: profileDetails?.birth_place || 'N/A' },
-    { label: 'Resides', value: profileDetails?.nationality || 'N/A' },
+    { label: 'Date of Birth', value: handleEmpty(get(profileDetails, 'date_of_birth', '')) },
+    { label: 'Born', value: handleEmpty(get(profileDetails, 'birth_place', '')) },
+    { label: 'Resides', value: handleEmpty(get(profileDetails, 'nationality', '')) },
     {
       label: 'Interests',
-      value:
-        profileDetails?.interests && profileDetails.interests.length > 0 ? profileDetails.interests.join(', ') : 'N/A',
+      value: get(profileDetails, 'interests', []).length > 0 ? get(profileDetails, 'interests', []).join(', ') : 'N/A',
     },
   ];
   return (
@@ -41,8 +42,8 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
 
 export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const socialData = [
-    { platform: 'Instagram', handle: profileDetails?.instagram_handle || 'N/A' },
-    { platform: 'LinkedIn', handle: profileDetails?.tiktok_handle || 'N/A' },
+    { platform: 'Instagram', handle: handleEmpty(get(profileDetails, 'instagram_handle', '')) },
+    { platform: 'LinkedIn', handle: handleEmpty(get(profileDetails, 'tiktok_handle', '')) },
   ];
   return (
     <Grid container>
@@ -68,9 +69,10 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [
-    { type: 'Email', value: 'N/A' },
-    { type: 'Phone', value: profileDetails?.phone || 'N/A' },
-    // { type: 'Address', value: 'N/A' },
+    { type: 'Email', value: handleEmpty('') },
+    { type: 'Phone', value: handleEmpty(get(profileDetails, 'phone', '')) },
+    { type: 'Event Contact', value: handleEmpty(get(profileDetails, 'event_contacts.email', '')) },
+    { type: 'Event Contact', value: handleEmpty(get(profileDetails, 'stylist_contacts.email', '')) },
   ];
   return (
     <Grid container>

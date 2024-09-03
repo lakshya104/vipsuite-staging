@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import Image from 'next/image';
 import { ProgressBarLink } from '../ProgressBar';
@@ -14,8 +15,35 @@ const footerItems = [
 ];
 
 const HomeFooter = () => {
+  const [showFooter, setShowFooter] = useState(true);
+  let lastScrollY = 0;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (typeof window !== 'undefined') {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down
+          setShowFooter(false);
+        } else {
+          // Scrolling up
+          setShowFooter(true);
+        }
+
+        lastScrollY = currentScrollY;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <Box className="footer-menu">
+    <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>
       {map(footerItems, (item) => (
         <Stack key={item.href} alignItems="center">
           <ProgressBarLink href={item.href}>

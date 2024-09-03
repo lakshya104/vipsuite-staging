@@ -5,7 +5,7 @@ import ItemRequestForm from '@/features/ItemRequestForm';
 import { GetBrandProductDetail } from '@/libs/api-manager/manager';
 import { BrandProductDetails } from '@/interfaces/brand';
 import ErrorToaster from '@/components/ErrorToaster';
-import { get } from 'lodash';
+import { get, map, slice } from 'lodash';
 
 interface ProductDetailsPageProps {
   productId: number;
@@ -36,11 +36,12 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ productId
   }
   // const isRequestOnlyValue =
   //   brandProductDetails.meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
-  const productImage = brandProductDetails?.images[0]?.src || '/img/placeholder-image.jpg';
-  const sizes = brandProductDetails?.type === 'variable' ? brandProductDetails?.attributes[0]?.options : [];
+  const productImage = get(brandProductDetails, 'images[0].src', '/img/placeholder-image.jpg');
+  const sizes =
+    get(brandProductDetails, 'type') === 'variable' ? get(brandProductDetails, 'attributes[0].options', []) : [];
   const newSizes =
-    brandProductDetails?.type === 'variable'
-      ? sizes.slice(0, 4).map((size: string) => ({ value: size, label: size }))
+    get(brandProductDetails, 'type') === 'variable'
+      ? map(slice(sizes, 0, 4), (size) => ({ value: size, label: size }))
       : null;
   return (
     <Box className="product-details__page">
@@ -54,7 +55,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ productId
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="body1" gutterBottom>
-              {brandProductDetails?.name}
+              {brandProductDetails?.brand_name}
             </Typography>
             <Typography variant="h2" component="h2" gutterBottom>
               {brandProductDetails?.name}

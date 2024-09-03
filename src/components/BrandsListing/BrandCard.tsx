@@ -28,7 +28,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
         <FeedLikeIcon onClick={handleIconClick} />
         {brandLogo && (
           <Box className="brand-logo">
-            <Image src={brandLogo} alt="brand logo" layout="fill" />
+            <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />
           </Box>
         )}{' '}
         <CardContent className="landing-product__item-content">

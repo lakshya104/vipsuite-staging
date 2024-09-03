@@ -226,6 +226,7 @@ export interface BrandProductDetails {
     }[];
   };
   images: ProductImage[];
+  brand_name?: string;
 }
 
 export interface Brand {
@@ -234,6 +235,7 @@ export interface Brand {
     rendered: string;
   };
   acf?: {
+    is_featured?: boolean;
     associated_brand: number;
     brand_image: EventImage;
     brand_name: string;

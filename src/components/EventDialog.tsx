@@ -28,8 +28,13 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
   return (
     <>
       <Box>
-        <Button variant="contained" className="button button--black" onClick={handleDialogOpen}>
-          RSVP
+        <Button
+          variant="contained"
+          className="button button--black"
+          disabled={event?.acf?.is_rsvp}
+          onClick={handleDialogOpen}
+        >
+          {event?.acf?.is_rsvp ? 'Already Registered' : ' RSVP'}
         </Button>
       </Box>
 

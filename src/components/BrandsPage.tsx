@@ -5,7 +5,6 @@ import SearchBar from './SearchBar';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { Brand } from '@/interfaces/brand';
 import BrandsListing from './BrandsListing';
-import ReferCard from './ReferCard';
 
 interface BrandsPageProps {
   brands: Brand[];
@@ -43,21 +42,7 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
         />
       </Box>
       {!searchQuery ? (
-        <>
-          <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-            <ReferCard
-              heading="Refer a VIP"
-              text="Lorem ipsum dolor sit amet, sed in posse primis, ius te putant molestie sapientem."
-              href="/"
-            />
-            <ReferCard
-              heading="Make a Request"
-              text="Lorem ipsum dolor sit amet, sed in posse primis, ius te putant molestie sapientem."
-              href="/"
-            />
-          </Box>
-          <BrandsListing brands={filteredBrands} />
-        </>
+        <BrandsListing brands={brands} hideReferCard={false}/>
       ) : searchQuery && filteredBrands.length > 0 ? (
         <>
           <Grid container mb={2.5}>
@@ -69,7 +54,7 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
               </Box>
             </Grid>
           </Grid>
-          <BrandsListing brands={filteredBrands} />
+          <BrandsListing brands={filteredBrands} hideReferCard={true} />
         </>
       ) : (
         <Container>

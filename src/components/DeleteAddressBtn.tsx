@@ -5,27 +5,32 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { DeleteAddress } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
+import { useRouter } from 'next/navigation';
 
 interface DeleteAddressBtnProps {
   token: string;
   vipId: number;
   addressId: number;
-  // eslint-disable-next-line no-unused-vars
-  handleAddressList: (addressId: number) => void;
+  startTransition: typeof import('react').startTransition;
 }
-const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, token, handleAddressList }) => {
+
+const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, token, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const router = useRouter();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
   const deleteAddress = async (vipId: number, addressId: number, token: string) => {
     try {
-      handleAddressList(addressId);
-      await DeleteAddress(vipId, addressId, token);
-      toggleDialog();
+      startTransition(async () => {
+        await DeleteAddress(vipId, addressId, token);
+        router.refresh();
+      });
     } catch (error) {
       openToaster(error?.toString() ?? 'Error deleting address');
+    } finally {
+      setOpenDialog(false);
     }
   };
 

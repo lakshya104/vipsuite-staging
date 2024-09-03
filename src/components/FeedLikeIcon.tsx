@@ -7,7 +7,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
-  zIndex: 10000,
+  zIndex: 9,
   top: 8,
   right: 8,
   cursor: 'pointer',

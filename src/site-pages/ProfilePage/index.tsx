@@ -44,7 +44,7 @@ const ProfilePage = async () => {
           style={{ borderRadius: '50%', marginTop: '10px' }}
         />
         <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
-          {profileDetails?.name}
+          {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
         </Typography>
         <Typography variant="body2" mb={2}>
           Age {age}
