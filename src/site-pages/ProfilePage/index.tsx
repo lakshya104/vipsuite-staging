@@ -10,9 +10,10 @@ import { get } from 'lodash';
 import ErrorToaster from '@/components/ErrorToaster';
 
 const ProfilePage = async () => {
-  const token = await GetToken();
+  let token;
   let profileDetails: UserProfile | null = null;
   try {
+    token = await GetToken();
     profileDetails = await GetProfile(token);
   } catch (error) {
     const message = get(error, 'message', '');
@@ -23,7 +24,7 @@ const ProfilePage = async () => {
     }
   }
 
-  if (!profileDetails) {
+  if (!profileDetails || !token) {
     return (
       <Container>
         <Typography align="center" variant="h4" marginTop={5}>
@@ -46,11 +47,11 @@ const ProfilePage = async () => {
         <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
           {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
         </Typography>
-        <Typography variant="body2" mb={2}>
+        <Typography variant="body2" mb={1}>
           Age {age}
         </Typography>
         <ProgressBarLink href={'/vip-profile-builder'} className="button button--link">
-          <span style={{ textDecoration: 'underline' }}>Edit Profile</span>
+          <span style={{ textDecoration: 'underline', fontWeight:'400' }}>Edit Profile</span>
         </ProgressBarLink>
       </Box>
       <Box>

@@ -6,21 +6,21 @@ import React from 'react';
 interface ProfileComponentProps {
   profileDetails: ACF;
 }
-const handleEmpty = (value: string | null) => (value === undefined || value === null || value === '' ? 'N/A' : value);
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const bioData = [
-    { label: 'Date of Birth', value: handleEmpty(get(profileDetails, 'date_of_birth', '')) },
-    { label: 'Born', value: handleEmpty(get(profileDetails, 'birth_place', '')) },
-    { label: 'Resides', value: handleEmpty(get(profileDetails, 'nationality', '')) },
+    { label: 'Date of Birth', value: get(profileDetails, 'date_of_birth', '') },
+    { label: 'Born', value: get(profileDetails, 'birth_place', '') },
+    { label: 'Resides', value: get(profileDetails, 'nationality', '') },
     {
       label: 'Interests',
       value: get(profileDetails, 'interests', []).length > 0 ? get(profileDetails, 'interests', []).join(', ') : 'N/A',
     },
   ];
+  const filteredBioData = bioData.filter((data) => data.value !== '');
   return (
     <Grid container>
-      {bioData.map((item, index) => (
+      {filteredBioData.map((item, index) => (
         <Grid item xs={12} key={index} className="user-profile__details-item">
           <Paper elevation={0}>
             <Grid container>
@@ -42,12 +42,13 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
 
 export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const socialData = [
-    { platform: 'Instagram', handle: handleEmpty(get(profileDetails, 'instagram_handle', '')) },
-    { platform: 'LinkedIn', handle: handleEmpty(get(profileDetails, 'tiktok_handle', '')) },
+    { platform: 'Instagram', handle: get(profileDetails, 'instagram_handle', '') },
+    { platform: 'Tik-Tok', handle: get(profileDetails, 'tiktok_handle', '') },
   ];
+  const filteredSocialData = socialData.filter((data) => data.handle !== '');
   return (
     <Grid container>
-      {socialData.map((item, index) => (
+      {filteredSocialData.map((item, index) => (
         <Grid item xs={12} key={index} className="user-profile__details-item">
           <Paper elevation={0}>
             <Grid container>
@@ -69,14 +70,26 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [
-    { type: 'Email', value: handleEmpty('') },
-    { type: 'Phone', value: handleEmpty(get(profileDetails, 'phone', '')) },
-    { type: 'Event Contact', value: handleEmpty(get(profileDetails, 'event_contacts.email', '')) },
-    { type: 'Stylist Contact', value: handleEmpty(get(profileDetails, 'stylist_contacts.email', '')) },
+    { type: 'Phone', value: get(profileDetails, 'phone', '') },
+    { type: 'Email', value: get(profileDetails, 'secondary_email', '') },
+    { type: 'Secondary Email', value: '' },
+    { type: 'Primary Event Contact', value: get(profileDetails, 'event_contacts.email', '') },
+    { type: 'Secondary Event Contact', value: get(profileDetails, 'event_contacts.secondary_email', '') },
+    { type: 'Primary Stylist Contact', value: get(profileDetails, 'stylist_contacts.email', '') },
+    {
+      type: 'Secondary Stylist Contact',
+      value: get(profileDetails, 'stylist_contacts.secondary_email', ''),
+    },
+    { type: 'Primary Gifting Contact', value: get(profileDetails, 'stylist_contacts.email', '') },
+    {
+      type: 'Secondary Gifting Contact',
+      value: get(profileDetails, 'stylist_contacts.secondary_email', ''),
+    },
   ];
+  const filteredContactData = contactData.filter((contact) => contact.value !== '');
   return (
     <Grid container>
-      {contactData.map((item, index) => (
+      {filteredContactData.map((item, index) => (
         <Grid item xs={12} key={index} className="user-profile__details-item">
           <Paper elevation={0}>
             <Grid container>

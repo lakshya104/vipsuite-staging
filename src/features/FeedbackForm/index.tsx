@@ -11,6 +11,8 @@ import Image from 'next/image';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { EventFeedback, OrderFeedback } from '@/libs/api-manager/manager';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '@/components/Toaster';
 
 const orderFeedbackSchema = z.object({
   socialPostUrl: z.string().url('Valid URL is required'),
@@ -56,6 +58,10 @@ interface FeedbackFormProps {
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId }) => {
   const schema = type === 'order' ? orderFeedbackSchema : eventFeedbackSchema;
   const defaultValues = type === 'order' ? defaultOrderValues : defaultEventValues;
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [btnDisable, setBtnDisable] = useState<boolean>(false);
 
   const {
     control,
@@ -66,9 +72,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
     resolver: zodResolver(schema),
     defaultValues,
   });
-
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [btnDisable, setBtnDisable] = useState<boolean>(false);
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -98,10 +101,12 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
         };
         await OrderFeedback(token, vipId, orderId, feedback);
       } catch (error) {
-        console.error('Error submitting feedback:', error);
+        openToaster('Error submitting feedback:' + error);
+        setIsSubmitted(true);
       } finally {
         setFileName(null);
         reset();
+        setBtnDisable(false);
       }
     } else {
       try {
@@ -115,111 +120,120 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
           rating: data.rating,
         };
         await EventFeedback(token, vipId, orderId, feedback);
+        setIsSubmitted(true);
       } catch (error) {
-        console.error('Error submitting feedback:', error);
+        openToaster('Error submitting feedback:' + error);
       } finally {
         setFileName(null);
         reset();
+        setBtnDisable(false);
       }
     }
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="feedback-form">
-      <Typography variant="h2" mb={2}>
-        Feedback
-      </Typography>
-
-      {type === 'event' && (
-        <>
-          <Typography mb={1} variant="body1">
-            Rating
+    <>
+      {isSubmitted ? (
+        <FeedbackSuccess />
+      ) : (
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} className="feedback-form">
+          <Typography variant="h2" mb={2}>
+            Feedback
           </Typography>
-          <Controller
-            name="rating"
-            control={control as Control<EventFeedbackFormValues>}
-            render={({ field: { onChange, value } }) => <StarRating value={value} onChange={onChange} />}
-          />
-        </>
-      )}
 
-      <Typography mb={1} variant="body1">
-        URL of the related social post
-      </Typography>
-      <InputTextFormField<FeedbackFormValues>
-        name="socialPostUrl"
-        control={control}
-        placeholder="https://instagram.com/postID"
-        errors={errors}
-        noLabel={true}
-      />
-
-      <Typography mb={1} variant="body1">
-        Upload a screenshot of your post
-      </Typography>
-      <Box
-        mb={1}
-        className="feedback-form__uploader"
-        sx={{ borderColor: errors.screenshot ? '#d32f2f !important' : null }}
-      >
-        <Controller
-          name="screenshot"
-          control={control}
-          render={({ field: { onChange } }) => (
-            <Button
-              sx={{ display: 'flex', flexDirection: 'column' }}
-              component="label"
-              startIcon={!fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />}
-            >
-              {fileName ? (
-                <Box>
-                  <CheckCircleOutlineIcon color="success" />
-                  <Typography textAlign="center">{fileName}</Typography>
-                </Box>
-              ) : errors.screenshot ? (
-                <span style={{ color: '#d32f2f' }}>Screenshot is required</span>
-              ) : (
-                'Upload a screenshot'
-              )}
-              <input
-                type="file"
-                hidden
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    onChange(file);
-                    setFileName(file.name);
-                  }
-                }}
+          {type === 'event' && (
+            <>
+              <Typography mb={1} variant="body1">
+                Rating
+              </Typography>
+              <Controller
+                name="rating"
+                control={control as Control<EventFeedbackFormValues>}
+                render={({ field: { onChange, value } }) => <StarRating value={value} onChange={onChange} />}
               />
-            </Button>
+            </>
           )}
-        />
-      </Box>
-      {errors.screenshot && (
-        <Typography
-          sx={{
-            color: '#d32f2f !important',
-            marginLeft: 1.5,
-            fontWeight: '400 !important',
-            fontSize: '0.75rem !important',
-          }}
-        >
-          {errors.screenshot.message}
-        </Typography>
-      )}
 
-      <Btn
-        look="light"
-        width="100%"
-        type="submit"
-        style={{ marginTop: '20px' }}
-        className="button button--white"
-        disabled={btnDisable}
-      >
-        {btnDisable ? 'Submitting' : 'Submit'}
-      </Btn>
-    </Box>
+          <Typography mb={1} variant="body1">
+            URL of the related social post
+          </Typography>
+          <InputTextFormField<FeedbackFormValues>
+            name="socialPostUrl"
+            control={control}
+            placeholder="https://instagram.com/postID"
+            errors={errors}
+            noLabel={true}
+          />
+
+          <Typography mb={1} variant="body1">
+            Upload a screenshot of your post
+          </Typography>
+          <Box
+            mb={1}
+            className="feedback-form__uploader"
+            sx={{ borderColor: errors.screenshot ? '#d32f2f !important' : null }}
+          >
+            <Controller
+              name="screenshot"
+              control={control}
+              render={({ field: { onChange } }) => (
+                <Button
+                  sx={{ display: 'flex', flexDirection: 'column' }}
+                  component="label"
+                  startIcon={!fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />}
+                >
+                  {fileName ? (
+                    <Box>
+                      <CheckCircleOutlineIcon color="success" />
+                      <Typography textAlign="center">{fileName}</Typography>
+                    </Box>
+                  ) : errors.screenshot ? (
+                    <span style={{ color: '#d32f2f' }}>Screenshot is required</span>
+                  ) : (
+                    'Upload a screenshot'
+                  )}
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        onChange(file);
+                        setFileName(file.name);
+                      }
+                    }}
+                  />
+                </Button>
+              )}
+            />
+          </Box>
+          {errors.screenshot && (
+            <Typography
+              sx={{
+                color: '#d32f2f !important',
+                marginLeft: 1.5,
+                fontWeight: '400 !important',
+                fontSize: '0.75rem !important',
+              }}
+            >
+              {errors.screenshot.message}
+            </Typography>
+          )}
+
+          <Btn
+            look="light"
+            width="100%"
+            type="submit"
+            style={{ marginTop: '20px' }}
+            className="button button--white"
+            disabled={btnDisable}
+          >
+            Submit
+          </Btn>
+        </Box>
+      )}
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+    </>
   );
 };
 
@@ -248,6 +262,43 @@ const StarRating: React.FC<StarRatingProps> = ({ value, onChange }) => {
           {index < value ? <StarIcon /> : <StarBorderIcon />}
         </IconButton>
       ))}
+    </Box>
+  );
+};
+
+const FeedbackSuccess = () => {
+  return (
+    <Box
+      className="feedback-form"
+      sx={{
+        minHeight: '50vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 3,
+          border: '1px solid black',
+          borderRadius: '8px',
+          backgroundColor: '#FFFFF7',
+          textAlign: 'center',
+          maxWidth: '400px',
+          margin: '0 auto',
+        }}
+      >
+        <CheckCircleOutlineIcon sx={{ fontSize: '30px', color: 'black', mb: 2 }} />
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
+          Your feedback has been successfully submitted!
+        </Typography>
+      </Box>
     </Box>
   );
 };

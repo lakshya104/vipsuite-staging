@@ -14,7 +14,7 @@ const CustomLoader = ({ message = 'Loading...' }: { message?: string }) => {
         height: '60vh',
         textAlign: 'center',
         gap: 2,
-        bgcolor: 'background.paper',
+        bgcolor: '#FFFFF7',
         padding: 3,
       }}
     >

@@ -44,9 +44,9 @@ const navLinks = [
     paths: ['/inbox'],
   },
   {
-    label: 'Basket',
-    href: '/basket',
-    paths: ['/basket'],
+    label: 'My Orders',
+    href: '/my-orders',
+    paths: ['/my-orders'],
   },
 ];
 

@@ -9,7 +9,6 @@ import { usePathname } from 'next/navigation';
 
 const footerItems = [
   { href: '/', src: '/img/home.svg', alt: 'Home', label: 'Home', paths: ['/home', '/brands/', '/product'] },
-  { href: '/events', src: '/img/event.svg', alt: 'Events', label: 'Events', paths: ['/events'] },
   {
     href: '/opportunities',
     src: '/img/opportunity.svg',
@@ -17,8 +16,9 @@ const footerItems = [
     label: 'Opportunities',
     paths: ['/opportunities'],
   },
+  { href: '/events', src: '/img/event.svg', alt: 'Events', label: 'Events', paths: ['/events'] },
   { href: '/inbox', src: '/img/inbox.svg', alt: 'Inbox', label: 'Inbox', paths: ['/inbox'] },
-  { href: '/basket', src: '/img/cart.svg', alt: 'Basket', label: 'Basket', paths: ['/basket'] },
+  { href: '/my-orders', src: '/img/cart.svg', alt: 'My-Orders', label: 'My Orders', paths: ['/my-orders'] },
 ];
 
 const HomeFooter = () => {
@@ -53,7 +53,7 @@ const HomeFooter = () => {
             <ProgressBarLink href={item.href}>
               <Box className="footer-menu__icon">
                 <Image src={item.src} alt={item.alt} width={24} height={24} />
-                {(item.label === 'Inbox' || item.label === 'Basket') && <span className="label">0</span>}
+                {(item.label === 'Inbox' || item.label === 'My Orders') && <span className="label">0</span>}
               </Box>
               <Typography
                 sx={
