@@ -5,7 +5,7 @@
 @import '../../styles/mixins';
 
 header.site-header {
-  background-color: var(--color-white);
+  background-color: var(--color-marble);
   color: var(--color-textBlack);
   box-shadow: 0 0 0 transparent;
   border-bottom: rem(1) solid var(--color-light-gray);
@@ -42,7 +42,7 @@ header.site-header {
       @include align(false, true, absolute);
     }
     @media only screen and (max-width: 991px) {
-      background-color: var(--color-white);
+      background-color: var(--color-marble);
       width: 100%;
       margin-top: rem(1);
       @include absolute(left 0 top 100%);
@@ -173,6 +173,9 @@ header.site-header {
   }
 }
 .drawer-menu {
+  > .MuiPaper-root {
+    background-color: var(--color-marble);
+  }
   &__wrapper {
     max-width: 100%;
     width: 100vw;

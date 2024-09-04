@@ -10,8 +10,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Image from 'next/image';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { EventFeedback, OrderFeedback } from '@/libs/api-manager/manager';
 
-// Schemas
 const orderFeedbackSchema = z.object({
   socialPostUrl: z.string().url('Valid URL is required'),
   screenshot: z
@@ -31,13 +31,11 @@ const eventFeedbackSchema = z.object({
     }),
 });
 
-// Form values types
-type OrderFeedbackFormValues = z.infer<typeof orderFeedbackSchema>;
+export type OrderFeedbackFormValues = z.infer<typeof orderFeedbackSchema>;
 type EventFeedbackFormValues = z.infer<typeof eventFeedbackSchema>;
 
 type FeedbackFormValues = OrderFeedbackFormValues | EventFeedbackFormValues;
 
-// Default values
 const defaultOrderValues: OrderFeedbackFormValues = {
   socialPostUrl: '',
   screenshot: undefined as unknown as File,
@@ -48,18 +46,16 @@ const defaultEventValues: EventFeedbackFormValues = {
   socialPostUrl: '',
   screenshot: undefined as unknown as File,
 };
-
-// Component props
 interface FeedbackFormProps {
   type: 'order' | 'event';
+  token: string;
+  vipId: number;
+  orderId: number;
 }
 
-const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
+const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId }) => {
   const schema = type === 'order' ? orderFeedbackSchema : eventFeedbackSchema;
   const defaultValues = type === 'order' ? defaultOrderValues : defaultEventValues;
-
-  // Determine the correct control type
-  // type ControlType = Control<OrderFeedbackFormValues> | Control<EventFeedbackFormValues>;
 
   const {
     control,
@@ -74,12 +70,58 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
 
-  const onSubmit = (data: FeedbackFormValues) => {
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64String = result.replace(/^data:image\/(png|jpeg);base64,/, '');
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
     setBtnDisable(true);
-    setFileName(null);
-    console.log('Form data:', data);
-    reset();
-    // Handle form submission here
+    if (type === 'order') {
+      try {
+        let screenshotBase64 = null;
+        if (data.screenshot instanceof File) {
+          screenshotBase64 = await convertToBase64(data.screenshot);
+        }
+        const feedback = {
+          social_media_post_url: data.socialPostUrl,
+          screenshot: screenshotBase64,
+        };
+        await OrderFeedback(token, vipId, orderId, feedback);
+      } catch (error) {
+        console.error('Error submitting feedback:', error);
+      } finally {
+        setFileName(null);
+        reset();
+      }
+    } else {
+      try {
+        let screenshotBase64 = null;
+        if (data.screenshot instanceof File) {
+          screenshotBase64 = await convertToBase64(data.screenshot);
+        }
+        const feedback = {
+          social_media_post_url: data.socialPostUrl,
+          screenshot: screenshotBase64,
+          rating: data.rating,
+        };
+        await EventFeedback(token, vipId, orderId, feedback);
+      } catch (error) {
+        console.error('Error submitting feedback:', error);
+      } finally {
+        setFileName(null);
+        reset();
+      }
+    }
   };
 
   return (
@@ -109,12 +151,17 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
         control={control}
         placeholder="https://instagram.com/postID"
         errors={errors}
+        noLabel={true}
       />
 
       <Typography mb={1} variant="body1">
         Upload a screenshot of your post
       </Typography>
-      <Box mb={1} className="feedback-form__uploader">
+      <Box
+        mb={1}
+        className="feedback-form__uploader"
+        sx={{ borderColor: errors.screenshot ? '#d32f2f !important' : null }}
+      >
         <Controller
           name="screenshot"
           control={control}
@@ -129,8 +176,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
                   <CheckCircleOutlineIcon color="success" />
                   <Typography textAlign="center">{fileName}</Typography>
                 </Box>
+              ) : errors.screenshot ? (
+                <span style={{ color: '#d32f2f' }}>Screenshot is required</span>
               ) : (
-                'Upload a file'
+                'Upload a screenshot'
               )}
               <input
                 type="file"
@@ -147,7 +196,18 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
           )}
         />
       </Box>
-      {errors.screenshot && <Typography sx={{ color: 'red' }}>{errors.screenshot.message}</Typography>}
+      {errors.screenshot && (
+        <Typography
+          sx={{
+            color: '#d32f2f !important',
+            marginLeft: 1.5,
+            fontWeight: '400 !important',
+            fontSize: '0.75rem !important',
+          }}
+        >
+          {errors.screenshot.message}
+        </Typography>
+      )}
 
       <Btn
         look="light"
@@ -157,7 +217,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
         className="button button--white"
         disabled={btnDisable}
       >
-        Submit
+        {btnDisable ? 'Submitting' : 'Submit'}
       </Btn>
     </Box>
   );

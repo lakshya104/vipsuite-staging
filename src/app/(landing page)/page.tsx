@@ -5,7 +5,7 @@ import Header from '@/components/Header/Header';
 import HeroSection from '@/components/HeroSection/HeroSection';
 import EventCard from '@/components/EventsCards/EventsCards';
 import Partner from '@/components/Partner/Partner';
-import Opportunity from '@/components/Opportunity/Opportunity';
+// import Opportunity from '@/components/Opportunity/Opportunity';
 import Testimonial from '@/components/Testimonial/Testimonial';
 import Footer from '@/components/Footer';
 import { auth } from '@/auth';
@@ -57,7 +57,7 @@ export default async function Page() {
         </Box>
         <Partner />
         <Testimonial />
-        <Opportunity />
+        {/* <Opportunity /> */}
       </Box>
       <Footer />
     </>

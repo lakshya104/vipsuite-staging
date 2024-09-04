@@ -42,7 +42,7 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
         />
       </Box>
       {!searchQuery ? (
-        <BrandsListing brands={brands} hideReferCard={false}/>
+        <BrandsListing brands={brands} hideReferCard={false} />
       ) : searchQuery && filteredBrands.length > 0 ? (
         <>
           <Grid container mb={2.5}>

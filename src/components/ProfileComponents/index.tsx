@@ -72,7 +72,7 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
     { type: 'Email', value: handleEmpty('') },
     { type: 'Phone', value: handleEmpty(get(profileDetails, 'phone', '')) },
     { type: 'Event Contact', value: handleEmpty(get(profileDetails, 'event_contacts.email', '')) },
-    { type: 'Event Contact', value: handleEmpty(get(profileDetails, 'stylist_contacts.email', '')) },
+    { type: 'Stylist Contact', value: handleEmpty(get(profileDetails, 'stylist_contacts.email', '')) },
   ];
   return (
     <Grid container>

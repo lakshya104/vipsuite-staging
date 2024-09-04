@@ -7,17 +7,17 @@
 .custom-stepper {
   margin-top: auto;
   padding-top: rem(48);
-  background-color: var(--color-white);
+  background-color: var(--color-marble);
   @include flex(space-between, center);
   button {
     width: rem(87);
     height: rem(40);
     border: rem(1) solid var(--color-textBlack);
     background-color: var(--color-textBlack);
-    color: var(--color-white);
+    color: var(--color-marble);
     @include border-radius(60px);
     &:hover {
-      background-color: var(--color-white);
+      background-color: var(--color-marble);
       color: var(--color-textBlack);
     }
     @media (hover: none) and (pointer: coarse) {

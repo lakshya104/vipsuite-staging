@@ -5,12 +5,17 @@
 @import '../../styles/mixins';
 
 .opportunity-detail-page {
-  margin: rem(23) 0 rem(50);
+  margin: rem(30) 0 rem(50);
   @media only screen and (min-width: 768px) {
     margin: rem(50) 0;
   }
   .page-title {
-    padding: rem(23) 0;
+    padding: 0 0 rem(27);
+    @media only screen and (max-width: 767px) {
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      @include fontSize(14);
+    }
   }
   button {
     @media only screen and (max-width: 767px) {
@@ -26,24 +31,37 @@
       margin-bottom: rem(24);
     }
     li {
+      width: rem(12);
+      height: rem(12);
       @media only screen and (max-width: 767px) {
         margin: 0 5px 0 0;
-        width: 6px;
-        height: 6px;
+        width: rem(6);
+        height: rem(6);
         overflow: hidden;
-        &.slick-active {
-          button:before {
-            color: var(--color-textBlack);
-          }
+      }
+      &.slick-active {
+        button:before {
+          color: var(--color-textBlack);
+          opacity: 1;
         }
-        button {
+      }
+      button {
+        width: rem(12);
+        height: rem(12);
+        @media only screen and (max-width: 767px) {
           padding: 0;
-          width: 6px;
-          height: 6px;
-          &:before {
-            width: 6px;
-            height: 6px;
-            line-height: normal;
+          width: rem(6);
+          height: rem(6);
+        }
+        &::before {
+          color: var(--color-textBlack);
+          opacity: 0.2;
+          line-height: normal;
+          @include fontSize(10);
+          @media only screen and (max-width: 767px) {
+            width: rem(6);
+            height: rem(6);
+            @include fontSize(6);
           }
         }
       }

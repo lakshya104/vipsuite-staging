@@ -10,18 +10,25 @@ import { useForm } from 'react-hook-form';
 // import { useStore } from '@/store/useStore';
 import { BrandProductDetails } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
+import { AddItemToCart } from '@/libs/api-manager/manager';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '@/components/Toaster';
 
 interface ItemRequestFormProps {
   options: { value: string; label: string }[] | undefined | null;
   data: BrandProductDetails;
+  token: string;
+  nonce: string;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data, token, nonce }) => {
   // const addProduct = useStore((state) => state.addProduct);
   const [open, setOpen] = useState(false);
-  const [basket, setBasket] = useState(data);
   const router = useRouter();
-  const isProductOrdered = data?.product_ordered;
+  // const isProductOrdered = data?.product_ordered;
+  const isProductOrdered = false;
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+
   const {
     handleSubmit,
     control,
@@ -40,10 +47,10 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
     },
     { href: '/basket', text: 'Go to Basket' },
   ];
-  const onSubmit = (size: ProductFormValues) => {
-    setBasket(basket);
+
+  const onSubmit = async (size: ProductFormValues) => {
     const item = {
-      id: basket.id,
+      id: data.id,
       quantity: 1,
       variation: [
         {
@@ -52,10 +59,22 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
         },
       ],
     };
-    console.log({ item });
-
-    // addProduct(basket);
+    await AddItemToCart(token, item, nonce);
     // setOpen(true);
+  };
+
+  const handleAddToCart = async () => {
+    if (!options) {
+      const item = {
+        id: data.id,
+        quantity: 1,
+      };
+      try {
+        await AddItemToCart(token, item, nonce);
+      } catch (error) {
+        openToaster('Error during adding product: ' + error?.toString());
+      }
+    }
   };
 
   return (
@@ -74,15 +93,9 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
         <Btn
           look="dark-filled"
           width="100%"
-          onClick={() => {
-            if (options === null) {
-              setBasket(basket);
-              // addProduct(basket);
-              setOpen(true);
-            }
-          }}
           type="submit"
           fullWidth
+          onClick={handleAddToCart}
           disabled={isProductOrdered}
         >
           {!isProductOrdered ? ' Request' : ' Requested'}
@@ -95,6 +108,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ options, data }) => {
         buttonsArray={DialogBtns}
         title="Added to Basket"
       />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };

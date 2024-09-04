@@ -45,6 +45,9 @@
         padding-bottom: rem(2);
         @include fontSize(12);
       }
+      &:focus {
+        outline: 0 none;
+      }
       &.Mui-selected {
         background-color: var(--color-textBlack);
         color: var(--color-white);
@@ -106,7 +109,10 @@
 }
 
 .landing-product {
-  margin-bottom: rem(40);
+  margin-bottom: rem(20);
+  @media only screen and (min-width: 768px) {
+    margin-bottom: rem(40);
+  }
   &__item {
     &-inner {
       position: relative;
@@ -132,6 +138,7 @@
     &-content {
       padding: rem(12) !important;
       color: var(--color-marble);
+      width: 100%;
       @include absolute(bottom 0 left 0);
       &::after {
         content: '';

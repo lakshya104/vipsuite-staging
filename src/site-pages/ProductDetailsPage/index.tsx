@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import ItemRequestForm from '@/features/ItemRequestForm';
-import { GetBrandProductDetail } from '@/libs/api-manager/manager';
+import { GetBrandProductDetail, GetNonce, GetToken } from '@/libs/api-manager/manager';
 import { BrandProductDetails } from '@/interfaces/brand';
 import ErrorToaster from '@/components/ErrorToaster';
 import { get, map, slice } from 'lodash';
@@ -13,8 +13,10 @@ interface ProductDetailsPageProps {
 
 const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ productId }) => {
   let brandProductDetails: BrandProductDetails | null = null;
+  const token = await GetToken();
+  const nonce = await GetNonce(token);
   try {
-    brandProductDetails = await GetBrandProductDetail(productId);
+    brandProductDetails = await GetBrandProductDetail(productId, token);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -61,7 +63,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ productId
               {brandProductDetails?.name}
             </Typography>
             <Box dangerouslySetInnerHTML={{ __html: brandProductDetails?.description }} />
-            <ItemRequestForm options={newSizes} data={brandProductDetails} />
+            <ItemRequestForm options={newSizes} data={brandProductDetails} token={token} nonce={nonce} />
           </Grid>
         </Grid>
       </Container>

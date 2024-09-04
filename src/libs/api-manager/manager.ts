@@ -17,6 +17,16 @@ export const GetLoginUserId = async () => {
   return id;
 };
 
+export const GetUserIdAndToken = async () => {
+  const session = await auth();
+  const user = session?.user as unknown as Session;
+
+  return {
+    id: user.vip_profile_id,
+    token: user.token,
+  };
+};
+
 export const SignUp = async (formData: SignUpRequestBody) => {
   try {
     const response = await Instance.post(Endpoints.signup, formData);
@@ -123,8 +133,7 @@ export const GetBrandProducts = async (id: number) => {
   }
 };
 
-export const GetBrandProductDetail = async (id: number) => {
-  const token = await GetToken();
+export const GetBrandProductDetail = async (id: number, token: string) => {
   return await FetchInstance(`${Endpoints.getBrandProductDetails}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -208,8 +217,7 @@ export const GetAllOrders = async () => {
   });
 };
 
-export const GetOrderById = async (id: number) => {
-  const token = await GetToken();
+export const GetOrderById = async (id: number, token: string) => {
   return await FetchInstance(`${Endpoints.getOrderById}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -372,4 +380,76 @@ export const GetVipOpportunityDetails = async (id: number, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const OrderFeedback = async (
+  token: string,
+  vipId: number,
+  orderNumber: number,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any,
+) => {
+  try {
+    const response = await Instance.post(Endpoints.orderFeedback(vipId, orderNumber), data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during submitting feedback';
+      throw errorMessage;
+    }
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const AddItemToCart = async (token: string, data: any, nonce: string) => {
+  try {
+    const addItemResponse = await Instance.post(Endpoints.addItemToCart(nonce), data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'X-WC-Store-API-Nonce': nonce,
+      },
+    });
+    return addItemResponse.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error?.message || 'An error occurred during adding item to cart';
+      throw errorMessage;
+    }
+  }
+};
+
+export const GetNonce = async (token: string) => {
+  const response = await Instance.get(Endpoints.getVipCart, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const nonce = response.headers['nonce'];
+  return nonce;
+};
+
+export const EventFeedback = async (
+  token: string,
+  vipId: number,
+  eventId: number,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any,
+) => {
+  try {
+    const response = await Instance.post(Endpoints.eventFeedback(vipId, eventId), data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during submitting feedback';
+      throw errorMessage;
+    }
+  }
 };

@@ -66,12 +66,15 @@ button.button {
   display: inline-block;
   font-weight: 500;
   text-align: center;
-  padding: rem(14) rem(32) rem(13);
+  padding: rem(9) rem(32);
   border: rem(1.5) solid var(--color-textBlack);
   text-decoration: none;
   text-transform: none;
   @include border-radius(38px);
   @include fontSize(16);
+  @media only screen and (min-width: 768px) {
+    padding: rem(14) rem(32) rem(13);
+  }
   &:hover {
     @media only screen and (min-width: 768px) {
       color: var(--color-white);
@@ -93,11 +96,11 @@ button.button {
   }
   &--white {
     color: var(--color-textBlack);
-    background-color: var(--color-white);
+    background-color: var(--color-marble);
     &:hover {
       @media only screen and (min-width: 768px) {
         background-color: var(--color-textBlack);
-        color: var(--color-white);
+        color: var(--color-marble);
       }
     }
   }
@@ -366,6 +369,7 @@ div.site-dialog {
   .MuiDialog-paper {
     width: 100%;
     margin: 0;
+    background-color: var(--color-marble);
     @include border-radius(20px 20px 0 0);
     @media only screen and (min-width: 768px) {
       @include border-radius(20px);
@@ -407,6 +411,11 @@ div.site-dialog {
   button {
     width: 100%;
   }
+  form {
+    .Mui-error {
+      margin-left: 0;
+    }
+  }
 }
 .MuiDialog-container {
   @media only screen and (max-width: 767px) {
@@ -414,7 +423,7 @@ div.site-dialog {
   }
   > .MuiPaper-root {
     @media only screen and (max-width: 767px) {
-      align-items: flex-end !important;
+      // align-items: flex-end !important;
     }
   }
 }

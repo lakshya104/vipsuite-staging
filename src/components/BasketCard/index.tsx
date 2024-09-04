@@ -6,6 +6,7 @@ import ContinueToCartBtn from '@/components/ContinueToCartBtn';
 import './Basket.scss';
 import { Cart } from '@/interfaces';
 import DeleteItemFromCartBtn from '../DeleteItemFromCartBtn';
+import he from 'he';
 
 interface BasketCardProps {
   cartData: Cart;
@@ -23,9 +24,9 @@ const BasketCard: React.FC<BasketCardProps> = async ({ cartData, token }) => {
               <Image src={product.images[0].src} alt={product.name} height={110} width={110} />
               <Box className="product-info">
                 <Typography gutterBottom variant="h2">
-                  {product.name}
+                  {he.decode(product.name)}
                 </Typography>
-                <Typography variant="body1">{product.name}</Typography>
+                <Typography variant="body1">{he.decode(product.name)}</Typography>
                 {product.type === 'variation' && (
                   <>
                     {product?.variation[0] && (

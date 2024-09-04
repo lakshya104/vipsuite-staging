@@ -20,13 +20,13 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
       >
         <FeedLikeIcon />
         <CardContent className="landing-product__item-content">
-          <Typography variant="h2">{item?.title.rendered}</Typography>
+          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: item?.title?.rendered }} />
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>
               Date:
             </Typography>{' '}
-            {formatDateWithOrdinal(item.acf.event_start_date, false)} -
-            {formatDateWithOrdinal(item.acf.event_end_date, true)}
+            {formatDateWithOrdinal(item?.acf?.event_start_date, false)} -
+            {formatDateWithOrdinal(item?.acf?.event_end_date, true)}
           </Typography>
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>

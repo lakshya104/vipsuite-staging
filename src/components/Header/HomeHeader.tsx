@@ -20,27 +20,33 @@ import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   {
     label: 'Home',
     href: '/home',
+    paths: ['/home', '/brands/', '/product'],
   },
   {
     label: 'Opportunities',
     href: '/opportunities',
+    paths: ['/opportunities'],
   },
   {
     label: 'Events',
     href: '/events',
+    paths: ['/events'],
   },
   {
     label: 'Inbox',
     href: '/inbox',
+    paths: ['/inbox'],
   },
   {
     label: 'Basket',
     href: '/basket',
+    paths: ['/basket'],
   },
 ];
 
@@ -61,33 +67,44 @@ const menuItems = [
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: '/my-addresses',
   },
-  { label: 'My Interests', icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />, href: '/' },
-  { label: 'Login & Security', icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />, href: '/' },
-  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/' },
-  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/' },
+  {
+    label: 'My Interests',
+    icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
+    href: '/my-interests',
+  },
+  {
+    label: 'Login & Security',
+    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
+    href: '/login-security',
+  },
+  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
+  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
 ];
 
 interface HomeHeaderProps {
-  token: string;
+  token?: string;
 }
 
 const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const pathname = usePathname();
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
   const handleLogout = async () => {
-    try {
-      setDrawerOpen(false);
-      setIsLoading(true);
-      await LogOut(token);
-      signOut();
-    } catch (error) {
-      setIsLoading(false);
-      openToaster('Error during logging out. ' + error);
+    if (token) {
+      try {
+        setDrawerOpen(false);
+        setIsLoading(true);
+        await LogOut(token);
+        signOut();
+      } catch (error) {
+        setIsLoading(false);
+        openToaster('Error during logging out. ' + error);
+      }
     }
   };
 
@@ -103,11 +120,36 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
 
           <Box className="site-header__navbar">
             <MenuList className="site-header__navigation">
-              {navLinks.map((link) => (
-                <ProgressBarLink href={link.href} title={link.label} key={link.href}>
-                  <MenuItem>{link.label}</MenuItem>
-                </ProgressBarLink>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = link.paths.some((path) => pathname.startsWith(path));
+                return (
+                  <ProgressBarLink href={link.href} title={link.label} key={link.href}>
+                    <MenuItem
+                      sx={
+                        isActive
+                          ? {
+                              fontWeight: 500,
+                              color: 'black',
+                              position: 'relative',
+                              '&::after': {
+                                content: '""',
+                                position: 'absolute',
+                                bottom: '-2px',
+                                left: 0,
+                                width: '100%',
+                                height: '2px',
+                                backgroundColor: 'black',
+                              },
+                            }
+                          : {}
+                      }
+                      className={isActive ? 'active' : ''}
+                    >
+                      {link.label}
+                    </MenuItem>
+                  </ProgressBarLink>
+                );
+              })}
             </MenuList>
           </Box>
 

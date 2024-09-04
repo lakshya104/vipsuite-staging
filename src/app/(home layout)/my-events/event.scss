@@ -5,14 +5,19 @@
 @import '../../../styles/mixins';
 
 .my-events {
-  margin: rem(23) 0 rem(120);
+  margin: rem(30) 0 rem(120);
   @media only screen and (min-width: 768px) {
     margin: rem(50) 0;
   }
   .page-title {
-    padding: rem(23) 0;
+    padding: 0 0 rem(27);
     border-bottom: rem(1) solid var(--color-textBlack-10);
     @include relative;
+    @media only screen and (max-width: 767px) {
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      @include fontSize(14);
+    }
     a {
       @include absolute(left 0);
     }

@@ -52,12 +52,12 @@ const RequestItemFormButton: React.FC = () => {
         </Button>
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{ textAlign: 'center', fontSize: '24px', fontWeight: '500' }}>Request Form</DialogTitle>
+      <Dialog className="site-dialog" open={open} onClose={handleClose}>
+        <DialogTitle>Request Form</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Typography variant="body1" fontSize="16px" fontWeight="500">
+            <Box>
+              <Typography variant="body1" fontWeight="500">
                 Please let us know which items you would like to request. Include size and colour if needed.
               </Typography>
               <InputTextAreaFormField

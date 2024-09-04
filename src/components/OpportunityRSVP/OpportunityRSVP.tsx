@@ -101,6 +101,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
               type="submit"
               variant="contained"
               sx={{
+                textTransform: 'capitalize',
                 backgroundColor: 'black',
                 color: 'white',
                 borderRadius: '50px',
@@ -112,7 +113,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
               }}
               disabled={isPending || opportunity.acf.is_rsvp}
             >
-              {opportunity?.acf?.is_rsvp ? ' Already Submitted' : 'RSVP'}
+              {opportunity?.acf?.is_rsvp ? ' Already Registered' : 'RSVP'}
             </Button>
           </Box>
           <Box
@@ -130,6 +131,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
               variant="contained"
               sx={{
                 backgroundColor: 'white',
+                textTransform: 'capitalize',
                 color: 'black',
                 borderRadius: '50px',
                 px: { xs: 4, sm: 7 },
@@ -150,6 +152,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
               variant="contained"
               sx={{
                 backgroundColor: 'white',
+                textTransform: 'capitalize',
                 color: 'black',
                 borderRadius: '50px',
                 px: { xs: 4, sm: 7 },

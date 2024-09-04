@@ -1,3 +1,4 @@
+import { escape, join, split, trim } from 'lodash';
 import moment from 'moment';
 
 export function calculateAge(dateOfBirth: string | undefined): number {
@@ -73,6 +74,14 @@ export const formatDateWithOrdinal = (date: string | Date, withMonth: boolean): 
   return foormattedDate;
 };
 
+export const formatDateWithoutOrdinal = (date: string | Date): string => {
+  const momentDate = moment(date);
+  if (!momentDate.isValid()) {
+    return 'Invalid Date';
+  }
+  return momentDate.format('DD/MM/YYYY');
+};
+
 export const formatDateWithOrdinalAndTime = (date: string | Date): string => {
   const momentDate = moment(date);
   if (!momentDate.isValid()) {
@@ -83,4 +92,19 @@ export const formatDateWithOrdinalAndTime = (date: string | Date): string => {
   const month = momentDate.format('MMMM');
   const time = momentDate.format('h:mma').toLowerCase();
   return ` ${dayOfWeek} ${dayOfMonth} ${month} @ ${time}`;
+};
+
+export const wrapInParagraph = (content: string): string => {
+  const trimmedContent = trim(content);
+  const isHTML = /^<[^>]+>/.test(trimmedContent);
+
+  if (isHTML) {
+    return `<p>${trimmedContent
+      .replace(/(\r\n|\r|\n){2,}/g, '</p><p>')
+      .replace(/^<p>/, '')
+      .replace(/<\/p>$/, '')}</p>`;
+  } else {
+    const paragraphs = split(trimmedContent, /(\r\n|\r|\n){2,}/).map((para) => `<p>${escape(trim(para))}</p>`);
+    return join(paragraphs, '');
+  }
 };

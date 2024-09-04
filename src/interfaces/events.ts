@@ -1,31 +1,13 @@
 export interface EventImageSizes {
   thumbnail: string;
-  thumbnailWidth: number;
-  thumbnailHeight: number;
   medium: string;
-  mediumWidth: number;
-  mediumHeight: number;
-  mediumLarge: string;
-  mediumLargeWidth: number;
-  mediumLargeHeight: number;
+  medium_large: string;
   large: string;
-  largeWidth: number;
-  largeHeight: number;
-  '1536x1536': string;
-  '1536x1536Width': number;
-  '1536x1536Height': number;
-  '2048x2048': string;
-  '2048x2048Width': number;
-  '2048x2048Height': number;
-  woocommerceThumbnail: string;
-  woocommerceThumbnailWidth: number;
-  woocommerceThumbnailHeight: number;
-  woocommerceSingle: string;
-  woocommerceSingleWidth: number;
-  woocommerceSingleHeight: number;
-  woocommerceGalleryThumbnail: string;
-  woocommerceGalleryThumbnailWidth: number;
-  woocommerceGalleryThumbnailHeight: number;
+  'large-2x': string;
+  'vs-container': string;
+  'vs-container-2x': string;
+  'vs-container-half': string;
+  'vs-container-mobile-2x': string;
 }
 
 interface EventACF {
@@ -104,6 +86,7 @@ export interface EventDetails {
     payment_details: boolean;
     payment_status: string;
     is_rsvp?: boolean;
+    is_feedback_provided: boolean;
   };
   _links: Links;
 }

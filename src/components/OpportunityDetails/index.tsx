@@ -39,9 +39,10 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           variant="contained"
           className="button button--black"
           onClick={handleDialogOpen}
+          disabled={opportunity?.acf.is_rsvp}
           style={{ marginBottom: '50px' }}
         >
-          Respond Now
+          {opportunity?.acf.is_rsvp ? 'Already Responded' : ' Respond Now'}
         </Button>
       </Box>
       <Dialog open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>

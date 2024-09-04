@@ -67,15 +67,15 @@
     padding: rem(16) rem(24);
     min-width: rem(300);
     border-radius: rem(50);
-    background-color: var(--color-white);
-    border: rem(1) solid var(--color-white);
+    background-color: var(--color-marble);
+    border: rem(1) solid var(--color-marble);
     text-align: center;
     text-decoration: none;
     text-transform: none;
     @include fontSize(16);
     &:hover {
       background-color: transparent;
-      color: var(--color-white);
+      color: var(--color-marble);
     }
   }
   &__text {

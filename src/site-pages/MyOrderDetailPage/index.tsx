@@ -2,7 +2,7 @@ import { Box, Container, Typography } from '@mui/material';
 import React from 'react';
 import Image from 'next/image';
 import FeedbackForm from '@/features/FeedbackForm';
-import { GetOrderById } from '@/libs/api-manager/manager';
+import { GetOrderById, GetUserIdAndToken } from '@/libs/api-manager/manager';
 import { LineItem, Order } from '@/interfaces';
 import { formatDate } from '@/helpers/utils';
 import ErrorToaster from '@/components/ErrorToaster';
@@ -14,8 +14,9 @@ interface MyOrderDetailPageProps {
 
 const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) => {
   let orderDetail: Order | null = null;
+  const { id: vipId, token } = await GetUserIdAndToken();
   try {
-    orderDetail = await GetOrderById(orderId);
+    orderDetail = await GetOrderById(orderId, token);
   } catch (error) {
     const message = get(error, 'message', '');
     if ((message as string) === 'Expired token') {
@@ -24,7 +25,7 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
       return <ErrorToaster message="Order not found!" errorMessage={String(error)} />;
     }
   }
-  if (!orderDetail) {
+  if (!orderDetail || !token || !vipId) {
     return (
       <Container>
         <Typography align="center" variant="h4" marginTop={5}>
@@ -42,7 +43,9 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
       <Box className="order-product__items">
         {orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
       </Box>
-      <FeedbackForm type="order" />
+      {!orderDetail.is_feedback_provided && (
+        <FeedbackForm type="order" token={token} vipId={vipId} orderId={orderDetail.id} />
+      )}
     </>
   );
 };

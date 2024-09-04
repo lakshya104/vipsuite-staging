@@ -7,6 +7,7 @@ interface InputTextFormFieldProps<T extends FieldValues> {
   control: Control<T>;
   placeholder: string | undefined;
   errors: FieldErrors<T>;
+  noLabel?: boolean;
 }
 
 const InputTextFormField = <T extends FieldValues>({
@@ -14,6 +15,7 @@ const InputTextFormField = <T extends FieldValues>({
   control,
   placeholder,
   errors,
+  noLabel,
 }: InputTextFormFieldProps<T>) => {
   return (
     <Controller
@@ -23,7 +25,8 @@ const InputTextFormField = <T extends FieldValues>({
         <TextField
           fullWidth
           type="text"
-          label={placeholder}
+          label={!noLabel ? placeholder : undefined}
+          placeholder={noLabel ? placeholder : undefined}
           onChange={onChange}
           onBlur={onBlur}
           value={value}

@@ -2,6 +2,14 @@
 import { createTheme } from '@mui/material/styles';
 
 const baseTheme = createTheme({
+  palette: {
+    background: {
+      default: 'var(--color-marble)',
+    },
+    text: {
+      primary: '#1B1B1B',
+    },
+  },
   typography: {
     fontFamily: 'var(--font-family)',
   },

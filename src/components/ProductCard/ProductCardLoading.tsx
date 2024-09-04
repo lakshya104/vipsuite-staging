@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Skeleton } from '@mui/material';
-import './ProductCardLoading.scss';
 
 const ProductCardLoading = () => {
   return (

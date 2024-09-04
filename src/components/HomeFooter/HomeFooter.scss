@@ -1,5 +1,5 @@
 /*
-* Header Top style.
+* Home Footer style.
 */
 
 @import '../../styles/mixins';
@@ -9,8 +9,12 @@
   width: 100%;
   background-color: var(--color-marble);
   border-top: rem(1) solid var(--color-textBlack-10);
+  opacity: 0;
+  transition:
+    bottom 1s,
+    opacity 1s;
   @include flex(space-around, center);
-  @include fixed(left 0 bottom 0 z-index 1050);
+  @include fixed(left 0 bottom -100% z-index 1050);
   @media only screen and (min-width: 992px) {
     display: none;
   }
@@ -36,16 +40,11 @@
       display: block;
     }
   }
-}
-
-.footer-menu.hide {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1s;
-}
-
-.footer-menu.show {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 1s;
+  &.show {
+    bottom: 0;
+    opacity: 1;
+    transition:
+      bottom 1s,
+      opacity 1s;
+  }
 }

@@ -46,6 +46,7 @@ export interface Order {
   date_paid_gmt: string;
   currency_symbol: string;
   _links: Links;
+  is_feedback_provided: boolean;
 }
 
 interface Address {

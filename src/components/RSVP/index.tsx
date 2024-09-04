@@ -147,6 +147,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                 variant="contained"
                 sx={{
                   backgroundColor: 'black',
+                  textTransform: 'capitalize',
                   color: 'white',
                   borderRadius: '50px',
                   px: { xs: 5, sm: 15 },
@@ -157,7 +158,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                 }}
                 disabled={isePending || event?.acf?.is_rsvp}
               >
-                {event?.acf?.is_rsvp ? 'Already Submitted' : 'RSVP'}
+                {event?.acf?.is_rsvp ? 'Already Registered' : 'RSVP'}
               </Button>
             </Box>
             <Box
@@ -175,6 +176,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                 type="submit"
                 sx={{
                   backgroundColor: 'white',
+                  textTransform: 'capitalize',
                   color: 'black',
                   borderRadius: '50px',
                   px: { xs: 4, sm: 7 },
@@ -194,6 +196,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                 variant="contained"
                 type="submit"
                 sx={{
+                  textTransform: 'capitalize',
                   backgroundColor: 'white',
                   color: 'black',
                   borderRadius: '50px',

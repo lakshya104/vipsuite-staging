@@ -1,54 +1,23 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Box, Typography } from '@mui/material';
+import HomeHeader from '@/components/Header/HomeHeader';
+import HomeFooter from '@/components/HomeFooter/HomeFooter';
 
 export default function NotFound() {
   return (
-    <Box
-      sx={{
-        bgcolor: 'black',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-      }}
-    >
-      <Image alt="VipLogo" src="/VIPSLogo.png" width={200} height={30} priority />
-      <Box textAlign="center" mt="25px">
-        <Image
-          src="/not-found.avif"
-          width={500}
-          style={{ width: 'auto', height: 'auto' }}
-          height={300}
-          alt="Not Found"
-          priority
-        />
-        <Typography color="white" sx={{ fontSize: '50px', fontWeight: '800', marginBottom: '10px' }}>
-          404!
-        </Typography>
-        <Typography fontWeight="800" color="white">
-          Oops! The page you are looking for is not here.
-        </Typography>
-        <Link href="/home">
-          <Button
-            sx={{
-              bgcolor: 'white',
-              px: '20px',
-              mt: '10px',
-              color: 'black',
-              fontWeight: '900',
-              '&:hover': {
-                bgcolor: 'white',
-                color: 'black',
-              },
-            }}
-          >
-            Go Home
-          </Button>
-        </Link>
+    <>
+      <HomeHeader />
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
+        <Box textAlign="center" mt="25px">
+          <Typography color="black" sx={{ fontSize: '50px', fontWeight: '800', marginBottom: '10px' }}>
+            404!
+          </Typography>
+          <Typography fontWeight="800" color="black">
+            This page is currently not available
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+      <HomeFooter />
+    </>
   );
 }
