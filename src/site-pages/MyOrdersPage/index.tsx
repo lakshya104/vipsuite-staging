@@ -1,62 +1,39 @@
 import React from 'react';
-import { Typography, Container, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { GetAllOrders } from '@/libs/api-manager/manager';
 import { Order } from '@/interfaces';
 import { formatDate } from '@/helpers/utils';
-import ErrorToaster from '@/components/ErrorToaster';
-import { get } from 'lodash';
 import { ProgressBarLink } from '@/components/ProgressBar';
+import ErrorHandler from '@/components/ErrorHandler';
+import ErrorFallback from '@/components/ErrorFallback';
 
 const MyOrdersPage: React.FC = async () => {
   let allOrders: Order[] | null = null;
   try {
     allOrders = await GetAllOrders();
   } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Orders not found!" errorMessage={String(error)} />;
-    }
+    return <ErrorHandler error={error} errMessage="Not able to show orders currently." />;
   }
-  if (!allOrders) {
-    return (
-      <Container>
-        <Typography align="center" variant="h4" marginTop={5}>
-          Orders not found.
-        </Typography>
-      </Container>
-    );
+  if (!allOrders || allOrders.length === 0) {
+    return <ErrorFallback errorMessage="No orders found" hideSubtext={true} />;
   }
   return (
     <Box className="order-product__items">
-      {allOrders.length > 0 ? (
-        allOrders.map((order: Order) => (
-          <Box
-            className="order-product__item"
-            key={order.id}
-            display={'flex'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-          >
+      {allOrders.map((order: Order) => (
+        <ProgressBarLink href={`/my-orders/${order?.id}`} key={order?.id}>
+          <Box className="order-product__item" display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
             <Box>
               <Typography gutterBottom variant="h2">
-                Order #{order.id}
+                Order #{order?.id}
               </Typography>
-              <Typography variant="body1">Date: {formatDate(order.date_created)}</Typography>
-              <Typography variant="body1">Status: {order.status}</Typography>
+              <Typography variant="body1">Date: {formatDate(order?.date_created)}</Typography>
+              <Typography variant="body1">Status: {order?.status}</Typography>
             </Box>
-            <ProgressBarLink href={`/my-orders/${order.id}`}>
-              <ArrowForwardIcon />
-            </ProgressBarLink>
+            <ArrowForwardIcon />
           </Box>
-        ))
-      ) : (
-        <Typography variant="body1" my={5} align="center">
-          No orders found.
-        </Typography>
-      )}
+        </ProgressBarLink>
+      ))}
     </Box>
   );
 };

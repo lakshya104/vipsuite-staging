@@ -17,7 +17,7 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
     if (!searchQuery.trim()) return brands;
     const lowerCaseQuery = searchQuery.toLowerCase().trim();
     return brands.filter((brand) => {
-      const searchableFields = [brand.title.rendered];
+      const searchableFields = [brand?.title?.rendered];
       return searchableFields.some((field) => field && field.toLowerCase().includes(lowerCaseQuery));
     });
   }, [brands, searchQuery]);
@@ -43,13 +43,13 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
       </Box>
       {!searchQuery ? (
         <BrandsListing brands={brands} hideReferCard={false} />
-      ) : searchQuery && filteredBrands.length > 0 ? (
+      ) : searchQuery && filteredBrands?.length > 0 ? (
         <>
           <Grid container mb={2.5}>
             <Grid item xs={12}>
               <Box width="100%">
                 <Typography variant="h3" component="h2" mb={1}>
-                  {filteredBrands.length} Results for &quot;{searchQuery}&quot;
+                  {filteredBrands?.length} Results for &quot;{searchQuery}&quot;
                 </Typography>
               </Box>
             </Grid>

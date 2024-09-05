@@ -100,9 +100,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
           screenshot: screenshotBase64,
         };
         await OrderFeedback(token, vipId, orderId, feedback);
+        setIsSubmitted(true);
       } catch (error) {
         openToaster('Error submitting feedback:' + error);
-        setIsSubmitted(true);
       } finally {
         setFileName(null);
         reset();
@@ -286,7 +286,7 @@ const FeedbackSuccess = () => {
           alignItems: 'center',
           justifyContent: 'center',
           padding: 3,
-          border: '1px solid black',
+          // border: '1px solid black',
           borderRadius: '8px',
           backgroundColor: '#FFFFF7',
           textAlign: 'center',
@@ -295,7 +295,7 @@ const FeedbackSuccess = () => {
         }}
       >
         <CheckCircleOutlineIcon sx={{ fontSize: '30px', color: 'black', mb: 2 }} />
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 400 }}>
           Your feedback has been successfully submitted!
         </Typography>
       </Box>

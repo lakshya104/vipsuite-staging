@@ -230,6 +230,7 @@ export const GetVipEventDetails = async (id: number, token: string) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    next: { tags: ['getEventDetails'] },
   });
 };
 
@@ -379,6 +380,7 @@ export const GetVipOpportunityDetails = async (id: number, token: string) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    next: { tags: ['getOpportunityDetails'] },
   });
 };
 

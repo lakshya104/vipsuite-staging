@@ -2,9 +2,8 @@ import React from 'react';
 import { GetProfileBuilderContent, GetProfile, GetToken, GetLoginUserId } from '@/libs/api-manager/manager';
 import ProfileBuilder from '@/features/VipProfileBuilder';
 import { ProfileBuilderOptions, UserProfile } from '@/interfaces';
-import { get } from 'lodash';
-import { Container, Typography } from '@mui/material';
-import ErrorToaster from '@/components/ErrorToaster';
+import ErrorHandler from '@/components/ErrorHandler';
+import ErrorFallback from '@/components/ErrorFallback';
 
 const VipProfileBuilderPage = async () => {
   let token: string | null = null;
@@ -14,23 +13,16 @@ const VipProfileBuilderPage = async () => {
 
   try {
     [token, id, profileBuilderOptions] = await Promise.all([GetToken(), GetLoginUserId(), GetProfileBuilderContent()]);
+    if (!token) {
+      return <ErrorFallback errorMessage="Your token is invalid." />;
+    }
     profileDetails = await GetProfile(token);
   } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    }
-    return <ErrorToaster message="An error occurred while fetching data" errorMessage={String(error)} />;
+    return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
   }
 
-  if (id === null || id === undefined) {
-    return (
-      <Container>
-        <Typography className="page-title" variant="h2" align="center">
-          Profile Builder not Available at the moment.
-        </Typography>
-      </Container>
-    );
+  if (!id || id === undefined) {
+    return <ErrorFallback errorMessage="Not able to edit Profile currently." />;
   }
 
   return (

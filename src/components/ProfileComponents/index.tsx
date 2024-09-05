@@ -71,8 +71,8 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [
     { type: 'Phone', value: get(profileDetails, 'phone', '') },
-    { type: 'Email', value: get(profileDetails, 'secondary_email', '') },
-    { type: 'Secondary Email', value: '' },
+    { type: 'Email', value: '' },
+    { type: 'Secondary Email', value: get(profileDetails, 'secondary_email', '') },
     { type: 'Primary Event Contact', value: get(profileDetails, 'event_contacts.email', '') },
     { type: 'Secondary Event Contact', value: get(profileDetails, 'event_contacts.secondary_email', '') },
     { type: 'Primary Stylist Contact', value: get(profileDetails, 'stylist_contacts.email', '') },

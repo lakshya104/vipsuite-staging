@@ -3,14 +3,16 @@ import { Box, Typography, Button, CardContent } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import { formatDateWithOrdinalAndTime } from '@/helpers/utils';
-import { get } from 'lodash';
 import { SendRsvp } from '@/libs/api-manager/manager';
+import { revalidateTag } from '@/libs/actions';
 
 interface RSVPProps {
   onClose: () => void;
   onConfirmation: () => void;
   opportunity: OpportunityDetails;
   token: string;
+  // eslint-disable-next-line no-unused-vars
+  handleToasterMessage: (type: 'error' | 'success') => void;
 }
 
 interface RsvpFormValues {
@@ -23,7 +25,7 @@ const defaultValues: RsvpFormValues = {
   notInterested: null,
 };
 
-const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, token }) => {
+const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, token, handleToasterMessage }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { handleSubmit, setValue, reset } = useForm<RsvpFormValues>({
     defaultValues,
@@ -31,6 +33,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
 
   const onSubmit: SubmitHandler<RsvpFormValues> = async (data) => {
     if (data.notAvailable === 'yes' || data.notInterested === 'yes') {
+      setIsPending(true);
       const rsvp = {
         post_type: 'opportunity',
         rsvp_post: 605,
@@ -38,24 +41,29 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       };
       try {
         await SendRsvp(rsvp, token);
+        revalidateTag('getOpportunityDetails');
+        handleToasterMessage('error');
+      } catch (error) {
+        handleToasterMessage('error');
+      } finally {
+        setIsPending(false);
+        onConfirmation();
         onClose();
         reset();
-      } catch (error) {
-        const errorMessage = get(error, 'message', 'Error sending RSVP');
-        console.error(errorMessage);
       }
     } else {
       setIsPending(true);
       const rsvp = {
         post_type: 'opportunity',
-        rsvp_post: 605,
+        rsvp_post: opportunity.id,
         is_pleases: 'interested',
       };
       try {
         await SendRsvp(rsvp, token);
+        revalidateTag('getOpportunityDetails');
+        handleToasterMessage('error');
       } catch (error) {
-        const errorMessage = get(error, 'message', 'Error sending RSVP');
-        console.error(errorMessage);
+        handleToasterMessage('error');
       } finally {
         setIsPending(false);
         onConfirmation();
@@ -111,7 +119,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
                   backgroundColor: 'black',
                 },
               }}
-              disabled={isPending || opportunity.acf.is_rsvp}
+              disabled={isPending || opportunity?.acf?.is_rsvp}
             >
               {opportunity?.acf?.is_rsvp ? ' Already Registered' : 'RSVP'}
             </Button>
@@ -162,7 +170,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
                   backgroundColor: 'white',
                 },
               }}
-              disabled={opportunity.acf.is_rsvp}
+              disabled={opportunity?.acf?.is_rsvp}
             >
               Not Interested
             </Button>

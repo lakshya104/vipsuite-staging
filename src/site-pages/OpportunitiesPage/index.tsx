@@ -1,33 +1,21 @@
 import React from 'react';
 import OpportunitiesCard from '@/components/OpportunitiesCard';
 import { GetVipOpportunities } from '@/libs/api-manager/manager';
-import { get, map } from 'lodash';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { map } from 'lodash';
+import { Box, Grid } from '@mui/material';
 import { Opportunity } from '@/interfaces/opportunities';
-import ErrorToaster from '@/components/ErrorToaster';
+import ErrorFallback from '@/components/ErrorFallback';
+import ErrorHandler from '@/components/ErrorHandler';
 
 const OpportunitiesPage = async () => {
   let allOpportunities: Opportunity[] | null = null;
   try {
     allOpportunities = await GetVipOpportunities();
   } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Not able to show opportunities currently!" errorMessage={String(error)} />;
-    }
+    return <ErrorHandler error={error} errMessage="Not able to show opportunities currently." />;
   }
   if (!allOpportunities || allOpportunities.length === 0) {
-    return (
-      <Box className="opportunities">
-        <Container>
-          <Typography align="center" variant="h6" marginTop={5}>
-            Not able to show opportunities currently
-          </Typography>
-        </Container>
-      </Box>
-    );
+    return <ErrorFallback errorMessage="No opportunities found" hideSubtext={true} />;
   }
 
   return (

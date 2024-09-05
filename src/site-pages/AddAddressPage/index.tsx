@@ -1,12 +1,22 @@
 import React from 'react';
-import { GetLoginUserId, GetToken } from '@/libs/api-manager/manager';
+import { GetUserIdAndToken } from '@/libs/api-manager/manager';
 import { Address } from '@/interfaces';
 import AddressForm from '@/features/AddressForm';
+import ErrorHandler from '@/components/ErrorHandler';
+import ErrorFallback from '@/components/ErrorFallback';
 
 const AddAddressPage = async () => {
-  const id = await GetLoginUserId();
-  const token = await GetToken();
-
+  let id: number | null = null;
+  let token: string | null = null;
+  try {
+    const result = await GetUserIdAndToken();
+    ({ id, token } = result);
+  } catch (error) {
+    return <ErrorHandler error={error} errMessage="Address Page not found." />;
+  }
+  if (!id || !token) {
+    return <ErrorFallback errorMessage="Address Page not found." />;
+  }
   const defaultValues: Address = {
     first_name: '',
     last_name: '',

@@ -1,37 +1,29 @@
 import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import { calculateAge } from '@/helpers/utils';
 import Image from 'next/image';
 import { UserProfile } from '@/interfaces';
 import { GetProfile, GetToken } from '@/libs/api-manager/manager';
 import { ProgressBarLink } from '@/components/ProgressBar';
-import { get } from 'lodash';
-import ErrorToaster from '@/components/ErrorToaster';
+import ErrorHandler from '@/components/ErrorHandler';
+import ErrorFallback from '@/components/ErrorFallback';
 
 const ProfilePage = async () => {
-  let token;
+  let token: string | null = null;
   let profileDetails: UserProfile | null = null;
   try {
     token = await GetToken();
+    if (!token) {
+      return <ErrorFallback errorMessage="Your token is invalid." />;
+    }
     profileDetails = await GetProfile(token);
   } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Profile not available currently" errorMessage={String(error)} />;
-    }
+    return <ErrorHandler error={error} errMessage="Not able to show Profile currently." />;
   }
 
-  if (!profileDetails || !token) {
-    return (
-      <Container>
-        <Typography align="center" variant="h4" marginTop={5}>
-          Profile not found.
-        </Typography>
-      </Container>
-    );
+  if (!profileDetails) {
+    return <ErrorFallback errorMessage="Not able to show Profile currently." />;
   }
   const age = calculateAge(profileDetails?.acf.date_of_birth);
   return (
@@ -51,7 +43,7 @@ const ProfilePage = async () => {
           Age {age}
         </Typography>
         <ProgressBarLink href={'/vip-profile-builder'} className="button button--link">
-          <span style={{ textDecoration: 'underline', fontWeight:'400' }}>Edit Profile</span>
+          <span style={{ textDecoration: 'underline', fontWeight: '400' }}>Edit Profile</span>
         </ProgressBarLink>
       </Box>
       <Box>

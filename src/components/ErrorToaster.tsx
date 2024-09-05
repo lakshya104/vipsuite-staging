@@ -1,9 +1,9 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
-import { Container, Typography } from '@mui/material';
 import { signOut } from 'next-auth/react';
+import ErrorFallback from './ErrorFallback';
 
 interface ErrorToasterProps {
   errorMessage: string;
@@ -36,18 +36,10 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({ errorMessage, message, logi
   }, [login]);
 
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '40vh',
-      }}
-    >
-      <Typography>{message}</Typography>
+    <Fragment>
+      <ErrorFallback errorMessage={message} />;
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
-    </Container>
+    </Fragment>
   );
 };
 

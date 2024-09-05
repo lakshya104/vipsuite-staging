@@ -11,7 +11,7 @@ interface BrandsListingProps {
 }
 
 const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard }) => {
-  const [featuredBrands, nonFeaturedBrands] = partition(brands, (brand) => brand.acf?.is_featured);
+  const [featuredBrands, nonFeaturedBrands] = partition(brands, (brand) => brand?.acf?.is_featured);
   return (
     <>
       {!hideReferCard ? (

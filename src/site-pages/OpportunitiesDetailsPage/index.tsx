@@ -1,34 +1,31 @@
 import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
-import ErrorToaster from '@/components/ErrorToaster';
-import { get } from 'lodash';
 import OpportunityDetailsCard from '@/components/OpportunityDetails';
 import { GetToken, GetVipOpportunityDetails } from '@/libs/api-manager/manager';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
+import ErrorFallback from '@/components/ErrorFallback';
+import ErrorHandler from '@/components/ErrorHandler';
 
-const OpportunityDetailsPage = async ({ id }: { id: number }) => {
+interface OpportunityDetailsPageProps {
+  id: number;
+}
+
+const OpportunityDetailsPage: React.FC<OpportunityDetailsPageProps> = async ({ id }) => {
+  if (!id) {
+    return <ErrorFallback errorMessage="Opportunity Id is invalid." />;
+  }
   let opportunityDetails: OpportunityDetails | null = null;
-  const token = await GetToken();
+  let token: string | null = null;
   try {
+    token = await GetToken();
+    if (!token) {
+      return <ErrorFallback errorMessage="Your token is invalid." />;
+    }
     opportunityDetails = await GetVipOpportunityDetails(Number(id), token);
   } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Opportunity Details not found!" errorMessage={String(error)} />;
-    }
+    return <ErrorHandler error={error} errMessage="Not able to show opportunities details currently." />;
   }
   if (!opportunityDetails) {
-    return (
-      <Box component={'main'} className="product-detail">
-        <Container>
-          <Typography className="page-title" variant="h2" align="center">
-            Opportunity Details not found.
-          </Typography>
-        </Container>
-      </Box>
-    );
+    return <ErrorFallback errorMessage="No opportunities details found" />;
   }
   return <OpportunityDetailsCard opportunity={opportunityDetails} token={token} />;
 };

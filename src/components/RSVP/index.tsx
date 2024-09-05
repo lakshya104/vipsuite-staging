@@ -7,6 +7,8 @@ import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import { get } from 'lodash';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { revalidateTag } from '@/libs/actions';
+import { formatDateWithOrdinal } from '@/helpers/utils';
 
 interface RSVPProps {
   onClose: () => void;
@@ -52,11 +54,13 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
       };
       try {
         await SendRsvp(rsvp, token);
+        revalidateTag('getEventDetails');
         onClose();
-        reset();
       } catch (error) {
         const errorMessage = get(error, 'message', 'Error sending RSVP');
         console.error(errorMessage);
+      } finally {
+        reset();
       }
     } else {
       setIsPending(true);
@@ -69,14 +73,16 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
       };
       try {
         await SendRsvp(rsvp, token);
-        setIsPending(false);
+        revalidateTag('getEventDetails');
       } catch (error) {
         const errorMessage = get(error, 'message', 'Error sending RSVP');
         console.error(errorMessage);
+      } finally {
+        onClose();
+        reset();
+        onConfirmation();
+        setIsPending(false);
       }
-      onClose();
-      reset();
-      onConfirmation();
     }
   };
 
@@ -118,7 +124,8 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
             <Box component="span" sx={{ fontWeight: 'bold' }}>
               Date:
             </Box>
-            {event.acf.event_start_date} - {event.acf.event_end_date}
+            {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
+            {formatDateWithOrdinal(event.acf.event_end_date, true)}
           </Typography>
           <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
             <Box component="span" sx={{ fontWeight: 'bold' }}>

@@ -1,33 +1,27 @@
-import React, { Fragment } from 'react';
-import { Typography } from '@mui/material';
+import React from 'react';
 import { GetAddresses, GetLoginUserId, GetToken } from '@/libs/api-manager/manager';
 import { Address } from '@/interfaces';
-import { get } from 'lodash';
-import ErrorToaster from '@/components/ErrorToaster';
 import AddressListing from '@/components/AddressListing';
+import ErrorFallback from '@/components/ErrorFallback';
+import ErrorHandler from '@/components/ErrorHandler';
 
 const MyAddressesPage = async () => {
-  let addresses: Address[] = [];
-  const [vipId, token] = await Promise.all([GetLoginUserId(), GetToken()]);
+  let addresses: Address[] | null = null;
+  let userId: number | null = null;
+  let token: string | null = null;
   try {
-    addresses = await GetAddresses(vipId);
-  } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Address not found" errorMessage={String(error)} />;
+    [userId, token] = await Promise.all([GetLoginUserId(), GetToken()]);
+    if (!token) {
+      return <ErrorFallback errorMessage="Invalid Token or User Id" />;
     }
+    addresses = await GetAddresses(userId);
+  } catch (error) {
+    return <ErrorHandler error={error} errMessage="Address page not available at the moment." />;
   }
-  return (
-    <Fragment>
-      {addresses.length > 0 ? (
-        <AddressListing addresses={addresses} token={token} vipId={vipId} />
-      ) : (
-        <Typography textAlign="center">No Address found</Typography>
-      )}
-    </Fragment>
-  );
+  if (!addresses || addresses.length === 0) {
+    return <ErrorFallback errorMessage="No Address found" hideSubtext={true} />;
+  }
+  return <AddressListing addresses={addresses} token={token} vipId={userId} />;
 };
 
 export default MyAddressesPage;

@@ -1,35 +1,25 @@
 import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
 import BrandsPage from '@/components/BrandsPage';
 import { GetBrands, GetToken } from '@/libs/api-manager/manager';
 import { Brand } from '@/interfaces/brand';
-import ErrorToaster from '@/components/ErrorToaster';
-import { get } from 'lodash';
+import ErrorFallback from '@/components/ErrorFallback';
+import ErrorHandler from '@/components/ErrorHandler';
 
 const HomePage = async () => {
   let brands: Brand[] | null = null;
-  const token = await GetToken();
+  let token: string | null = null;
   try {
+    token = await GetToken();
+    if (!token) {
+      return <ErrorFallback errorMessage="Your token is invalid." />;
+    }
     brands = await GetBrands(token);
   } catch (error) {
-    const message = get(error, 'message', '');
-    if ((message as string) === 'Expired token') {
-      return <ErrorToaster message="Please login again to continue" login={true} errorMessage={String(error)} />;
-    } else {
-      return <ErrorToaster message="Not able to show brands currently!" errorMessage={String(error)} />;
-    }
+    return <ErrorHandler error={error} errMessage="Not able to show brands currently." />;
   }
 
   if (!brands || brands.length === 0) {
-    return (
-      <Box component={'main'} className="landing-page">
-        <Container>
-          <Typography align="center" variant="h4" marginTop={5}>
-            Brands not found.
-          </Typography>
-        </Container>
-      </Box>
-    );
+    return <ErrorFallback errorMessage="Currently there are no brands." />;
   }
 
   return <BrandsPage brands={brands} />;
