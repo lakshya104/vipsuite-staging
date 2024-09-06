@@ -33,5 +33,6 @@
     flex: 1;
     padding: 0 rem(15) rem(56);
     @include flex(center);
+    position: relative;
   }
 }

@@ -27,6 +27,10 @@ export interface BrandDetails {
     short_description: string;
     brand_image: EventImage;
     brand_logo?: BrandLogo;
+    is_lookbook_available: boolean;
+    lookbook_heading: string;
+    lookbook_description: string;
+    lookbook_pdf: string;
   };
   _links: {
     self: Array<{

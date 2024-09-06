@@ -130,6 +130,12 @@ const VipSignupForm = () => {
                 <Typography>Optional</Typography>
               </Box>
             )}
+            {name === 'phone' && !errors[name] && (
+              <Box className="input-text">
+                <Typography>Including Country Code</Typography>
+                <Typography>Optional</Typography>
+              </Box>
+            )}
           </Box>
         ))}
         <Button type="submit" disabled={isPending} className="button button--white" fullWidth>

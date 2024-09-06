@@ -23,9 +23,11 @@ export const VipSignupSchema = z.object({
     .min(6, { message: 'Password must be at least 6 characters long' }),
   phone: z
     .string()
-    .regex(/^\d{10}$/, {
-      message: 'Phone number must be 10 digits',
+    .regex(/^\+?([1-9]\d?)\d{10}$/, {
+      message: 'Phone number must be 10 digits, with a mandatory 2-3 digit country code.',
     })
+    .min(11, { message: 'Phone number must be 10 digits, with a mandatory 2-3 digit country code.' })
+    .max(15, { message: 'Phone number must be 10 digits, with a mandatory 2-3 digit country code.' })
     .optional()
     .or(z.literal('')),
   secondary_email: z.string().email({ message: 'Please enter a valid email' }).optional().or(z.literal('')),

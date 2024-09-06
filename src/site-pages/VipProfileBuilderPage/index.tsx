@@ -4,6 +4,7 @@ import ProfileBuilder from '@/features/VipProfileBuilder';
 import { ProfileBuilderOptions, UserProfile } from '@/interfaces';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
+import BackToHome from '@/components/BackToHome';
 
 const VipProfileBuilderPage = async () => {
   let token: string | null = null;
@@ -26,12 +27,15 @@ const VipProfileBuilderPage = async () => {
   }
 
   return (
-    <ProfileBuilder
-      id={id}
-      token={token}
-      profileBuilderOptions={profileBuilderOptions}
-      profileDetails={profileDetails?.acf}
-    />
+    <>
+      <ProfileBuilder
+        id={id}
+        token={token}
+        profileBuilderOptions={profileBuilderOptions}
+        profileDetails={profileDetails?.acf}
+      />
+      {profileDetails?.acf?.profile_status === 'approved' && <BackToHome />}
+    </>
   );
 };
 

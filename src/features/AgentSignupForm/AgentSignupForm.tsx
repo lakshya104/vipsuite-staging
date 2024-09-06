@@ -13,7 +13,7 @@ import './AgentSignupForm.scss';
 import { AgentSignupSchema, AgentSignupValues, defaultValues } from './agentSignupTypes';
 import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
-import { SignUp } from '@/libs/api-manager/manager';
+import { VipSignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -55,7 +55,7 @@ const AgentSignupForm = () => {
       };
       startTransition(async () => {
         try {
-          const response = await SignUp(data);
+          const response = await VipSignUp(data);
           if (response && response.error) {
             setError(response.error);
             setToasterOpen(true);

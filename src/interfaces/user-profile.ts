@@ -6,6 +6,7 @@ export interface ChildInfo {
 export interface ContactInfo {
   email: string;
   secondary_email: string;
+  contact_me_directly: boolean;
 }
 
 export interface ACF {
@@ -21,6 +22,7 @@ export interface ACF {
   event_contacts?: ContactInfo;
   stylist_contacts?: ContactInfo;
   gifting_contacts?: ContactInfo;
+  contact_me_directly?: boolean;
   date_of_birth?: string;
   birth_place?: string;
   nationality?: string | null;

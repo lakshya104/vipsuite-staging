@@ -95,8 +95,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
     try {
       await addUpdateAddress(userId, token, data, addressId);
     } catch (error) {
-      console.error('Error during add address:', error);
-      openToaster('Error during add address: ' + error);
+      openToaster('Error during adding address: ' + error);
     } finally {
       setIsLoading(false);
       revalidateTag('getAddress');

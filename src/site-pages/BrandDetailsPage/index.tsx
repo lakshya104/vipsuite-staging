@@ -37,14 +37,18 @@ const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) =>
       </Typography>
       <DetailPageImageContainer item={brandDetails} />
       <Typography className="product-detail__content">{brandDetails?.acf?.short_description}</Typography>
-      <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-        <ReferCard
-          heading="Spring/Summer '24 Lookbook"
-          text="Download the latest Lookbook from Boda Skins to view the whole collection"
-          href="/"
-        />
-      </Box>
-      <RequestItemFormButton />
+      {brandDetails?.acf?.is_lookbook_available && (
+        <>
+          <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
+            <ReferCard
+              heading={brandDetails?.acf?.lookbook_heading}
+              text={brandDetails?.acf?.lookbook_description}
+              href="https://vip.anktech.in/wordpress/wp-content/uploads/2024/08/sample.pdf"
+            />
+          </Box>
+          <RequestItemFormButton />
+        </>
+      )}
       <Box className="product-list__page">
         <Typography variant="h2" gutterBottom>
           Products

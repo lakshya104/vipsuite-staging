@@ -1,7 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Box, Typography, FormGroup, FormControlLabel, CircularProgress, Backdrop } from '@mui/material';
+import {
+  Box,
+  Typography,
+  FormGroup,
+  FormControlLabel,
+  CircularProgress,
+  Backdrop,
+  FormHelperText,
+} from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import _ from 'lodash';
 import SelectBox from '@/components/SelectBox';
@@ -178,6 +186,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
                     </Box>
                   ))}
               </Box>
+              <FormHelperText error>{errors[name as keyof Step4FormValues]?.message}</FormHelperText>
             </FormGroup>
           ) : type === 'select' ? (
             <SelectBox

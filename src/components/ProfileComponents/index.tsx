@@ -71,8 +71,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, email }) => {
-  console.log({ email });
-
   const contactData = [
     { type: 'Email', value: email || '' },
     { type: 'Phone', value: get(profileDetails, 'phone', '') },

@@ -57,18 +57,13 @@ export function ProgressBar({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function ProgressBarLink({
-  href,
-  children,
-  className,
-  title,
-  ...rest
-}: {
+interface ProgressBarLinkProps {
   href: string;
   children: React.ReactNode;
   className?: string;
   title?: string;
-}) {
+}
+export function ProgressBarLink({ href, children, className, title, ...rest }: ProgressBarLinkProps) {
   const progress = useProgressBar();
   const router = useRouter();
 

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Typography, TextField, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Typography, TextField, Backdrop, CircularProgress, Checkbox, FormControlLabel } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormValues, vipStep2Schema } from './schema';
 import { contacts } from '@/data';
@@ -16,64 +16,96 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
+  // Default values for the form
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
     eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
+    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly || false,
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
+    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly || false,
     giftingEmail: profileDetail.gifting_contacts?.email || '',
     giftingSecondaryEmail: profileDetail.gifting_contacts?.secondary_email || '',
+    giftingContactMeDirectly: profileDetail.gifting_contacts?.contact_me_directly || false,
   };
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(vipStep2Schema),
     defaultValues: defaultValues,
   });
 
+  // Managing checkbox states
+  const [checkboxStates, setCheckboxStates] = useState<Record<keyof FormValues, boolean>>({
+    eventsEmail: false,
+    eventsSecondaryEmail: false,
+    eventsContactMeDirectly: defaultValues.eventsContactMeDirectly || false,
+    stylistEmail: false,
+    stylistSecondaryEmail: false,
+    stylistContactMeDirectly: defaultValues.stylistContactMeDirectly || false,
+    giftingEmail: false,
+    giftingSecondaryEmail: false,
+    giftingContactMeDirectly: defaultValues.giftingContactMeDirectly || false,
+  });
+
+  const handleCheckboxChange = (section: keyof FormValues) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setCheckboxStates((prevState) => ({
+      ...prevState,
+      [section]: checked,
+    }));
+    setValue(section, checked);
+    if (checked) {
+      setValue(section.replace('ContactMeDirectly', 'Email') as keyof FormValues, '');
+      setValue(section.replace('ContactMeDirectly', 'SecondaryEmail') as keyof FormValues, '');
+    }
+  };
+
   const onSubmit = async (data: FormValues) => {
+    console.log('Submitted Data:', data);
     setIsLoading(true);
+
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
         event_contacts: {
           email: data.eventsEmail || '',
           secondary_email: data.eventsSecondaryEmail || '',
+          contact_me_directly: data.eventsContactMeDirectly || false,
         },
         stylist_contacts: {
           email: data.stylistEmail || '',
           secondary_email: data.stylistSecondaryEmail || '',
+          contact_me_directly: data.stylistContactMeDirectly || false,
         },
         gifting_contacts: {
           email: data.giftingEmail || '',
           secondary_email: data.giftingSecondaryEmail || '',
+          contact_me_directly: data.giftingContactMeDirectly || false,
         },
       };
+
       const profile = {
         acf: {
           first_name: profileDetail.first_name,
           last_name: profileDetail.last_name,
-          event_contacts: {
-            email: data.eventsEmail || '',
-            secondary_email: data.eventsSecondaryEmail || '',
-          },
-          stylist_contacts: {
-            email: data.stylistEmail || '',
-            secondary_email: data.stylistSecondaryEmail || '',
-          },
-          gifting_contacts: {
-            email: data.giftingEmail || '',
-            secondary_email: data.giftingSecondaryEmail || '',
-          },
+          event_contacts: updatedProfileDetail.event_contacts,
+          stylist_contacts: updatedProfileDetail.stylist_contacts,
+          gifting_contacts: updatedProfileDetail.gifting_contacts,
         },
       };
+
+      console.log('Updated Profile:', profile);
+
       await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);
+      console.error('Error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +121,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
       {contacts.map(({ section, description }) => (
         <Box className="profile-builder__form-row" key={section}>
           <Typography variant="h3" gutterBottom>
-            {section}
+            {section === 'Gifting' ? 'Commercial Opportunities' : section}
           </Typography>
           <Typography variant="body2" gutterBottom>
             {description}
@@ -102,6 +134,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
             {...register(`${section.toLowerCase()}Email` as keyof FormValues)}
             error={!!errors[`${section.toLowerCase()}Email` as keyof FormValues]}
             helperText={errors[`${section.toLowerCase()}Email` as keyof FormValues]?.message}
+            disabled={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
           />
           <TextField
             fullWidth
@@ -111,6 +144,17 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
             {...register(`${section.toLowerCase()}SecondaryEmail` as keyof FormValues)}
             error={!!errors[`${section.toLowerCase()}SecondaryEmail` as keyof FormValues]}
             helperText={errors[`${section.toLowerCase()}SecondaryEmail` as keyof FormValues]?.message}
+            disabled={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
+                onChange={handleCheckboxChange(`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues)}
+                color="primary"
+              />
+            }
+            label="Contact me directly"
           />
         </Box>
       ))}

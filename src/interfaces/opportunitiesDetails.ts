@@ -1,31 +1,13 @@
 export interface ImageSizes {
   thumbnail: string;
-  'thumbnail-width': number;
-  'thumbnail-height': number;
   medium: string;
-  'medium-width': number;
-  'medium-height': number;
   medium_large: string;
-  'medium_large-width': number;
-  'medium_large-height': number;
   large: string;
-  'large-width': number;
-  'large-height': number;
-  '1536x1536': string;
-  '1536x1536-width': number;
-  '1536x1536-height': number;
-  '2048x2048': string;
-  '2048x2048-width': number;
-  '2048x2048-height': number;
-  woocommerce_thumbnail: string;
-  'woocommerce_thumbnail-width': number;
-  'woocommerce_thumbnail-height': number;
-  woocommerce_single: string;
-  'woocommerce_single-width': number;
-  'woocommerce_single-height': number;
-  woocommerce_gallery_thumbnail: string;
-  'woocommerce_gallery_thumbnail-width': number;
-  'woocommerce_gallery_thumbnail-height': number;
+  'large-2x': string;
+  'vs-container': string;
+  'vs-container-2x': string;
+  'vs-container-half': string;
+  'vs-container-mobile-2x': string;
 }
 
 export interface OpportunityDetails {
