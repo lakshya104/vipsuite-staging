@@ -62,5 +62,6 @@ export type Session = {
   vip_profile_id: number;
   account_status: string;
   role: string;
+  email: string;
   token: string;
 };

@@ -18,7 +18,7 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunity }) =>
         }}
       >
         <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
-          VIP Clup
+          VIP Club
         </Typography>
         <FeedLikeIcon />
         <CardContent className="opportunities-card__item-content">

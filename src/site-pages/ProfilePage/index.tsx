@@ -4,16 +4,18 @@ import ProfileTabs from '@/components/ProfileTabs';
 import { calculateAge } from '@/helpers/utils';
 import Image from 'next/image';
 import { UserProfile } from '@/interfaces';
-import { GetProfile, GetToken } from '@/libs/api-manager/manager';
+import { GetProfile, GetTokenAndEmail } from '@/libs/api-manager/manager';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 
 const ProfilePage = async () => {
   let token: string | null = null;
+  let email: string | null = null;
   let profileDetails: UserProfile | null = null;
   try {
-    token = await GetToken();
+    const result = await GetTokenAndEmail();
+    ({ token, email } = result);
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
@@ -47,7 +49,7 @@ const ProfilePage = async () => {
         </ProgressBarLink>
       </Box>
       <Box>
-        <ProfileTabs profileData={profileDetails?.acf} />
+        <ProfileTabs profileData={profileDetails?.acf} email={email} />
       </Box>
     </>
   );

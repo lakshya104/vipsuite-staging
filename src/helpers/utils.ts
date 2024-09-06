@@ -108,3 +108,14 @@ export const wrapInParagraph = (content: string): string => {
     return join(paragraphs, '');
   }
 };
+
+export const formatDateWithMonth = (date: string | Date): string => {
+  const momentDate = moment(date);
+  if (!momentDate.isValid()) {
+    return 'Invalid Date';
+  }
+  const dayOfMonth = momentDate.format('D');
+  const month = momentDate.format('MMM');
+  const year = momentDate.format('YYYY');
+  return `${dayOfMonth} ${month} ${year}`;
+};

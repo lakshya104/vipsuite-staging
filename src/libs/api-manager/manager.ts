@@ -17,6 +17,15 @@ export const GetLoginUserId = async () => {
   return id;
 };
 
+export const GetTokenAndEmail = async () => {
+  const session = await auth();
+  const user = session?.user as unknown as Session;
+  return {
+    token: user.token,
+    email: user.email,
+  };
+};
+
 export const GetUserIdAndToken = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
@@ -27,9 +36,9 @@ export const GetUserIdAndToken = async () => {
   };
 };
 
-export const SignUp = async (formData: SignUpRequestBody) => {
+export const VipSignUp = async (formData: SignUpRequestBody) => {
   try {
-    const response = await Instance.post(Endpoints.signup, formData);
+    const response = await Instance.post(Endpoints.vipSignup, formData);
     return response.data;
   } catch (error) {
     console.error('Error during signup:', error);
@@ -116,7 +125,7 @@ export const GetBrandDetails = async (id: number, token: string) => {
 export const GetBrandProducts = async (id: number) => {
   try {
     const token = await GetToken();
-    const response = await Instance.get(`${Endpoints.getBrandProducts}=${id}`, {
+    const response = await Instance.get(Endpoints.getBrandProducts(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },

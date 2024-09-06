@@ -13,8 +13,8 @@ import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
 import { SignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
-import { SignUp } from '@/libs/api-manager/manager';
 import Link from 'next/link';
+import { VipSignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -52,11 +52,7 @@ const VipSignupForm = () => {
     setIsPending(true);
     setError('');
     try {
-      const data = {
-        ...formData,
-        user_type: 'vip',
-      };
-      const response = await SignUp(data);
+      const response = await VipSignUp(formData);
       setIsPending(false);
       if (response?.error) {
         setError(response.error);

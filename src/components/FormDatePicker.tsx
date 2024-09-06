@@ -12,6 +12,7 @@ interface FormDatePickerProps<T extends FieldValues> {
 }
 
 const FormDatePicker = <T extends FieldValues>({ name, control, label }: FormDatePickerProps<T>) => {
+  const yesterday = dayjs().subtract(1, 'day');
   return (
     <Controller
       name={name}
@@ -23,6 +24,7 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label }: FormDat
             className="date-picker"
             label={label}
             format="DD/MM/YYYY"
+            maxDate={yesterday}
             value={value ? dayjs(value as string) : null}
             onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : '')}
             slotProps={{

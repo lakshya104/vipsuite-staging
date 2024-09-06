@@ -13,9 +13,10 @@ const TABS = [
 
 interface ProfileTabsProps {
   profileData: ACF;
+  email?: string;
 }
 
-const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData }) => {
+const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData, email }) => {
   const [section, setSection] = useState<string>('bio');
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSection(TABS[newValue]?.section);
@@ -31,7 +32,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData }) => {
       case 'social':
         return <SocialComponent profileDetails={profileData} />;
       case 'contacts':
-        return <ContactsComponent profileDetails={profileData} />;
+        return <ContactsComponent profileDetails={profileData} email={email} />;
       default:
         return <BioComponent profileDetails={profileData} />;
     }

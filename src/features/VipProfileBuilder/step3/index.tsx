@@ -76,7 +76,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       childFields.push(
         {
           name: `ageOfChild[${i}]` as keyof Step3FormValues,
-          label: `Age of Child ${i + 1}`,
+          label: `DOB of Child ${i + 1}`,
           type: 'date',
           placeholder: `Date of Birth for Child ${i + 1}`,
         },
@@ -87,6 +87,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           options: [
             { value: 'male', label: 'Male' },
             { value: 'female', label: 'Female' },
+            { value: 'trans', label: 'Trans' },
           ],
         },
       );

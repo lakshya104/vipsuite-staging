@@ -19,7 +19,7 @@ const HomePage = async () => {
   }
 
   if (!brands || brands.length === 0) {
-    return <ErrorFallback errorMessage="Currently there are no brands." />;
+    return <ErrorFallback errorMessage="Currently there are no brands." hideSubtext={true} />;
   }
 
   return <BrandsPage brands={brands} />;

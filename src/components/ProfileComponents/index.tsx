@@ -1,3 +1,4 @@
+import { formatDateWithMonth } from '@/helpers/utils';
 import { ACF } from '@/interfaces';
 import { Grid, Paper, Typography } from '@mui/material';
 import { get } from 'lodash';
@@ -5,11 +6,12 @@ import React from 'react';
 
 interface ProfileComponentProps {
   profileDetails: ACF;
+  email?: string;
 }
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const bioData = [
-    { label: 'Date of Birth', value: get(profileDetails, 'date_of_birth', '') },
+    { label: 'Date of Birth', value: formatDateWithMonth(get(profileDetails, 'date_of_birth', '')) },
     { label: 'Born', value: get(profileDetails, 'birth_place', '') },
     { label: 'Resides', value: get(profileDetails, 'nationality', '') },
     {
@@ -68,10 +70,12 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   );
 };
 
-export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, email }) => {
+  console.log({ email });
+
   const contactData = [
+    { type: 'Email', value: email || '' },
     { type: 'Phone', value: get(profileDetails, 'phone', '') },
-    { type: 'Email', value: '' },
     { type: 'Secondary Email', value: get(profileDetails, 'secondary_email', '') },
     { type: 'Primary Event Contact', value: get(profileDetails, 'event_contacts.email', '') },
     { type: 'Secondary Event Contact', value: get(profileDetails, 'event_contacts.secondary_email', '') },

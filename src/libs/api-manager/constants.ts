@@ -1,10 +1,10 @@
 const Endpoints = {
   login: '/wp/v2/login',
-  signup: '/wp/v2/signup',
+  vipSignup: '/wp/v2/signup/vip',
   getProfile: '/wp/v2/users/me',
   getBrands: '/wp/v2/brand-profiles',
   getBrandDetails: '/wp/v2/brand-profiles',
-  getBrandProducts: '/wc/v3/products?brand',
+  getBrandProducts: (id: number) => `/wc/v3/products?brand_profile_id=${id}`,
   getBrandProductDetails: '/wc/v3/products',
   getSignupContent: '/wp/v2/signup-content',
   getVipEvents: '/wp/v2/events',
