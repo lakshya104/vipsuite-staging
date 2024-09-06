@@ -1,11 +1,9 @@
 import React from 'react';
-import OpportunitiesCard from '@/components/OpportunitiesCard';
 import { GetVipOpportunities } from '@/libs/api-manager/manager';
-import { map } from 'lodash';
-import { Box, Grid } from '@mui/material';
 import { Opportunity } from '@/interfaces/opportunities';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
+import OpportunitiesContainer from '@/components/OpportunitiesContainer';
 
 const OpportunitiesPage = async () => {
   let allOpportunities: Opportunity[] | null = null;
@@ -18,17 +16,7 @@ const OpportunitiesPage = async () => {
     return <ErrorFallback errorMessage="No opportunities found" hideSubtext={true} />;
   }
 
-  return (
-    <Box>
-      <Grid container spacing={2}>
-        {map(allOpportunities, (opportunity) => (
-          <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
-            <OpportunitiesCard opportunity={opportunity} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
+  return <OpportunitiesContainer opportunitiesData={allOpportunities} />;
 };
 
 export default OpportunitiesPage;

@@ -1,9 +1,13 @@
 import React from 'react';
 import { Box, Grid, Skeleton } from '@mui/material';
+import SearchBar from '@/components/SearchBar';
 
 const OpportunitiesPageLoading = () => {
   return (
     <>
+     <Box my={2.5}>
+        <SearchBar searchTerm={''} placeholder="Search for opportunities..." aria-label="Search opportunities" />
+      </Box>
       <Box padding={2}>
         <Grid container spacing={2}>
           {[...Array(4)].map((_, index) => (
