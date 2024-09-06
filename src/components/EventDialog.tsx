@@ -1,9 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Dialog, DialogContent, DialogActions, Typography } from '@mui/material';
 import RSVP from './RSVP';
 import { EventDetails } from '@/interfaces/events';
 import { useRouter } from 'next/navigation';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from './Toaster';
 
 interface EventsDialogProps {
   event: EventDetails;
@@ -13,6 +15,9 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const router = useRouter();
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const [toasterMessage, setToasterMessage] = useState('');
+  const [toasterType, setToasterType] = useState('');
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => setDialogOpen(false);
@@ -24,6 +29,18 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
     setConfirmationOpen(false);
     router.push('/events');
   };
+  const handleToasterMessage = (type: 'error' | 'success') => {
+    setToasterType(type);
+    if (type === 'success') {
+      setToasterMessage('Response submitted successfully');
+    } else {
+      setToasterMessage('Error submitting response');
+    }
+  };
+
+  useEffect(() => {
+    if (toasterMessage) openToaster(toasterMessage);
+  }, [openToaster, toasterMessage]);
 
   return (
     <>
@@ -34,13 +51,19 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
           disabled={event?.acf?.is_rsvp}
           onClick={handleDialogOpen}
         >
-          {event?.acf?.is_rsvp ? 'Already Registered' : ' RSVP'}
+          {event?.acf?.is_rsvp ? 'Already Responded' : ' RSVP'}
         </Button>
       </Box>
 
       <Dialog className="site-dialog" open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
         <DialogContent>
-          <RSVP onClose={handleDialogClose} event={event} onConfirmation={handleConfirmationOpen} token={token} />
+          <RSVP
+            onClose={handleDialogClose}
+            event={event}
+            onConfirmation={handleConfirmationOpen}
+            token={token}
+            handleToasterMessage={handleToasterMessage}
+          />
         </DialogContent>
       </Dialog>
 
@@ -65,6 +88,12 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
           </DialogActions>
         </DialogContent>
       </Dialog>
+      <Toaster
+        open={toasterOpen}
+        setOpen={closeToaster}
+        message={error}
+        severity={toasterType as 'error' | 'success' | 'warning' | 'info'}
+      />
     </>
   );
 };

@@ -152,7 +152,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step4-form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
           Interested in

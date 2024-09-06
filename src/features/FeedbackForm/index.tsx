@@ -162,7 +162,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
             control={control}
             placeholder="https://instagram.com/postID"
             errors={errors}
-            noLabel={true}
           />
 
           <Typography mb={1} variant="body1">

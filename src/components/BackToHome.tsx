@@ -5,19 +5,9 @@ import { ProgressBarLink } from './ProgressBar';
 
 const BackToHome = () => {
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        display: 'flex',
-        justifyContent: 'center',
-        p: 1,
-        m: 4,
-        right: 600,
-        cursor: 'pointer',
-      }}
-    >
+    <Box className="profile-builder__close">
       <ProgressBarLink href="/profile">
-        <CloseIcon sx={{ color: 'black' }} />
+        <CloseIcon />
       </ProgressBarLink>
     </Box>
   );

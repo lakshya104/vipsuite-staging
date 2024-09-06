@@ -1,26 +1,39 @@
 import React from 'react';
-import { Typography, Grid, Box, Container } from '@mui/material';
-import { testimonials } from '@/data';
-import StyledCard from '../StyledCard/StyledCard';
+import { CardContent, Typography, Avatar, Box } from '@mui/material';
+import Image from 'next/image';
 import './Testimonial.scss';
 
-const Testimonial = () => {
+interface TestimonialCardProps {
+  name: string;
+  title: string;
+  testimonial: string;
+  logo: string;
+}
+
+const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimonial, logo }) => {
   return (
-    <Box component="section" className="site-testimonial">
-      <Container>
-        <Typography component="h2" variant="h2">
-          Testimonials
-        </Typography>
-        <Grid container alignItems="center" justifyContent="center" spacing={3}>
-          {testimonials.map((item, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <StyledCard item={item} />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
+    <>
+      <Box className="site-testimonial">
+        <CardContent className="site-testimonial__inner">
+          <Box mb={2} className="site-testimonial__logo">
+            <Image src={logo} alt={`${name}'s Logo`} width={28} height={25} />
+          </Box>
+          <Typography variant="body1" mb={3}>
+            {testimonial}
+          </Typography>
+          <Box className="site-testimonial__user">
+            <Avatar alt={name} src="/profile-pic.jpg" />
+            <Box className="site-testimonial__user-info">
+              <Typography variant="h3" component="h3">
+                {name}
+              </Typography>
+              <Typography variant="body2">{title}</Typography>
+            </Box>
+          </Box>
+        </CardContent>
+      </Box>
+    </>
   );
 };
 
-export default Testimonial;
+export default TestimonialCard;

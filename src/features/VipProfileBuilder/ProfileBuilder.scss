@@ -7,36 +7,11 @@
 .profile-builder {
   &__form {
     width: 100%;
-    max-width: rem(350);
-    margin-top: rem(30);
+    margin-top: rem(50);
     flex-direction: column;
     @include flex();
-    @media only screen and (min-width: 768px) {
-      max-width: rem(450);
-    }
     &-row {
-      @media only screen and (max-width: 767px) {
-        margin-bottom: rem(10);
-        overflow-y: auto;
-        max-height: rem(280);
-      }
       margin-bottom: rem(16);
-      overflow-y: auto;
-      max-height: rem(350);
-      &::-webkit-scrollbar {
-        width: rem(8);
-      }
-      &::-webkit-scrollbar-track {
-        background: #f1f1f1;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: #b3b2b2;
-        border-radius: rem(4);
-      }
-      &::-webkit-scrollbar-thumb:hover {
-        background: #999898;
-        cursor: pointer;
-      }
       .step1-form &,
       .step5-form & {
         flex-wrap: wrap;
@@ -77,6 +52,12 @@
     }
   }
   &__main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: rem(380);
+    @media only screen and (min-width: 768px) {
+      max-width: rem(480);
+    }
     h2 {
       line-height: 1.07;
       @include fontSize(24);
@@ -133,6 +114,27 @@
           display: none;
         }
       }
+      .profile-builder__form-row {
+        max-height: rem(262);
+        overflow-y: auto;
+      }
+    }
+    .step4-form {
+      .form-checkbox-group {
+        overflow-y: auto;
+        max-height: rem(280);
+      }
+    }
+  }
+  &__close {
+    line-height: 0;
+    background-color: var(--color-textBlack);
+    padding: rem(2);
+    @include border-radius(50%);
+    @include flex(center, center);
+    @include absolute(top 10px right 15px);
+    svg {
+      color: var(--color-marble);
     }
   }
 }

@@ -123,31 +123,32 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
               {navLinks.map((link) => {
                 const isActive = link.paths.some((path) => pathname.startsWith(path));
                 return (
-                  <ProgressBarLink href={link.href} title={link.label} key={link.href}>
-                    <MenuItem
-                      sx={
-                        isActive
-                          ? {
-                              fontWeight: 500,
-                              color: 'black',
-                              position: 'relative',
-                              '&::after': {
-                                content: '""',
-                                position: 'absolute',
-                                bottom: '-2px',
-                                left: 0,
-                                width: '100%',
-                                height: '2px',
-                                backgroundColor: 'black',
-                              },
-                            }
-                          : {}
-                      }
-                      className={isActive ? 'active' : ''}
-                    >
+                  <MenuItem
+                    key={link.href}
+                    sx={
+                      isActive
+                        ? {
+                            fontWeight: 500,
+                            color: 'black',
+                            position: 'relative',
+                            '&::after': {
+                              content: '""',
+                              position: 'absolute',
+                              bottom: '-2px',
+                              left: 0,
+                              width: '100%',
+                              height: '2px',
+                              backgroundColor: 'black',
+                            },
+                          }
+                        : {}
+                    }
+                    className={isActive ? 'active' : ''}
+                  >
+                    <ProgressBarLink href={link.href} title={link.label}>
                       {link.label}
-                    </MenuItem>
-                  </ProgressBarLink>
+                    </ProgressBarLink>
+                  </MenuItem>
                 );
               })}
             </MenuList>

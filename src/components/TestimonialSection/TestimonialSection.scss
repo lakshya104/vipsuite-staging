@@ -1,0 +1,22 @@
+/*
+* Testimonial style.
+*/
+
+@import '../../styles/mixins';
+
+.testimonial-section {
+  margin-bottom: rem(40);
+  @media only screen and (min-width: 992px) {
+    margin-bottom: rem(85);
+  }
+  h2 {
+    line-height: 1.6;
+    letter-spacing: -0.05em;
+    margin-bottom: rem(20);
+    @include fontSize(30);
+    @media only screen and (min-width: 992px) {
+      margin-bottom: rem(37);
+      @include fontSize(50);
+    }
+  }
+}

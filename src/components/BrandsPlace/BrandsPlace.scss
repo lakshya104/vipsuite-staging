@@ -1,0 +1,96 @@
+/*
+* Brand Place Section style.
+*/
+
+@import '../../styles/mixins';
+
+.brand-section {
+  margin-bottom: rem(20);
+  @media only screen and (min-width: 992px) {
+    margin-bottom: rem(87);
+  }
+  &__head {
+    margin-bottom: rem(30);
+    text-align: center;
+    @media only screen and (min-width: 600px) {
+      text-align: left;
+    }
+    h2 {
+      line-height: 1.6;
+      letter-spacing: -0.05em;
+      margin-bottom: rem(19);
+      text-transform: capitalize;
+      @include fontSize(30);
+      @media only screen and (min-width: 992px) {
+        @include fontSize(50);
+      }
+    }
+    p {
+      font-weight: 400;
+      line-height: 1.43;
+      color: var(--color-textBlack);
+      opacity: 0.7;
+      margin-bottom: rem(18);
+      @include fontSize(14);
+      @media only screen and (min-width: 992px) {
+        margin-bottom: rem(32);
+        margin-right: rem(52);
+      }
+    }
+  }
+  &__content {
+    text-align: center;
+    @media only screen and (min-width: 992px) {
+      padding: rem(8);
+    }
+    > .MuiGrid-root {
+      overflow: hidden;
+      @include border-radius(8px);
+    }
+  }
+  &__item {
+    &:not(:last-child) {
+      > .MuiPaper-root {
+        @media only screen and (min-width: 600px) {
+          border-right: 1px solid rgba(#000000, 0.1);
+        }
+      }
+    }
+    > .MuiPaper-root {
+      background-color: var(--color-gray-40);
+      margin-bottom: rem(20);
+      @include border-radius(8px);
+      @media only screen and (min-width: 600px) {
+        border-radius: 0;
+        margin-bottom: 0;
+      }
+    }
+    h3 {
+      border-bottom: 1px solid rgba(#000000, 0.1);
+    }
+    h3,
+    p {
+      padding: rem(10) rem(12);
+      line-height: 1.36;
+      letter-spacing: -0.03em;
+      margin: 0;
+      @include fontSize(14);
+      @include flex(center, center);
+    }
+    h3 {
+      min-height: rem(50);
+      @media only screen and (min-width: 600px) {
+        min-height: rem(78);
+      }
+      @media only screen and (min-width: 991px) {
+        min-height: rem(58);
+      }
+    }
+    p {
+      min-height: rem(50);
+      @media only screen and (min-width: 600px) {
+        min-height: rem(99);
+      }
+    }
+  }
+}

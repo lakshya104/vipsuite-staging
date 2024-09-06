@@ -47,12 +47,9 @@
     }
   }
   h2 {
-    margin-bottom: rem(32);
-    @media only screen and (max-width: 767px) {
-      margin-bottom: rem(20);
-      line-height: 1.16;
-      letter-spacing: -0.02em;
-      @include fontSize(20);
+    margin-bottom: rem(20);
+    @media only screen and (min-width: 768px) {
+      margin-bottom: rem(32);
     }
   }
   h3 {
@@ -70,7 +67,6 @@
     line-height: 1.36;
     letter-spacing: -0.01em;
     margin-bottom: rem(16);
-    color: var(--color-textBlack-80);
     @include fontSize(11);
     @media only screen and (min-width: 768px) {
       @include fontSize(16);

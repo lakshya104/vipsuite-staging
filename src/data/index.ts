@@ -8,21 +8,21 @@ export const testimonials = [
     title: 'Managing Director, McDonalds',
     testimonial:
       'Lorem ipsum dolor sit amet, te eos albucius constituto, ex blandit probatus definiebas est. At dicam civibus nec, legere corrumpit voluptatum pri ei, est id prima habemus. Ei has wisi ignota.',
-    logo: '/path/to/mcdonalds-logo.png', // replace with actual path
+    logo: '/img/McDonalds-logo.svg', // replace with actual path,
   },
   {
     name: 'Hayley Smith',
     title: 'Head of PR, Kraft Heinz',
     testimonial:
       'Lorem ipsum dolor sit amet, te eos albucius constituto, ex blandit probatus definiebas est. At dicam civibus nec, legere corrumpit voluptatum pri ei, est id prima habemus. Ei has wisi ignota.',
-    logo: '/path/to/kraftheinz-logo.png', // replace with actual path
+    logo: '/img/McDonalds-logo.svg', // replace with actual path
   },
   {
     name: 'Abdi Teller',
     title: 'Marketing Manager, Disney UK',
     testimonial:
       'Lorem ipsum dolor sit amet, te eos albucius constituto, ex blandit probatus definiebas est. At dicam civibus nec, legere corrumpit voluptatum pri ei, est id prima habemus. Ei has wisi ignota.',
-    logo: '/path/to/disney-logo.png', // replace with actual path
+    logo: '/img/McDonalds-logo.svg', // replace with actual path
   },
 ];
 
@@ -58,27 +58,27 @@ export const heroSectionLine = 'Invite-only, private members portal for events, 
 export const partners = [
   {
     title: 'Partner 1',
-    img: '/img/dummy-partner.png',
+    img: '/img/under-armor.svg',
   },
   {
     title: 'Partner 2',
-    img: '/img/dummy-partner.png',
+    img: '/img/nike.svg',
   },
   {
     title: 'Partner 3',
-    img: '/img/dummy-partner.png',
+    img: '/img/netflix.svg',
   },
   {
     title: 'Partner 4',
-    img: '/img/dummy-partner.png',
+    img: '/img/coca-cola.svg',
   },
   {
     title: 'Partner 5',
-    img: '/img/dummy-partner.png',
+    img: '/img/mercedes.svg',
   },
   {
-    title: 'Partner 6',
-    img: '/img/dummy-partner.png',
+    title: 'Partner 5',
+    img: '/img/Guinness.svg',
   },
 ];
 
@@ -477,5 +477,83 @@ export const products: ProductDetail[] = [
     category: 'Boda Skins',
     size: '',
     quantity: 1,
+  },
+];
+
+export const featureCellsData = [
+  {
+    title: 'Gifting Products & Experiences',
+    items: [
+      'Curate your very own branded page',
+      'Only profile names that match your audience',
+      'Fulfilment from order to delivery',
+      'Convert orders to social interactions',
+      'Create, grow & maintain a VIP community',
+    ],
+  },
+  {
+    title: 'Event Guest Listing & Management',
+    items: [
+      'Profile your best guestlist',
+      'Manage RSVP process with instant responses',
+      'Cars, arrivals, photography & guest management',
+      'Sourced locations, catering, decor and more...',
+      'Reputable experts that go the extra mile',
+    ],
+  },
+  {
+    title: 'Commercial Campaigns',
+    items: [
+      'Smart Match profiling system',
+      'Experience experts in paid-for campaigns',
+      'Answers from the right contacts, fast',
+      'The best deals with our exclusive contacts',
+      'Basic packages or full 360 campaigns',
+    ],
+  },
+  {
+    title: 'Profiling Process',
+    items: [
+      'Reach, Engagement & Audience',
+      'Personal likes & dislikes',
+      'Shared fundamental values',
+      'Emotional intelligence and world view',
+      'Relationship with competitor brands',
+    ],
+  },
+  {
+    title: 'Brand Opportunities',
+    items: [
+      'Live opportunities direct from talent',
+      'Birthdays, parties, anniversaries and more...',
+      'Connect with brands for joint opps',
+      'Sponsorship opportunities',
+      'Post your own opportunities to talent direct',
+    ],
+  },
+];
+
+export const benefits = [
+  { title: 'Manage Relations', description: 'Manage every single aspect of your VIP relations in one place.' },
+  { title: 'Time Saving', description: 'Time saved sourcing authentic brand fans, both new and existing.' },
+  { title: 'Higher ROI', description: 'Lower cost per engagement, giving a higher EMV and ROI.' },
+  { title: 'Detailed Evaluations', description: 'Receive a detailed campaign overview after every activation.' },
+  {
+    title: 'Drive Engagement',
+    description: 'Create organic brand conversations and drive brand love with more content than ever before.',
+  },
+  {
+    title: 'Noticeboard',
+    description: 'Our one of a kind noticeboard will help you find opportunities easier than ever.',
+  },
+  {
+    title: 'Fulfillment Services',
+    description:
+      'Time saved fulfilling orders direct to a VIP’s address and instant answers with our RSVP guest list process.',
+  },
+  {
+    title: 'Join Webinars',
+    description:
+      'Regular webinars on industry related topics from profiling pitfalls to making your budget work for you.',
   },
 ];

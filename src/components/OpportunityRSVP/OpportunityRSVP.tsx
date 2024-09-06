@@ -42,7 +42,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       try {
         await SendRsvp(rsvp, token);
         revalidateTag('getOpportunityDetails');
-        handleToasterMessage('error');
+        handleToasterMessage('success');
       } catch (error) {
         handleToasterMessage('error');
       } finally {
@@ -61,7 +61,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       try {
         await SendRsvp(rsvp, token);
         revalidateTag('getOpportunityDetails');
-        handleToasterMessage('error');
+        handleToasterMessage('success');
       } catch (error) {
         handleToasterMessage('error');
       } finally {
@@ -86,70 +86,34 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
   };
 
   return (
-    <Box sx={{ maxWidth: { xs: '100%', sm: 600 }, margin: 'auto', px: { xs: 2, sm: 0 } }}>
-      <CardContent>
-        <Typography variant="h6" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+    <Box>
+      <CardContent className="site-dialog__content">
+        <Typography variant="h2" gutterBottom>
           {opportunity?.title?.rendered}
         </Typography>
-        <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-          <Box component="span" sx={{ fontWeight: 'bold' }}>
-            Date:
-          </Box>{' '}
-          {formatDateWithOrdinalAndTime(opportunity.acf.date)}
+        <Typography variant="body1">
+          <Box component="strong">Date:</Box> {formatDateWithOrdinalAndTime(opportunity.acf.date)}
         </Typography>
-        <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-          <Box component="span" sx={{ fontWeight: 'bold' }}>
-            Location:
-          </Box>{' '}
-          {opportunity?.acf?.location}
+        <Typography variant="body1" paragraph>
+          <Box component="strong">Location:</Box> {opportunity?.acf?.location}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, pb: 3 }}>
+          <Box mb={2.5}>
             <Button
               type="submit"
               variant="contained"
-              sx={{
-                textTransform: 'capitalize',
-                backgroundColor: 'black',
-                color: 'white',
-                borderRadius: '50px',
-                px: { xs: 5, sm: 15 },
-                py: { xs: 1, sm: 2 },
-                '&:hover': {
-                  backgroundColor: 'black',
-                },
-              }}
-              disabled={isPending || opportunity?.acf?.is_rsvp}
+              className="button button--black"
+              disabled={isPending || opportunity.acf.is_rsvp}
             >
               {opportunity?.acf?.is_rsvp ? ' Already Registered' : 'RSVP'}
             </Button>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              mt: 4,
-              pb: 3,
-              flexDirection: { xs: 'column', sm: 'row' },
-            }}
-          >
+          <Box className="site-dialog__action">
             <Button
               type="submit"
               onClick={handleNotAvailable}
               variant="contained"
-              sx={{
-                backgroundColor: 'white',
-                textTransform: 'capitalize',
-                color: 'black',
-                borderRadius: '50px',
-                px: { xs: 4, sm: 7 },
-                py: { xs: 1, sm: 2 },
-                border: '2px solid black',
-                mb: { xs: 2, sm: 0 },
-                '&:hover': {
-                  backgroundColor: 'white',
-                },
-              }}
+              className="button button--white"
               disabled={opportunity.acf.is_rsvp}
             >
               Not Available
@@ -158,19 +122,8 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
               onClick={handleNotInterested}
               type="submit"
               variant="contained"
-              sx={{
-                backgroundColor: 'white',
-                textTransform: 'capitalize',
-                color: 'black',
-                borderRadius: '50px',
-                px: { xs: 4, sm: 7 },
-                py: { xs: 1, sm: 2 },
-                border: '2px solid black',
-                '&:hover': {
-                  backgroundColor: 'white',
-                },
-              }}
-              disabled={opportunity?.acf?.is_rsvp}
+              className="button button--white"
+              disabled={opportunity.acf.is_rsvp}
             >
               Not Interested
             </Button>

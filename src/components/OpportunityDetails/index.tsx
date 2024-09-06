@@ -69,7 +69,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           {opportunity?.acf?.is_rsvp ? 'Already Responded' : ' Respond Now'}
         </Button>
       </Box>
-      <Dialog open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>
+      <Dialog className="site-dialog" open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>
         <DialogContent>
           <OppotunityRSVP
             token={token}

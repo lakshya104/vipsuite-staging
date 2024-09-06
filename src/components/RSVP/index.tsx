@@ -5,7 +5,6 @@ import SelectBox from '../SelectBox';
 import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
-import { get } from 'lodash';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
@@ -15,6 +14,8 @@ interface RSVPProps {
   onConfirmation: () => void;
   event: EventDetails;
   token: string;
+  // eslint-disable-next-line no-unused-vars
+  handleToasterMessage: (type: 'error' | 'success') => void;
 }
 
 const adultsChildrenOptions = [
@@ -30,7 +31,7 @@ const adventureGolfOptions = [
   { value: 'no', label: 'No' },
 ];
 
-const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) => {
+const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, handleToasterMessage }) => {
   const [isePending, setIsPending] = useState<boolean>(false);
   const {
     control,
@@ -45,6 +46,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
 
   const onSubmit: SubmitHandler<RsvpFormValues> = async (data) => {
     if (data.notAvailable === 'yes' || data.notInterested === 'yes') {
+      setIsPending(true);
       const rsvp = {
         post_type: 'event',
         rsvp_post: event.id,
@@ -55,11 +57,11 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
       try {
         await SendRsvp(rsvp, token);
         revalidateTag('getEventDetails');
-        onClose();
+        handleToasterMessage('success');
       } catch (error) {
-        const errorMessage = get(error, 'message', 'Error sending RSVP');
-        console.error(errorMessage);
+        handleToasterMessage('error');
       } finally {
+        onClose();
         reset();
       }
     } else {
@@ -74,14 +76,13 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
       try {
         await SendRsvp(rsvp, token);
         revalidateTag('getEventDetails');
-      } catch (error) {
-        const errorMessage = get(error, 'message', 'Error sending RSVP');
-        console.error(errorMessage);
-      } finally {
-        onClose();
-        reset();
+        handleToasterMessage('success');
         onConfirmation();
-        setIsPending(false);
+      } catch (error) {
+        handleToasterMessage('error');
+        onClose();
+      } finally {
+        reset();
       }
     }
   };
@@ -104,39 +105,32 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
     reset({ adultsChildren: '', eventTitle: '', notAvailable: 'yes', notInterested: null });
-    onClose();
   };
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
     reset({ adultsChildren: '', eventTitle: '', notAvailable: null, notInterested: 'yes' });
-    onClose();
   };
 
   return (
     <>
-      <Box sx={{ maxWidth: { xs: '100%', sm: 600 }, margin: 'auto', px: { xs: 2, sm: 0 } }}>
-        <CardContent>
-          <Typography variant="h6" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Box>
+        <CardContent className="site-dialog__content">
+          <Typography variant="h2" gutterBottom>
             {event.title.rendered}
           </Typography>
-          <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-            <Box component="span" sx={{ fontWeight: 'bold' }}>
-              Date:
-            </Box>
+          <Typography variant="body1">
+            <Box component="strong">Date:</Box>
             {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
             {formatDateWithOrdinal(event.acf.event_end_date, true)}
           </Typography>
-          <Typography variant="body1" paragraph sx={{ color: '#494947' }}>
-            <Box component="span" sx={{ fontWeight: 'bold' }}>
-              Location:
-            </Box>{' '}
-            {event.acf.event_location}
+          <Typography variant="body1" paragraph>
+            <Box component="strong">Location:</Box> {event.acf.event_location}
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             {rsvpFields.map(({ name, options, placeholder, label }) => (
-              <Box key={name} sx={{ mt: 3 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, color: '#000000' }}>
+              <Box key={name}>
+                <Typography variant="body1" className="form-label">
                   {label}
                 </Typography>
                 <SelectBox
@@ -144,56 +138,27 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                   control={control}
                   options={options}
                   label={placeholder}
+                  placeholder={placeholder}
                   errors={errors}
                 />
               </Box>
             ))}
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, pb: 3 }}>
+            <Box mb={2.5}>
               <Button
                 type="submit"
                 variant="contained"
-                sx={{
-                  backgroundColor: 'black',
-                  textTransform: 'capitalize',
-                  color: 'white',
-                  borderRadius: '50px',
-                  px: { xs: 5, sm: 15 },
-                  py: { xs: 1, sm: 2 },
-                  '&:hover': {
-                    backgroundColor: 'black',
-                  },
-                }}
+                className="button button--black"
                 disabled={isePending || event?.acf?.is_rsvp}
               >
-                {event?.acf?.is_rsvp ? 'Already Registered' : 'RSVP'}
+                {event?.acf?.is_rsvp ? 'Already Responded' : 'RSVP'}
               </Button>
             </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                mt: 4,
-                pb: 3,
-                flexDirection: { xs: 'column', sm: 'row' },
-              }}
-            >
+            <Box className="site-dialog__action">
               <Button
                 onClick={handleNotAvailable}
                 variant="contained"
                 type="submit"
-                sx={{
-                  backgroundColor: 'white',
-                  textTransform: 'capitalize',
-                  color: 'black',
-                  borderRadius: '50px',
-                  px: { xs: 4, sm: 7 },
-                  py: { xs: 1, sm: 2 },
-                  border: '2px solid black',
-                  mb: { xs: 2, sm: 0 },
-                  '&:hover': {
-                    backgroundColor: 'white',
-                  },
-                }}
+                className="button button--white"
                 disabled={isePending || event?.acf?.is_rsvp}
               >
                 Not Available
@@ -202,18 +167,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token }) =>
                 onClick={handleNotInterested}
                 variant="contained"
                 type="submit"
-                sx={{
-                  textTransform: 'capitalize',
-                  backgroundColor: 'white',
-                  color: 'black',
-                  borderRadius: '50px',
-                  px: { xs: 4, sm: 7 },
-                  py: { xs: 1, sm: 2 },
-                  border: '2px solid black',
-                  '&:hover': {
-                    backgroundColor: 'white',
-                  },
-                }}
+                className="button button--white"
                 disabled={isePending || event?.acf?.is_rsvp}
               >
                 Not Interested

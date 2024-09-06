@@ -18,7 +18,7 @@ const StyledCard: React.FC<StyledCardProps> = ({ item }) => {
   return (
     <Card className="styled-card">
       <Box className="styled-card__image">
-        <Image src="/img/McDonalds-logo.svg" alt={item.name} height={63} width={72} />
+        <Image src={item.logo} alt={item.name} height={63} width={72} />
       </Box>
       <CardContent className="styled-card__content">
         <Typography variant="h3">{item.name}</Typography>

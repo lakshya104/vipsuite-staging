@@ -66,9 +66,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   };
 
   const onSubmit = async (data: FormValues) => {
-    console.log('Submitted Data:', data);
     setIsLoading(true);
-
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
@@ -98,14 +96,10 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           gifting_contacts: updatedProfileDetail.gifting_contacts,
         },
       };
-
-      console.log('Updated Profile:', profile);
-
       await UpdateProfile(id, token, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);
-      console.error('Error:', error);
     } finally {
       setIsLoading(false);
     }
