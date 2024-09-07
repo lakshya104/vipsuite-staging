@@ -13,7 +13,7 @@ const Endpoints = {
   updateProfile: '/wp/v2/vip-profile',
   forgotPassword: '/wp/v2/password-forgot',
   resetPassword: 'wp/v2/password-reset',
-  getAllOrders: '/wc/v3/orders',
+  getAllOrders: (customerId: number) => `/wc/v3/orders?customer=${customerId}`,
   getOrderById: '/wc/v3/orders',
   getVipCart: '/wc/store/v1/cart',
   removeVipCartItem: (key: string) => `/wc/store/v1/cart/remove-item?key=${key}`,

@@ -29,9 +29,16 @@ export const GetTokenAndEmail = async () => {
 export const GetUserIdAndToken = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
-
   return {
     id: user.vip_profile_id,
+    token: user.token,
+  };
+};
+export const GetCustomerIdAndToken = async () => {
+  const session = await auth();
+  const user = session?.user as unknown as Session;
+  return {
+    id: user.id,
     token: user.token,
   };
 };
@@ -218,8 +225,8 @@ export const ResetPassword = async ({
 };
 
 export const GetAllOrders = async () => {
-  const token = await GetToken();
-  return await FetchInstance(Endpoints.getAllOrders, {
+  const { token, id } = await GetCustomerIdAndToken();
+  return await FetchInstance(Endpoints.getAllOrders(id), {
     headers: {
       Authorization: `Bearer ${token}`,
     },
