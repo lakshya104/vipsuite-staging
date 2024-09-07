@@ -5,7 +5,7 @@ import SearchBar from '@/components/SearchBar';
 const OpportunitiesPageLoading = () => {
   return (
     <>
-     <Box my={2.5}>
+      <Box my={2.5}>
         <SearchBar searchTerm={''} placeholder="Search for opportunities..." aria-label="Search opportunities" />
       </Box>
       <Box padding={2}>

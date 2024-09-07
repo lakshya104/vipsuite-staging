@@ -77,7 +77,31 @@ export const partners = [
     img: '/img/mercedes.svg',
   },
   {
-    title: 'Partner 5',
+    title: 'Partner 6',
+    img: '/img/Guinness.svg',
+  },
+  {
+    title: 'Partner 7',
+    img: '/img/under-armor.svg',
+  },
+  {
+    title: 'Partner 8',
+    img: '/img/nike.svg',
+  },
+  {
+    title: 'Partner 9',
+    img: '/img/netflix.svg',
+  },
+  {
+    title: 'Partner 10',
+    img: '/img/coca-cola.svg',
+  },
+  {
+    title: 'Partner 11',
+    img: '/img/mercedes.svg',
+  },
+  {
+    title: 'Partner 12',
     img: '/img/Guinness.svg',
   },
 ];

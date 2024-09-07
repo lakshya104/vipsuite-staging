@@ -1,0 +1,33 @@
+/*
+* Address page style.
+*/
+
+@import '../../../styles/mixins';
+
+.my-interests {
+  margin: rem(30) 0 rem(120);
+  @media only screen and (min-width: 768px) {
+    margin: rem(50) 0;
+  }
+  .page-title {
+    padding: 0 0 rem(27);
+    border-bottom: rem(1) solid var(--color-textBlack-10);
+    @include relative;
+    @media only screen and (max-width: 767px) {
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      @include fontSize(14);
+    }
+    a {
+      @include absolute(left 0);
+    }
+  }
+  .MuiTypography-body1 {
+    color: var(--color-textBlack-80);
+    @media only screen and (max-width: 767px) {
+      line-height: 1.33;
+      letter-spacing: -0.01em;
+      @include fontSize(12);
+    }
+  }
+}

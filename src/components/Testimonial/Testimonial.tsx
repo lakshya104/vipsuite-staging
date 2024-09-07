@@ -12,27 +12,25 @@ interface TestimonialCardProps {
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimonial, logo }) => {
   return (
-    <>
-      <Box className="site-testimonial">
-        <CardContent className="site-testimonial__inner">
-          <Box mb={2} className="site-testimonial__logo">
-            <Image src={logo} alt={`${name}'s Logo`} width={28} height={25} />
+    <Box className="site-testimonial">
+      <CardContent className="site-testimonial__inner">
+        <Box mb={2} className="site-testimonial__logo">
+          <Image src={logo} alt={`${name}'s Logo`} width={28} height={25} />
+        </Box>
+        <Typography variant="body1" mb={3}>
+          {testimonial}
+        </Typography>
+        <Box className="site-testimonial__user">
+          <Avatar alt={name} src={logo} />
+          <Box className="site-testimonial__user-info">
+            <Typography variant="h3" component="h3">
+              {name}
+            </Typography>
+            <Typography variant="body2">{title}</Typography>
           </Box>
-          <Typography variant="body1" mb={3}>
-            {testimonial}
-          </Typography>
-          <Box className="site-testimonial__user">
-            <Avatar alt={name} src="/profile-pic.jpg" />
-            <Box className="site-testimonial__user-info">
-              <Typography variant="h3" component="h3">
-                {name}
-              </Typography>
-              <Typography variant="body2">{title}</Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Box>
-    </>
+        </Box>
+      </CardContent>
+    </Box>
   );
 };
 

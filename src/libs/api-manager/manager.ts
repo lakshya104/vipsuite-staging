@@ -324,8 +324,7 @@ export const LogOut = async (token: string) => {
 };
 
 export const GetVipRsvpEvents = async () => {
-  const token = await GetToken();
-  const id = await GetLoginUserId();
+  const { token, id } = await GetUserIdAndToken();
   if (typeof id === 'number') {
     return await FetchInstance(Endpoints.getVipRsvpEvents(id), {
       headers: {
@@ -338,6 +337,15 @@ export const GetVipRsvpEvents = async () => {
       throw errorMessage;
     }
   }
+};
+
+export const GetVipWishlistItems = async () => {
+  const { token, id } = await GetUserIdAndToken();
+  return await FetchInstance(Endpoints.getWishlistItems(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const GetAddresses = async (id: number) => {
