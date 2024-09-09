@@ -48,7 +48,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
         <Button
           variant="contained"
           className="button button--black"
-          // disabled={event?.acf?.is_rsvp}
+          disabled={event?.acf?.is_rsvp}
           onClick={handleDialogOpen}
         >
           {event?.acf?.is_rsvp ? 'Already Responded' : ' RSVP'}

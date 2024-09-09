@@ -6,7 +6,7 @@ import JoinUs from '@/components/JoinUs';
 import '../landingPages.scss';
 import { ProgressBarLink } from '@/components/ProgressBar';
 
-const VIPLandingPage = () => {
+export default async function Page() {
   return (
     <Box component="main" className="site-main">
       <Container>
@@ -72,6 +72,4 @@ const VIPLandingPage = () => {
       <Partner />
     </Box>
   );
-};
-
-export default VIPLandingPage;
+}

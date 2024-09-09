@@ -6,8 +6,9 @@ import BrandClub from '@/components/BrandClub';
 import JoinUs from '@/components/JoinUs';
 import '../landingPages.scss';
 import TestimonialSection from '@/components/TestimonialSection';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
-const VIPLandingPage = () => {
+export default async function Page() {
   return (
     <Box component="main" className="site-main">
       <Container>
@@ -41,10 +42,11 @@ const VIPLandingPage = () => {
                 brand voice and understand your aspirations. Then, once you have connected, take them on your journey
                 with you.
               </Typography>
-
-              <Button variant="contained" type="submit" className="button button--black">
-                Join The VIP Suite
-              </Button>
+              <ProgressBarLink href={'/on-boarding'}>
+                <Button variant="contained" type="submit" className="button button--black">
+                  Join The VIP Suite
+                </Button>
+              </ProgressBarLink>
             </Grid>
           </Grid>
         </Box>
@@ -55,6 +57,4 @@ const VIPLandingPage = () => {
       <TestimonialSection />
     </Box>
   );
-};
-
-export default VIPLandingPage;
+}
