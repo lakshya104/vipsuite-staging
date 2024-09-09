@@ -13,7 +13,7 @@ const OpportunitiesPage = async () => {
     return <ErrorHandler error={error} errMessage="Not able to show opportunities currently." />;
   }
   if (!allOpportunities || allOpportunities.length === 0) {
-    return <ErrorFallback errorMessage="No opportunities found" hideSubtext={true} />;
+    return <ErrorFallback errorMessage="Currently there are no opportunities" hideSubtext={true} />;
   }
 
   return <OpportunitiesContainer opportunitiesData={allOpportunities} />;

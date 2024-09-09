@@ -57,7 +57,7 @@ const ResetPasswordForm = () => {
       setIsPending(false);
       setIsDialogOpen(true);
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster('Error during password update: ' + error);
     } finally {
       setIsPending(false);
     }
