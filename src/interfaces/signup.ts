@@ -1,4 +1,4 @@
-export type SignUpRequestBody = {
+export type VipSignUpRequestBody = {
   first_name: string;
   last_name: string;
   email: string;

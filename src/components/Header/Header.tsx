@@ -7,8 +7,10 @@ import Image from 'next/image';
 import { navLinks } from '@/data';
 import HeaderTop from '../HeaderTop/HeaderTop';
 import './Header.scss';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+  const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const handleOpenNavMenu = () => {
     setIsMobileOpen(!isMobileOpen);
@@ -43,13 +45,36 @@ const Header = () => {
           </Box>
           <Box className={isMobileOpen ? 'site-header__navbar showMenu' : 'site-header__navbar'}>
             <MenuList className="site-header__navigation">
-              {navLinks.map((link) => (
-                <MenuItem key={link.href}>
-                  <Link href={link.href} title={link.label} onClick={handleCloseNavMenu}>
-                    {link.label}
-                  </Link>
-                </MenuItem>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = link.href === pathname;
+                return (
+                  <MenuItem
+                    key={link.href}
+                    sx={{
+                      fontWeight: isActive ? 500 : 'normal',
+                      color: isActive ? 'black' : 'inherit',
+                      position: 'relative',
+                      '&::after': isActive
+                        ? {
+                            content: '""',
+                            position: 'absolute',
+                            bottom: '-2px',
+                            left: 0,
+                            width: '100%',
+                            height: '2px',
+                            backgroundColor: 'black',
+                            display: { xs: 'none', md: 'block' },
+                          }
+                        : {},
+                    }}
+                    className={isActive ? 'active' : ''}
+                  >
+                    <Link href={link.href} title={link.label} onClick={handleCloseNavMenu}>
+                      {link.label}
+                    </Link>
+                  </MenuItem>
+                );
+              })}
               <MenuItem sx={{ display: { md: 'none' } }}>
                 <Link href="/login" title={'login'} onClick={handleCloseNavMenu}>
                   Login

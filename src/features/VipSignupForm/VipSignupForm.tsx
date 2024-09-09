@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import DialogBox from '@/components/Dialog/Dialog';
 import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
-import { SignUpRequestBody } from '@/interfaces/signup';
+import { VipSignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
 import Link from 'next/link';
 import { VipSignUp } from '@/libs/api-manager/manager';
@@ -43,12 +43,12 @@ const VipSignupForm = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<SignUpRequestBody>({
+  } = useForm<VipSignUpRequestBody>({
     resolver: zodResolver(VipSignupSchema),
     defaultValues: defaultValues,
   });
 
-  const onSubmit = async (formData: SignUpRequestBody) => {
+  const onSubmit = async (formData: VipSignUpRequestBody) => {
     setIsPending(true);
     setError('');
     try {

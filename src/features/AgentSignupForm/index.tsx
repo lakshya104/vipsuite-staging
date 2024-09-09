@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useTransition } from 'react';
 import { Box, Button, InputAdornment, Typography } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import InputForm from '../../components/InputForm/InputForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -10,10 +10,10 @@ import { useRouter } from 'next/navigation';
 import DialogBox from '@/components/Dialog/Dialog';
 import { AgentSignUpFormFields } from '@/data';
 import './AgentSignupForm.scss';
-import { AgentSignupSchema, AgentSignupValues, defaultValues } from './agentSignupTypes';
+import { AgentSignupSchema, AgentSignupValues, defaultValues } from './types';
 import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
-import { VipSignUp } from '@/libs/api-manager/manager';
+import { AgentSignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -41,25 +41,49 @@ const AgentSignupForm = () => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<AgentSignupValues>({
     resolver: zodResolver(AgentSignupSchema),
-    defaultValues: defaultValues,
+    defaultValues,
   });
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: 'vip_examples',
+  });
+
+  const addAnotherVip = () => {
+    append({ value: '' });
+  };
 
   const onSubmit = async (formData: AgentSignupValues) => {
     setError('');
     try {
-      const data = {
-        ...formData,
-        user_type: 'agent',
-      };
       startTransition(async () => {
         try {
-          const response = await VipSignUp(data);
+          const allVipExamples = [
+            formData.examples_of_vip_managed,
+            ...formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== ''),
+          ]
+            .filter(Boolean)
+            .join(', ');
+
+          const data = {
+            first_name: formData?.first_name,
+            last_name: formData?.last_name,
+            email: formData?.email,
+            password: formData?.password,
+            phone: formData?.phone,
+            company_name: formData?.company_name,
+            type_of_representation: formData.type_of_representation,
+            examples_of_vip_managed: allVipExamples,
+          };
+          const response = await AgentSignUp(data);
           if (response && response.error) {
-            setError(response.error);
+            setError(`Error: ${response.error}`);
             setToasterOpen(true);
           } else {
+            reset();
             setIsDialogOpen(true);
           }
         } catch (error) {
@@ -73,11 +97,11 @@ const AgentSignupForm = () => {
 
   const handleError = (error: unknown) => {
     if (error instanceof Error) {
-      setError(error.message);
+      setError(`Error: ${error.message}`);
     } else if (typeof error === 'string') {
-      setError(error);
+      setError(`Error: ${error}`);
     } else {
-      setError('An unexpected error occurred during signup');
+      setError('Error: An unexpected error occurred during signup');
     }
     setToasterOpen(true);
   };
@@ -149,7 +173,28 @@ const AgentSignupForm = () => {
                 <Typography>Including Country Code</Typography>
               </Box>
             )}
+            {name === 'examples_of_vip_managed' && !errors[name] && (
+              <Box className="input-text" sx={{ cursor: 'pointer' }} onClick={addAnotherVip}>
+                <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
+              </Box>
+            )}
           </Box>
+        ))}
+        {fields.map((field, index) => (
+          <Controller
+            key={field.id}
+            name={`vip_examples.${index}.value`}
+            control={control}
+            render={({ field }) => (
+              <InputForm
+                type={''}
+                {...field}
+                placeholder={`Example of VIP Managed`}
+                error={!!errors.vip_examples?.[index]?.value}
+                helperText={errors.vip_examples?.[index]?.value?.message}
+              />
+            )}
+          />
         ))}
         <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}

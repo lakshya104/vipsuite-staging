@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SignUpRequestBody, UserProfile, Session, Address } from '@/interfaces';
+import { VipSignUpRequestBody, UserProfile, Session, Address } from '@/interfaces';
 import { Endpoints } from './constants';
 import { FetchInstance, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
@@ -43,9 +43,24 @@ export const GetCustomerIdAndToken = async () => {
   };
 };
 
-export const VipSignUp = async (formData: SignUpRequestBody) => {
+export const VipSignUp = async (formData: VipSignUpRequestBody) => {
   try {
     const response = await Instance.post(Endpoints.vipSignup, formData);
+    return response.data;
+  } catch (error) {
+    console.error('Error during signup:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const AgentSignUp = async (formData: any) => {
+  try {
+    const response = await Instance.post(Endpoints.agentSignup, formData);
     return response.data;
   } catch (error) {
     console.error('Error during signup:', error);

@@ -21,7 +21,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimon
           {testimonial}
         </Typography>
         <Box className="site-testimonial__user">
-          <Avatar alt={name} src={logo} />
+          <Avatar alt={name} src={'/img/aiavatar.png'} />
           <Box className="site-testimonial__user-info">
             <Typography variant="h3" component="h3">
               {name}

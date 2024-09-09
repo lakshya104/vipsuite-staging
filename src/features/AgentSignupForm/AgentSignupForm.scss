@@ -37,7 +37,9 @@
     h2,
     p {
       font-family: var(--font-family);
-      text-align: center;
+      &:not(.Mui-error) {
+        text-align: center;
+      }
     }
   }
   &-form {

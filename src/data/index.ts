@@ -1,6 +1,6 @@
-import { AgentSignupValues } from '@/features/AgentSignupForm/agentSignupTypes';
+import { AgentSignupValues } from '@/features/AgentSignupForm/types';
 import { ProductDetail } from '@/interfaces/product';
-import { SignUpRequestBody } from '@/interfaces/signup';
+import { VipSignUpRequestBody } from '@/interfaces/signup';
 
 export const testimonials = [
   {
@@ -258,7 +258,7 @@ export const vipStep3formFields = [
 ];
 
 type VipSignUpFormField = {
-  name: keyof SignUpRequestBody;
+  name: keyof VipSignUpRequestBody;
   placeholder: string;
   autocomplete: string;
   type: string;
@@ -310,7 +310,7 @@ export const AgentSignUpFormFields: AgentSignUpFormField[] = [
     options: representationTypeOptions,
     type: 'select',
   },
-  { name: 'vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
+  { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
 ];
 
 export const sportsPlayOptions = [

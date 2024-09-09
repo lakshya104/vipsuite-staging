@@ -34,14 +34,14 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
     >
       <Box mb={2}>
         <DialogTitle variant="h2" id="customized-dialog-title">
-          {content.title}
+          {content?.title}
         </DialogTitle>
         <DialogContent>
           {content.image && (
             <Box>
               <Image
                 alt="Dialog Image"
-                src={content.image}
+                src={content?.image}
                 height={199}
                 width={199}
                 sizes="(max-width: 199px) 100vw, 199px"
@@ -50,12 +50,12 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
               />
             </Box>
           )}
-          {content.subTitle && (
+          {content?.subTitle && (
             <Typography variant="h6" gutterBottom component="h3">
               {content.subTitle}
             </Typography>
           )}
-          {content.description && (
+          {content?.description && (
             <Typography variant="body1" gutterBottom>
               {content.description}
             </Typography>
@@ -63,7 +63,7 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
         </DialogContent>
         <DialogActions>
           <Btn onClick={handleClose} look="dark-filled" width="100%">
-            {content.buttonText || 'Close'}
+            {content?.buttonText || 'Close'}
           </Btn>
         </DialogActions>
       </Box>

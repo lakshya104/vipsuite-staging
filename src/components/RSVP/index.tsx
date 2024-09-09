@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, CardContent } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import SelectBox from '../SelectBox';
 import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
+import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
 
 interface RSVPProps {
   onClose: () => void;
@@ -128,17 +128,15 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
             <Box component="strong">Location:</Box> {event.acf.event_location}
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {rsvpFields.map(({ name, options, placeholder, label }) => (
+            {rsvpFields.map(({ name, options, label }) => (
               <Box key={name}>
                 <Typography variant="body1" className="form-label">
                   {label}
                 </Typography>
-                <SelectBox
+                <SelectBoxWithoutLabel
                   name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested'}
                   control={control}
                   options={options}
-                  label={placeholder}
-                  placeholder={placeholder}
                   errors={errors}
                 />
               </Box>
