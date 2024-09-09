@@ -33,11 +33,11 @@ export const navLinks = [
   },
   {
     label: 'Brands',
-    href: '/brands',
+    href: '/for-brands',
   },
   {
     label: 'VIPs',
-    href: '/vips',
+    href: '/for-vips',
   },
   {
     label: 'FAQs',

@@ -3,6 +3,7 @@ import { Box, Typography, Button, Grid, Paper, Container } from '@mui/material';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { benefits } from '@/data';
 import './JoinUs.scss';
+import { ProgressBarLink } from '../ProgressBar';
 
 const JoinUs = () => {
   return (
@@ -12,9 +13,11 @@ const JoinUs = () => {
           <Grid item xs={12} sm={4}>
             <Box className="joinus-section__head">
               <Typography variant="h2">Why Join Us?</Typography>
-              <Button variant="outlined" className="button button--white">
-                Join Today
-              </Button>
+              <ProgressBarLink href={'/on-boarding'}>
+                <Button variant="outlined" className="button button--white">
+                  Join Today
+                </Button>
+              </ProgressBarLink>
             </Box>
           </Grid>
           <Grid item xs={12} sm={8} className="joinus-section__content">

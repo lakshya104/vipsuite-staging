@@ -1,15 +1,20 @@
-import { Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import FeedLikeIcon from '../FeedLikeIcon';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatDateWithOrdinal } from '@/helpers/utils';
+import Image from 'next/image';
 
 interface EventCardProps {
   item: Event;
+  isFeatured?: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ item }) => {
+const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
+  const brandLogo = item.acf?.brand_logo?.url;
+  console.log(item.acf?.brand_logo?.url, isFeatured);
+
   return (
     <ProgressBarLink href={`/events/${item.id}`}>
       <Card
@@ -18,9 +23,35 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
           backgroundImage: `url(${item.acf.event_image.sizes.large})`,
         }}
       >
+        {brandLogo && (
+          <Box className="brand-logo">
+            <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />
+          </Box>
+        )}
         <FeedLikeIcon />
         <CardContent className="landing-product__item-content">
-          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: item?.title?.rendered }} />
+          {isFeatured && (
+            <Box
+              sx={{
+                padding: '0 10px 0 10px',
+                backgroundColor: 'white',
+                borderRadius: 2,
+                display: 'inline-block',
+                mb: 1,
+              }}
+            >
+              <Typography
+                variant="overline"
+                color="black"
+                display="block"
+                gutterBottom
+                sx={{ fontWeight: '500', fontSize: '8px' }}
+              >
+                Featured Event
+              </Typography>
+            </Box>
+          )}
+          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: item?.title?.rendered || '' }} />
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>
               Date:

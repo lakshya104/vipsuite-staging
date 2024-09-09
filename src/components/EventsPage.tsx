@@ -42,7 +42,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
         />
       </Box>
       {!searchQuery ? (
-        <EventsListing events={filteredEvents} />
+        <EventsListing events={eventsData} />
       ) : searchQuery && filteredEvents.length > 0 ? (
         <>
           <Grid container mb={2.5}>

@@ -1,22 +1,22 @@
 import { formatDateWithMonth } from '@/helpers/utils';
-import { ACF } from '@/interfaces';
+import { UserProfile } from '@/interfaces';
 import { Grid, Paper, Typography } from '@mui/material';
 import { get } from 'lodash';
 import React from 'react';
 
 interface ProfileComponentProps {
-  profileDetails: ACF;
-  email?: string;
+  profileDetails: UserProfile;
 }
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const bioData = [
-    { label: 'Date of Birth', value: formatDateWithMonth(get(profileDetails, 'date_of_birth', '')) },
-    { label: 'Born', value: get(profileDetails, 'birth_place', '') },
-    { label: 'Resides', value: get(profileDetails, 'nationality', '') },
+    { label: 'Date of Birth', value: formatDateWithMonth(get(profileDetails, 'acf.date_of_birth', '')) },
+    { label: 'Born', value: get(profileDetails, 'acf.birth_place', '') },
+    { label: 'Resides', value: get(profileDetails, 'acf.nationality', '') },
     {
       label: 'Interests',
-      value: get(profileDetails, 'interests', []).length > 0 ? get(profileDetails, 'interests', []).join(', ') : 'N/A',
+      value:
+        get(profileDetails, 'interests', []).length > 0 ? get(profileDetails, 'acf.interests', []).join(', ') : 'acf.',
     },
   ];
   const filteredBioData = bioData.filter((data) => data.value !== '');
@@ -44,8 +44,8 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
 
 export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const socialData = [
-    { platform: 'Instagram', handle: get(profileDetails, 'instagram_handle', '') },
-    { platform: 'Tik-Tok', handle: get(profileDetails, 'tiktok_handle', '') },
+    { platform: 'Instagram', handle: get(profileDetails, 'acf.instagram_handle', '') },
+    { platform: 'Tik-Tok', handle: get(profileDetails, 'acf.tiktok_handle', '') },
   ];
   const filteredSocialData = socialData.filter((data) => data.handle !== '');
   return (
@@ -70,22 +70,22 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   );
 };
 
-export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, email }) => {
+export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [
-    { type: 'Email', value: email || '' },
-    { type: 'Phone', value: get(profileDetails, 'phone', '') },
-    { type: 'Secondary Email', value: get(profileDetails, 'secondary_email', '') },
-    { type: 'Primary Event Contact', value: get(profileDetails, 'event_contacts.email', '') },
-    { type: 'Secondary Event Contact', value: get(profileDetails, 'event_contacts.secondary_email', '') },
-    { type: 'Primary Stylist Contact', value: get(profileDetails, 'stylist_contacts.email', '') },
+    { type: 'Email', value: get(profileDetails, 'email', '') },
+    { type: 'Phone', value: get(profileDetails, 'acf.phone', '') },
+    { type: 'Secondary Email', value: get(profileDetails, 'acf.secondary_email', '') },
+    { type: 'Primary Event Contact', value: get(profileDetails, 'acf.event_contacts.email', '') },
+    { type: 'Secondary Event Contact', value: get(profileDetails, 'acf.event_contacts.secondary_email', '') },
+    { type: 'Primary Stylist Contact', value: get(profileDetails, 'acf.stylist_contacts.email', '') },
     {
       type: 'Secondary Stylist Contact',
-      value: get(profileDetails, 'stylist_contacts.secondary_email', ''),
+      value: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
     },
-    { type: 'Primary Gifting Contact', value: get(profileDetails, 'stylist_contacts.email', '') },
+    { type: 'Primary Gifting Contact', value: get(profileDetails, 'acf.stylist_contacts.email', '') },
     {
       type: 'Secondary Gifting Contact',
-      value: get(profileDetails, 'stylist_contacts.secondary_email', ''),
+      value: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
     },
   ];
   const filteredContactData = contactData.filter((contact) => contact.value !== '');

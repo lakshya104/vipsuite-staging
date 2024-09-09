@@ -1,12 +1,10 @@
 import React from 'react';
 import { Box } from '@mui/material';
 // import { eventCardData } from '@/data';
-import Header from '@/components/Header/Header';
 import HeroSection from '@/components/HeroSection/HeroSection';
 // import EventCard from '@/components/EventsCards/EventsCards';
 import Partner from '@/components/Partner/Partner';
 // import Opportunity from '@/components/Opportunity/Opportunity';
-import Footer from '@/components/Footer';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
@@ -43,26 +41,22 @@ export default async function Page() {
   if (session) redirect('/home');
 
   return (
-    <>
-      <Header />
-      <Box>
-        <HeroSection />
-        <Box component="section" className="site-card">
-          {/* <Grid container spacing={2.5}>
+    <Box>
+      <HeroSection />
+      <Box component="section" className="site-card">
+        {/* <Grid container spacing={2.5}>
               {eventCardData.map((event) => (
                 <Grid key={event.id} item xs={12} md={6}>
                   <EventCard title={event.title} description={event.description} />
                 </Grid>
               ))}
             </Grid> */}
-          <SocialAccordion />
-        </Box>
-        <JoinUs />
-        <Partner />
-        <TestimonialSection />
-        {/* <Opportunity /> */}
+        <SocialAccordion />
       </Box>
-      <Footer />
-    </>
+      <JoinUs />
+      <Partner />
+      <TestimonialSection />
+      {/* <Opportunity /> */}
+    </Box>
   );
 }

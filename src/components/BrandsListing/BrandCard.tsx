@@ -13,10 +13,6 @@ interface BrandCardProps {
 const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
   const productImage = item?.acf?.brand_image?.url || '/img/placeholder-image.jpg';
   const brandLogo = item.acf?.brand_logo?.url;
-  const handleIconClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-  };
   return (
     <ProgressBarLink href={`/brands/${item.id}`}>
       <Card
@@ -25,7 +21,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
           backgroundImage: `url(${productImage})`,
         }}
       >
-        <FeedLikeIcon onClick={handleIconClick} />
+        <FeedLikeIcon />
         {brandLogo && (
           <Box className="brand-logo">
             <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />

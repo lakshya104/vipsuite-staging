@@ -43,7 +43,7 @@ const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) =>
             <ReferCard
               heading={brandDetails?.acf?.lookbook_heading}
               text={brandDetails?.acf?.lookbook_description}
-              href="https://vip.anktech.in/wordpress/wp-content/uploads/2024/08/sample.pdf"
+              href={brandDetails?.acf?.lookbook_pdf}
             />
           </Box>
           <RequestItemFormButton />

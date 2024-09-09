@@ -251,7 +251,7 @@ export interface Brand {
   'brand-category': string[];
 }
 
-interface BrandLogo {
+export interface BrandLogo {
   ID: number;
   id: number;
   title: string;

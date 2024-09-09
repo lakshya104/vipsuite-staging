@@ -47,6 +47,7 @@ export interface ACF {
 
 export interface UserProfile {
   id?: number;
+  email?: string;
   name?: string;
   acf: ACF;
   vip_profile_id?: number;

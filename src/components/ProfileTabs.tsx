@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Grid, Typography } from '@mui/material';
 import { BioComponent, ContactsComponent, SocialComponent } from './ProfileComponents';
-import { ACF } from '@/interfaces';
+import { UserProfile } from '@/interfaces';
 import { isUndefined } from 'lodash';
 
 const TABS = [
@@ -12,11 +12,10 @@ const TABS = [
 ];
 
 interface ProfileTabsProps {
-  profileData: ACF;
-  email?: string;
+  profileData: UserProfile;
 }
 
-const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData, email }) => {
+const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData }) => {
   const [section, setSection] = useState<string>('bio');
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSection(TABS[newValue]?.section);
@@ -32,7 +31,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData, email }) => {
       case 'social':
         return <SocialComponent profileDetails={profileData} />;
       case 'contacts':
-        return <ContactsComponent profileDetails={profileData} email={email} />;
+        return <ContactsComponent profileDetails={profileData} />;
       default:
         return <BioComponent profileDetails={profileData} />;
     }

@@ -1,3 +1,5 @@
+import { BrandLogo } from './brand';
+
 export interface EventImageSizes {
   thumbnail: string;
   medium: string;
@@ -16,6 +18,7 @@ interface EventACF {
   event_location: string;
   is_featured: boolean;
   event_image: EventImage;
+  brand_logo?: BrandLogo;
 }
 
 interface EventGuid {
@@ -87,6 +90,7 @@ export interface EventDetails {
     payment_status: string;
     is_rsvp?: boolean;
     is_feedback_provided: boolean;
+    brand_logo: BrandLogo;
   };
   _links: Links;
 }

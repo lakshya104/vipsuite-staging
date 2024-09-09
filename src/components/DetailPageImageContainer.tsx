@@ -17,7 +17,6 @@ const DetailPageImageContainer = ({ item }: { item: BrandDetails }) => {
       <FeedLikeIcon />
       {brandLogo && (
         <Box className="brand-logo">
-          {' '}
           <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />
         </Box>
       )}

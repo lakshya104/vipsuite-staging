@@ -21,7 +21,7 @@ const MyInterestsPage = async () => {
   return (
     <Box>
       {vipWishListItems.map((item) => {
-        const link = item.post_type === 'brand-profile' ? `/brands/${item.id}` : `/brands/${item.id}`;
+        const link = item.post_type === 'brand-profile' ? `/brands/${item.id}` : `/events/${item.id}`;
         return (
           <WishlistItemCard
             key={item.id}

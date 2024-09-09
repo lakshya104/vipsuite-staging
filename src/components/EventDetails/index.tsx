@@ -5,6 +5,7 @@ import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
+// import Image from 'next/image';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -19,7 +20,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
       <Typography className="page-title" variant="h2" component="h1" align="center">
         {event?.title?.rendered}
       </Typography>
-      <EventContainer imageUrl={eventImageUrl} />
+      <EventContainer imageUrl={eventImageUrl} brandLogo={event?.acf?.brand_logo?.url} />
       <Box className="product-detail__content">
         <Typography variant="h2" gutterBottom>
           {event?.title?.rendered}
@@ -49,9 +50,11 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
 
 interface EventContainerProps {
   imageUrl: string;
+  brandLogo: string;
 }
 
-const EventContainer = ({ imageUrl }: EventContainerProps) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+const EventContainer = ({ imageUrl, brandLogo }: EventContainerProps) => {
   return (
     <Card
       className="product-detail__item"
@@ -60,6 +63,11 @@ const EventContainer = ({ imageUrl }: EventContainerProps) => {
       }}
     >
       <FeedLikeIcon />
+      {/* {brandLogo && (
+        <Box className="brand-logo">
+          <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />
+        </Box>
+      )} */}
     </Card>
   );
 };

@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
 import { featureCellsData } from '@/data';
 import './BrandsPlace.scss';
+import { ProgressBarLink } from '../ProgressBar';
 
 interface FeatureCellProps {
   title: string;
@@ -28,7 +29,7 @@ FeatureCell.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const BrandsPlace: React.FC = () => {
+const BrandsPlace = () => {
   return (
     <Box component="section" className="brand-section">
       <Container>
@@ -41,9 +42,11 @@ const BrandsPlace: React.FC = () => {
                 allowing you to pick and choose which services work best to build your next activation whether to
                 strengthen your VIP community or grow it further.
               </Typography>
-              <Button variant="contained" className="button button--white">
-                Join The VIP Suite
-              </Button>
+              <ProgressBarLink href="/on-boarding">
+                <Button variant="contained" className="button button--white">
+                  Join The VIP Suite
+                </Button>
+              </ProgressBarLink>
             </Box>
           </Grid>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import { heroSectionLine } from '@/data';
 import './HeroSection.scss';
-import Link from 'next/link';
+import { ProgressBarLink } from '../ProgressBar';
 
 const HeroSection = () => {
   return (
@@ -12,12 +12,12 @@ const HeroSection = () => {
           <Typography component="h1" variant="h1">
             {heroSectionLine}
           </Typography>
-          <Link href={'/home-brands'} className="button button--black">
+          <ProgressBarLink href={'/for-brands'} className="button button--black">
             For Brands
-          </Link>
-          <Link href={'/vip'} className="button button--black">
+          </ProgressBarLink>
+          <ProgressBarLink href={'/for-vips'} className="button button--black">
             For VIPs
-          </Link>
+          </ProgressBarLink>
         </Container>
       </Box>
     </>
