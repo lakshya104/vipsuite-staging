@@ -1,29 +1,29 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Image from 'next/image';
 import { Box, Button, Container, Typography } from '@mui/material';
 import './SocialAccordion.scss';
 
 const socialLinks = [
   {
-    imgSrc: '/img/Events.svg',
+    imgSrc: '/img/events.svg',
     name: 'Events',
     description:
       'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
   },
   {
-    imgSrc: '/img/Gifting.svg',
+    imgSrc: '/img/gifting.svg',
     name: 'Gifting',
     description:
       'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
   },
   {
-    imgSrc: '/img/Campaigns.svg',
+    imgSrc: '/img/campaigns.svg',
     name: 'Campaigns',
     description:
       'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
   },
   {
-    imgSrc: '/img/Profiling.svg',
+    imgSrc: '/img/profiling.svg',
     name: 'Profiling',
     description:
       'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
@@ -36,8 +36,8 @@ const SocialAccordion = () => {
       <Box className="site-card__wrapper">
         <Box className="accordionItem">
           {socialLinks.map((link, index) => (
-            <>
-              <Box className="accordionItem__link" key={index}>
+            <Fragment key={index}>
+              <Box className="accordionItem__link">
                 <Box className="accordionItem__image">
                   <Image src={link.imgSrc} alt={link.name} width={1024} height={430} />
                 </Box>
@@ -49,7 +49,7 @@ const SocialAccordion = () => {
                   </Button>
                 </Box>
               </Box>
-            </>
+            </Fragment>
           ))}
         </Box>
       </Box>

@@ -29,22 +29,8 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
         <FeedLikeIcon />
         <CardContent className="landing-product__item-content">
           {isFeatured && (
-            <Box
-              sx={{
-                padding: '0 10px 0 10px',
-                backgroundColor: 'white',
-                borderRadius: 2,
-                display: 'inline-block',
-                mb: 1,
-              }}
-            >
-              <Typography
-                variant="overline"
-                color="black"
-                display="block"
-                gutterBottom
-                sx={{ fontWeight: '500', fontSize: '8px' }}
-              >
+            <Box className="category-label">
+              <Typography variant="overline" color="black" display="block">
                 Featured Event
               </Typography>
             </Box>

@@ -44,6 +44,7 @@ const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) =>
               heading={brandDetails?.acf?.lookbook_heading}
               text={brandDetails?.acf?.lookbook_description}
               href={brandDetails?.acf?.lookbook_pdf}
+              isPdf={true}
             />
           </Box>
           <RequestItemFormButton />

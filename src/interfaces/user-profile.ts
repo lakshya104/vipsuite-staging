@@ -43,6 +43,7 @@ export interface ACF {
   secondary_email?: string | null;
   phone?: string;
   profile_status?: string;
+  type_of_content_create?: string[];
 }
 
 export interface UserProfile {

@@ -15,7 +15,7 @@ export default async function Page() {
         </Typography>
         <Box className="image-module">
           <Box>
-            <Image src="/img/card.jpg" alt="Two smiling women" width={1276} height={682} />
+            <Image src="/img/public.svg" alt="Two smiling women" width={1276} height={682} />
           </Box>
         </Box>
         <Box className="content-module">

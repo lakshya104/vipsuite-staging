@@ -109,7 +109,7 @@ const LoginForm = () => {
       <Box className="forgot-password">
         <Typography className="forgot-password__text">
           <Link href="/forgot-password" className="forgot-password__link">
-          Forgotten your password?
+            Forgotten your password?
           </Link>
         </Typography>
       </Box>

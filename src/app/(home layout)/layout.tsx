@@ -1,7 +1,6 @@
 import React from 'react';
 import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter/HomeFooter';
-import { Box } from '@mui/material';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { get } from 'lodash';
@@ -19,7 +18,7 @@ export default async function HomeSectionLayout({
   return (
     <>
       <HomeHeader token={token} />
-      <Box pb={6}> {children}</Box>
+      {children}
       <HomeFooter />
     </>
   );

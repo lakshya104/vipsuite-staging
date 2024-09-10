@@ -57,6 +57,9 @@ button {
     pointer-events: none;
     background-color: var(--color-textBlack);
   }
+  &:focus {
+    outline: 0 none;
+  }
 }
 img {
   max-width: 100%;
@@ -276,8 +279,6 @@ form {
       }
     }
   }
-  &.step5-form {
-  }
   .Mui-error {
     color: var(--color-red);
     input.MuiInputBase-input,
@@ -291,7 +292,8 @@ form {
   }
   &.login-form,
   &.signup-form,
-  &.forgot-password-form {
+  &.forgot-password-form,
+  &.gray-card__form {
     .MuiOutlinedInput-root {
       &.Mui-focused,
       &:hover {
@@ -301,12 +303,14 @@ form {
       }
     }
     input.MuiInputBase-input,
+    textarea.MuiInputBase-input,
     .MuiSelect-select,
     fieldset.MuiOutlinedInput-notchedOutline {
       box-sizing: border-box;
       @include flex(auto, center);
     }
     input.MuiInputBase-input,
+    textarea.MuiInputBase-input,
     .MuiSelect-select {
       color: var(--color-white);
     }

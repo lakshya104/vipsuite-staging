@@ -159,6 +159,23 @@
           @include fontSize(12);
         }
       }
+      .category-label {
+        display: inline-block;
+        padding: rem(6) rem(10);
+        margin-bottom: rem(8);
+        background-color: var(--color-marble);
+        @include border-radius(3px);
+        span {
+          font-weight: 500;
+          line-height: 1.4;
+          letter-spacing: 0.09em;
+          text-transform: uppercase;
+          @include fontSize(10);
+          @media only screen and (max-width: 767px) {
+            @include fontSize(8);
+          }
+        }
+      }
     }
   }
 }

@@ -27,12 +27,14 @@ const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard }) 
             <ReferCard
               heading="Refer a VIP"
               text="Lorem ipsum dolor sit amet, sed in posse primis, ius te putant molestie sapientem."
-              href="/"
+              href="/refer-a-vip"
+              isPdf={false}
             />
             <ReferCard
               heading="Make a Request"
               text="Lorem ipsum dolor sit amet, sed in posse primis, ius te putant molestie sapientem."
-              href="/"
+              href="/make-request"
+              isPdf={false}
             />
           </Box>{' '}
           <Grid className="landing-product" container spacing={2.5}>

@@ -581,3 +581,27 @@ export const benefits = [
       'Regular webinars on industry related topics from profiling pitfalls to making your budget work for you.',
   },
 ];
+
+export const ReferVipFormFields = [
+  {
+    name: 'email',
+    label: 'Email',
+    placeholder: 'Email',
+    autocomplete: 'email',
+    type: 'email',
+  },
+  {
+    name: 'instagram_profile',
+    label: 'Instagram Profile',
+    placeholder: 'Instagram Profile',
+    autocomplete: 'off',
+    type: 'text',
+  },
+  {
+    name: 'tiktok_profile',
+    label: 'TikTok Profile',
+    placeholder: 'TikTok Profile',
+    autocomplete: 'off',
+    type: 'text',
+  },
+];

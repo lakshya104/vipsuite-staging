@@ -28,13 +28,13 @@ const VipProfileBuilderPage = async () => {
 
   return (
     <>
+      {profileDetails?.acf?.profile_status === 'approved' && <BackToHome />}
       <ProfileBuilder
         id={id}
         token={token}
         profileBuilderOptions={profileBuilderOptions}
         profileDetails={profileDetails?.acf}
       />
-      {profileDetails?.acf?.profile_status === 'approved' && <BackToHome />}
     </>
   );
 };

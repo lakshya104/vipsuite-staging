@@ -67,5 +67,16 @@ div.product-detail {
       background: var(--color-white);
       @include absolute(left 12px top 12px);
     }
+    .brand-logo {
+      width: rem(64);
+      height: rem(64);
+      margin: rem(12);
+      @include flex(center, center);
+      img {
+        height: auto !important;
+        max-width: 100%;
+        position: static !important;
+      }
+    }
   }
 }
