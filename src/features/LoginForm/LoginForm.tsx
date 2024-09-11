@@ -103,9 +103,6 @@ const LoginForm = () => {
         helperText={errors.password?.message}
         autoComplete="current-password"
       />
-      <Button type="submit" disabled={isPending} fullWidth className="button button--white">
-        {isPending ? 'Loading...' : 'Continue'}
-      </Button>
       <Box className="forgot-password">
         <Typography className="forgot-password__text">
           <Link href="/forgot-password" className="forgot-password__link">
@@ -113,6 +110,9 @@ const LoginForm = () => {
           </Link>
         </Typography>
       </Box>
+      <Button type="submit" disabled={isPending} fullWidth className="button button--white">
+        {isPending ? 'Loading...' : 'Continue'}
+      </Button>
       <Typography className="signup-text">
         Don&apos;t have an account?{' '}
         <Link

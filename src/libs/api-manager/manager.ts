@@ -42,6 +42,15 @@ export const GetCustomerIdAndToken = async () => {
     token: user.token,
   };
 };
+export const GetCustomerIdTokenAndUserId = async () => {
+  const session = await auth();
+  const user = session?.user as unknown as Session;
+  return {
+    id: user.id,
+    token: user.token,
+    userId: user.vip_profile_id,
+  };
+};
 
 export const VipSignUp = async (formData: VipSignUpRequestBody) => {
   try {
@@ -265,16 +274,16 @@ export const GetVipEventDetails = async (id: number, token: string) => {
   });
 };
 
-export const GetVipCart = async () => {
-  const token = await GetToken();
+export const GetVipCart = async (token: string) => {
   return await FetchInstance(Endpoints.getVipCart, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    next: { tags: ['getVipCart'] },
   });
 };
 
-export const RemoveVipCartItem = async (key: string, token: string) => {
+export const RemoveVipCartItem = async (key: string, token: string, nonce: string) => {
   try {
     const response = await Instance.post(
       Endpoints.removeVipCartItem(key),
@@ -282,7 +291,7 @@ export const RemoveVipCartItem = async (key: string, token: string) => {
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'X-WC-Store-API-Nonce': '1e6447610f',
+          'X-WC-Store-API-Nonce': nonce,
         },
       },
     );
@@ -291,6 +300,42 @@ export const RemoveVipCartItem = async (key: string, token: string) => {
     console.error('Error during removing cart item:', error);
     if (axios.isAxiosError(error)) {
       const errorMessage = error?.message || 'An error occurred during removing item';
+      throw errorMessage;
+    }
+  }
+};
+
+export const RemoveAllVipCartItems = async (token: string, nonce: string) => {
+  try {
+    const response = await Instance.delete(Endpoints.removeAllCartItems, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'X-WC-Store-API-Nonce': nonce,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error during removing cart item:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error?.message || 'An error occurred during removing item';
+      throw errorMessage;
+    }
+  }
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const CreateOrder = async (data: any, token: string, nonce: string) => {
+  try {
+    const response = await Instance.post(Endpoints.createOrder, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'X-WC-Store-API-Nonce': nonce,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error during creating order:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error?.message || 'An error occurred during creating order';
       throw errorMessage;
     }
   }
@@ -471,6 +516,24 @@ export const GetNonce = async (token: string) => {
   });
   const nonce = response.headers['nonce'];
   return nonce;
+};
+
+export const FetchCartItemsAndNonce = async (token: string) => {
+  try {
+    const response = await Instance.get(Endpoints.getVipCart, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const nonce = response.headers['nonce'];
+    const items = response.data;
+    return { items, nonce };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during fetching cart items';
+      throw errorMessage;
+    }
+  }
 };
 
 export const EventFeedback = async (

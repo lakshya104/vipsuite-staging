@@ -36,7 +36,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       setIsPending(true);
       const rsvp = {
         post_type: 'opportunity',
-        rsvp_post: 605,
+        rsvp_post: opportunity.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
       };
       try {

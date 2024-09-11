@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop, Box, CircularProgress, Container, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema, AddAddressFormValue } from './schema';
@@ -35,7 +35,8 @@ interface AddressFormProps {
 const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues, addressId }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const searchParams = useSearchParams();
+  const search = searchParams.get('route');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const addNewAddressField = [
@@ -99,7 +100,11 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
     } finally {
       setIsLoading(false);
       revalidateTag('getAddress');
-      router.push('/my-addresses');
+      if (search === 'order-journey') {
+        router.push('/basket?step=1');
+      } else {
+        router.push('/my-addresses');
+      }
     }
   };
   return (

@@ -1,15 +1,13 @@
 import React, { Suspense } from 'react';
-import { Box, Container, Typography } from '@mui/material';
-import BasketPage from '@/site-pages/BasketPage';
+import { Box, Container } from '@mui/material';
+import './basket.scss';
 import BasketPageLoading from '@/site-pages/BasketPage/loading';
+import BasketPage from '@/site-pages/BasketPage';
 
 export default async function Page() {
   return (
     <Box className="basket-page">
       <Container>
-        <Typography className="page-title" variant="h2" align="center" component="h1" gutterBottom>
-          Basket
-        </Typography>
         <Suspense fallback={<BasketPageLoading />}>
           <BasketPage />
         </Suspense>

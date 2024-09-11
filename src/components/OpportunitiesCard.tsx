@@ -1,18 +1,17 @@
 import React from 'react';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import FeedLikeIcon from './FeedLikeIcon';
 import { ProgressBarLink } from './ProgressBar';
 import { Opportunity } from '@/interfaces/opportunities';
 import { map } from 'lodash';
 
 interface OpportunitiesCardProps {
-  opportunity: Opportunity[];
+  opportunities: Opportunity[];
 }
 
-const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunity }) => {
+const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) => {
   return (
     <Grid container spacing={2}>
-      {map(opportunity, (opportunity) => (
+      {map(opportunities, (opportunity) => (
         <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
           <ProgressBarLink href={`/opportunities/${opportunity.id}`}>
             <Card
@@ -24,7 +23,6 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunity }) =>
               <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
                 VIP Club
               </Typography>
-              <FeedLikeIcon />
               <CardContent className="opportunities-card__item-content">
                 <Typography variant="h2">{opportunity?.title?.rendered}</Typography>
                 <Typography

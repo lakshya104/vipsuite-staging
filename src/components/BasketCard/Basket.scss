@@ -33,9 +33,14 @@
   &__items {
     margin-bottom: rem(50);
     button {
+      width: 100%;
       @media only screen and (min-width: 768px) {
+        width: auto;
         max-width: rem(200);
         float: right;
+      }
+      + .button {
+        margin: 0;
       }
     }
   }

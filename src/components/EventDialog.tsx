@@ -16,8 +16,8 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const router = useRouter();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [toasterMessage, setToasterMessage] = useState('');
-  const [toasterType, setToasterType] = useState('');
+  const [toasterMessage, setToasterMessage] = useState<string>('');
+  const [toasterType, setToasterType] = useState<string>('');
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => setDialogOpen(false);

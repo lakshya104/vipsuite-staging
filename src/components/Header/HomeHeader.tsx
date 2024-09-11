@@ -73,6 +73,11 @@ const menuItems = [
     href: '/my-interests',
   },
   {
+    label: 'Basket',
+    icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
+    href: '/basket',
+  },
+  {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
     href: '/login-security',

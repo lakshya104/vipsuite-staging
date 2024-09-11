@@ -1,30 +1,28 @@
-'use client';
 import React, { useState } from 'react';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import { RemoveVipCartItem } from '@/libs/api-manager/manager';
-import Toaster from './Toaster';
+import { Button } from '@mui/material';
 import UseToaster from '@/hooks/useToaster';
-import { revalidateTag } from '@/libs/actions';
 import DialogConfirmBox from './Dialog/DialogConfirm';
+import Toaster from './Toaster';
+import { revalidateTag } from '@/libs/actions';
+import { RemoveAllVipCartItems } from '@/libs/api-manager/manager';
 
-interface DeleteItemFromCartBtnProps {
-  itemKey: string;
+interface RemoveAllItemsBtnProps {
   token: string;
   nonce: string;
   startTransition: typeof import('react').startTransition;
 }
 
-const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, token, nonce, startTransition }) => {
+const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ token, nonce, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const removeProduct = async (itemKey: string, token: string, nonce: string) => {
+  const removeProduct = async (token: string, nonce: string) => {
     startTransition(async () => {
       try {
-        await RemoveVipCartItem(itemKey, token, nonce);
+        await RemoveAllVipCartItems(token, nonce);
         await revalidateTag('getVipCart');
       } catch (error) {
         openToaster('Error : ' + String(error));
@@ -33,14 +31,19 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, 
       }
     });
   };
-
   return (
     <>
-      <DeleteOutlinedIcon sx={{ cursor: 'pointer' }} onClick={toggleDialog} />
+      <Button
+        color="error"
+        className='button button--red'
+        onClick={toggleDialog}
+      >
+        Remove all items
+      </Button>
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
-        onConfirm={() => removeProduct(itemKey, token, nonce)}
+        onConfirm={() => removeProduct(token, nonce)}
         title="Delete Product From Cart"
         description="Are you sure you want to delete this product from the cart?"
       />
@@ -49,4 +52,4 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, 
   );
 };
 
-export default DeleteItemFromCartBtn;
+export default RemoveAllItemsBtn;

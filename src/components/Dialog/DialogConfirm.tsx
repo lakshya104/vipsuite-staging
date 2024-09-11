@@ -5,22 +5,19 @@ import Btn from '../Button/CommonBtn';
 
 interface DialogBoxProps {
   open: boolean;
-  onClose: () => void; // Simplified type to match typical callback structure
-  onConfirm: () => void; // Action to perform when user confirms (e.g., delete)
+  onClose: () => void;
+  onConfirm: () => void;
   title: string;
   description?: string;
 }
 
 const DialogConfirmBox: React.FC<DialogBoxProps> = ({ open, onClose, onConfirm, title, description }) => {
-  // Close handler for the dialog
   const handleClose = () => {
-    onClose(); // Just triggers the onClose callback without any parameters
+    onClose();
   };
-
-  // Confirmation handler when user clicks "Yes"
   const handleConfirm = () => {
-    onConfirm(); // Triggers the onConfirm action, typically used for the deletion or main action
-    onClose(); // Optionally close the dialog after the confirmation action
+    onConfirm();
+    onClose();
   };
 
   return (

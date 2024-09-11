@@ -2,7 +2,7 @@
 * Address page style.
 */
 
-@import '../../../../styles/mixins';
+@import '../../../styles/mixins';
 
 .address {
   &-page {
@@ -49,6 +49,17 @@
           svg {
             width: rem(16);
             height: rem(16);
+          }
+        }
+        &.button-arrow {
+          padding: 0;
+          margin: 0;
+          width: auto;
+          min-width: auto;
+          right: auto;
+          @include absolute(left 0 top 11px);
+          button {
+            position: static;
           }
         }
       }
@@ -99,6 +110,16 @@
       &.Mui-checked {
         svg {
           fill: var(--color-textBlack);
+        }
+      }
+    }
+    &-action {
+      button {
+        width: 100%;
+        @media only screen and (min-width: 768px) {
+          width: auto;
+          max-width: rem(200);
+          float: right;
         }
       }
     }

@@ -123,6 +123,13 @@ button.button {
       color: var(--color-textBlack);
     }
   }
+  &--red {
+    border-color: var(--color-red);
+    &:hover {
+      background-color: var(--color-red);
+      color: var(--color-marble);
+    }
+  }
 }
 
 .page-title {

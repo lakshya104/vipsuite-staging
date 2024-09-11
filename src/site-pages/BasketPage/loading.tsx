@@ -23,11 +23,16 @@ const ProductSkeletonItem = () => {
 
 const BasketPageLoading = () => {
   return (
-    <Box>
-      {[...Array(6)].map((_, index) => (
-        <ProductSkeletonItem key={index} />
-      ))}
-    </Box>
+    <>
+      <Box className="address-page__head" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Skeleton variant="rectangular" width={150} height={50} />
+      </Box>
+      <Box>
+        {[...Array(6)].map((_, index) => (
+          <ProductSkeletonItem key={index} />
+        ))}
+      </Box>
+    </>
   );
 };
 

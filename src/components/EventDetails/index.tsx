@@ -5,7 +5,7 @@ import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
-// import Image from 'next/image';
+import Image from 'next/image';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -63,11 +63,11 @@ const EventContainer = ({ imageUrl, brandLogo }: EventContainerProps) => {
       }}
     >
       <FeedLikeIcon />
-      {/* {brandLogo && (
+      {brandLogo && (
         <Box className="brand-logo">
           <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />
         </Box>
-      )} */}
+      )}
     </Card>
   );
 };

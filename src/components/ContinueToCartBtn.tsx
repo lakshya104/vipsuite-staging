@@ -1,18 +1,11 @@
-'use client';
 import React from 'react';
-import Btn from './Button/CommonBtn';
-import { useRouter } from 'next/navigation';
+import { Button } from '@mui/material';
 
-const ContinueToCartBtn = () => {
-  const router = useRouter();
-  const goToAddress = () => {
-    router.push('/basket/address');
-  };
-
+const ContinueToCartBtn = ({ onNext }: { onNext: () => void }) => {
   return (
-    <Btn look="dark-filled" width="100%" fullWidth onClick={goToAddress}>
+    <Button className="button button--black" sx={{ width: 'full' }} onClick={onNext} fullWidth>
       Continue Order
-    </Btn>
+    </Button>
   );
 };
 

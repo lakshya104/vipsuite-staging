@@ -42,7 +42,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
         />
       </Box>
       {!searchQuery ? (
-        <OpportunitiesCard opportunity={opportunitiesData} />
+        <OpportunitiesCard opportunities={opportunitiesData} />
       ) : searchQuery && filteredOpportunities.length > 0 ? (
         <>
           <Grid container mb={2.5}>
@@ -54,7 +54,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
               </Box>
             </Grid>
           </Grid>
-          <OpportunitiesCard opportunity={filteredOpportunities} />
+          <OpportunitiesCard opportunities={filteredOpportunities} />
         </>
       ) : (
         <Container>

@@ -60,6 +60,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
   const defaultValues = type === 'order' ? defaultOrderValues : defaultEventValues;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [toasterType, setToasterType] = useState<string>('');
   const [fileName, setFileName] = useState<string | null>(null);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
 
@@ -86,8 +87,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data: any) => {
+  type FormData = {
+    socialPostUrl: string;
+    screenshot: File | null;
+    rating?: number;
+  };
+
+  const onSubmit = async (data: FormData) => {
     setBtnDisable(true);
     if (type === 'order') {
       try {
@@ -101,11 +107,14 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
         };
         await OrderFeedback(token, vipId, orderId, feedback);
         setIsSubmitted(true);
-      } catch (error) {
-        openToaster('Error submitting feedback:' + error);
-      } finally {
+        setToasterType('success');
+        openToaster('Your feedback has been successfully submitted!');
         setFileName(null);
         reset();
+      } catch (error) {
+        setToasterType('error');
+        openToaster('Error submitting feedback:' + error);
+      } finally {
         setBtnDisable(false);
       }
     } else {
@@ -121,11 +130,14 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
         };
         await EventFeedback(token, vipId, orderId, feedback);
         setIsSubmitted(true);
-      } catch (error) {
-        openToaster('Error submitting feedback:' + error);
-      } finally {
+        setToasterType('success');
+        openToaster('Your feedback has been successfully submitted!');
         setFileName(null);
         reset();
+      } catch (error) {
+        setToasterType('error');
+        openToaster('Error submitting feedback:' + error);
+      } finally {
         setBtnDisable(false);
       }
     }
@@ -133,9 +145,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
 
   return (
     <>
-      {isSubmitted ? (
-        <FeedbackSuccess />
-      ) : (
+      {isSubmitted ? null : (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className="feedback-form">
           <Typography variant="h2" mb={2}>
             Feedback
@@ -162,6 +172,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
             control={control}
             placeholder="https://instagram.com/postID"
             errors={errors}
+            noLabel={true}
           />
 
           <Typography mb={1} variant="body1">
@@ -182,7 +193,15 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
                   startIcon={!fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />}
                 >
                   {fileName ? (
-                    <Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        gap: 1,
+                        flexDirection: { xs: 'column', md: 'row' },
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
                       <CheckCircleOutlineIcon color="success" />
                       <Typography textAlign="center">{fileName}</Typography>
                     </Box>
@@ -223,15 +242,20 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
             look="light"
             width="100%"
             type="submit"
-            style={{ marginTop: '20px' }}
+            style={{ marginTop: '20px', marginBottom: '20px' }}
             className="button button--white"
             disabled={btnDisable}
           >
-            Submit
+            {btnDisable ? 'Submitting' : 'Submit'}
           </Btn>
         </Box>
       )}
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster
+        open={toasterOpen}
+        setOpen={closeToaster}
+        message={error}
+        severity={toasterType as 'error' | 'success' | 'warning' | 'info'}
+      />
     </>
   );
 };
@@ -261,43 +285,6 @@ const StarRating: React.FC<StarRatingProps> = ({ value, onChange }) => {
           {index < value ? <StarIcon /> : <StarBorderIcon />}
         </IconButton>
       ))}
-    </Box>
-  );
-};
-
-const FeedbackSuccess = () => {
-  return (
-    <Box
-      className="feedback-form"
-      sx={{
-        minHeight: '50vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Box
-        component="form"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 3,
-          // border: '1px solid black',
-          borderRadius: '8px',
-          backgroundColor: '#FFFFF7',
-          textAlign: 'center',
-          maxWidth: '400px',
-          margin: '0 auto',
-        }}
-      >
-        <CheckCircleOutlineIcon sx={{ fontSize: '30px', color: 'black', mb: 2 }} />
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 400 }}>
-          Your feedback has been successfully submitted!
-        </Typography>
-      </Box>
     </Box>
   );
 };
