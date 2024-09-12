@@ -12,6 +12,7 @@ import UseToaster from '@/hooks/useToaster';
 import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
 import revalidateTag from '@/libs/actions';
+import TAGS from '@/libs/apiTags';
 
 type FormFieldNames =
   | 'first_name'
@@ -95,16 +96,16 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
     setIsLoading(true);
     try {
       await addUpdateAddress(userId, token, data, addressId);
-    } catch (error) {
-      openToaster('Error during adding address: ' + error);
-      setIsLoading(false);
-    } finally {
-      revalidateTag('getAddress');
       if (search === 'order-journey') {
         router.push('/basket?step=1');
       } else {
         router.push('/my-addresses');
       }
+    } catch (error) {
+      openToaster('Error during adding address: ' + error);
+      setIsLoading(false);
+    } finally {
+      revalidateTag(TAGS.GET_ADDRESSES);
     }
   };
   return (

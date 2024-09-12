@@ -319,17 +319,18 @@ export const GetAddresses = async () => {
 
 export const addUpdateAddress = async (id: number, token: string, address: Address, addressId: number | undefined) => {
   try {
-    let url = `${Endpoints.getAddresses}/${id}/addresses`;
-    if (addressId) url = `${Endpoints.getAddresses}/${id}/addresses/${addressId}`;
+    let url = `${Endpoints.getAddresses}/addresses`;
+    if (addressId) url = `${Endpoints.getAddresses}/${addressId}`;
     const response = await Instance.post(url, address, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'vip-profile-id': id?.toString(),
       },
     });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during add address';
+      const errorMessage = error?.message || 'An error occurred during add address';
       throw errorMessage;
     }
   }
@@ -388,7 +389,7 @@ export const AddItemToCart = async (token: string | null, data: any, nonce: stri
       headers: {
         Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
-        'vip-profile-id': vipId?.toString(),
+        'vip-profile-id': vipId,
       },
     });
     return addItemResponse.data;
