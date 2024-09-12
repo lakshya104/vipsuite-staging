@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent, Button, Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
+import { ProgressBarLink } from './ProgressBar';
 
 interface VIPSuiteDialogProps {
   isOpen: boolean;
@@ -40,7 +40,7 @@ const VIPSuiteDialog: React.FC<VIPSuiteDialogProps> = ({ isOpen, onClose, withLo
                 key={index}
                 variant="contained"
                 className="button  button--black"
-                LinkComponent={Link}
+                LinkComponent={ProgressBarLink}
                 href={button.href}
                 onClick={button.onClick}
               >

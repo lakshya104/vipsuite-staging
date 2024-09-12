@@ -17,7 +17,7 @@ const VipProfileBuilderPage = async () => {
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
-    profileDetails = await GetProfile(token);
+    profileDetails = await GetProfile();
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
   }

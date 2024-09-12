@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { VipSignUpRequestBody, UserProfile, Session, Address } from '@/interfaces';
 import { Endpoints } from './constants';
-import { FetchInstance, Instance } from './instance';
+import { FetchInstance, FetchInstanceWithHeaders, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
+import TAGS from '../apiTags';
 
 export const GetToken = async () => {
   const session = await auth();
@@ -34,14 +35,13 @@ export const GetUserIdAndToken = async () => {
     token: user.token,
   };
 };
-export const GetCustomerIdAndToken = async () => {
+
+export const GetCustomerId = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
-  return {
-    id: user.id,
-    token: user.token,
-  };
+  return user.id;
 };
+
 export const GetCustomerIdTokenAndUserId = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
@@ -87,7 +87,6 @@ export const Login = async (data: LoginFormValues) => {
     return response.data;
   } catch (error) {
     console.error('Error during authentication:', error);
-
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || 'An error occurred during login';
       throw errorMessage;
@@ -95,90 +94,24 @@ export const Login = async (data: LoginFormValues) => {
   }
 };
 
-export const GetProfile = async (token: string) => {
-  try {
-    const response = await Instance.get(Endpoints.getProfile, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error during fetching profile details:', error);
-
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during fetching profile details';
-      throw new Error(errorMessage);
-    }
-
-    throw new Error('An unexpected error occurred');
-  }
+export const GetProfile = async () => {
+  return await FetchInstanceWithHeaders(Endpoints.getProfile);
 };
 
-export const GetBrands = async (token: string) => {
-  try {
-    const response = await Instance.get(Endpoints.getBrands, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error during fetching brands:', error);
-    if (axios.isAxiosError(error)) {
-      console.error(error);
-      const errorMessage = error.response?.data?.message || 'An error occurred during fetching brands';
-      throw new Error(errorMessage);
-    }
-    throw new Error('An unexpected error occurred');
-  }
+export const GetBrands = async () => {
+  return await FetchInstanceWithHeaders(Endpoints.getBrands);
 };
 
-export const GetBrandDetails = async (id: number, token: string) => {
-  try {
-    const response = await Instance.get(`${Endpoints.getBrandDetails}/${id}?_fields=id,title,acf&_embed=acf:user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error during fetching brand details:', error);
-    if (axios.isAxiosError(error)) {
-      console.error(error);
-      const errorMessage = error.response?.data?.message || 'An error occurred during fetching brand details';
-      throw new Error(errorMessage);
-    }
-    throw new Error('An unexpected error occurred');
-  }
+export const GetBrandDetails = async (id: number) => {
+  return await FetchInstanceWithHeaders(Endpoints.getBrandDetails(id));
 };
 
 export const GetBrandProducts = async (id: number) => {
-  try {
-    const token = await GetToken();
-    const response = await Instance.get(Endpoints.getBrandProducts(id), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error during fetching brand products:', error);
-    if (axios.isAxiosError(error)) {
-      console.error(error);
-      const errorMessage = error.response?.data?.message || 'An error occurred during fetching brand products';
-      throw new Error(errorMessage);
-    }
-    throw new Error('An unexpected error occurred');
-  }
+  return await FetchInstanceWithHeaders(Endpoints.getBrandProducts(id));
 };
 
-export const GetBrandProductDetail = async (id: number, token: string) => {
-  return await FetchInstance(`${Endpoints.getBrandProductDetails}/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const GetBrandProductDetail = async (id: number) => {
+  return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id));
 };
 
 export const GetSignupContent = async () => {
@@ -186,12 +119,7 @@ export const GetSignupContent = async () => {
 };
 
 export const GetVipEvents = async () => {
-  const token = await GetToken();
-  return await FetchInstance(Endpoints.getVipEvents, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return await FetchInstanceWithHeaders(Endpoints.getVipEvents);
 };
 
 export const GetProfileBuilderContent = async () => {
@@ -249,28 +177,17 @@ export const ResetPassword = async ({
 };
 
 export const GetAllOrders = async () => {
-  const { token, id } = await GetCustomerIdAndToken();
-  return await FetchInstance(Endpoints.getAllOrders(id), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const id = await GetCustomerId();
+  return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id));
 };
 
-export const GetOrderById = async (id: number, token: string) => {
-  return await FetchInstance(`${Endpoints.getOrderById}/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const GetOrderById = async (id: number) => {
+  return await FetchInstanceWithHeaders(Endpoints.getOrderById(id));
 };
 
-export const GetVipEventDetails = async (id: number, token: string) => {
-  return await FetchInstance(`${Endpoints.getVipEventDetails}/${id}?_fields=id,title,acf`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    next: { tags: ['getEventDetails'] },
+export const GetVipEventDetails = async (id: number) => {
+  return await FetchInstanceWithHeaders(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf`, {
+    next: { tags: [TAGS.GET_EVENT_DETAILS] },
   });
 };
 
@@ -279,7 +196,7 @@ export const GetVipCart = async (token: string) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    next: { tags: ['getVipCart'] },
+    next: { tags: [TAGS.GET_VIP_CART] },
   });
 };
 
@@ -342,28 +259,24 @@ export const CreateOrder = async (data: any, token: string, nonce: string) => {
 };
 
 export const GetVipOpportunities = async () => {
-  const token = await GetToken();
-  return await FetchInstance(Endpoints.getVipOpportunities, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return await FetchInstanceWithHeaders(Endpoints.getVipOpportunities);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const SendRsvp = async (data: any, token: string) => {
+export const SendRsvp = async (data: any, token: string, vipId: number) => {
   try {
     const response = await Instance.post(Endpoints.sendRsvp, data, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
       },
     });
     return response.data;
   } catch (error) {
     console.error('Error during sending Rsvp:', error);
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
-      throw new Error(errorMessage);
+      const errorMessage = error?.message || 'An error occurred during submitting response';
+      throw new Error(`Not able to submit response ${errorMessage}`);
     }
     throw new Error('An unexpected error occurred');
   }
@@ -391,36 +304,15 @@ export const LogOut = async (token: string) => {
 };
 
 export const GetVipRsvpEvents = async () => {
-  const { token, id } = await GetUserIdAndToken();
-  if (typeof id === 'number') {
-    return await FetchInstance(Endpoints.getVipRsvpEvents(id), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  } else {
-    {
-      const errorMessage = 'An error occurred during fetching RSVP Events';
-      throw errorMessage;
-    }
-  }
+  return await FetchInstanceWithHeaders(Endpoints.getVipRsvpEvents);
 };
 
 export const GetVipWishlistItems = async () => {
-  const { token, id } = await GetUserIdAndToken();
-  return await FetchInstance(Endpoints.getWishlistItems(id), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return await FetchInstanceWithHeaders(Endpoints.getWishlistItems);
 };
 
-export const GetAddresses = async (id: number) => {
-  const token = await GetToken();
-  return await FetchInstance(`${Endpoints.getAddresses}/${id}/addresses`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+export const GetAddresses = async () => {
+  return await FetchInstanceWithHeaders(Endpoints.getAddresses, {
     next: { tags: ['getAddress'] },
   });
 };
@@ -445,9 +337,10 @@ export const addUpdateAddress = async (id: number, token: string, address: Addre
 
 export const DeleteAddress = async (vipId: number, addressId: number, token: string) => {
   try {
-    const response = await Instance.delete(Endpoints.deleteAddress(vipId, addressId), {
+    const response = await Instance.delete(Endpoints.deleteAddress(addressId), {
       headers: {
         Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
       },
     });
     return response.data;
@@ -459,12 +352,9 @@ export const DeleteAddress = async (vipId: number, addressId: number, token: str
   }
 };
 
-export const GetVipOpportunityDetails = async (id: number, token: string) => {
-  return await FetchInstance(`${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    next: { tags: ['getOpportunityDetails'] },
+export const GetVipOpportunityDetails = async (id: number) => {
+  return await FetchInstanceWithHeaders(`${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf`, {
+    next: { tags: [TAGS.GET_OPPORTUNITY_DETAILS] },
   });
 };
 
@@ -476,9 +366,10 @@ export const OrderFeedback = async (
   data: any,
 ) => {
   try {
-    const response = await Instance.post(Endpoints.orderFeedback(vipId, orderNumber), data, {
+    const response = await Instance.post(Endpoints.orderFeedback(orderNumber), data, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
       },
     });
     return response.data;
@@ -491,9 +382,9 @@ export const OrderFeedback = async (
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AddItemToCart = async (token: string, data: any, nonce: string) => {
+export const AddItemToCart = async (token: string | null, data: any, nonce: string | null) => {
   try {
-    const addItemResponse = await Instance.post(Endpoints.addItemToCart(nonce), data, {
+    const addItemResponse = await Instance.post(Endpoints.addItemToCart, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
@@ -544,15 +435,54 @@ export const EventFeedback = async (
   data: any,
 ) => {
   try {
-    const response = await Instance.post(Endpoints.eventFeedback(vipId, eventId), data, {
+    const response = await Instance.post(Endpoints.eventFeedback(eventId), data, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
       },
     });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || 'An error occurred during submitting feedback';
+      throw errorMessage;
+    }
+  }
+};
+
+export const AddToWishlist = async (token: string, vipId: number, postId: number) => {
+  try {
+    const response = await Instance.post(
+      Endpoints.addToWishlist(postId),
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'vip-profile-id': vipId?.toString(),
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred while adding item to wishlist';
+      throw errorMessage;
+    }
+  }
+};
+
+export const DeleteFromWishlist = async (token: string, vipId: number, postId: number) => {
+  try {
+    const response = await Instance.delete(Endpoints.addToWishlist(postId), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred while removing item from wishlist';
       throw errorMessage;
     }
   }

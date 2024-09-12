@@ -97,8 +97,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
       await addUpdateAddress(userId, token, data, addressId);
     } catch (error) {
       openToaster('Error during adding address: ' + error);
-    } finally {
       setIsLoading(false);
+    } finally {
       revalidateTag('getAddress');
       if (search === 'order-journey') {
         router.push('/basket?step=1');
@@ -126,8 +126,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
               />
             </Box>
           ))}
-          <Btn look="dark-filled" width="100%" fullWidth type="submit">
-            Continue
+          <Btn look="dark-filled" width="100%" fullWidth disabled={isLoading} type="submit">
+            {isLoading ? 'Saving...' : 'Continue'}
           </Btn>
           <Backdrop sx={{ zIndex: 10000 }} open={isLoading}>
             <CircularProgress color="inherit" />

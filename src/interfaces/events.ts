@@ -55,6 +55,7 @@ export interface Event {
   class_list: string[];
   acf: EventACF;
   _links: EventLinks;
+  is_wishlisted?: boolean;
 }
 
 export interface EventDetails {

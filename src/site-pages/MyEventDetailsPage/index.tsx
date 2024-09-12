@@ -23,7 +23,7 @@ const MyEventDetailsPage: React.FC<MyEventDetailsPageProps> = async ({ eventId }
     if (!token || !id) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
-    eventDetails = await GetVipEventDetails(Number(eventId), token);
+    eventDetails = await GetVipEventDetails(Number(eventId));
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Event Details not available at the moment." />;
   }

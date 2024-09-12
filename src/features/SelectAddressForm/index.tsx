@@ -15,6 +15,7 @@ interface SelectAddressFormProps {
   cartData: Cart;
   nonce: string;
   onPrevious?: () => void;
+  startTransition: typeof import('react').startTransition;
 }
 const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   addresses,
@@ -23,6 +24,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   cartData,
   nonce,
   onPrevious,
+  startTransition,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const handleAddressChange = (address: Address) => {
@@ -32,7 +34,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   return (
     <Fragment>
       <Box className="address-page__head">
-        <Button onClick={onPrevious} className='button-arrow'>
+        <Button onClick={onPrevious} className="button-arrow">
           <ArrowBackIcon />
         </Button>
         <Typography className="page-title" variant="h2" align="center" component="h1">
@@ -50,7 +52,9 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
                 <Typography gutterBottom variant="h3" component="h2">
                   {add.first_name} {add.last_name}
                 </Typography>
-                <Typography variant="body2">{`${add.address_line_1}, ${add.address_line_2}, ${add.city}, ${add.state}, ${add.country}, ${add.postcode}`}</Typography>
+                <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}, ${add?.state},`}</Typography>
+                <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
+                <Typography variant="body2">{`${add?.company}, (${add?.phone})`}</Typography>
               </Box>
               <Checkbox checked={selectedAddress === add} onChange={() => handleAddressChange(add)} />
             </Box>
@@ -62,6 +66,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
               customerId={customerId}
               cartData={cartData}
               nonce={nonce}
+              startTransition={startTransition}
             />
           </Box>
         </>

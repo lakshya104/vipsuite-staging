@@ -12,10 +12,9 @@ import Toaster from '../Toaster';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
-  token: string;
 }
 
-const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity, token }) => {
+const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
   const images = [
     opportunity.acf.featured_image.sizes['vs-container'],
     opportunity.acf.featured_image.sizes['vs-container'],
@@ -34,12 +33,12 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const handleConfirmationOpen = () => {
     setDialogOpen(false);
   };
-  const handleToasterMessage = (type: 'error' | 'success') => {
+  const handleToasterMessage = (type: 'error' | 'success', message?: string) => {
     setToasterType(type);
     if (type === 'success') {
       setToasterMessage('Response submitted successfully');
     } else {
-      setToasterMessage('Error submitting response');
+      setToasterMessage(message ?? 'Error submitting response');
     }
   };
 
@@ -72,7 +71,6 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       <Dialog className="site-dialog" open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>
         <DialogContent>
           <OppotunityRSVP
-            token={token}
             onClose={handleDialogClose}
             onConfirmation={handleConfirmationOpen}
             opportunity={opportunity}

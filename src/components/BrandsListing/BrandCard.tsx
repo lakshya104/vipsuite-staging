@@ -21,7 +21,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
           backgroundImage: `url(${productImage})`,
         }}
       >
-        <FeedLikeIcon />
+        <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} />
         {brandLogo && (
           <Box className="brand-logo">
             <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />

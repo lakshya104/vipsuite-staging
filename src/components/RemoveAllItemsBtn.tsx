@@ -33,19 +33,15 @@ const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ token, nonce, sta
   };
   return (
     <>
-      <Button
-        color="error"
-        className='button button--red'
-        onClick={toggleDialog}
-      >
+      <Button color="error" className="button button--red" onClick={toggleDialog}>
         Remove all items
       </Button>
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
         onConfirm={() => removeProduct(token, nonce)}
-        title="Delete Product From Cart"
-        description="Are you sure you want to delete this product from the cart?"
+        title="Remove all items From Cart"
+        description="Are you sure you want to remove all items from the cart?"
       />
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>

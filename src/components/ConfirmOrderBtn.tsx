@@ -5,6 +5,10 @@ import DialogBox from './Dialog/Dialog';
 import { useRouter } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
 import { CreateOrder } from '@/libs/api-manager/manager';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from './Toaster';
+import { map } from 'lodash';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -20,16 +24,29 @@ interface ConfirmOrderBtnProps {
   customerId: number;
   cartData: Cart;
   nonce: string;
+  startTransition: typeof import('react').startTransition;
 }
 
-const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, token, cartData, nonce, customerId }) => {
+const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
+  selectedAddress,
+  cartData,
+  nonce,
+  customerId,
+  token,
+  startTransition,
+}) => {
   const router = useRouter();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const user = useCurrentUser();
+  const userEmail = user?.email;
+  const vipProfileId = user?.vip_profile_id;
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
     router.push('/');
   };
+  console.log({ cartData });
 
   const handleCreateOrder = async () => {
     const address = {
@@ -42,24 +59,29 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, toke
       postcode: selectedAddress?.postcode,
       country: selectedAddress?.country,
     };
+
     const orderDetails = {
       customer_id: customerId,
-      status: 'request-status',
+      meta_data: [
+        {
+          key: 'vip_profile_id',
+          value: vipProfileId,
+        },
+      ],
       set_paid: true,
       billing: {
         ...address,
-        email: 'john.doe@example.com',
+        email: userEmail,
         phone: selectedAddress?.phone,
       },
       shipping: {
         ...address,
       },
-      line_items: [
-        {
-          product_id: cartData.items[0].id,
-          quantity: 1,
-        },
-      ],
+      line_items: map(cartData.items, (item) => ({
+        product_id: item.id,
+        quantity: 1,
+        ...(item.type !== 'simple' && { variation_id: 1 }),
+      })),
       shipping_lines: [
         {
           method_id: 'free_shipping',
@@ -68,8 +90,17 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, toke
         },
       ],
     };
-    await CreateOrder(orderDetails, token, nonce);
+    console.log({ orderDetails });
+    startTransition(async () => {
+      try {
+        await CreateOrder(orderDetails, token, nonce);
+        setIsDialogOpen(true);
+      } catch (error) {
+        openToaster(error?.toString() ?? 'Error processing Order');
+      }
+    });
   };
+
   return (
     <>
       <Btn
@@ -83,6 +114,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, toke
         Confirm Order
       </Btn>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };

@@ -4,6 +4,10 @@ import { Box, styled } from '@mui/material';
 import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { AddToWishlist, DeleteFromWishlist } from '@/libs/api-manager/manager';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from './Toaster';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
@@ -29,41 +33,61 @@ const AnimatedIcon = styled('div')({
   left: 0,
   transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
 });
-
-const FeedLikeIcon = () => {
-  const [liked, setLiked] = React.useState(false);
+interface FeedLikeIconProps {
+  isWishlisted?: boolean;
+  postId: number;
+}
+const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => {
+  const [liked, setLiked] = React.useState(isWishlisted ? true : false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const user = useCurrentUser();
+  const token = user.token;
+  const vipId = user.vip_profile_id;
   const handleIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
   };
 
-  const handleLike = (event: any) => {
+  const handleLike = async (event: any) => {
     event.stopPropagation();
     handleIconClick(event);
-    setLiked(!liked);
+    setLiked((prevLiked) => !prevLiked);
+    try {
+      if (!isWishlisted) {
+        await AddToWishlist(token, vipId, postId);
+      } else {
+        await DeleteFromWishlist(token, vipId, postId);
+      }
+    } catch (error) {
+      openToaster(error?.toString() ?? 'Error updating wishlist');
+      setLiked((prevLiked) => !prevLiked);
+    }
   };
 
   return (
-    <AnimatedBox onClick={handleLike}>
-      <IconWrapper>
-        <AnimatedIcon
-          style={{
-            opacity: liked ? 0 : 1,
-            transform: liked ? 'scale(0.5)' : 'scale(1)',
-          }}
-        >
-          <FavoriteBorderIcon sx={{ color: 'white' }} />
-        </AnimatedIcon>
-        <AnimatedIcon
-          style={{
-            opacity: liked ? 1 : 0,
-            transform: liked ? 'scale(1)' : 'scale(1.5)',
-          }}
-        >
-          <FavoriteIcon sx={{ color: '#FFFFF7' }} />
-        </AnimatedIcon>
-      </IconWrapper>
-    </AnimatedBox>
+    <>
+      <AnimatedBox onClick={handleLike}>
+        <IconWrapper>
+          <AnimatedIcon
+            style={{
+              opacity: liked ? 0 : 1,
+              transform: liked ? 'scale(0.5)' : 'scale(1)',
+            }}
+          >
+            <FavoriteBorderIcon sx={{ color: 'white' }} />
+          </AnimatedIcon>
+          <AnimatedIcon
+            style={{
+              opacity: liked ? 1 : 0,
+              transform: liked ? 'scale(1)' : 'scale(1.5)',
+            }}
+          >
+            <FavoriteIcon sx={{ color: '#FFFFF7' }} />
+          </AnimatedIcon>
+        </IconWrapper>
+      </AnimatedBox>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+    </>
   );
 };
 

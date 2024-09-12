@@ -4,20 +4,15 @@ import ProfileTabs from '@/components/ProfileTabs';
 import { calculateAge } from '@/helpers/utils';
 import Image from 'next/image';
 import { UserProfile } from '@/interfaces';
-import { GetProfile, GetToken } from '@/libs/api-manager/manager';
+import { GetProfile } from '@/libs/api-manager/manager';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 
 const ProfilePage = async () => {
-  let token: string | null = null;
   let profileDetails: UserProfile | null = null;
   try {
-    token = await GetToken();
-    if (!token) {
-      return <ErrorFallback errorMessage="Your token is invalid." />;
-    }
-    profileDetails = await GetProfile(token);
+    profileDetails = await GetProfile();
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show Profile currently." />;
   }

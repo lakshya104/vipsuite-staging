@@ -26,7 +26,7 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
             <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />
           </Box>
         )}
-        <FeedLikeIcon />
+        <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} />
         <CardContent className="landing-product__item-content">
           {isFeatured && (
             <Box className="category-label">

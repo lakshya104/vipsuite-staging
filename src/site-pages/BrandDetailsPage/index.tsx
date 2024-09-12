@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Box, Container, Typography } from '@mui/material';
-import { GetBrandDetails, GetToken } from '@/libs/api-manager/manager';
+import { GetBrandDetails } from '@/libs/api-manager/manager';
 import ReferCard from '@/components/ReferCard';
 import ProductList from '@/features/ProductList';
 import { BrandDetails } from '@/interfaces/brand';
@@ -16,13 +16,8 @@ interface BrandDetailsPageProps {
 
 const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) => {
   let brandDetails: BrandDetails | null = null;
-  let token: string | null = null;
   try {
-    token = await GetToken();
-    if (!token) {
-      return <ErrorFallback errorMessage="Your token is invalid." />;
-    }
-    brandDetails = await GetBrandDetails(brandId, token);
+    brandDetails = await GetBrandDetails(brandId);
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Brand details not available currently." />;
   }

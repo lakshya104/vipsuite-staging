@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-form';
@@ -10,11 +11,10 @@ type SelectBoxProps<T extends FieldValues> = {
   options: { value: string; label: string }[] | undefined;
   label: string;
   errors: FieldErrors<T>;
-  // eslint-disable-next-line no-unused-vars
   getValues?: (name?: Path<T>) => unknown;
-  // eslint-disable-next-line no-unused-vars
   clearErrors?: (name?: Path<T>) => void;
   numberOfChildren?: string;
+  onChange?: (value: string) => void;
 };
 
 const SelectBox = <T extends FieldValues>({
@@ -25,6 +25,7 @@ const SelectBox = <T extends FieldValues>({
   errors,
   getValues,
   clearErrors,
+  onChange,
 }: SelectBoxProps<T>) => {
   const hasValue = getValues ? !!getValues(name) : false;
   const hasFieldError = !!errors[name];
@@ -50,9 +51,10 @@ const SelectBox = <T extends FieldValues>({
               if (event.target.value && clearErrors) {
                 clearErrors(name);
               }
+              onChange?.(event.target.value);
             }}
           >
-            <MenuItem value="">Select one</MenuItem>
+            {!onChange && <MenuItem value="">Select one</MenuItem>}
             {options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}

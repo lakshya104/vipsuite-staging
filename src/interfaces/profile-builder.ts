@@ -12,6 +12,7 @@ export interface ProfileBuilderOptions {
   interests_options: string[];
   number_of_childs_options?: string[];
   gender?: object[];
+  content_type_options?: string[];
 }
 
 export interface ProfileBuilderStepsProps {

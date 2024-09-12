@@ -1,6 +1,6 @@
 import React from 'react';
 import OpportunityDetailsCard from '@/components/OpportunityDetails';
-import { GetToken, GetVipOpportunityDetails } from '@/libs/api-manager/manager';
+import { GetVipOpportunityDetails } from '@/libs/api-manager/manager';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
@@ -14,20 +14,15 @@ const OpportunityDetailsPage: React.FC<OpportunityDetailsPageProps> = async ({ i
     return <ErrorFallback errorMessage="Opportunity Id is invalid." />;
   }
   let opportunityDetails: OpportunityDetails | null = null;
-  let token: string | null = null;
   try {
-    token = await GetToken();
-    if (!token) {
-      return <ErrorFallback errorMessage="Your token is invalid." />;
-    }
-    opportunityDetails = await GetVipOpportunityDetails(Number(id), token);
+    opportunityDetails = await GetVipOpportunityDetails(Number(id));
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show opportunities details currently." />;
   }
   if (!opportunityDetails) {
     return <ErrorFallback errorMessage="No opportunities details found" />;
   }
-  return <OpportunityDetailsCard opportunity={opportunityDetails} token={token} />;
+  return <OpportunityDetailsCard opportunity={opportunityDetails} />;
 };
 
 export default OpportunityDetailsPage;

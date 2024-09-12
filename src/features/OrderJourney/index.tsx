@@ -47,6 +47,7 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, customerI
           cartData={cartData}
           nonce={nonce}
           onPrevious={handleBack}
+          startTransition={startTransition}
         />
       )}
       <Backdrop

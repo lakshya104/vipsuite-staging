@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
 import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface RSVPProps {
   onClose: () => void;
@@ -33,6 +34,8 @@ const adventureGolfOptions = [
 
 const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, handleToasterMessage }) => {
   const [isePending, setIsPending] = useState<boolean>(false);
+  const user = useCurrentUser();
+  const vipId = user?.vip_profile_id;
   const {
     control,
     handleSubmit,
@@ -55,7 +58,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         would_you_like: false,
       };
       try {
-        await SendRsvp(rsvp, token);
+        await SendRsvp(rsvp, token, vipId);
         revalidateTag('getEventDetails');
         handleToasterMessage('success');
       } catch (error) {
@@ -74,7 +77,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         would_you_like: true,
       };
       try {
-        await SendRsvp(rsvp, token);
+        await SendRsvp(rsvp, token, vipId);
         revalidateTag('getEventDetails');
         handleToasterMessage('success');
         onConfirmation();

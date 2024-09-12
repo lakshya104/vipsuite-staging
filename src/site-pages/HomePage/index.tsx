@@ -1,19 +1,14 @@
 import React from 'react';
 import BrandsPage from '@/components/BrandsPage';
-import { GetBrands, GetToken } from '@/libs/api-manager/manager';
+import { GetBrands } from '@/libs/api-manager/manager';
 import { Brand } from '@/interfaces/brand';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 
 const HomePage = async () => {
   let brands: Brand[] | null = null;
-  let token: string | null = null;
   try {
-    token = await GetToken();
-    if (!token) {
-      return <ErrorFallback errorMessage="Your token is invalid." />;
-    }
-    brands = await GetBrands(token);
+    brands = await GetBrands();
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show brands currently." />;
   }

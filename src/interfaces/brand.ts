@@ -142,8 +142,67 @@ export interface ProductMetaData {
   value: string;
 }
 
-export interface BrandProductDetails {
-  quantity: number;
+// Interface for dimensions
+interface Dimensions {
+  length: string;
+  width: string;
+  height: string;
+}
+
+// Interface for categories
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+// Interface for product images
+interface Image {
+  id: number;
+  date_created: string;
+  date_created_gmt: string;
+  date_modified: string;
+  date_modified_gmt: string;
+  src: string;
+  name: string;
+  alt: string;
+}
+
+// Interface for attribute options
+export interface AttributeOption {
+  id: number;
+  name: string;
+  slug: string;
+  position: number;
+  visible: boolean;
+  variation: boolean;
+  options: string[];
+}
+
+// Interface for variation attributes
+export interface FilterDropdown {
+  name: string;
+  slug: string;
+  option: string;
+  label: string;
+}
+
+// Interface for product variations
+export interface ProductVariation {
+  quantity?: number;
+  id: number;
+  attributes: FilterDropdown[];
+}
+
+// Interface for meta data
+interface MetaData {
+  id: number;
+  key: string;
+  value: string;
+}
+
+// Main Product Interface
+export interface Product {
   id: number;
   name: string;
   slug: string;
@@ -153,17 +212,6 @@ export interface BrandProductDetails {
   date_modified: string;
   date_modified_gmt: string;
   type: string;
-  attributes: [
-    {
-      id: number;
-      name: string;
-      slug: string;
-      position: 0;
-      visible: boolean;
-      variation: boolean;
-      options: string[];
-    },
-  ];
   status: string;
   featured: boolean;
   catalog_visibility: string;
@@ -182,6 +230,7 @@ export interface BrandProductDetails {
   total_sales: number;
   virtual: boolean;
   downloadable: boolean;
+  downloads: string[]; // Assuming downloads are an empty array or other types
   download_limit: number;
   download_expiry: number;
   external_url: string;
@@ -196,11 +245,7 @@ export interface BrandProductDetails {
   low_stock_amount: number | null;
   sold_individually: boolean;
   weight: string;
-  dimensions: {
-    length: string;
-    width: string;
-    height: string;
-  };
+  dimensions: Dimensions;
   shipping_required: boolean;
   shipping_taxable: boolean;
   shipping_class: string;
@@ -212,25 +257,27 @@ export interface BrandProductDetails {
   cross_sell_ids: number[];
   parent_id: number;
   purchase_note: string;
-  categories: ProductCategory[];
+  categories: Category[];
+  tags: string[]; // Assuming tags are an empty array or other types
+  images: Image[];
+  attributes: AttributeOption[];
+  default_attributes: string[]; // Assuming default_attributes are an empty array or other types
+  variations: number[];
+  grouped_products: string[]; // Assuming grouped_products are an empty array or other types
   menu_order: number;
   price_html: string;
   related_ids: number[];
-  meta_data: ProductMetaData[];
+  meta_data: MetaData[];
   stock_status: string;
   has_options: boolean;
   post_password: string;
+  product_variations: ProductVariation[];
   product_ordered: boolean;
+  brand_name: string;
   _links: {
-    self: {
-      href: string;
-    }[];
-    collection: {
-      href: string;
-    }[];
+    self: { href: string }[];
+    collection: { href: string }[];
   };
-  images: ProductImage[];
-  brand_name?: string;
 }
 
 export interface Brand {
@@ -249,6 +296,7 @@ export interface Brand {
     brand_logo?: BrandLogo;
   };
   'brand-category': string[];
+  is_wishlisted?: boolean;
 }
 
 export interface BrandLogo {
