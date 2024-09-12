@@ -15,6 +15,7 @@ import { useProductFilters } from '@/hooks/useProductFilters';
 import { first } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface ItemRequestFormProps {
   product: Product;
@@ -27,6 +28,8 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const user = useCurrentUser();
+  const vipId = user?.vip_profile_id;
   const { product_ordered: isProductOrdered = false } = product;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const { dropdowns, onChangeDropDown, getSelectedProductVariation, formSchema } = useProductFilters(product);
@@ -58,7 +61,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
       if (isRequestOnly) {
         router.push(`/basket?productId=${product.id}`);
       } else {
-        const addToCart = await AddItemToCart(token, item, nonce);
+        const addToCart = await AddItemToCart(token, item, nonce, vipId);
         await revalidateTag(TAGS.GET_VIP_CART);
         if (addToCart && addToCart.code === 'permission_denied') {
           openToaster('Error during adding product: ' + addToCart.message?.toString());

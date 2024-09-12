@@ -382,12 +382,13 @@ export const OrderFeedback = async (
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AddItemToCart = async (token: string | null, data: any, nonce: string | null) => {
+export const AddItemToCart = async (token: string | null, data: any, nonce: string | null, vipId: number) => {
   try {
     const addItemResponse = await Instance.post(Endpoints.addItemToCart, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
+        'vip-profile-id': vipId?.toString(),
       },
     });
     return addItemResponse.data;
