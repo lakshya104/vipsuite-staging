@@ -80,7 +80,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       line_items: map(cartData.items, (item) => ({
         product_id: item.id,
         quantity: 1,
-        ...(item.type !== 'simple' && { variation_id: 1 }),
       })),
       shipping_lines: [
         {
@@ -90,10 +89,10 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         },
       ],
     };
-    console.log({ orderDetails });
+    console.log({ cartData, orderDetails });
     startTransition(async () => {
       try {
-        await CreateOrder(orderDetails, token, nonce);
+        await CreateOrder(orderDetails, token, nonce, vipProfileId);
         setIsDialogOpen(true);
       } catch (error) {
         openToaster(error?.toString() ?? 'Error processing Order');

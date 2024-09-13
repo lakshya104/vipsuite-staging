@@ -7,6 +7,8 @@ interface OrderItemProps {
   item: LineItem;
 }
 const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
+  console.log(item.meta_data);
+
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>
       <Image
@@ -21,7 +23,12 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
           {item?.name}
         </Typography>
         <Typography variant="body1">Item Name</Typography>
-        {item?.variation_id !== 0 && <Typography variant="body1">Size: {item?.meta_data[0]?.display_value}</Typography>}
+        {item?.variation_id !== 0 &&
+          item?.meta_data?.map((attr, index) => (
+            <Typography variant="body1" key={attr.id || index}>
+              {attr?.display_key}: {attr?.display_value}
+            </Typography>
+          ))}
       </Box>
     </Box>
   );

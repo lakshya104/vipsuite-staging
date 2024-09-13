@@ -240,12 +240,13 @@ export const RemoveAllVipCartItems = async (token: string, nonce: string) => {
   }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CreateOrder = async (data: any, token: string, nonce: string) => {
+export const CreateOrder = async (data: any, token: string, nonce: string, vipId: number) => {
   try {
     const response = await Instance.post(Endpoints.createOrder, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
+        'vip-profile-id': vipId?.toString(),
       },
     });
     return response.data;
@@ -389,11 +390,12 @@ export const AddItemToCart = async (token: string | null, data: any, nonce: stri
       headers: {
         Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
-        'vip-profile-id': vipId,
+        'vip-profile-id': vipId.toString(),
       },
     });
     return addItemResponse.data;
   } catch (error) {
+    console.error(error);
     if (axios.isAxiosError(error)) {
       const errorMessage = error?.message || 'An error occurred during adding item to cart';
       throw errorMessage;

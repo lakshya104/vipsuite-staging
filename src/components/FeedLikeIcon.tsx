@@ -41,8 +41,8 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => 
   const [liked, setLiked] = React.useState(isWishlisted ? true : false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const user = useCurrentUser();
-  const token = user.token;
-  const vipId = user.vip_profile_id;
+  const token = user?.token;
+  const vipId = user?.vip_profile_id;
   const handleIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();

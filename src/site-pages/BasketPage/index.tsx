@@ -9,15 +9,13 @@ const BasketPage = async () => {
   let addresses: Address[] | [] = [];
   let id: number | null = null;
   let token: string | null = null;
-  let userId: number | null = null;
   let cartItems: Cart | null = null;
   let nonce: string | null = null;
   try {
     const customerData = await GetCustomerIdTokenAndUserId();
     id = customerData?.id;
     token = customerData?.token;
-    userId = customerData?.userId;
-    const [fetchedAddresses, cartData] = await Promise.all([GetAddresses(userId), FetchCartItemsAndNonce(token)]);
+    const [fetchedAddresses, cartData] = await Promise.all([GetAddresses(), FetchCartItemsAndNonce(token)]);
     if (!cartData || !fetchedAddresses) {
       return <ErrorFallback errorMessage="Not able to process order currently." />;
     }

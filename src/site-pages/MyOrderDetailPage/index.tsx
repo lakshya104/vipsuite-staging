@@ -22,7 +22,7 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
     if (!token || !id) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
-    orderDetail = await GetOrderById(orderId, token);
+    orderDetail = await GetOrderById(orderId);
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show order details currently." />;
   }

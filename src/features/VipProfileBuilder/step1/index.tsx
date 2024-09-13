@@ -22,7 +22,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
 }) => {
   const knownForOptions = profileBuilderOptions?.known_for_options || [];
   const knownFor = profileDetail.known_for || [];
-  const content = profileDetail.type_of_content_create || [];
   const {
     register,
     handleSubmit,
@@ -33,7 +32,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
     resolver: zodResolver(interestSchema),
     defaultValues: {
       interests: knownFor,
-      type_of_content_create: content,
     },
   });
 
@@ -74,7 +72,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       const updatedProfileDetail: ACF = {
         ...profileDetail,
         known_for: data.interests,
-        type_of_content_create: data.type_of_content_create,
       };
       const profile = {
         acf: {
@@ -92,30 +89,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       setIsLoading(false);
     }
   };
-
-  // const contentTypes = [
-  //   { value: 'Lifestyle', label: 'Lifestyle' },
-  //   { value: 'Beauty', label: 'Beauty' },
-  //   { value: 'Fashion', label: 'Fashion' },
-  //   { value: 'Travel', label: 'Travel' },
-  //   { value: 'Mother And Baby', label: 'Mother And Baby' },
-  //   { value: 'Family', label: 'Family' },
-  //   { value: 'Comedy', label: 'Comedy' },
-  //   { value: 'Music', label: 'Music' },
-  //   { value: 'Art', label: 'Art' },
-  //   { value: 'Sport', label: 'Sport' },
-  //   { value: 'Health And Fitness', label: 'Health And Fitness' },
-  //   { value: 'Food And Drink', label: 'Food And Drink' },
-  // ];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const handleCheckboxChange = (field: any, optionValue: string) => {
-  //   const newValue = includes(field.value, optionValue)
-  //     ? filter(field.value, (value: string) => value !== optionValue)
-  //     : union(field.value, [optionValue]);
-
-  //   field.onChange(newValue);
-  // };
 
   return (
     <Box
@@ -171,42 +144,6 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
           {errors.interests.message}
         </Typography>
       )}
-      {/* {watchInterests?.includes('Content Creator') && (
-        <>
-          <Typography variant="h6" textAlign="center" gutterBottom>
-            Type of Content
-          </Typography>
-          <FormGroup className="profile-builder__form-group">
-            <Box className="profile-builder__form-row">
-              {contentTypes.map((option) => (
-                <Box key={option.value}>
-                  <Controller
-                    name="type_of_content_create"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            {...field}
-                            checked={field.value?.includes(option.value)}
-                            onChange={() => handleCheckboxChange(field, option.value)}
-                          />
-                        }
-                        label={option.label}
-                      />
-                    )}
-                  />
-                </Box>
-              ))}
-            </Box>
-            {errors.type_of_content_create && (
-              <Typography color="error" textAlign="center">
-                Please select an option
-              </Typography>
-            )}
-          </FormGroup>
-        </>
-      )} */}
       <CustomStepper currentStep={1} totalSteps={5} onPrev={onPrev} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
