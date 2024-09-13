@@ -33,6 +33,7 @@ const Endpoints = {
   eventFeedback: (eventId: number) => `/wp/v2/vip-profiles/events/${eventId}/feedback`,
   getWishlistItems: `/wp/v2/vip-profiles/wishlist`,
   addToWishlist: (postId: number) => `/wp/v2/vip-profiles/wishlist/${postId}`,
+  referVIP: '/wp/v2/vip-profiles/refer-vip',
 };
 
 export { Endpoints };

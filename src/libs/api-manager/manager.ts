@@ -500,3 +500,28 @@ export const DeleteFromWishlist = async (token: string, vipId: number, postId: n
     }
   }
 };
+
+export const ReferaVIP = async (
+  id: number,
+  token: string,
+  data: {
+    email: string;
+    instagram_handle: string;
+    tiktok_handle: string;
+  },
+) => {
+  try {
+    const response = await Instance.post(Endpoints.referVIP, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': id.toString(),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during Refer a VIP';
+      throw errorMessage;
+    }
+  }
+};

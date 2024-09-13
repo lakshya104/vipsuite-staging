@@ -65,7 +65,7 @@
         @include fontSize(30);
       }
     }
-    .step1-form,
+    .step1-form .profile-builder__form-row,
     .step5-form {
       label {
         margin: rem(5);

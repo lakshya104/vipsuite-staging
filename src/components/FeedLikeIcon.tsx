@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { Box, styled } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -39,7 +39,9 @@ interface FeedLikeIconProps {
 }
 const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => {
   const [liked, setLiked] = React.useState(isWishlisted ? true : false);
+  const [isWislist, setIsWishlist] = useState<boolean>(isWishlisted ? isWishlisted : false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const [toasterType, setToasterType] = useState<string>('');
   const user = useCurrentUser();
   const token = user?.token;
   const vipId = user?.vip_profile_id;
@@ -49,16 +51,24 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => 
   };
 
   const handleLike = async (event: any) => {
+    setToasterType('');
     event.stopPropagation();
     handleIconClick(event);
     setLiked((prevLiked) => !prevLiked);
     try {
-      if (!isWishlisted) {
+      if (!isWislist) {
+        setToasterType('success');
+        openToaster('Item added to wishlist successfully');
+        setIsWishlist(true);
         await AddToWishlist(token, vipId, postId);
       } else {
+        setToasterType('info');
+        openToaster('Item removed from wishlist');
+        setIsWishlist(false);
         await DeleteFromWishlist(token, vipId, postId);
       }
     } catch (error) {
+      setToasterType('error');
       openToaster(error?.toString() ?? 'Error updating wishlist');
       setLiked((prevLiked) => !prevLiked);
     }
@@ -86,7 +96,12 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => 
           </AnimatedIcon>
         </IconWrapper>
       </AnimatedBox>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster
+        open={toasterOpen}
+        setOpen={closeToaster}
+        message={error}
+        severity={toasterType as 'error' | 'warning' | 'info' | 'success'}
+      />
     </>
   );
 };

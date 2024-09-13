@@ -237,7 +237,7 @@ form {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: auto;
     label {
-      margin: 0 0 rem(5);
+      margin: 0 0 rem(10);
       font-weight: 400;
       line-height: 1.38;
       @include fontSize(13);
@@ -265,6 +265,7 @@ form {
     span {
       display: block;
       padding-left: rem(32);
+      padding-right: rem(6);
       @include relative;
       &:before {
         content: '';

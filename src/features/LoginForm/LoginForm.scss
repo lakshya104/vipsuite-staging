@@ -15,9 +15,8 @@
     margin-bottom: rem(15);
   }
   .forgot-password {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    margin-bottom: rem(50);
+    @include flex(flex-end, center);
     &__text {
       color: white;
       font-size: 0.8rem;

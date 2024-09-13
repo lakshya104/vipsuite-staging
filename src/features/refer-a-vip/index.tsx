@@ -11,14 +11,26 @@ import './ReferVip.scss';
 import { useRouter } from 'next/navigation';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
+import { DashboardContent } from '@/interfaces/brand';
+import { ReferaVIP } from '@/libs/api-manager/manager';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
+// Define FormValues type based on Zod schema
 type FormValues = z.infer<typeof ReferVipSchema>;
 
-export default function ReferVIPForm() {
+// Define the props interface for the component
+interface ReferVIPFormProps {
+  dashboardContent: DashboardContent;
+}
+
+const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
   const router = useRouter();
+  const user = useCurrentUser();
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [toasterType, setToasterType] = useState<string>('');
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+
+  // Set up form handling with React Hook Form and Zod validation
   const {
     register,
     handleSubmit,
@@ -27,18 +39,23 @@ export default function ReferVIPForm() {
     resolver: zodResolver(ReferVipSchema),
     defaultValues: {
       email: '',
-      instagram_profile: '',
-      tiktok_profile: '',
+      instagram_handle: '',
+      tiktok_handle: '',
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    setIsPending(true);
-    setToasterType('success');
-    console.log('Form Submitted:', data);
-    openToaster('Form Submitted', () => {
+  // Function called on form submission
+  const onSubmit = async (data: FormValues) => {
+    try {
+      setIsPending(true);
+      await ReferaVIP(user?.vip_profile_id, user?.token, data);
+      setToasterType('success');
       router.push('/home');
-    });
+    } catch (error) {
+      openToaster('Error during submit the form. ' + error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -49,7 +66,7 @@ export default function ReferVIPForm() {
             Refer a VIP
           </Typography>
           <Typography component="p" align="center">
-            Lorem ipsum dolor sit amet, sed in posse primis, ius te putant molestie sapientem.
+            {dashboardContent.rafer_vip_description}
           </Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} className="gray-card__form">
             {ReferVipFormFields.map((field) => (
@@ -74,12 +91,9 @@ export default function ReferVIPForm() {
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Toaster
-        open={toasterOpen}
-        setOpen={closeToaster}
-        message={error}
-        severity={toasterType as 'error' | 'success' | 'warning' | 'info'}
-      />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
     </Fragment>
   );
-}
+};
+
+export default ReferVIPForm;
