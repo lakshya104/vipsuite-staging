@@ -525,3 +525,22 @@ export const ReferaVIP = async (
     }
   }
 };
+
+export const MakeRequestSubmit = async (id: number, token: string, data: {
+  request_content: string
+}) => {
+  try {
+    const response = await Instance.post(`${Endpoints.MakeRequest}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': id.toString()
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during Make a Request';
+      throw errorMessage;
+    }
+  }
+};

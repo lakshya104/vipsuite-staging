@@ -10,9 +10,12 @@ import './MakeRequest.scss';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter } from 'next/navigation';
+import { DashboardContent } from '@/interfaces/brand';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { MakeRequestSubmit } from '@/libs/api-manager/manager';
 
 const formSchema = z.object({
-  itemName: z
+  request_content: z
     .string()
     .min(1, 'This field is required')
     .min(15, 'Describe the item in at least 15 characters')
@@ -21,8 +24,13 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const MakeRequest = () => {
+interface MakeRequestProps {
+  dashboardContent: DashboardContent;
+}
+
+const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   const router = useRouter();
+  const user = useCurrentUser();
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
@@ -33,17 +41,21 @@ const MakeRequest = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      itemName: '',
+      request_content: '',
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    setIsPending(true);
-    setToasterType('success');
-    console.log('Form Submitted:', data);
-    openToaster('Form Submitted', () => {
+  const onSubmit = async (data: FormValues) => {
+    try {
+      setIsPending(true);
+      await MakeRequestSubmit(user?.vip_profile_id, user?.token, data);
+      setToasterType('success');
       router.push('/home');
-    });
+    } catch (error) {
+      openToaster('Error during submit the form. ' + error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -54,13 +66,12 @@ const MakeRequest = () => {
             Make a Request
           </Typography>
           <Typography component="p" align="center">
-            Have you got a party, special event, or work opportunity you would like a brand to get involved with? Submit
-            your request here. Only if something suitable arises will we be in touch.
+            {dashboardContent.make_request_description}
           </Typography>
           <form className="gray-card__form" onSubmit={handleSubmit(onSubmit)}>
             <Box>
               <InputTextAreaFormField
-                name="itemName"
+                name="request_content"
                 control={control}
                 placeholder="Enter your request ..."
                 errors={errors}
@@ -72,7 +83,7 @@ const MakeRequest = () => {
           </form>
         </Box>
       </Box>
-      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
+      <Backdrop sx={{ zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster

@@ -88,7 +88,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
           </Box>
         </Box>
       </Box>
-      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
+      <Backdrop sx={{ zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />

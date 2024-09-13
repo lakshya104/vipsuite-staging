@@ -34,6 +34,7 @@ const Endpoints = {
   getWishlistItems: `/wp/v2/vip-profiles/wishlist`,
   addToWishlist: (postId: number) => `/wp/v2/vip-profiles/wishlist/${postId}`,
   referVIP: '/wp/v2/vip-profiles/refer-vip',
+  MakeRequest: '/wp/v2/vip-profiles/make-request',
 };
 
 export { Endpoints };
