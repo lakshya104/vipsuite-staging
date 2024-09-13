@@ -90,7 +90,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       options: look_feel_of_socials_options.map((opt: string) => ({ value: opt, label: opt })),
     },
   ];
-  
+
   const formSchema = z.object({
     sportsPlay: z.string().min(1, 'Sports you play is required'),
     sports: z.string().min(1, 'Sports is required'),

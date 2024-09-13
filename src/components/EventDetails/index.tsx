@@ -13,14 +13,13 @@ interface EventDetailsCardProps {
 }
 
 const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => {
-  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || '/img/placeholder-image.jpg';
   const eventDetail = wrapInParagraph(event?.acf?.event_details);
   return (
     <Box className="product-detail">
       <Typography className="page-title" variant="h2" component="h1" align="center">
         {event?.title?.rendered}
       </Typography>
-      <EventContainer imageUrl={eventImageUrl} brandLogo={event?.acf?.brand_logo?.url} />
+      <EventContainer event={event} />
       <Box className="product-detail__content">
         <Typography variant="h2" gutterBottom>
           {event?.title?.rendered}
@@ -49,20 +48,22 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
 };
 
 interface EventContainerProps {
-  imageUrl: string;
-  brandLogo: string;
+  event: EventDetails;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-const EventContainer = ({ imageUrl, brandLogo }: EventContainerProps) => {
+const EventContainer = ({ event }: EventContainerProps) => {
+  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || '/img/placeholder-image.jpg';
+  const brandLogo = event?.acf?.brand_logo?.url;
+
   return (
     <Card
       className="product-detail__item"
       sx={{
-        backgroundImage: `url(${imageUrl})`,
+        backgroundImage: `url(${eventImageUrl})`,
       }}
     >
-      <FeedLikeIcon />
+      <FeedLikeIcon postId={event.id} isWishlisted={event.is_wishlisted} />
       {brandLogo && (
         <Box className="brand-logo">
           <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />

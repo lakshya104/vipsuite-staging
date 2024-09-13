@@ -3,6 +3,7 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { ProgressBarLink } from './ProgressBar';
 import { Opportunity } from '@/interfaces/opportunities';
 import { map } from 'lodash';
+import FeedLikeIcon from './FeedLikeIcon';
 
 interface OpportunitiesCardProps {
   opportunities: Opportunity[];
@@ -20,6 +21,7 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) 
                 backgroundImage: `url(${opportunity?.acf.featured_image?.link})`,
               }}
             >
+              <FeedLikeIcon postId={opportunity?.id} isWishlisted={opportunity?.is_wishlisted} />
               <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
                 VIP Club
               </Typography>

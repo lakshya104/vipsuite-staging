@@ -106,6 +106,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
       setIsLoading(false);
     } finally {
       revalidateTag(TAGS.GET_ADDRESSES);
+      router.refresh();
     }
   };
   return (

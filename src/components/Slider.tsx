@@ -4,9 +4,13 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Image from 'next/image';
 import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
+import FeedLikeIcon from './FeedLikeIcon';
+import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 
 interface SliderProps {
   images: string[];
+  withLikeIcon?: boolean;
+  item: OpportunityDetails;
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -24,7 +28,7 @@ const StyledImage = styled(Image)({
   objectFit: 'cover',
 });
 
-const ImageSlider: React.FC<SliderProps> = ({ images }) => {
+const ImageSlider: React.FC<SliderProps> = ({ images, withLikeIcon, item }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -42,6 +46,7 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
 
   return (
     <Box sx={{ position: 'relative', marginBottom: 4 }}>
+      {withLikeIcon && <FeedLikeIcon postId={item?.id} isWishlisted={item?.is_wishlisted} />}
       <Slider {...settings}>
         {images.map((src, index) => (
           <StyledBox key={index}>

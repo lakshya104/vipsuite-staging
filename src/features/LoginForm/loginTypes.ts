@@ -5,7 +5,8 @@ export const LoginSchema = z.object({
     .string()
     .min(1, {
       message: 'Email is required',
-    }).email('Invalid email address')
+    })
+    .email('Invalid email address')
     .min(3, {
       message: 'Email must be at least 3 characters',
     }),

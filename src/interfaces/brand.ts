@@ -32,6 +32,7 @@ export interface BrandDetails {
     lookbook_description: string;
     lookbook_pdf: string;
   };
+  is_wishlisted?: boolean;
   _links: {
     self: Array<{
       href: string;
@@ -324,4 +325,13 @@ export interface BrandLogo {
   width: number;
   height: number;
   sizes: EventImageSizes;
+}
+
+export interface DashboardContent {
+  rafer_vip_heading: string;
+  rafer_vip_short_description: string;
+  rafer_vip_description: string;
+  make_request_heading: string;
+  make_request_short_description: string;
+  make_request_description: string;
 }

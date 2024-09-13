@@ -39,10 +39,10 @@ const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date,
             style={{ width: 80, height: 80, marginRight: 2, borderRadius: '50px', margin: '0 20px 0 0' }}
           />
           <Box>
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold', textTransform: 'capitalize' }}>
               {title}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="textSecondary" sx={{ textTransform: 'capitalize' }}>
               Type : {type}
             </Typography>
             {type === 'event' && (

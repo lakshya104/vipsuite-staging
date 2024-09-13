@@ -94,6 +94,7 @@ export interface EventDetails {
     brand_logo: BrandLogo;
   };
   _links: Links;
+  is_wishlisted?: boolean;
 }
 
 export interface EventImage {

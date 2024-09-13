@@ -4,7 +4,7 @@ import Btn from './Button/CommonBtn';
 import DialogBox from './Dialog/Dialog';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
-import { CreateOrder } from '@/libs/api-manager/manager';
+import { CreateOrder, RemoveAllVipCartItems } from '@/libs/api-manager/manager';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
@@ -64,8 +64,8 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     };
 
     const orderDetails = {
-      customer_id: customerId,
-      ...(requestProductId && { request_status: 'some_value' }),
+      customer_id: Number(customerId),
+      ...(requestProductId && { status: 'request-only' }),
       meta_data: [
         {
           key: 'vip_profile_id',
@@ -82,10 +82,12 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         ...address,
       },
       line_items: requestProductId
-        ? {
-            product_id: requestProductId,
-            quantity: 1,
-          }
+        ? [
+            {
+              product_id: requestProductId,
+              quantity: 1,
+            },
+          ]
         : map(cartData.items, (item) => ({
             product_id: item.id,
             quantity: 1,
@@ -99,15 +101,18 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       ],
     };
     console.log({ orderDetails });
-    startTransition(async () => {
-      try {
+    try {
+      startTransition(async () => {
         await CreateOrder(orderDetails, token, nonce, vipProfileId);
-        await revalidateTag(TAGS.GET_MYORDERS);
         setIsDialogOpen(true);
-      } catch (error) {
-        openToaster(error?.toString() ?? 'Error processing Order');
-      }
-    });
+      });
+    } catch (error) {
+      openToaster(error?.toString() ?? 'Error processing Order');
+    } finally {
+      await RemoveAllVipCartItems(token, nonce);
+      await revalidateTag(TAGS.GET_MYORDERS);
+      await revalidateTag(TAGS.GET_VIP_CART);
+    }
   };
 
   return (

@@ -52,7 +52,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         {opportunity.title.rendered}
       </Typography>
       <Box>
-        <ImageSlider images={images} />
+        <ImageSlider images={images} withLikeIcon={true} item={opportunity} />
       </Box>
       <CardContent>
         <OpportunityTabs opportunity={opportunity} />

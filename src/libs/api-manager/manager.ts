@@ -102,6 +102,10 @@ export const GetBrands = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getBrands);
 };
 
+export const GetDashboardContent = async () => {
+  return await FetchInstanceWithHeaders(Endpoints.getDashboardContent);
+};
+
 export const GetBrandDetails = async (id: number) => {
   return await FetchInstanceWithHeaders(Endpoints.getBrandDetails(id));
 };
@@ -178,7 +182,7 @@ export const ResetPassword = async ({
 
 export const GetAllOrders = async () => {
   const id = await GetCustomerId();
-  return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id),{
+  return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id), {
     next: { tags: [TAGS.GET_MYORDERS] },
   });
 };
@@ -188,7 +192,7 @@ export const GetOrderById = async (id: number) => {
 };
 
 export const GetVipEventDetails = async (id: number) => {
-  return await FetchInstanceWithHeaders(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf`, {
+  return await FetchInstanceWithHeaders(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`, {
     next: { tags: [TAGS.GET_EVENT_DETAILS] },
   });
 };
@@ -322,7 +326,7 @@ export const GetAddresses = async () => {
 
 export const addUpdateAddress = async (id: number, token: string, address: Address, addressId: number | undefined) => {
   try {
-    let url = `${Endpoints.getAddresses}/addresses`;
+    let url = `${Endpoints.getAddresses}`;
     if (addressId) url = `${Endpoints.getAddresses}/${addressId}`;
     const response = await Instance.post(url, address, {
       headers: {
@@ -357,9 +361,12 @@ export const DeleteAddress = async (vipId: number, addressId: number, token: str
 };
 
 export const GetVipOpportunityDetails = async (id: number) => {
-  return await FetchInstanceWithHeaders(`${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf`, {
-    next: { tags: [TAGS.GET_OPPORTUNITY_DETAILS] },
-  });
+  return await FetchInstanceWithHeaders(
+    `${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf,is_wishlisted`,
+    {
+      next: { tags: [TAGS.GET_OPPORTUNITY_DETAILS] },
+    },
+  );
 };
 
 export const OrderFeedback = async (

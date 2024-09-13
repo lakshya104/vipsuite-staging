@@ -3,14 +3,15 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { Brand } from '@/interfaces/brand';
+import { Brand, DashboardContent } from '@/interfaces/brand';
 import BrandsListing from './BrandsListing';
 
 interface BrandsPageProps {
   brands: Brand[];
+  dashboardContent: DashboardContent | null;
 }
 
-const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
+const BrandsPage: React.FC<BrandsPageProps> = ({ brands, dashboardContent }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredBrands = useMemo(() => {
@@ -42,7 +43,7 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands }) => {
         />
       </Box>
       {!searchQuery ? (
-        <BrandsListing brands={brands} hideReferCard={false} />
+        <BrandsListing brands={brands} hideReferCard={false} dashboardContent={dashboardContent} />
       ) : searchQuery && filteredBrands?.length > 0 ? (
         <>
           <Grid container mb={2.5}>

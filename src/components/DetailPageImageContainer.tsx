@@ -14,7 +14,7 @@ const DetailPageImageContainer = ({ item }: { item: BrandDetails }) => {
         backgroundImage: `url(${productImage})`,
       }}
     >
-      <FeedLikeIcon />
+      <FeedLikeIcon postId={item?.id} isWishlisted={item?.is_wishlisted} />
       {brandLogo && (
         <Box className="brand-logo">
           <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />

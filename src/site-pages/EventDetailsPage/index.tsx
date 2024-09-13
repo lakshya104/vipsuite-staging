@@ -16,7 +16,7 @@ const EventDetailsPage = async ({ id }: { id: number }) => {
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
-    eventDetails = await GetVipEventDetails(Number(id), token);
+    eventDetails = await GetVipEventDetails(Number(id));
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Event Details not found." />;
   }

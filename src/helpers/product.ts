@@ -9,9 +9,7 @@ export const getFilteredProductVariations = (
     every(selectedFilters, (selectedFilter) =>
       some(
         variation.attributes,
-        (attribute) =>
-          selectedFilter.name === attribute.name &&
-          selectedFilter.option === attribute.option,
+        (attribute) => selectedFilter.name === attribute.name && selectedFilter.option === attribute.option,
       ),
     ),
   );
@@ -26,14 +24,9 @@ export const getAttributes = (
     return undefined;
   }
 
-  const variations = getFilteredProductVariations(
-    productVariations,
-    selectedFilters,
-  );
+  const variations = getFilteredProductVariations(productVariations, selectedFilters);
 
-  const attributes = variations.flatMap(
-    (variation) => variation.attributes ?? [],
-  );
+  const attributes = variations.flatMap((variation) => variation.attributes ?? []);
 
   const filters = unionBy(
     attributes.filter((attribute) => attribute.name === searchFilterName),

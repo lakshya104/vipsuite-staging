@@ -26,6 +26,7 @@ export interface OpportunityDetails {
   opportunity_category: number[];
   class_list: string[];
   acf: Acf;
+  is_wishlisted?: boolean;
   _links: Links;
 }
 
