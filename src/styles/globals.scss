@@ -177,6 +177,11 @@ form {
     border-radius: rem(37.5) !important;
     border-color: var(--color-textBlack);
     @include fontSize(15);
+    .site-dialog & {
+      height: rem(40);
+      padding: rem(10) rem(20);
+      top: 0;
+    }
   }
   input {
     &:-webkit-autofill {
@@ -401,6 +406,14 @@ div.site-dialog {
     legend {
       > span {
         display: none !important;
+      }
+    }
+    p {
+      line-height: 1.54;
+      letter-spacing: -0.01em;
+      @include fontSize(13);
+      strong {
+        font-weight: 500;
       }
     }
   }

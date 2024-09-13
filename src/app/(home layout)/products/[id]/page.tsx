@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Box } from '@mui/material';
 import './ProductDetails.scss';
-import { GetBrandProductDetail, GetToken } from '@/libs/api-manager/manager';
+import { GetBrandProductDetail } from '@/libs/api-manager/manager';
 import type { Metadata, ResolvingMetadata } from 'next';
 import ProductDetailsPage from '@/site-pages/ProductDetailsPage';
 import ProductDetailsPageLoading from '@/site-pages/ProductDetailsPage/loading';
@@ -15,8 +15,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   try {
-    const token = await GetToken();
-    const product: Product = await GetBrandProductDetail(parseInt(params.id), token);
+    const product: Product = await GetBrandProductDetail(parseInt(params.id));
     const previousImages = (await parent).openGraph?.images || [];
 
     return {

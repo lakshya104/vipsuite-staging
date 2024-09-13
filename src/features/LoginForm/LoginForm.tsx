@@ -53,13 +53,13 @@ const LoginForm = () => {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
 
   const onSubmit = (values: LoginFormValues) => {
-    setError('');
+    setToasterOpen(false);
     startTransition(() => {
       login(values)
         .then((data) => {
@@ -86,12 +86,12 @@ const LoginForm = () => {
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="login-form">
       <InputForm
-        {...register('username')}
+        {...register('email')}
         placeholder="Email"
         label="Email"
         type="text"
-        error={!!errors.username}
-        helperText={errors.username?.message}
+        error={!!errors.email}
+        helperText={errors.email?.message}
         autoComplete="email"
       />
       <InputForm

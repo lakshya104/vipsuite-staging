@@ -81,9 +81,9 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
       type: 'Secondary Stylist Contact',
       value: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
     },
-    { type: 'Primary Gifting Contact', value: get(profileDetails, 'acf.stylist_contacts.email', '') },
+    { type: 'Primary Commercial Opportunity Contact', value: get(profileDetails, 'acf.stylist_contacts.email', '') },
     {
-      type: 'Secondary Gifting Contact',
+      type: 'Secondary Commercial Opportunity Contact',
       value: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
     },
   ];

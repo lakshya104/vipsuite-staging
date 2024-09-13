@@ -34,7 +34,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
               {truncateDescription(item?.acf?.short_description, 30)}
             </Typography>
           )}
-          <Typography variant="body2">{item['brand-category']?.join(' | ')}</Typography>
+          <Typography variant="body2">{item['brand-category']?.join(' <span>|</span> ')}</Typography>
         </CardContent>
       </Card>
     </ProgressBarLink>

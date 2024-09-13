@@ -11,6 +11,7 @@
   }
   img {
     height: auto;
+    @include border-radius(8px);
   }
   h1 {
     margin-bottom: rem(28);

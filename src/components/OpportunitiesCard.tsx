@@ -27,7 +27,7 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) 
                 <Typography variant="h2">{opportunity?.title?.rendered}</Typography>
                 <Typography
                   variant="body2"
-                  dangerouslySetInnerHTML={{ __html: opportunity?.['opportunity-category']?.join(' | ') }}
+                  dangerouslySetInnerHTML={{ __html: opportunity?.['opportunity-category']?.join(' <span>|</span> ') }}
                 />
               </CardContent>
             </Card>

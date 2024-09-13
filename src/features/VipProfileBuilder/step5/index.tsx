@@ -27,9 +27,9 @@ const dialogBoxContent = {
 
 const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, profileDetail, onPrev, token, id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const interestOptions = profileBuilderOptions.interests_options;
-  const interests = profileDetail.interests;
-  const isApproved = profileDetail.profile_status === 'approved' ? true : false;
+  const interestOptions = profileBuilderOptions?.interests_options;
+  const interests = profileDetail?.interests;
+  const isApproved = profileDetail?.profile_status === 'approved' ? true : false;
 
   const {
     register,
@@ -96,7 +96,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
         },
       };
       await UpdateProfile(id, token, profile);
-      revalidatePathAction('/profile');
+      await revalidatePathAction('/profile');
       if (isApproved) {
         router.push('/profile');
       } else {

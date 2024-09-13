@@ -59,7 +59,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
     setLoading(true);
     try {
       if (isRequestOnly) {
-        router.push(`/basket?productId=${product.id}`);
+        router.push(`/basket?step=1&productId=${product.id}`);
       } else {
         const addToCart = await AddItemToCart(token, item, nonce, vipId);
         await revalidateTag(TAGS.GET_VIP_CART);

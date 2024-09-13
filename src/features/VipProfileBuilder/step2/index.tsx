@@ -43,13 +43,13 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   const [checkboxStates, setCheckboxStates] = useState<Record<keyof FormValues, boolean>>({
     eventsEmail: false,
     eventsSecondaryEmail: false,
-    eventsContactMeDirectly: defaultValues.eventsContactMeDirectly || false,
+    eventsContactMeDirectly: defaultValues.eventsContactMeDirectly || true,
     stylistEmail: false,
     stylistSecondaryEmail: false,
-    stylistContactMeDirectly: defaultValues.stylistContactMeDirectly || false,
+    stylistContactMeDirectly: defaultValues.stylistContactMeDirectly || true,
     giftingEmail: false,
     giftingSecondaryEmail: false,
-    giftingContactMeDirectly: defaultValues.giftingContactMeDirectly || false,
+    giftingContactMeDirectly: defaultValues.giftingContactMeDirectly || true,
   });
 
   const handleCheckboxChange = (section: keyof FormValues) => (event: React.ChangeEvent<HTMLInputElement>) => {

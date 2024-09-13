@@ -2,13 +2,15 @@
 import React, { useState } from 'react';
 import Btn from './Button/CommonBtn';
 import DialogBox from './Dialog/Dialog';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
 import { CreateOrder } from '@/libs/api-manager/manager';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { map } from 'lodash';
+import { revalidateTag } from '@/libs/actions';
+import TAGS from '@/libs/apiTags';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -38,6 +40,8 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const searchParams = useSearchParams();
+  const requestProductId = searchParams.get('productId');
   const user = useCurrentUser();
   const userEmail = user?.email;
   const vipProfileId = user?.vip_profile_id;
@@ -46,7 +50,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     setIsDialogOpen(data);
     router.push('/');
   };
-  console.log({ cartData });
 
   const handleCreateOrder = async () => {
     const address = {
@@ -62,6 +65,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
 
     const orderDetails = {
       customer_id: customerId,
+      ...(requestProductId && { request_status: 'some_value' }),
       meta_data: [
         {
           key: 'vip_profile_id',
@@ -77,10 +81,15 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       shipping: {
         ...address,
       },
-      line_items: map(cartData.items, (item) => ({
-        product_id: item.id,
-        quantity: 1,
-      })),
+      line_items: requestProductId
+        ? {
+            product_id: requestProductId,
+            quantity: 1,
+          }
+        : map(cartData.items, (item) => ({
+            product_id: item.id,
+            quantity: 1,
+          })),
       shipping_lines: [
         {
           method_id: 'free_shipping',
@@ -89,10 +98,11 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         },
       ],
     };
-    console.log({ cartData, orderDetails });
+    console.log({ orderDetails });
     startTransition(async () => {
       try {
         await CreateOrder(orderDetails, token, nonce, vipProfileId);
+        await revalidateTag(TAGS.GET_MYORDERS);
         setIsDialogOpen(true);
       } catch (error) {
         openToaster(error?.toString() ?? 'Error processing Order');

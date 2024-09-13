@@ -24,7 +24,7 @@ const FeedItemCard: React.FC<FeedItemCardProps> = ({ item }) => {
             {item.description}
           </Typography>
         )}
-        <Typography variant="body2">{item.type.join(' | ')}</Typography>
+        <Typography variant="body2">{item.type.join(' <span>|</span> ')}</Typography>
       </CardContent>
     </Card>
   );

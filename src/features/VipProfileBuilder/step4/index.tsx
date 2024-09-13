@@ -10,12 +10,13 @@ import {
   Backdrop,
   FormHelperText,
 } from '@mui/material';
+import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { filter, includes, map, union } from 'lodash';
+import { filter, includes, union } from 'lodash';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
-import { formSchema, Step4FormValues } from './schema';
+// import { formSchema, Step4FormValues } from './schema';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
@@ -49,7 +50,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     sports_follow_options = [],
     skills_options = [],
     look_feel_of_socials_options = [],
-    content_type_options = [],
   } = profileBuilderOptions;
 
   const vipStep4formFields = [
@@ -90,6 +90,17 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       options: look_feel_of_socials_options.map((opt: string) => ({ value: opt, label: opt })),
     },
   ];
+  
+  const formSchema = z.object({
+    sportsPlay: z.string().min(1, 'Sports you play is required'),
+    sports: z.string().min(1, 'Sports is required'),
+    sportsFollow: z.string().min(1, 'Sports you follow is required'),
+    skills: z.string().min(1, 'Skills is required'),
+    socialLook: z.string().min(1, 'Look and feel of your socials is required'),
+    habits: z.array(z.string()).min(1, 'At least one habit is required'),
+  });
+
+  type Step4FormValues = z.infer<typeof formSchema>;
 
   const defaultValues: Step4FormValues = {
     habits: profileDetail.habits || [],
@@ -98,15 +109,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     sportsFollow: profileDetail.sports_follow || '',
     skills: profileDetail.skills || '',
     socialLook: profileDetail.look_feel_of_socials || '',
-    type_of_content_create: profileDetail.type_of_content_create || [],
   };
-
-  const contentTypes = content_type_options
-    ? map(content_type_options, (option) => ({
-        value: option,
-        label: option,
-      }))
-    : [];
 
   const {
     handleSubmit,
@@ -138,7 +141,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
         sports_follow: data.sportsFollow,
         skills: data.skills,
         look_feel_of_socials: data.socialLook,
-        type_of_content_create: data.type_of_content_create,
       };
       const profile = {
         acf: {
@@ -150,7 +152,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           sports_follow: data.sportsFollow === '' ? null : data.sportsFollow,
           skills: data.skills === '' ? null : data.skills,
           look_feel_of_socials: data.socialLook === '' ? null : data.socialLook,
-          type_of_content_create: data.type_of_content_create,
         },
       };
       await UpdateProfile(id, token, profile);
@@ -202,43 +203,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           )}
         </Box>
       ))}
-      {profileDetail?.known_for?.includes('Content Creator') && contentTypes.length > 0 && (
-        <>
-          <Typography variant="h6" textAlign="center" mb={4}>
-            Type of content you create
-          </Typography>
-          <FormGroup>
-            <Box width="100%" className="form-checkbox-group">
-              {contentTypes.map((option) => (
-                <Box key={option.value}>
-                  <Controller
-                    name="type_of_content_create"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        control={
-                          <input
-                            type="checkbox"
-                            {...field}
-                            checked={field.value?.includes(option.value)}
-                            onChange={() => handleCheckboxChange(field, option.value)}
-                          />
-                        }
-                        label={option.label}
-                      />
-                    )}
-                  />
-                </Box>
-              ))}
-            </Box>
-            {errors.type_of_content_create && (
-              <Typography color="error" textAlign="center">
-                Please select an option
-              </Typography>
-            )}
-          </FormGroup>
-        </>
-      )}
       {vipStep4formFields.map(({ name, label, type, options, placeholder }) => (
         <Box key={name} width="100%">
           {type === 'select' ? (

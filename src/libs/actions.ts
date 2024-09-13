@@ -10,10 +10,10 @@ export const login = async (values: LoginFormValues) => {
   if (!validatedFields.success) {
     return { error: 'Invalid Fields!' };
   }
-  const { username, password } = validatedFields.data;
+  const { email, password } = validatedFields.data;
   try {
     await signIn('credentials', {
-      username,
+      email,
       password,
       redirectTo: '/home',
     });

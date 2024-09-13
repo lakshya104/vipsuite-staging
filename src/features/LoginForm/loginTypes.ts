@@ -1,13 +1,13 @@
 import * as z from 'zod';
 
 export const LoginSchema = z.object({
-  username: z
+  email: z
     .string()
     .min(1, {
-      message: 'Username is required',
-    })
+      message: 'Email is required',
+    }).email('Invalid email address')
     .min(3, {
-      message: 'Username must be at least 3 characters',
+      message: 'Email must be at least 3 characters',
     }),
   password: z
     .string()
@@ -20,6 +20,6 @@ export const LoginSchema = z.object({
 });
 
 export interface LoginFormValues {
-  username: string;
+  email: string;
   password: string;
 }

@@ -49,7 +49,7 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
             </Typography>{' '}
             {item.acf.event_location}
           </Typography>
-          <Typography variant="body2">{item['event-category'].join(' | ')}</Typography>
+          <Typography variant="body2">{item['event-category'].join(' <span>|</span> ')}</Typography>
         </CardContent>
       </Card>
     </ProgressBarLink>

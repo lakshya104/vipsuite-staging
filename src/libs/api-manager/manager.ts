@@ -178,7 +178,9 @@ export const ResetPassword = async ({
 
 export const GetAllOrders = async () => {
   const id = await GetCustomerId();
-  return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id));
+  return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id),{
+    next: { tags: [TAGS.GET_MYORDERS] },
+  });
 };
 
 export const GetOrderById = async (id: number) => {
