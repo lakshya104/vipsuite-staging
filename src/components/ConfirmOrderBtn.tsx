@@ -23,7 +23,6 @@ const dialogBoxContent = {
 interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
   token: string;
-  customerId: number;
   cartData: Cart;
   nonce: string;
   startTransition: typeof import('react').startTransition;
@@ -33,7 +32,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   selectedAddress,
   cartData,
   nonce,
-  customerId,
   token,
   startTransition,
 }) => {
@@ -64,14 +62,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     };
 
     const orderDetails = {
-      customer_id: Number(customerId),
       ...(requestProductId && { status: 'request-only' }),
-      meta_data: [
-        {
-          key: 'vip_profile_id',
-          value: vipProfileId,
-        },
-      ],
       set_paid: true,
       billing: {
         ...address,

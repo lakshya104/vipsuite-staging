@@ -7,13 +7,11 @@ import OrderJourney from '@/features/OrderJourney';
 
 const BasketPage = async () => {
   let addresses: Address[] | [] = [];
-  let id: number | null = null;
   let token: string | null = null;
   let cartItems: Cart | null = null;
   let nonce: string | null = null;
   try {
     const customerData = await GetCustomerIdTokenAndUserId();
-    id = customerData?.id;
     token = customerData?.token;
     const [fetchedAddresses, cartData] = await Promise.all([GetAddresses(), FetchCartItemsAndNonce(token)]);
     if (!cartData || !fetchedAddresses) {
@@ -29,7 +27,7 @@ const BasketPage = async () => {
     return <ErrorHandler error={error} errMessage="Not able to show orders currently." />;
   }
 
-  return <OrderJourney addresses={addresses} token={token} customerId={id} cartData={cartItems} nonce={nonce} />;
+  return <OrderJourney addresses={addresses} token={token} cartData={cartItems} nonce={nonce} />;
 };
 
 export default BasketPage;

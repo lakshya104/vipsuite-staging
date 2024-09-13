@@ -11,7 +11,6 @@ import ErrorFallback from '@/components/ErrorFallback';
 interface SelectAddressFormProps {
   addresses: Address[];
   token: string;
-  customerId: number;
   cartData: Cart;
   nonce: string;
   onPrevious?: () => void;
@@ -20,7 +19,6 @@ interface SelectAddressFormProps {
 const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   addresses,
   token,
-  customerId,
   cartData,
   nonce,
   onPrevious,
@@ -63,7 +61,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
             <ConfirmOrderBtn
               selectedAddress={selectedAddress}
               token={token}
-              customerId={customerId}
               cartData={cartData}
               nonce={nonce}
               startTransition={startTransition}

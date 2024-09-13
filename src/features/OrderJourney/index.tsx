@@ -9,12 +9,11 @@ import { useSearchParams } from 'next/navigation';
 interface OrderJourneyProps {
   addresses: Address[];
   token: string;
-  customerId: number;
   cartData: Cart;
   nonce: string;
 }
 
-const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, customerId, cartData, nonce }) => {
+const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, cartData, nonce }) => {
   const searchParams = useSearchParams();
   const step = searchParams.get('step');
   const currentStep = step === '1' ? step : 0;
@@ -43,7 +42,6 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, customerI
         <SelectAddressForm
           addresses={addresses}
           token={token}
-          customerId={customerId}
           cartData={cartData}
           nonce={nonce}
           onPrevious={handleBack}
