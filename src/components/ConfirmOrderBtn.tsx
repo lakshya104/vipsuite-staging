@@ -91,7 +91,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         },
       ],
     };
-    console.log({ orderDetails });
     try {
       startTransition(async () => {
         await CreateOrder(orderDetails, token, nonce, vipProfileId);

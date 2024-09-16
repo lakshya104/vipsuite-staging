@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useForm, Controller, Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import Btn from '@/components/Button/CommonBtn';
 import * as z from 'zod';
 import InputTextFormField from '@/components/InputTextFormField';
@@ -256,6 +256,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
         message={error}
         severity={toasterType as 'error' | 'success' | 'warning' | 'info'}
       />
+      <Backdrop sx={{ color: '#fff', zIndex: 10000 }} open={btnDisable}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

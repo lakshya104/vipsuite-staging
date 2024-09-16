@@ -37,7 +37,12 @@ const Toaster: React.FC<ToasterProps> = ({
       anchorOrigin={anchorOrigin}
       {...rest}
     >
-      <Alert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
+      <Alert
+        onClose={handleClose}
+        severity={severity}
+        variant="filled"
+        sx={{ width: '100%', backgroundColor: severity === 'error' ? 'red' : 'black' }}
+      >
         {message}
       </Alert>
     </Snackbar>

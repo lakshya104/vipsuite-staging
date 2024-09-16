@@ -37,7 +37,7 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
           {content?.title}
         </DialogTitle>
         <DialogContent>
-          {content.image && (
+          {content?.image && (
             <Box>
               <Image
                 alt="Dialog Image"

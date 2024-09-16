@@ -1,5 +1,5 @@
 import React from 'react';
-import ReferVIPForm from '@/features/refer-a-vip';
+import ReferVIPForm from '@/features/Refer-Vip';
 import { DashboardContent } from '@/interfaces/brand';
 import { GetDashboardContent } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';

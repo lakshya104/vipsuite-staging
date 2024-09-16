@@ -21,7 +21,7 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) 
                 backgroundImage: `url(${opportunity?.acf.featured_image?.link})`,
               }}
             >
-              <FeedLikeIcon postId={opportunity?.id} isWishlisted={opportunity?.is_wishlisted} />
+              <FeedLikeIcon postId={opportunity?.id} isWishlisted={opportunity?.is_wishlisted} type="opportunity" />
               <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
                 VIP Club
               </Typography>

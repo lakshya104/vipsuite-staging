@@ -63,7 +63,7 @@ const EventContainer = ({ event }: EventContainerProps) => {
         backgroundImage: `url(${eventImageUrl})`,
       }}
     >
-      <FeedLikeIcon postId={event.id} isWishlisted={event.is_wishlisted} />
+      <FeedLikeIcon postId={event.id} isWishlisted={event.is_wishlisted} type="event" />
       {brandLogo && (
         <Box className="brand-logo">
           <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />

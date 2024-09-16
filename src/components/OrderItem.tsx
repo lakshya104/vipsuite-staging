@@ -7,8 +7,6 @@ interface OrderItemProps {
   item: LineItem;
 }
 const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
-  console.log(item.meta_data);
-
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>
       <Image

@@ -8,6 +8,8 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { AddToWishlist, DeleteFromWishlist } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
+import { revalidateTag } from '@/libs/actions';
+import TAGS from '@/libs/apiTags';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
@@ -34,27 +36,47 @@ const AnimatedIcon = styled('div')({
   transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
 });
 interface FeedLikeIconProps {
-  isWishlisted?: boolean;
+  isWishlisted: boolean;
   postId: number;
+  type: 'event' | 'brand' | 'opportunity';
 }
-const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => {
-  const [liked, setLiked] = React.useState(isWishlisted ? true : false);
-  const [isWislist, setIsWishlist] = useState<boolean>(isWishlisted ? isWishlisted : false);
+const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type }) => {
+  const [isWislist, setIsWishlist] = useState<boolean>(isWishlisted);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
   const user = useCurrentUser();
   const token = user?.token;
   const vipId = user?.vip_profile_id;
+
   const handleIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
+  };
+
+  const revalidateTags = async (postType: 'event' | 'brand' | 'opportunity') => {
+    switch (postType) {
+      case 'event':
+        await revalidateTag(TAGS.GET_EVENTS);
+        await revalidateTag(TAGS.GET_EVENT_DETAILS);
+        break;
+      case 'brand':
+        await revalidateTag(TAGS.GET_BRANDS);
+        await revalidateTag(TAGS.GET_BRAND_DETAILS);
+        break;
+      case 'opportunity':
+        await revalidateTag(TAGS.GET_OPPORTUNITY);
+        await revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleLike = async (event: any) => {
     setToasterType('');
     event.stopPropagation();
     handleIconClick(event);
-    setLiked((prevLiked) => !prevLiked);
+    setIsWishlist((prevLiked) => !prevLiked);
     try {
       if (!isWislist) {
         setToasterType('success');
@@ -70,7 +92,9 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => 
     } catch (error) {
       setToasterType('error');
       openToaster(error?.toString() ?? 'Error updating wishlist');
-      setLiked((prevLiked) => !prevLiked);
+      setIsWishlist((prevLiked) => !prevLiked);
+    } finally {
+      await revalidateTags(type);
     }
   };
 
@@ -80,16 +104,16 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId }) => 
         <IconWrapper>
           <AnimatedIcon
             style={{
-              opacity: liked ? 0 : 1,
-              transform: liked ? 'scale(0.5)' : 'scale(1)',
+              opacity: isWislist ? 0 : 1,
+              transform: isWislist ? 'scale(0.5)' : 'scale(1)',
             }}
           >
             <FavoriteBorderIcon sx={{ color: 'white' }} />
           </AnimatedIcon>
           <AnimatedIcon
             style={{
-              opacity: liked ? 1 : 0,
-              transform: liked ? 'scale(1)' : 'scale(1.5)',
+              opacity: isWislist ? 1 : 0,
+              transform: isWislist ? 'scale(1)' : 'scale(1.5)',
             }}
           >
             <FavoriteIcon sx={{ color: '#FFFFF7' }} />

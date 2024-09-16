@@ -99,7 +99,9 @@ export const GetProfile = async () => {
 };
 
 export const GetBrands = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrands);
+  return await FetchInstanceWithHeaders(Endpoints.getBrands, {
+    next: { tags: [TAGS.GET_BRANDS] },
+  });
 };
 
 export const GetDashboardContent = async () => {
@@ -107,7 +109,9 @@ export const GetDashboardContent = async () => {
 };
 
 export const GetBrandDetails = async (id: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrandDetails(id));
+  return await FetchInstanceWithHeaders(Endpoints.getBrandDetails(id), {
+    next: { tags: [TAGS.GET_BRAND_DETAILS] },
+  });
 };
 
 export const GetBrandProducts = async (id: number) => {
@@ -123,7 +127,9 @@ export const GetSignupContent = async () => {
 };
 
 export const GetVipEvents = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getVipEvents);
+  return await FetchInstanceWithHeaders(Endpoints.getVipEvents, {
+    next: { tags: [TAGS.GET_EVENTS] },
+  });
 };
 
 export const GetProfileBuilderContent = async () => {
@@ -266,7 +272,9 @@ export const CreateOrder = async (data: any, token: string, nonce: string, vipId
 };
 
 export const GetVipOpportunities = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getVipOpportunities);
+  return await FetchInstanceWithHeaders(Endpoints.getVipOpportunities, {
+    next: { tags: [TAGS.GET_OPPORTUNITY] },
+  });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -526,14 +534,18 @@ export const ReferaVIP = async (
   }
 };
 
-export const MakeRequestSubmit = async (id: number, token: string, data: {
-  request_content: string
-}) => {
+export const MakeRequestSubmit = async (
+  id: number,
+  token: string,
+  data: {
+    request_content: string;
+  },
+) => {
   try {
     const response = await Instance.post(`${Endpoints.MakeRequest}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'vip-profile-id': id.toString()
+        'vip-profile-id': id.toString(),
       },
     });
     return response.data;
