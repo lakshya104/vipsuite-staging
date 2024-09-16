@@ -36,12 +36,12 @@ const AnimatedIcon = styled('div')({
   transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
 });
 interface FeedLikeIconProps {
-  isWishlisted: boolean;
+  isWishlisted?: boolean;
   postId: number;
   type: 'event' | 'brand' | 'opportunity';
 }
 const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type }) => {
-  const [isWislist, setIsWishlist] = useState<boolean>(isWishlisted);
+  const [isWislist, setIsWishlist] = useState(isWishlisted ?? isWishlisted);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
   const user = useCurrentUser();

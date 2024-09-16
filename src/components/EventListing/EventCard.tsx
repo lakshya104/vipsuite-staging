@@ -13,12 +13,13 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
   const brandLogo = item.acf?.brand_logo?.url;
+  const eventImage = item?.acf?.event_image?.sizes?.large|| '/img/placeholder-image.jpg';
   return (
-    <ProgressBarLink href={`/events/${item.id}`}>
+    <ProgressBarLink href={`/events/${item?.id}`}>
       <Card
         className="landing-product__item-inner"
         sx={{
-          backgroundImage: `url(${item.acf.event_image.sizes.large})`,
+          backgroundImage: `url(${eventImage})`,
         }}
       >
         {brandLogo && (
