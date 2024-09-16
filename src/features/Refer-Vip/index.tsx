@@ -50,8 +50,10 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
       setIsPending(true);
       await ReferaVIP(user?.vip_profile_id, user?.token, data);
       setToasterType('success');
+      openToaster('Referral submitted successfully');
       router.push('/home');
     } catch (error) {
+      setToasterType('error');
       openToaster('Error during submit the form. ' + error);
     } finally {
       setIsPending(false);

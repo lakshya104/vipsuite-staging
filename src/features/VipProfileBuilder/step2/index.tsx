@@ -20,13 +20,13 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
     eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
-    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly || false,
+    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly ?? true,
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
-    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly || false,
+    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly ?? true,
     giftingEmail: profileDetail.gifting_contacts?.email || '',
     giftingSecondaryEmail: profileDetail.gifting_contacts?.secondary_email || '',
-    giftingContactMeDirectly: profileDetail.gifting_contacts?.contact_me_directly || false,
+    giftingContactMeDirectly: profileDetail.gifting_contacts?.contact_me_directly ?? true,
   };
 
   const {
@@ -43,13 +43,13 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   const [checkboxStates, setCheckboxStates] = useState<Record<keyof FormValues, boolean>>({
     eventsEmail: false,
     eventsSecondaryEmail: false,
-    eventsContactMeDirectly: defaultValues.eventsContactMeDirectly || true,
+    eventsContactMeDirectly: defaultValues.eventsContactMeDirectly,
     stylistEmail: false,
     stylistSecondaryEmail: false,
-    stylistContactMeDirectly: defaultValues.stylistContactMeDirectly || true,
+    stylistContactMeDirectly: defaultValues.stylistContactMeDirectly,
     giftingEmail: false,
     giftingSecondaryEmail: false,
-    giftingContactMeDirectly: defaultValues.giftingContactMeDirectly || true,
+    giftingContactMeDirectly: defaultValues.giftingContactMeDirectly,
   });
 
   const handleCheckboxChange = (section: keyof FormValues) => (event: React.ChangeEvent<HTMLInputElement>) => {

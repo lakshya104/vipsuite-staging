@@ -11,15 +11,15 @@ const DashboardContentComponent: React.FC<DashboardContentProps> = ({ dashboardC
   return (
     <>
       <ReferCard
-        heading={dashboardContent.rafer_vip_heading}
-        text={dashboardContent.rafer_vip_short_description}
+        heading={dashboardContent?.rafer_vip_heading}
+        text={dashboardContent?.rafer_vip_short_description}
         href="/refer-a-vip"
         isPdf={false}
       />
       {totalFollowers >= 100000 && (
         <ReferCard
-          heading={dashboardContent.make_request_heading}
-          text={dashboardContent.make_request_short_description}
+          heading={dashboardContent?.make_request_heading}
+          text={dashboardContent?.make_request_short_description}
           href="/make-request"
           isPdf={false}
         />

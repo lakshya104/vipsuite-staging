@@ -44,6 +44,8 @@ export interface ACF {
   phone?: string;
   profile_status?: string;
   type_of_content_create?: string[];
+  instagram_follower_count?: number;
+  tiktok_follower_count?: number;
 }
 
 export interface UserProfile {

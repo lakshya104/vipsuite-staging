@@ -50,8 +50,10 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
       setIsPending(true);
       await MakeRequestSubmit(user?.vip_profile_id, user?.token, data);
       setToasterType('success');
+      openToaster('Request submitted successfully');
       router.push('/home');
     } catch (error) {
+      setToasterType('error');
       openToaster('Error during submit the form. ' + error);
     } finally {
       setIsPending(false);

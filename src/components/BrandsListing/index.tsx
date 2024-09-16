@@ -2,8 +2,9 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import BrandCard from './BrandCard';
 import { Brand, DashboardContent } from '@/interfaces/brand';
-import { partition } from 'lodash';
+import { get, partition } from 'lodash';
 import DashboardContentComponent from '../DashboardContent';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 interface BrandsListingProps {
   brands: Brand[];
@@ -13,6 +14,11 @@ interface BrandsListingProps {
 
 const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard, dashboardContent }) => {
   const [featuredBrands, nonFeaturedBrands] = partition(brands, (brand) => brand?.acf?.is_featured);
+  const user = useCurrentUser();
+  const tiktokFollowerCount = get(user, 'acf.tiktok_follower_count', 0);
+  const instagramFollowerCount = get(user, 'acf.instagram_follower_count', 0);
+  const totalFollowerCount = tiktokFollowerCount + instagramFollowerCount;
+
   return (
     <>
       {!hideReferCard ? (
@@ -26,7 +32,7 @@ const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard, da
           </Grid>
           {dashboardContent && (
             <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-              <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={0} />
+              <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
             </Box>
           )}
           <Grid className="landing-product" container spacing={2.5}>
