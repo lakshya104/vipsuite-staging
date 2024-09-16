@@ -8,9 +8,10 @@ interface TestimonialCardProps {
   title: string;
   testimonial: string;
   logo: string;
+  authorPhoto: string;
 }
 
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimonial, logo }) => {
+const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimonial, logo, authorPhoto }) => {
   return (
     <Box className="site-testimonial">
       <CardContent className="site-testimonial__inner">
@@ -21,7 +22,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimon
           {testimonial}
         </Typography>
         <Box className="site-testimonial__user">
-          <Avatar alt={name} src={'/img/aiavatar.png'} />
+          <Avatar alt={name} src={authorPhoto} />
           <Box className="site-testimonial__user-info">
             <Typography variant="h3" component="h3">
               {name}

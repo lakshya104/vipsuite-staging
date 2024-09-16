@@ -1,9 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Container, Grid, Typography, Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import he from 'he';
 import './BrandClub.scss';
+import { PageData } from '@/interfaces/public-page';
 
-const BrandClub = () => {
+interface BrandClubProps {
+  data: PageData;
+}
+
+const BrandClub: React.FC<BrandClubProps> = ({ data }) => {
+  const brandclub = data?.acf?.content_modules?.[2]?.content_blocks?.[0];
+  const brandpoints = he.decode(brandclub?.description);
+  const brandpointsArray = brandpoints
+    ? brandpoints.match(/<li>(.*?)<\/li>/g)?.map((item: string) => item.replace(/<\/?li>/g, ''))
+    : [];
+
   return (
     <Box component="section" className="section-club">
       <Container>
@@ -14,21 +27,15 @@ const BrandClub = () => {
           <Grid item xs={12} sm={6} className="section-club__content">
             <Typography variant="h2">Annual VIP Brand Club</Typography>
             <Typography variant="body1" paragraph>
-              Take your community of VIPs to the next level with a VIP club. Lorem ipsum dolor sit amet, mea nostrum
-              lobortis ea. Vim fuisset reprimique theophrastus ex.
+              {brandclub?.heading}
             </Typography>
             <List>
-              {[
-                'Bespoke VIP Brand Strategy',
-                'Earned Influence & Talent Led Opportunities',
-                'Forward Planning, Topical, Ad-Hoc & NPD Moments',
-                'Gifting, Events & Commercial Opportunities',
-              ].map((text) => (
-                <ListItem key={text} disableGutters>
+              {brandpointsArray?.map((item: string, index: number) => (
+                <ListItem key={index} disableGutters>
                   <ListItemIcon>
                     <CheckIcon color="success" />
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={item} />
                 </ListItem>
               ))}
             </List>

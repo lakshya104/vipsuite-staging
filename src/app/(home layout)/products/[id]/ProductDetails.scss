@@ -40,7 +40,7 @@
     }
   }
   .product-size {
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 1200px) {
       padding-top: rem(6);
       overflow: hidden;
       @include flex;
@@ -52,7 +52,7 @@
     }
     .MuiFormControl-root {
       margin: 0 0 rem(16);
-      @media only screen and (min-width: 768px) {
+      @media only screen and (min-width: 1200px) {
         margin: 0;
         padding-right: rem(16);
         flex: 1 0 0;

@@ -1,46 +1,47 @@
 import React from 'react';
 import { Box, Typography, Button, Grid, Container } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import PropTypes from 'prop-types';
-import { featureCellsData } from '@/data';
 import './BrandsPlace.scss';
 import { ProgressBarLink } from '../ProgressBar';
+import { PageData } from '@/interfaces/public-page';
 
-interface FeatureCellProps {
-  title: string;
-  items: (string | null | undefined)[];
+interface TableDataItem {
+  heading: string;
+  points: { copy: string }[];
 }
 
-const FeatureCell: React.FC<FeatureCellProps> = ({ title, items }) => (
-  <Paper elevation={0}>
-    <Typography variant="h3" gutterBottom>
-      {title}
-    </Typography>
-    {items.map((item, index) => (
-      <Typography key={index} variant="body2" paragraph>
-        {item}
+const FeatureCell: React.FC<TableDataItem> = ({ heading, points }) => {
+  return (
+    <Paper elevation={0}>
+      <Typography variant="h3" gutterBottom>
+        {heading}
       </Typography>
-    ))}
-  </Paper>
-);
-
-FeatureCell.propTypes = {
-  title: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+      {points.map((item, index) => (
+        <Typography key={index} variant="body2" paragraph>
+          {item.copy}
+        </Typography>
+      ))}
+    </Paper>
+  );
 };
 
-const BrandsPlace = () => {
+interface BrandsPlaceProps {
+  data: PageData;
+}
+
+const BrandsPlace: React.FC<BrandsPlaceProps> = ({ data }) => {
+  const contentModule = data?.acf?.content_modules?.[1];
+  const tableData = contentModule?.table_columns as TableDataItem[] | undefined;
+
   return (
     <Box component="section" className="brand-section">
       <Container>
         <Grid container>
           <Grid item xs={12} md={4}>
             <Box className="brand-section__head">
-              <Typography variant="h2">all in one place</Typography>
+              <Typography variant="h2">{contentModule?.heading}</Typography>
               <Typography variant="body1" paragraph>
-                The biggest advantage of The VIP Suite portal is the ability to do it all together in one place,
-                allowing you to pick and choose which services work best to build your next activation whether to
-                strengthen your VIP community or grow it further.
+                {contentModule?.description}
               </Typography>
               <ProgressBarLink href="/on-boarding">
                 <Button variant="contained" className="button button--white">
@@ -52,11 +53,12 @@ const BrandsPlace = () => {
 
           <Grid item xs={12} md={8} className="brand-section__content">
             <Grid container spacing={0}>
-              {featureCellsData.map((feature, index) => (
-                <Grid item xs={12} sm={2.4} key={index} className="brand-section__item">
-                  <FeatureCell title={feature.title} items={feature.items} />
-                </Grid>
-              ))}
+              {tableData &&
+                tableData.map((feature, index) => (
+                  <Grid item xs={12} sm={2.4} key={index} className="brand-section__item">
+                    <FeatureCell heading={feature?.heading} points={feature?.points} />
+                  </Grid>
+                ))}
             </Grid>
           </Grid>
         </Grid>

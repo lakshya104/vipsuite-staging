@@ -8,6 +8,7 @@ const TAGS = {
   GET_VIP_CART: 'getVipCart',
   GET_ADDRESSES: 'getAddress',
   GET_MYORDERS: 'getMyOrders',
+  GET_PRODUCT_DETAILS: 'getProductDetails',
 };
 
 export default TAGS;

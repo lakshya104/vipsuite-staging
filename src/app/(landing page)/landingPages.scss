@@ -15,10 +15,13 @@
   }
   .image-module {
     margin-bottom: rem(32);
+    overflow: hidden;
+    @include border-radius(10px);
     @media only screen and (min-width: 768px) {
       margin-bottom: rem(72);
     }
     img {
+      display: block;
       height: auto;
     }
   }

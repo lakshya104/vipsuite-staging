@@ -119,7 +119,9 @@ export const GetBrandProducts = async (id: number) => {
 };
 
 export const GetBrandProductDetail = async (id: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id));
+  return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id),{
+    next: { tags: [TAGS.GET_PRODUCT_DETAILS] },
+  });
 };
 
 export const GetSignupContent = async () => {
@@ -554,4 +556,8 @@ export const MakeRequestSubmit = async (
       throw errorMessage;
     }
   }
+};
+
+export const GetPageContent = async (id: number) => {
+  return await FetchInstance(Endpoints.getPageContent(id));
 };

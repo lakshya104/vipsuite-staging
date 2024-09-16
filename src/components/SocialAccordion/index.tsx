@@ -2,48 +2,28 @@ import React, { Fragment } from 'react';
 import Image from 'next/image';
 import { Box, Button, Container, Typography } from '@mui/material';
 import './SocialAccordion.scss';
+import { PageData } from '@/interfaces/public-page';
 
-const socialLinks = [
-  {
-    imgSrc: '/img/events.svg',
-    name: 'Events',
-    description:
-      'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
-  },
-  {
-    imgSrc: '/img/gifting.svg',
-    name: 'Gifting',
-    description:
-      'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
-  },
-  {
-    imgSrc: '/img/campaigns.svg',
-    name: 'Campaigns',
-    description:
-      'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
-  },
-  {
-    imgSrc: '/img/profiling.svg',
-    name: 'Profiling',
-    description:
-      'Access profiled celebrities and influencers direct to their personal email address and send product out, through our storage facility, direct to their door.',
-  },
-];
+interface SocialAccordionProps {
+  data: PageData;
+}
 
-const SocialAccordion = () => {
+const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
+  const socialLinks = data?.acf?.content_modules?.[1]?.slides;
+
   return (
     <Container>
       <Box className="site-card__wrapper">
         <Box className="accordionItem">
-          {socialLinks.map((link, index) => (
+          {socialLinks?.map((link, index) => (
             <Fragment key={index}>
               <Box className="accordionItem__link">
                 <Box className="accordionItem__image">
-                  <Image src={link.imgSrc} alt={link.name} width={1024} height={430} />
+                  <Image src={link.image.sizes?.['vs-container']} alt={link.heading} width={1024} height={430} />
                 </Box>
                 <Box className="accordionItem__full">
-                  <Typography variant="h2">{link.name}</Typography>
-                  <Typography variant="body1">{link.description}</Typography>
+                  <Typography variant="h2">{link.heading}</Typography>
+                  <Typography variant="body1">{link.copy}</Typography>
                   <Button variant="contained" type="submit" className="button button--border">
                     Find out more
                   </Button>

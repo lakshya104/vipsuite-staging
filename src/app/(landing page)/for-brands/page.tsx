@@ -7,54 +7,54 @@ import JoinUs from '@/components/JoinUs';
 import '../landingPages.scss';
 import TestimonialSection from '@/components/TestimonialSection';
 import { ProgressBarLink } from '@/components/ProgressBar';
-
+import { GetPageContent } from '@/libs/api-manager/manager';
 export default async function Page() {
+  const pageData = await GetPageContent(906);
   return (
     <Box component="main" className="site-main">
       <Container>
         <Typography className="page-title" variant="h1" align="center">
-          For Brands
+          {pageData.acf.heading}
         </Typography>
         <Box className="image-module">
           <Box>
-            <Image src="/img/public.svg" alt="Two smiling women" width={1276} height={682} />
+            <Image
+              src={pageData.acf.image.sizes['vs-container-2x']}
+              alt="Two smiling women"
+              width={1276}
+              height={682}
+            />
           </Box>
         </Box>
         <Box className="content-module">
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
               <Typography variant="h3" component="h2" gutterBottom>
-                Brands and PR agencies who choose to utilise The VIP Suite do so because they want to start a real
-                story.
+                {pageData.acf.subhading}
               </Typography>
             </Grid>
 
             <Grid item xs={12} md={5}>
               <Typography variant="body1" paragraph>
-                Gifting is not about sending out product cold and hoping for the best, events are not about inviting
-                people just because they are well-known and paid-for campaigns are certainly not about choosing the
-                person with the highest social following. Non-targeted approaches and one-off talent engagement like
-                this has little value and even less meaning for your brand.
+                {pageData.acf.copy}
               </Typography>
 
               <Typography variant="body1" paragraph>
-                Our secret? Engage with talent who are the right fit and feel for your brand; talent who match your
-                brand voice and understand your aspirations. Then, once you have connected, take them on your journey
-                with you.
+                {pageData.acf.copy}
               </Typography>
               <ProgressBarLink href={'/on-boarding'}>
                 <Button variant="contained" type="submit" className="button button--black">
-                  Join The VIP Suite
+                  {pageData.acf.cta.cta_text}
                 </Button>
               </ProgressBarLink>
             </Grid>
           </Grid>
         </Box>
       </Container>
-      <JoinUs />
-      <BrandsPlace />
-      <BrandClub />
-      <TestimonialSection />
+      <JoinUs data={pageData} />
+      <BrandsPlace data={pageData} />
+      <BrandClub data={pageData} />
+      <TestimonialSection data={pageData} />
     </Box>
   );
 }

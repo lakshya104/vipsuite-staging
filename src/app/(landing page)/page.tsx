@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import SocialAccordion from '@/components/SocialAccordion';
 import JoinUs from '@/components/JoinUs';
 import TestimonialSection from '@/components/TestimonialSection';
+import { GetPageContent } from '@/libs/api-manager/manager';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -36,16 +37,17 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   const session = await auth();
   if (session) redirect('/home');
+  const pageData = await GetPageContent(234);
 
   return (
     <Box>
-      <HeroSection />
+      <HeroSection data={pageData} />
       <Box component="section" className="site-card">
-        <SocialAccordion />
+        <SocialAccordion data={pageData} />
       </Box>
-      <JoinUs />
-      <Partner />
-      <TestimonialSection />
+      <JoinUs data={pageData} />
+      <Partner data={pageData} />
+      <TestimonialSection data={pageData} />
     </Box>
   );
 }

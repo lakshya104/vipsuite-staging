@@ -59,7 +59,7 @@ export function ProgressBar({ children }: { children: React.ReactNode }) {
 
 interface ProgressBarLinkProps {
   href: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   title?: string;
 }

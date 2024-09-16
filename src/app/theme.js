@@ -66,7 +66,7 @@ const theme = createTheme(baseTheme, {
       styleOverrides: {
         root: {
           '&.MuiContainer-maxWidthLg': {
-            maxWidth: '1324px',
+            maxWidth: '1316px',
             paddingLeft: '20px',
             paddingRight: '20px',
           },

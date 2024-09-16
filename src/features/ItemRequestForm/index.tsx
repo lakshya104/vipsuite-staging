@@ -39,6 +39,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
     control,
     setValue,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
@@ -91,11 +92,13 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   const onSubmit = async () => {
     const prepareItem = getProductData();
     await createOrder(token, prepareItem, nonce);
+    reset()
   };
 
   const handleAddToCart = async () => {
     const prepareItem = getProductData();
     await createOrder(token, prepareItem, nonce);
+    reset()
   };
 
   return (

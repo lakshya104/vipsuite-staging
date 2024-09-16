@@ -2,13 +2,22 @@
 import * as React from 'react';
 import { Typography, Box } from '@mui/material';
 import Slider from 'react-slick';
-import { partners } from '@/data';
 import Image from 'next/image';
 import './Partner.scss';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { PageData } from '@/interfaces/public-page';
+import { find } from 'lodash';
 
-const Partner = () => {
+interface PartnerProps {
+  data: PageData;
+}
+
+const Partner: React.FC<PartnerProps> = ({ data }) => {
+  const contentModules = data.acf.content_modules;
+  const filteredModule = find(contentModules, { acf_fc_layout: 'module_logo_list' });
+  const logos = filteredModule?.list_items;
+
   const settings = {
     dots: false,
     variableWidth: true,
@@ -41,22 +50,31 @@ const Partner = () => {
   };
 
   return (
-    <Box component="section" className="site-partner">
-      <Typography component="h2" variant="h2">
-        Proudly Partnered with...
-      </Typography>
-      <Box>
-        <Slider {...settings}>
-          {partners.map((partner, index) => (
-            <Box key={index} className="site-partner__card">
-              <Box className="site-partner__card-inner">
-                <Image src={partner.img} alt={partner.title} fill />
+    filteredModule && (
+      <Box component="section" className="site-partner">
+        <Typography component="h2" variant="h2">
+          {filteredModule?.heading}
+        </Typography>
+        <Box>
+          <Slider {...settings}>
+            {logos?.map((item, index) => (
+              <Box key={index} className="site-partner__card">
+                <Box className="site-partner__card-inner">
+                  <Image src={item?.logo?.sizes?.['thumbnail'] ?? ''} alt={item?.logo?.title ?? 'Partner Logo'} fill />
+                </Box>
               </Box>
-            </Box>
-          ))}
-        </Slider>
+            ))}
+            {logos?.map((item, index) => (
+              <Box key={index} className="site-partner__card">
+                <Box className="site-partner__card-inner">
+                  <Image src={item?.logo?.sizes?.['thumbnail'] ?? ''} alt={item?.logo?.title ?? 'Partner Logo'} fill />
+                </Box>
+              </Box>
+            ))}
+          </Slider>
+        </Box>
       </Box>
-    </Box>
+    )
   );
 };
 
