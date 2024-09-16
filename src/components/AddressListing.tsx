@@ -26,7 +26,7 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId
             <Box className="address__list" key={index}>
               <Box className="address__list-info">
                 <Typography gutterBottom variant="h3" component="h2">
-                  {add.first_name} {add.last_name}
+                  {add?.first_name} {add?.last_name}
                 </Typography>
                 <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}, ${add?.state},`}</Typography>
                 <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
