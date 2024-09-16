@@ -14,7 +14,7 @@ const MyAddressesPage = async () => {
     if (!token) {
       return <ErrorFallback errorMessage="Invalid Token or User Id" />;
     }
-    addresses = await GetAddresses(userId);
+    addresses = await GetAddresses();
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Address page not available at the moment." />;
   }

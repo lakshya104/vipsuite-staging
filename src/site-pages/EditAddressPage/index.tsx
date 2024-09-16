@@ -17,7 +17,7 @@ const EditAddressPage: React.FC<EditAddressPageProps> = async ({ id }) => {
     if (!token) {
       return <ErrorFallback errorMessage="Invalid Token or User Id" />;
     }
-    addresses = await GetAddresses(userId);
+    addresses = await GetAddresses();
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Editing address not possible at the moment." />;
   }

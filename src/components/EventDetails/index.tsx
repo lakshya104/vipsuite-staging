@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Card, Typography } from '@mui/material';
+import Image from 'next/image';
+import he from 'he';
 import FeedLikeIcon from '@/components/FeedLikeIcon';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
-import Image from 'next/image';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -17,12 +18,12 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
   return (
     <Box className="product-detail">
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        {event?.title?.rendered}
+        {he.decode(event?.title?.rendered)}
       </Typography>
       <EventContainer event={event} />
       <Box className="product-detail__content">
         <Typography variant="h2" gutterBottom>
-          {event?.title?.rendered}
+        {he.decode(event?.title?.rendered)}
         </Typography>
         <Typography variant="body1">
           <Box component="strong">Date:</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -
