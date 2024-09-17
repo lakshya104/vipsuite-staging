@@ -33,6 +33,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     register,
     handleSubmit,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(vipStep2Schema),
@@ -62,6 +63,10 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     if (checked) {
       setValue(section.replace('ContactMeDirectly', 'Email') as keyof FormValues, '');
       setValue(section.replace('ContactMeDirectly', 'SecondaryEmail') as keyof FormValues, '');
+      clearErrors([
+        section.replace('ContactMeDirectly', 'Email') as keyof FormValues,
+        section.replace('ContactMeDirectly', 'SecondaryEmail') as keyof FormValues,
+      ]);
     }
   };
 
@@ -129,6 +134,9 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
             error={!!errors[`${section.toLowerCase()}Email` as keyof FormValues]}
             helperText={errors[`${section.toLowerCase()}Email` as keyof FormValues]?.message}
             disabled={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
+            InputLabelProps={{
+              shrink: !checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues],
+            }}
           />
           <TextField
             fullWidth
@@ -139,6 +147,9 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
             error={!!errors[`${section.toLowerCase()}SecondaryEmail` as keyof FormValues]}
             helperText={errors[`${section.toLowerCase()}SecondaryEmail` as keyof FormValues]?.message}
             disabled={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
+            InputLabelProps={{
+              shrink: !checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues],
+            }}
           />
           <FormControlLabel
             control={

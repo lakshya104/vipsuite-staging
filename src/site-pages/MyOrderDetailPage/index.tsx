@@ -39,9 +39,7 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
       </Box>
       <Box className="order-product__items">
         {orderDetail?.status === 'lookbook-order' && (
-          <Typography variant="body1">
-            Description: {orderDetail?.meta_data[0]?.value}
-          </Typography>
+          <Typography variant="body1">Description: {orderDetail?.meta_data[0]?.value}</Typography>
         )}
         {orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
       </Box>
