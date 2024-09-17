@@ -74,6 +74,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
       openToaster('Error during adding product: ' + error?.toString());
     } finally {
       setLoading(false);
+      router.refresh();
     }
   };
 

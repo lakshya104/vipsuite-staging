@@ -424,7 +424,8 @@ export const AddItemToCart = async (token: string | null, data: any, nonce: stri
     return addItemResponse.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during adding item to cart';
+      const errorMessage =
+        error?.response?.data?.message || error?.message || 'An error occurred during adding item to cart';
       throw errorMessage;
     }
   }
