@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import FeedbackForm from '@/features/FeedbackForm';
 import { GetOrderById, GetUserIdAndToken } from '@/libs/api-manager/manager';
-import { formatDate } from '@/helpers/utils';
+import { formatDate, formatString } from '@/helpers/utils';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 import OrderItem from '@/components/OrderItem';
@@ -29,13 +29,20 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
   if (!orderDetail) {
     return <ErrorFallback errorMessage="No order details found" />;
   }
+  console.log({ orderDetail });
+
   return (
     <>
       <Box my={2.5}>
         <Typography variant="body1">Order Date: {formatDate(orderDetail?.date_created)}</Typography>
-        <Typography variant="body1">Status: {orderDetail?.status}</Typography>
+        <Typography variant="body1">Status: {formatString(orderDetail?.status)}</Typography>
       </Box>
       <Box className="order-product__items">
+        {orderDetail?.status === 'lookbook-order' && (
+          <Typography variant="body1">
+            Description: {orderDetail?.meta_data[0]?.value}
+          </Typography>
+        )}
         {orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
       </Box>
       {!orderDetail.is_feedback_provided && (

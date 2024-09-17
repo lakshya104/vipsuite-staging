@@ -1,11 +1,25 @@
 'use client';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
+import React, { useState, useTransition } from 'react';
 import { InputTextAreaFormField } from '@/components/InputTextFormField';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Btn from './Button/CommonBtn';
+import { useLookbookOrder } from '@/store/useStore';
+import { useRouter } from 'next/navigation';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from './Toaster';
 
 const formSchema = z.object({
   itemName: z
@@ -19,6 +33,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 const RequestItemFormButton: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const { setLookbookDescription } = useLookbookOrder();
+  const [isPending, startTransition] = useTransition();
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const router = useRouter();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,10 +56,16 @@ const RequestItemFormButton: React.FC = () => {
       itemName: '',
     },
   });
-
   const onSubmit = (data: FormValues) => {
-    console.log('Form data:', data);
-    handleClose();
+    try {
+      startTransition(() => {
+        setLookbookDescription(data.itemName);
+        router.push('/basket?step=1&isLookbook=true');
+      });
+      handleClose();
+    } catch (error) {
+      openToaster(String(error));
+    }
   };
 
   return (
@@ -75,6 +99,10 @@ const RequestItemFormButton: React.FC = () => {
           </form>
         </DialogContent>
       </Dialog>
+      <Backdrop sx={{ color: '#fff', zIndex: 10000 }} open={isPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };

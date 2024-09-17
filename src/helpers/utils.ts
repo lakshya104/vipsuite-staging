@@ -113,3 +113,10 @@ export const formatEventDates = (date1: string, date2: string) => {
   }
   return formatedFinalDates;
 };
+
+export const formatString = (str: string): string => {
+  return str
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};

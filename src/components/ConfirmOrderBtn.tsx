@@ -11,7 +11,7 @@ import Toaster from './Toaster';
 import { map } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useOrderStore } from '@/store/useStore';
+import { useLookbookOrder, useOrderStore } from '@/store/useStore';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -41,7 +41,9 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const searchParams = useSearchParams();
   const requestProductId = searchParams.get('productId');
+  const isLookbookOrder = searchParams.get('isLookbook');
   const { increaseOrderCount } = useOrderStore();
+  const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const user = useCurrentUser();
   const userEmail = user?.email;
   const vipProfileId = user?.vip_profile_id;
@@ -65,6 +67,15 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
 
     const orderDetails = {
       ...(requestProductId && { status: 'request-only' }),
+      ...(isLookbookOrder && { status: 'lookbook-order' }),
+      ...(isLookbookOrder && {
+        meta_data: [
+          {
+            key: 'lookbook_order_data',
+            value: lookbookDescription,
+          },
+        ],
+      }),
       set_paid: true,
       billing: {
         ...address,
@@ -74,17 +85,19 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       shipping: {
         ...address,
       },
-      line_items: requestProductId
-        ? [
-            {
-              product_id: requestProductId,
+      ...(!isLookbookOrder && {
+        line_items: requestProductId
+          ? [
+              {
+                product_id: requestProductId,
+                quantity: 1,
+              },
+            ]
+          : map(cartData.items, (item) => ({
+              product_id: item.id,
               quantity: 1,
-            },
-          ]
-        : map(cartData.items, (item) => ({
-            product_id: item.id,
-            quantity: 1,
-          })),
+            })),
+      }),
       shipping_lines: [
         {
           method_id: 'free_shipping',
@@ -93,11 +106,14 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         },
       ],
     };
+    console.log({ orderDetails });
+
     try {
       startTransition(async () => {
         await CreateOrder(orderDetails, token, nonce, vipProfileId);
         increaseOrderCount();
         setIsDialogOpen(true);
+        clearLookbookDescription();
       });
     } catch (error) {
       openToaster(error?.toString() ?? 'Error processing Order');

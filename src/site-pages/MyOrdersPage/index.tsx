@@ -3,7 +3,7 @@ import { Typography, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { GetAllOrders } from '@/libs/api-manager/manager';
 import { Order } from '@/interfaces';
-import { formatDate } from '@/helpers/utils';
+import { formatDate, formatString } from '@/helpers/utils';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
@@ -28,7 +28,7 @@ const MyOrdersPage: React.FC = async () => {
                 Order #{order?.id}
               </Typography>
               <Typography variant="body1">Date: {formatDate(order?.date_created)}</Typography>
-              <Typography variant="body1">Status: {order?.status}</Typography>
+              <Typography variant="body1">Status: {formatString(order?.status)}</Typography>
             </Box>
             <ArrowForwardIcon />
           </Box>

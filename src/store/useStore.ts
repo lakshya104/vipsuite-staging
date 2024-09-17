@@ -53,3 +53,16 @@ export const useOrderStore = create<OrderState>((set) => ({
   increaseOrderCount: () => set((state) => ({ orderCount: state.orderCount + 1 })),
   setOrderCount: (count) => set({ orderCount: count }),
 }));
+
+interface LookbookOrderState {
+  lookbookDescription: string;
+  // eslint-disable-next-line no-unused-vars
+  setLookbookDescription: (description: string) => void;
+  clearLookbookDescription: () => void;
+}
+
+export const useLookbookOrder = create<LookbookOrderState>((set) => ({
+  lookbookDescription: '',
+  setLookbookDescription: (description) => set({ lookbookDescription: description }),
+  clearLookbookDescription: () => set({ lookbookDescription: '' }),
+}));
