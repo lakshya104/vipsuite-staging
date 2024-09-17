@@ -15,6 +15,7 @@ interface EventDetailsCardProps {
 
 const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => {
   const eventDetail = wrapInParagraph(event?.acf?.event_details);
+
   return (
     <Box className="product-detail">
       <Typography className="page-title" variant="h2" component="h1" align="center">
@@ -22,6 +23,17 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
       </Typography>
       <EventContainer event={event} />
       <Box className="product-detail__content">
+        <Typography
+          sx={{
+            fontSize: { xs: '13px', md: '16px' },
+            fontWeight: 400,
+            lineHeight: '15.08px',
+            letterSpacing: '-0.01em',
+            marginBottom: { xs: '5px', md: '10px' },
+          }}
+        >
+          {event?.acf?.brand_name}
+        </Typography>
         <Typography variant="h2" gutterBottom>
           {he.decode(event?.title?.rendered)}
         </Typography>
@@ -52,7 +64,6 @@ interface EventContainerProps {
   event: EventDetails;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const EventContainer = ({ event }: EventContainerProps) => {
   const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || '/img/placeholder-image.jpg';
   const brandLogo = event?.acf?.brand_logo?.url;

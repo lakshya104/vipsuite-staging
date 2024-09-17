@@ -3,7 +3,7 @@ import React from 'react';
 import FeedLikeIcon from '../FeedLikeIcon';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
-import { formatDateWithOrdinal } from '@/helpers/utils';
+import { formatEventDates } from '@/helpers/utils';
 import Image from 'next/image';
 
 interface EventCardProps {
@@ -41,8 +41,7 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
             <Typography component="span" sx={{ fontWeight: '500' }}>
               Date:
             </Typography>{' '}
-            {formatDateWithOrdinal(item?.acf?.event_start_date, false)} -
-            {formatDateWithOrdinal(item?.acf?.event_end_date, true)}
+            {formatEventDates(item?.acf?.event_start_date, item?.acf?.event_end_date)}
           </Typography>
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>

@@ -25,29 +25,6 @@ export function truncateDescription(description: string, maxLength: number): str
   return words.slice(0, maxLength).join(' ') + '...';
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function removeEmptyStrings(obj: any): any {
-  // Iterate over the keys in the object
-  for (const key in obj) {
-    if (Array.isArray(obj[key])) {
-      // If the value is an array, do not modify it (keep empty arrays)
-      obj[key] = obj[key].map(removeEmptyStrings);
-    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-      // Recursively apply the function to nested objects
-      obj[key] = removeEmptyStrings(obj[key]);
-
-      // If the nested object becomes empty (no keys), delete the key
-      if (Object.keys(obj[key]).length === 0) {
-        delete obj[key];
-      }
-    } else if (obj[key] === '') {
-      // If the value is an empty string, delete the key
-      delete obj[key];
-    }
-  }
-  return obj;
-}
-
 export function formatDate(timestamp: string | undefined) {
   if (timestamp) {
     const date = new Date(timestamp);
@@ -120,4 +97,19 @@ export const formatDateWithMonth = (date: string | Date): string => {
   const month = momentDate.format('MMM');
   const year = momentDate.format('YYYY');
   return `${dayOfMonth} ${month} ${year}`;
+};
+
+export const formatEventDates = (date1: string, date2: string) => {
+  let formatedFinalDates = '';
+
+  const isSameMonth = moment(date1).isSame(date2, 'month');
+
+  const formattedDate1 = isSameMonth ? moment(date1).format('dddd Do') : moment(date1).format('dddd Do MMMM');
+
+  const formattedDate2 = moment(date2).format('dddd Do MMMM');
+
+  if (date1 && date2) {
+    formatedFinalDates = `${formattedDate1} - ${formattedDate2}`;
+  }
+  return formatedFinalDates;
 };

@@ -92,6 +92,7 @@ export interface EventDetails {
     is_rsvp?: boolean;
     is_feedback_provided: boolean;
     brand_logo: BrandLogo;
+    brand_name?: string;
   };
   _links: Links;
   is_wishlisted?: boolean;

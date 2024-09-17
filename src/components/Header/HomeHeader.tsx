@@ -57,9 +57,9 @@ const menuItems = [
     href: '/profile',
   },
   {
-    label: 'My Orders',
+    label: 'Basket',
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
-    href: '/my-orders',
+    href: '/basket',
   },
   { label: 'My Events', icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />, href: '/my-events' },
   {
@@ -71,11 +71,6 @@ const menuItems = [
     label: 'My Interests',
     icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
     href: '/my-interests',
-  },
-  {
-    label: 'Basket',
-    icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
-    href: '/basket',
   },
   {
     label: 'Login & Security',

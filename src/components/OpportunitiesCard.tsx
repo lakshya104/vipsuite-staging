@@ -11,7 +11,7 @@ interface OpportunitiesCardProps {
 
 const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) => {
   return (
-    <Grid container spacing={2} sx={{ mb: 3 }}>
+    <Grid container spacing={2} sx={{ mb: 5 }}>
       {map(opportunities, (opportunity) => (
         <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
           <ProgressBarLink href={`/opportunities/${opportunity.id}`}>
