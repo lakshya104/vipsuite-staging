@@ -26,7 +26,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
 }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const handleAddressChange = (address: Address) => {
-    setSelectedAddress(address);
+    setSelectedAddress((prevAdd) => (prevAdd === address ? null : address));
   };
 
   return (

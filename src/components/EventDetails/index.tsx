@@ -23,7 +23,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
       <EventContainer event={event} />
       <Box className="product-detail__content">
         <Typography variant="h2" gutterBottom>
-        {he.decode(event?.title?.rendered)}
+          {he.decode(event?.title?.rendered)}
         </Typography>
         <Typography variant="body1">
           <Box component="strong">Date:</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -

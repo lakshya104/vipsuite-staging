@@ -38,3 +38,18 @@
 //     },
 //   ),
 
+// store/orderStore.ts
+import { create } from 'zustand';
+
+interface OrderState {
+  orderCount: number;
+  increaseOrderCount: () => void;
+  // eslint-disable-next-line no-unused-vars
+  setOrderCount: (count: number) => void;
+}
+
+export const useOrderStore = create<OrderState>((set) => ({
+  orderCount: 0,
+  increaseOrderCount: () => set((state) => ({ orderCount: state.orderCount + 1 })),
+  setOrderCount: (count) => set({ orderCount: count }),
+}));

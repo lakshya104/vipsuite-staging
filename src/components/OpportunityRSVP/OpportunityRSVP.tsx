@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, CardContent } from '@mui/material';
+import { Box, Typography, Button, CardContent, Backdrop, CircularProgress } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import { formatDateWithOrdinalAndTime } from '@/helpers/utils';
@@ -44,9 +44,9 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
       };
       try {
-        await SendRsvp(rsvp, token, vipId);
+        const res = await SendRsvp(rsvp, token, vipId);
         revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
-        handleToasterMessage('success');
+        handleToasterMessage('success', res?.message);
       } catch (error) {
         handleToasterMessage('error', String(error));
       } finally {
@@ -63,9 +63,9 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         is_pleases: 'interested',
       };
       try {
-        await SendRsvp(rsvp, token, vipId);
+        const res = await SendRsvp(rsvp, token, vipId);
         revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
-        handleToasterMessage('success');
+        handleToasterMessage('success', res?.message);
       } catch (error) {
         handleToasterMessage('error', String(error));
       } finally {
@@ -132,6 +132,9 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
           </Box>
         </form>
       </CardContent>
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

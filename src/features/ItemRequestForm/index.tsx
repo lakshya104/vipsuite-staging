@@ -92,13 +92,13 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   const onSubmit = async () => {
     const prepareItem = getProductData();
     await createOrder(token, prepareItem, nonce);
-    reset()
+    reset();
   };
 
   const handleAddToCart = async () => {
     const prepareItem = getProductData();
     await createOrder(token, prepareItem, nonce);
-    reset()
+    reset();
   };
 
   return (

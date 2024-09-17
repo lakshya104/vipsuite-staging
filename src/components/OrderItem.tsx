@@ -13,7 +13,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
         height={110}
         width={110}
         style={{ width: '100%', height: '100%' }}
-        src={item?.image?.src || '/img/product_1.jpg'}
+        src={item?.image?.src || '/img/placeholder-image.jpg'}
         alt={item?.name || 'product-image'}
       />
       <Box>

@@ -36,7 +36,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const handleToasterMessage = (type: 'error' | 'success', message?: string) => {
     setToasterType(type);
     if (type === 'success') {
-      setToasterMessage('Response submitted successfully');
+      setToasterMessage(message ?? 'Response submitted successfully');
     } else {
       setToasterMessage(message ?? 'Error submitting response');
     }

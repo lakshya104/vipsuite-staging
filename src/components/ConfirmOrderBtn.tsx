@@ -11,6 +11,7 @@ import Toaster from './Toaster';
 import { map } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
+import { useOrderStore } from '@/store/useStore';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -40,6 +41,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const searchParams = useSearchParams();
   const requestProductId = searchParams.get('productId');
+  const { increaseOrderCount } = useOrderStore();
   const user = useCurrentUser();
   const userEmail = user?.email;
   const vipProfileId = user?.vip_profile_id;
@@ -94,6 +96,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     try {
       startTransition(async () => {
         await CreateOrder(orderDetails, token, nonce, vipProfileId);
+        increaseOrderCount();
         setIsDialogOpen(true);
       });
     } catch (error) {

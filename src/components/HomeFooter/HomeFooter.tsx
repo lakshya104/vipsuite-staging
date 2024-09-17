@@ -6,6 +6,9 @@ import { ProgressBarLink } from '../ProgressBar';
 import { map } from 'lodash';
 import './HomeFooter.scss';
 import { usePathname } from 'next/navigation';
+import { GetAllOrdersClient } from '@/libs/api-manager/manager';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { useOrderStore } from '@/store/useStore';
 
 const footerItems = [
   { href: '/', src: '/img/home.svg', alt: 'Home', label: 'Home', paths: ['/home', '/brands/', '/product'] },
@@ -23,6 +26,11 @@ const footerItems = [
 
 const HomeFooter = () => {
   const [showFooter, setShowFooter] = useState(true);
+  const { setOrderCount, orderCount } = useOrderStore();
+  const user = useCurrentUser();
+  const token = user?.token;
+  const id = user?.id;
+  const vipId = user?.vip_profile_id;
   const lastScrollY = useRef(0);
   const pathname = usePathname();
 
@@ -44,6 +52,18 @@ const HomeFooter = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchCart = async (token: string, id: number, vipId: number) => {
+      try {
+        const allOrders = await GetAllOrdersClient(token, id, vipId);
+        setOrderCount(allOrders.length);
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+    if (token && id && vipId) fetchCart(token, id, vipId);
+  }, [token, id, vipId, setOrderCount]);
+
   return (
     <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>
       {map(footerItems, (item) => {
@@ -53,7 +73,8 @@ const HomeFooter = () => {
             <ProgressBarLink href={item.href}>
               <Box className="footer-menu__icon">
                 <Image src={item.src} alt={item.alt} width={24} height={24} />
-                {(item.label === 'Inbox' || item.label === 'My Orders') && <span className="label">0</span>}
+                {item.label === 'My Orders' && <span className="label">{orderCount}</span>}
+                {/* {(item.label === 'Inbox' || item.label === 'My Orders') && <span className="label">{orderCount}</span>} */}
               </Box>
               <Typography
                 sx={

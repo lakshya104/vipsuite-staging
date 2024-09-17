@@ -119,7 +119,7 @@ export const GetBrandProducts = async (id: number) => {
 };
 
 export const GetBrandProductDetail = async (id: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id),{
+  return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id), {
     next: { tags: [TAGS.GET_PRODUCT_DETAILS] },
   });
 };
@@ -191,6 +191,15 @@ export const ResetPassword = async ({
 export const GetAllOrders = async () => {
   const id = await GetCustomerId();
   return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id), {
+    next: { tags: [TAGS.GET_MYORDERS] },
+  });
+};
+export const GetAllOrdersClient = async (token: string, id: number, vipId: number) => {
+  return await FetchInstance(Endpoints.getAllOrders(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: [TAGS.GET_MYORDERS] },
   });
 };
