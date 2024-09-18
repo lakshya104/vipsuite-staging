@@ -21,7 +21,7 @@ import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { usePathname } from 'next/navigation';
-import { useCurrentRole } from '@/hooks/useCurrentRole';
+// import { useCurrentRole } from '@/hooks/useCurrentRole';
 
 const navLinks = [
   {
@@ -82,25 +82,25 @@ const vipMenuItems = [
   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
 ];
 
-const agentMenuItems = [
-  {
-    label: 'My Profile',
-    icon: <Image src="/img/user.svg" alt="Logo" width={20} height={20} />,
-    href: '/profile',
-  },
-  {
-    label: 'My VIPs',
-    icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-vips',
-  },
-  {
-    label: 'Login & Security',
-    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: '/login-security',
-  },
-  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
-  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
-];
+// const agentMenuItems = [
+//   {
+//     label: 'My Profile',
+//     icon: <Image src="/img/user.svg" alt="Logo" width={20} height={20} />,
+//     href: '/profile',
+//   },
+//   {
+//     label: 'My VIPs',
+//     icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
+//     href: '/my-vips',
+//   },
+//   {
+//     label: 'Login & Security',
+//     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
+//     href: '/login-security',
+//   },
+//   { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
+//   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
+// ];
 
 interface HomeHeaderProps {
   token?: string;
@@ -111,8 +111,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
-  const role = useCurrentRole();
-  const menuItems = role === 'vip' ? vipMenuItems : agentMenuItems;
+  // const role = useCurrentRole();
+  // const menuItems = role === 'vip' ? vipMenuItems : agentMenuItems;
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -189,7 +189,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token }) => {
                 <CloseIcon onClick={toggleDrawer(false)} />
               </Box>
               <Box className="drawer-menu__list">
-                {menuItems.map((item) => (
+                {vipMenuItems.map((item) => (
                   <ProgressBarLink href={item.href} key={item.label}>
                     <Box className="drawer-menu__item" onClick={toggleDrawer(false)}>
                       <Box>

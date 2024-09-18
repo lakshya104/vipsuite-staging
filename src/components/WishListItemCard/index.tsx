@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { Box, Typography } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ProgressBarLink } from '../ProgressBar';
 import Image from 'next/image';
 import { formatDate } from '@/helpers/utils';
@@ -41,9 +41,7 @@ const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date,
               </>
             )}
           </Box>
-          <IconButton>
-            <ArrowForwardIosIcon />
-          </IconButton>
+          <ArrowForwardIcon />
         </Box>
       </ProgressBarLink>
     </Box>
