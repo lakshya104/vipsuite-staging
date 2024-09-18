@@ -16,6 +16,7 @@ import { first } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { useRequestOnlyStore } from '@/store/useStore';
 
 interface ItemRequestFormProps {
   product: Product;
@@ -33,6 +34,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   const { product_ordered: isProductOrdered = false } = product;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const { dropdowns, onChangeDropDown, getSelectedProductVariation, formSchema } = useProductFilters(product);
+  const { setRequestProductId, clearRequestProductId } = useRequestOnlyStore();
 
   const {
     handleSubmit,
@@ -60,7 +62,9 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
     setLoading(true);
     try {
       if (isRequestOnly) {
-        router.push(`/basket?step=1&productId=${product.id}`);
+        clearRequestProductId();
+        setRequestProductId(product.id);
+        router.push(`/basket?step=1&isRequestOnly=true`);
       } else {
         const addToCart = await AddItemToCart(token, item, nonce, vipId);
         await revalidateTag(TAGS.GET_VIP_CART);

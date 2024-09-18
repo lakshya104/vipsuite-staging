@@ -11,7 +11,7 @@ import Toaster from './Toaster';
 import { map } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useLookbookOrder, useOrderStore } from '@/store/useStore';
+import { useLookbookOrder, useOrderStore, useRequestOnlyStore } from '@/store/useStore';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -40,10 +40,11 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const searchParams = useSearchParams();
-  const requestProductId = searchParams.get('productId');
+  const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
   const { increaseOrderCount } = useOrderStore();
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
+  const { requestProductId, clearRequestProductId } = useRequestOnlyStore();
   const user = useCurrentUser();
   const userEmail = user?.email;
   const vipProfileId = user?.vip_profile_id;
@@ -66,7 +67,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     };
 
     const orderDetails = {
-      ...(requestProductId && { status: 'request-only' }),
+      ...(isRequestedProduct && { status: 'request-only' }),
       ...(isLookbookOrder && { status: 'lookbook-order' }),
       ...(isLookbookOrder && {
         meta_data: [
@@ -106,14 +107,13 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         },
       ],
     };
-    console.log({ orderDetails });
-
     try {
       startTransition(async () => {
         await CreateOrder(orderDetails, token, nonce, vipProfileId);
         increaseOrderCount();
         setIsDialogOpen(true);
         clearLookbookDescription();
+        clearRequestProductId();
       });
     } catch (error) {
       openToaster(error?.toString() ?? 'Error processing Order');

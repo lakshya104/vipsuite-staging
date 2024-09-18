@@ -66,3 +66,16 @@ export const useLookbookOrder = create<LookbookOrderState>((set) => ({
   setLookbookDescription: (description) => set({ lookbookDescription: description }),
   clearLookbookDescription: () => set({ lookbookDescription: '' }),
 }));
+
+interface RequestOnlyState {
+  requestProductId: number | null;
+  clearRequestProductId: () => void;
+  // eslint-disable-next-line no-unused-vars
+  setRequestProductId: (count: number) => void;
+}
+
+export const useRequestOnlyStore = create<RequestOnlyState>((set) => ({
+  requestProductId: 0,
+  clearRequestProductId: () => set({ requestProductId: null }),
+  setRequestProductId: (count) => set({ requestProductId: count }),
+}));

@@ -33,7 +33,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const RequestItemFormButton: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const { setLookbookDescription } = useLookbookOrder();
+  const { setLookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const router = useRouter();
@@ -57,6 +57,7 @@ const RequestItemFormButton: React.FC = () => {
     },
   });
   const onSubmit = (data: FormValues) => {
+    clearLookbookDescription();
     try {
       startTransition(() => {
         setLookbookDescription(data.itemName);
