@@ -17,9 +17,12 @@
     @include relative;
     justify-content: space-between;
     img {
-      height: rem(462);
-      object-fit: cover;
+      height: auto;
       @include border-radius(4px);
+      @media only screen and (min-width: 600px) {
+        height: rem(462);
+        object-fit: cover;
+      }
     }
     &__content {
       padding: rem(12) 0 0;

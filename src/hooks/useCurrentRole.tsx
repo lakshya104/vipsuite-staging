@@ -5,5 +5,5 @@ interface User {
 }
 export const useCurrentRole = () => {
   const session = useSession();
-  return (session?.data?.user as User).role;
+  return (session?.data?.user as User)?.role;
 };

@@ -13,6 +13,7 @@ const Endpoints = {
   getVipEventDetails: (id: number) => `/wp/v2/events/${id}`,
   getProfileBuilderContent: '/wp/v2/profile-builder-content',
   updateProfile: '/wp/v2/vip-profile',
+  createProfile: '/wp/v2/vip-profile',
   forgotPassword: '/wp/v2/forgot-password',
   resetPassword: '/wp/v2/reset-password',
   getAllOrders: (customerId: number) => `/wc/v3/orders?customer=${customerId}`,

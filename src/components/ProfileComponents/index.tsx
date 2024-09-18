@@ -15,7 +15,8 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
     { label: 'Resides', value: get(profileDetails, 'acf.nationality', '') },
     {
       label: 'Interests',
-      value: get(profileDetails, 'interests', []).length > 0 ? get(profileDetails, 'acf.interests', []).join(', ') : '',
+      value:
+        get(profileDetails, 'acf.interests', []).length > 0 ? get(profileDetails, 'acf.interests', []).join(', ') : '',
     },
   ];
   const filteredBioData = bioData.filter((data) => data.value !== '');

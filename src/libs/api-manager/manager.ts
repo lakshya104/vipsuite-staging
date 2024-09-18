@@ -160,6 +160,22 @@ export const UpdateProfile = async (id: number, token: string, profile: UserProf
   }
 };
 
+export const CreateVipProfile = async (token: string, profile: UserProfile) => {
+  try {
+    const response = await Instance.post(Endpoints.createProfile, profile, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during update profile';
+      throw errorMessage;
+    }
+  }
+};
+
 export const ForgotPassword = async ({ email }: { email: string }) => {
   try {
     const response = await Instance.post(Endpoints.forgotPassword, { email });

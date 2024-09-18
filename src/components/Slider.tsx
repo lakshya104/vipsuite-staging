@@ -33,7 +33,7 @@ const ImageSlider: React.FC<SliderProps> = ({ images, withLikeIcon, item }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const settings = {
-    dots: true,
+    dots: images.length > 1 && true,
     infinite: images.length > 1,
     speed: 500,
     slidesToShow: 1,

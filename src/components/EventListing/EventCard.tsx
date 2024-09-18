@@ -53,7 +53,7 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
             {item['event-category']?.map((category, index) => (
               <span key={index}>
                 {category}
-                {index < item['event-category'].length - 1 && <span className='event-separator'> | </span>}
+                {index < item['event-category'].length - 1 && <span className="event-separator"> | </span>}
               </span>
             ))}
           </Typography>
