@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { ProgressBarLink } from './ProgressBar';
+import { ProgressBarLink } from '../ProgressBar';
 import Image from 'next/image';
 import { formatDate } from '@/helpers/utils';
+import './WishlistItemCard.scss';
 
 interface WishlistItemCardProps {
   image: string;
@@ -18,28 +19,12 @@ const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date,
   const itemImage = image || '/img/placeholder-image.jpg';
 
   return (
-    <ProgressBarLink href={link}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px',
-          borderBottom: '1px solid #e0e0e0',
-          textDecoration: 'none',
-          color: 'inherit',
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Image
-            src={itemImage}
-            width={100}
-            height={100}
-            alt={title}
-            style={{ width: 80, height: 80, marginRight: 2, borderRadius: '50px', margin: '0 20px 0 0' }}
-          />
+    <Box className="wishlist-card__items">
+      <ProgressBarLink href={link}>
+        <Box className="wishlist-card__item" display={'flex'}>
+          <Image src={itemImage} width={100} height={100} alt={title} style={{ width: '100%', height: '100%' }} />
           <Box>
-            <Typography variant="body1" sx={{ fontWeight: 'bold', textTransform: 'capitalize' }}>
+            <Typography gutterBottom variant="h2">
               {title}
             </Typography>
             <Typography variant="body2" color="textSecondary" sx={{ textTransform: 'capitalize' }}>
@@ -56,12 +41,12 @@ const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date,
               </>
             )}
           </Box>
+          <IconButton>
+            <ArrowForwardIosIcon />
+          </IconButton>
         </Box>
-        <IconButton>
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </Box>
-    </ProgressBarLink>
+      </ProgressBarLink>
+    </Box>
   );
 };
 

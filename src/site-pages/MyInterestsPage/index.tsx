@@ -4,7 +4,7 @@ import ErrorFallback from '@/components/ErrorFallback';
 import { GetVipWishlistItems } from '@/libs/api-manager/manager';
 import { Box } from '@mui/material';
 import { WishlistItem } from '@/interfaces';
-import WishlistItemCard from '@/components/WishlistItemCard';
+import WishlistItemCard from '@/components/WishListItemCard';
 
 const MyInterestsPage = async () => {
   let vipWishListItems: WishlistItem[] | null = null;

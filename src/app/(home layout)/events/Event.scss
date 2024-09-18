@@ -166,6 +166,9 @@
           @include fontSize(12);
         }
       }
+      .event-separator {
+        opacity: 20%;
+      }
       .category-label {
         display: inline-block;
         padding: rem(6) rem(10);

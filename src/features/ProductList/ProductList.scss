@@ -17,7 +17,8 @@
     @include relative;
     justify-content: space-between;
     img {
-      height: auto;
+      height: rem(462);
+      object-fit: cover;
       @include border-radius(4px);
     }
     &__content {

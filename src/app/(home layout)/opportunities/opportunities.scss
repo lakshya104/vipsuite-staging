@@ -69,6 +69,7 @@
       padding: rem(12) !important;
       color: var(--color-marble);
       width: 100%;
+      min-height: rem(81.45);
       @include absolute(bottom 0 left 0);
       &::after {
         content: '';
@@ -87,6 +88,9 @@
       p {
         @media only screen and (max-width: 767px) {
           @include fontSize(12);
+        }
+        span {
+          opacity: 20%;
         }
       }
     }

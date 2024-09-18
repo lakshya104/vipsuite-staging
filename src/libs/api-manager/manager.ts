@@ -42,6 +42,12 @@ export const GetCustomerId = async () => {
   return user.id;
 };
 
+export const GetUserRole = async () => {
+  const session = await auth();
+  const user = session?.user as unknown as Session;
+  return user.role;
+};
+
 export const GetCustomerIdTokenAndUserId = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;

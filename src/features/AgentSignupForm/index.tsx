@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useTransition } from 'react';
-import { Box, Button, InputAdornment, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import InputForm from '../../components/InputForm/InputForm';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -202,6 +202,9 @@ const AgentSignupForm = () => {
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

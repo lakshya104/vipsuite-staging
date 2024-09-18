@@ -63,7 +63,7 @@ const ForgotPasswordForm = () => {
       setIsPending(false);
       setIsDialogOpen(true);
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster('Error during sending link. ' + error);
     } finally {
       setIsPending(false);
     }

@@ -61,6 +61,7 @@
       }
     }
     img {
+      border-radius: rem(4);
       flex: 1 0 rem(110);
       max-width: rem(110);
       @media only screen and (max-width: 767px) {
