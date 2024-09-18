@@ -28,6 +28,7 @@ export interface OpportunityDetails {
   acf: Acf;
   is_wishlisted?: boolean;
   _links: Links;
+  gallery: [];
 }
 
 export interface RenderedString {

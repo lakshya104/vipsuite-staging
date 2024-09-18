@@ -10,20 +10,6 @@ import { GetAllOrdersClient } from '@/libs/api-manager/manager';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useOrderStore } from '@/store/useStore';
 
-const footerItems = [
-  { href: '/', src: '/img/home.svg', alt: 'Home', label: 'Home', paths: ['/home', '/brands/', '/product'] },
-  {
-    href: '/opportunities',
-    src: '/img/opportunity.svg',
-    alt: 'Opportunities',
-    label: 'Opportunities',
-    paths: ['/opportunities'],
-  },
-  { href: '/events', src: '/img/event.svg', alt: 'Events', label: 'Events', paths: ['/events'] },
-  { href: '/inbox', src: '/img/inbox.svg', alt: 'Inbox', label: 'Inbox', paths: ['/inbox'] },
-  { href: '/my-orders', src: '/img/basket.png', alt: 'My-Orders', label: 'My Orders', paths: ['/my-orders'] },
-];
-
 const HomeFooter = () => {
   const [showFooter, setShowFooter] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +52,48 @@ const HomeFooter = () => {
     };
     if (token && id && vipId) fetchCart(token, id, vipId);
   }, [token, id, vipId, setOrderCount]);
-
+  const footerItems = [
+    {
+      href: '/',
+      src: '/img/home.svg',
+      alt: 'Home',
+      label: 'Home',
+      paths: ['/home', '/brands/', '/product'],
+      srcselected: '/img/home-selected.svg',
+    },
+    {
+      href: '/opportunities',
+      src: '/img/opportunity.svg',
+      alt: 'Opportunities',
+      label: 'Opportunities',
+      paths: ['/opportunities'],
+      srcselected: '/img/opportunities-selected.svg',
+    },
+    {
+      href: '/events',
+      src: '/img/event.svg',
+      alt: 'Events',
+      label: 'Events',
+      paths: ['/events'],
+      srcselected: '/img/events-selected.svg',
+    },
+    {
+      href: '/inbox',
+      src: '/img/inbox.svg',
+      alt: 'Inbox',
+      label: 'Inbox',
+      paths: ['/inbox'],
+      srcselected: '/img/inbox-selected.svg',
+    },
+    {
+      href: '/my-orders',
+      src: '/img/basket.png',
+      alt: 'My-Orders',
+      label: 'My Orders',
+      paths: ['/my-orders'],
+      srcselected: '/img/basket.png',
+    },
+  ];
   return (
     <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>
       {map(footerItems, (item) => {
@@ -75,34 +102,13 @@ const HomeFooter = () => {
           <Stack key={item.href} alignItems="center">
             <ProgressBarLink href={item.href}>
               <Box className="footer-menu__icon">
-                <Image src={item.src} alt={item.alt} width={24} height={24} />
-                {!isLoading && item.label === 'My Orders' && <span className="label">{orderCount}</span>}
+                <Image src={isActive ? item.srcselected : item.src} alt={item.alt} width={24} height={24} />
+                {!isLoading && orderCount !== 0 && item.label === 'My Orders' && (
+                  <span className="label">{orderCount}</span>
+                )}
                 {/* {(item.label === 'Inbox' || item.label === 'My Orders') && <span className="label">{orderCount}</span>} */}
               </Box>
-              <Typography
-                sx={
-                  isActive
-                    ? {
-                        fontWeight: 700,
-                        color: 'black',
-                        position: 'relative',
-                        '&::after': {
-                          content: '""',
-                          position: 'absolute',
-                          bottom: '-2px',
-                          left: 0,
-                          width: '100%',
-                          height: '2px',
-                          backgroundColor: 'black',
-                        },
-                      }
-                    : {}
-                }
-                className={isActive ? 'active' : ''}
-                variant="caption"
-              >
-                {item.label}
-              </Typography>
+              <Typography variant="caption">{item.label}</Typography>
             </ProgressBarLink>
           </Stack>
         );

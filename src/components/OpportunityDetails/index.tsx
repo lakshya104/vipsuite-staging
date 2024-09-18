@@ -15,12 +15,7 @@ interface OpportunityDetailsCardProps {
 }
 
 const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
-  const images = [
-    opportunity.acf.featured_image.sizes['vs-container'],
-    opportunity.acf.featured_image.sizes['vs-container'],
-    opportunity.acf.featured_image.sizes['vs-container'],
-    opportunity.acf.featured_image.sizes['vs-container'],
-  ];
+  const images = opportunity?.acf?.gallery?.map((item) => item.url) || [];
   const [dialogOpen, setDialogOpen] = useState(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterMessage, setToasterMessage] = useState('');
