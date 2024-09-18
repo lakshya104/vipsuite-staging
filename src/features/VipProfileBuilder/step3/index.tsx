@@ -85,9 +85,9 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           label: `Gender of Child ${i + 1}`,
           type: 'select',
           options: [
-            { value: 'male', label: 'Male' },
-            { value: 'female', label: 'Female' },
-            { value: 'trans', label: 'Trans' },
+            { value: 'Male', label: 'Male' },
+            { value: 'Female', label: 'Female' },
+            { value: 'Transgender', label: 'Transgender' },
           ],
         },
       );
