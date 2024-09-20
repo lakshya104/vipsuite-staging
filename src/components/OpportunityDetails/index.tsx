@@ -12,9 +12,11 @@ import Toaster from '../Toaster';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
+  token: string;
+  vipId: number;
 }
 
-const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
+const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity, vipId, token }) => {
   const images = opportunity?.acf?.gallery?.map((item) => item.url) || [];
   const [dialogOpen, setDialogOpen] = useState(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -47,7 +49,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         {opportunity.title.rendered}
       </Typography>
       <Box>
-        <ImageSlider images={images} withLikeIcon={true} item={opportunity} />
+        <ImageSlider images={images} withLikeIcon={true} item={opportunity} token={token} vipId={vipId} />
       </Box>
       <CardContent>
         <OpportunityTabs opportunity={opportunity} />

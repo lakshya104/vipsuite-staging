@@ -53,6 +53,7 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
     };
     if (token && id && vipId) fetchCart(token, id, vipId);
   }, [token, id, vipId, setOrderCount]);
+
   const footerItems = [
     {
       href: '/',
@@ -95,6 +96,7 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
       srcselected: '/img/basket.png',
     },
   ];
+
   return (
     <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>
       {map(footerItems, (item) => {

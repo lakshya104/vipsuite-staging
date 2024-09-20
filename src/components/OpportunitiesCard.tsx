@@ -7,9 +7,11 @@ import FeedLikeIcon from './FeedLikeIcon';
 
 interface OpportunitiesCardProps {
   opportunities: Opportunity[];
+  token: string;
+  vipId: number;
 }
 
-const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) => {
+const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities, token, vipId }) => {
   return (
     <Grid container spacing={2} sx={{ mb: 5 }}>
       {map(opportunities, (opportunity) => (
@@ -21,7 +23,13 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) 
                 backgroundImage: `url(${opportunity?.acf.featured_image?.link})`,
               }}
             >
-              <FeedLikeIcon postId={opportunity?.id} isWishlisted={opportunity?.is_wishlisted} type="opportunity" />
+              <FeedLikeIcon
+                postId={opportunity?.id}
+                isWishlisted={opportunity?.is_wishlisted}
+                type="opportunity"
+                token={token}
+                vipId={vipId}
+              />
               <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
                 VIP Club
               </Typography>

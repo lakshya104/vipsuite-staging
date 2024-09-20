@@ -33,11 +33,10 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.acf?.is_featured);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-    if (event.target.value) {
-      setIsPending(true);
-    } else {
-      setIsPending(false);
+    const value = event.target.value;
+    setSearchQuery(value);
+    setIsPending(!!value);
+    if (!value) {
       setHasSearched(false);
     }
   }, []);
@@ -69,7 +68,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
 
   useEffect(() => {
     fetchSearchResults();
-  }, [fetchSearchResults]);
+  }, [debouncedSearchQuery, fetchSearchResults]);
 
   const renderSkeletons = () => (
     <Grid container spacing={2}>
@@ -81,54 +80,15 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     </Grid>
   );
 
-  const renderItems = (items: DashboardItem[]) => {
-    return (
-      <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-        {items.map((item, index) => (
-          <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
-            <DashboardCard item={item} />
-          </Grid>
-        ))}
-      </Grid>
-    );
-  };
-
-  if (dashboardItems.length === 0) {
-    return (
-      <>
-        <Box my={2.5}>
-          <SearchBar
-            searchTerm={searchQuery}
-            placeholder="Search for anything..."
-            handleChange={handleChange}
-            handleClear={handleClear}
-            aria-label="Search Anything"
-          />
-        </Box>
-        {isPending ? (
-          renderSkeletons()
-        ) : (
-          <>
-            {!searchQuery ? (
-              <>
-                {dashboardContent && (
-                  <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-                    <DashboardContentComponent
-                      dashboardContent={dashboardContent}
-                      totalFollowers={totalFollowerCount}
-                    />
-                  </Box>
-                )}
-                <ErrorFallback errorMessage="No dashboard items available currently" hideSubtext={true} />
-              </>
-            ) : (
-              hasSearched && searchResults.length > 0 && renderItems(searchResults)
-            )}
-          </>
-        )}
-      </>
-    );
-  }
+  const renderItems = (items: DashboardItem[]) => (
+    <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+      {items.map((item, index) => (
+        <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+          <DashboardCard item={item} vipId={vipId} token={token} />
+        </Grid>
+      ))}
+    </Grid>
+  );
 
   return (
     <>
@@ -141,19 +101,39 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
           aria-label="Search Anything"
         />
       </Box>
+
       {isPending ? (
         renderSkeletons()
       ) : (
         <>
           {!searchQuery ? (
             <>
-              {featuredItems.length > 0 && renderItems(featuredItems)}
-              {dashboardContent && (
-                <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-                  <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
-                </Box>
+              {featuredItems.length === 0 && nonFeaturedItems.length === 0 ? (
+                <>
+                  {dashboardContent && (
+                    <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
+                      <DashboardContentComponent
+                        dashboardContent={dashboardContent}
+                        totalFollowers={totalFollowerCount}
+                      />
+                    </Box>
+                  )}
+                  <ErrorFallback errorMessage="No dashboard items available currently" hideSubtext />
+                </>
+              ) : (
+                <>
+                  {featuredItems.length > 0 && renderItems(featuredItems)}
+                  {dashboardContent && (
+                    <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
+                      <DashboardContentComponent
+                        dashboardContent={dashboardContent}
+                        totalFollowers={totalFollowerCount}
+                      />
+                    </Box>
+                  )}
+                  {nonFeaturedItems.length > 0 && renderItems(nonFeaturedItems)}
+                </>
               )}
-              {nonFeaturedItems.length > 0 && renderItems(nonFeaturedItems)}
             </>
           ) : (
             hasSearched && searchResults.length > 0 && renderItems(searchResults)

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
-import FeedLikeIcon from '../FeedLikeIcon';
+// import FeedLikeIcon from '../FeedLikeIcon';
 import { Brand } from '@/interfaces/brand';
 import { ProgressBarLink } from '../ProgressBar';
 import Image from 'next/image';
@@ -21,7 +21,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
           backgroundImage: `url(${productImage})`,
         }}
       >
-        <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} type="brand" />
+        {/* <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} type="brand" /> */}
         {brandLogo && (
           <Box className="brand-logo">
             <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />

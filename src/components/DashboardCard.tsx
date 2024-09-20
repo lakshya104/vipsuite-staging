@@ -11,9 +11,11 @@ import { Opportunity } from '@/interfaces/opportunities';
 
 interface DashboardCardProps {
   item: DashboardItem;
+  token: string;
+  vipId: number;
 }
 
-const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
+const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => {
   const isBrand = (item as Brand)?.type === 'brand-profile';
   const isEvent = (item as Event)?.type === 'event';
   const isOpportunity = (item as Opportunity)?.type === 'opportunity';
@@ -48,9 +50,11 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
           width={600}
           height={400}
           quality={75}
-          style={{ objectFit: 'cover' }}
+          style={{ objectFit: 'cover', height: 'auto', width: 'auto', minHeight: '440px' }}
+          placeholder="blur"
+          blurDataURL="/img/image-placeholder.png"
         />
-        <FeedLikeIcon isWishlisted={isWishlisted} postId={postId} type={item.type} />
+        <FeedLikeIcon isWishlisted={isWishlisted} postId={postId} type={item.type} token={token} vipId={vipId} />
         {isBrand && brandLogo && (
           <Box
             sx={{
@@ -133,7 +137,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
               variant="body2"
               dangerouslySetInnerHTML={{
                 __html: (item as Opportunity)['opportunity-category']?.join(
-                  ' <span className = "home-separator">|</span> ',
+                  ' <span className = "home-separator">|</span>',
                 ),
               }}
             />

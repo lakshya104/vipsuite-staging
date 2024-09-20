@@ -11,6 +11,8 @@ interface SliderProps {
   images: string[];
   withLikeIcon?: boolean;
   item: OpportunityDetails;
+  token: string;
+  vipId: number;
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -28,7 +30,7 @@ const StyledImage = styled(Image)({
   objectFit: 'cover',
 });
 
-const ImageSlider: React.FC<SliderProps> = ({ images, withLikeIcon, item }) => {
+const ImageSlider: React.FC<SliderProps> = ({ images, withLikeIcon, item, token, vipId }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -46,7 +48,15 @@ const ImageSlider: React.FC<SliderProps> = ({ images, withLikeIcon, item }) => {
 
   return (
     <Box sx={{ position: 'relative', marginBottom: 4 }}>
-      {withLikeIcon && <FeedLikeIcon postId={item?.id} isWishlisted={item?.is_wishlisted} type="opportunity" />}
+      {withLikeIcon && (
+        <FeedLikeIcon
+          postId={item?.id}
+          isWishlisted={item?.is_wishlisted}
+          type="opportunity"
+          token={token}
+          vipId={vipId}
+        />
+      )}
       <Slider {...settings}>
         {images.map((src, index) => (
           <StyledBox key={index}>

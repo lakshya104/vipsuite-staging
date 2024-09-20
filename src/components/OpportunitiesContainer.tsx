@@ -8,9 +8,11 @@ import { Opportunity } from '@/interfaces/opportunities';
 
 interface OpportunitiesContainerProps {
   opportunitiesData: Opportunity[];
+  token: string;
+  vipId: number;
 }
 
-const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData }) => {
+const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData, token, vipId }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredOpportunities = useMemo(() => {
@@ -42,7 +44,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
         />
       </Box>
       {!searchQuery ? (
-        <OpportunitiesCard opportunities={opportunitiesData} />
+        <OpportunitiesCard opportunities={opportunitiesData} token={token} vipId={vipId} />
       ) : searchQuery && filteredOpportunities.length > 0 ? (
         <>
           <Grid container mb={2.5}>
@@ -54,7 +56,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
               </Box>
             </Grid>
           </Grid>
-          <OpportunitiesCard opportunities={filteredOpportunities} />
+          <OpportunitiesCard opportunities={filteredOpportunities} token={token} vipId={vipId} />
         </>
       ) : (
         <Container>

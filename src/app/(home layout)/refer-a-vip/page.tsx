@@ -1,13 +1,12 @@
 import React from 'react';
 import ReferVIPForm from '@/features/Refer-Vip';
-import { DashboardContent } from '@/interfaces/brand';
 import { GetDashboardContent } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
+import { DashboardContent } from '@/interfaces';
 
 const Page = async () => {
   let dashboardContent: DashboardContent | null = null;
-
   try {
     dashboardContent = await GetDashboardContent();
   } catch (error) {

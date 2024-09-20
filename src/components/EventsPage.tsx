@@ -8,9 +8,11 @@ import { Event } from '@/interfaces/events';
 
 interface EventCardsProps {
   eventsData: Event[];
+  token: string;
+  vipId: number;
 }
 
-const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
+const EventCards: React.FC<EventCardsProps> = ({ eventsData, token, vipId }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredEvents = useMemo(() => {
@@ -42,7 +44,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
         />
       </Box>
       {!searchQuery ? (
-        <EventsListing events={eventsData} />
+        <EventsListing events={eventsData} vipId={vipId} token={token} />
       ) : searchQuery && filteredEvents.length > 0 ? (
         <>
           <Grid container mb={2.5}>
@@ -54,7 +56,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
               </Box>
             </Grid>
           </Grid>
-          <EventsListing events={filteredEvents} />
+          <EventsListing events={filteredEvents} vipId={vipId} token={token} />
         </>
       ) : (
         <Container>

@@ -9,9 +9,11 @@ import Image from 'next/image';
 interface EventCardProps {
   item: Event;
   isFeatured?: boolean;
+  token: string;
+  vipId: number;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
+const EventCard: React.FC<EventCardProps> = ({ item, isFeatured, token, vipId }) => {
   const brandLogo = item.acf?.brand_logo?.url;
   const eventImage = item?.acf?.event_image?.sizes?.large || '/img/placeholder-image.jpg';
   return (
@@ -27,7 +29,7 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
             <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />
           </Box>
         )}
-        <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} type="event" />
+        <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} type="event" vipId={vipId} token={token} />
         <CardContent className="landing-product__item-content">
           {isFeatured && (
             <Box className="category-label">

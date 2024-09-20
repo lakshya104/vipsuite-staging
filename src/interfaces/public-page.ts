@@ -49,6 +49,8 @@ export interface PageData {
 
 export interface CTA {
   cta_type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  link: any;
   cta_page: string | null;
   cta_url: string;
   cta_external_link: boolean;
@@ -59,7 +61,8 @@ export interface CTA {
 }
 
 export interface ContentModule {
-  cta: CTA[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  cta: any;
   acf_fc_layout: string;
   heading: string;
   html_tag?: string;

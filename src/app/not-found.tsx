@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import HomeHeader from '@/components/Header/HomeHeader';
-import HomeFooter from '@/components/HomeFooter/HomeFooter';
 
 export default function NotFound() {
   return (
@@ -17,7 +16,6 @@ export default function NotFound() {
           </Typography>
         </Box>
       </Box>
-      <HomeFooter />
     </>
   );
 }

@@ -2,8 +2,8 @@ import React from 'react';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import MakeRequest from '@/features/Make-Request';
-import { DashboardContent } from '@/interfaces/brand';
 import { GetDashboardContent } from '@/libs/api-manager/manager';
+import { DashboardContent } from '@/interfaces';
 
 const Page = async () => {
   let dashboardContent: DashboardContent | null = null;
