@@ -50,6 +50,7 @@ interface Acf {
   the_ask: string;
   date: string;
   location: string;
+  is_featured: boolean;
 }
 
 export interface Opportunity {

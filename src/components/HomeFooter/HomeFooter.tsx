@@ -7,17 +7,18 @@ import { map } from 'lodash';
 import './HomeFooter.scss';
 import { usePathname } from 'next/navigation';
 import { GetAllOrdersClient } from '@/libs/api-manager/manager';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useOrderStore } from '@/store/useStore';
 
-const HomeFooter = () => {
+interface HomeFooterProps {
+  token: string;
+  id: number;
+  vipId: number;
+}
+
+const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
   const [showFooter, setShowFooter] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { setOrderCount, orderCount } = useOrderStore();
-  const user = useCurrentUser();
-  const token = user?.token;
-  const id = user?.id;
-  const vipId = user?.vip_profile_id;
   const lastScrollY = useRef(0);
   const pathname = usePathname();
 

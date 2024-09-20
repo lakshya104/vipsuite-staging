@@ -38,7 +38,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
             {item['brand-category']?.map((category, index) => (
               <span key={index}>
                 {category}
-                {index < item['brand-category'].length - 1 && <span> | </span>}
+                {index < item['brand-category'].length - 1 && <span className="home-separator"> | </span>}
               </span>
             ))}
           </Typography>

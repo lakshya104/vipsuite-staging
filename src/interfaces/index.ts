@@ -7,3 +7,4 @@ export * from './cart';
 export * from './my-events';
 export * from './address';
 export * from './wishlistItems';
+export * from './dashboard';

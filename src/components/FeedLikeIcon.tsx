@@ -38,7 +38,7 @@ const AnimatedIcon = styled('div')({
 interface FeedLikeIconProps {
   isWishlisted?: boolean;
   postId: number;
-  type: 'event' | 'brand' | 'opportunity';
+  type: string;
 }
 const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type }) => {
   const [isWislist, setIsWishlist] = useState(isWishlisted ?? isWishlisted);
@@ -53,13 +53,17 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type 
     event.preventDefault();
   };
 
-  const revalidateTags = async (postType: 'event' | 'brand' | 'opportunity') => {
+  const revalidateTags = async (postType: string) => {
     switch (postType) {
       case 'event':
         await revalidateTag(TAGS.GET_EVENTS);
         await revalidateTag(TAGS.GET_EVENT_DETAILS);
         break;
       case 'brand':
+        await revalidateTag(TAGS.GET_BRANDS);
+        await revalidateTag(TAGS.GET_BRAND_DETAILS);
+        break;
+      case 'brand-profile':
         await revalidateTag(TAGS.GET_BRANDS);
         await revalidateTag(TAGS.GET_BRAND_DETAILS);
         break;

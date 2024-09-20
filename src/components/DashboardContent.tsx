@@ -1,6 +1,6 @@
 import React from 'react';
-import { DashboardContent } from '@/interfaces/brand';
 import ReferCard from './ReferCard';
+import { DashboardContent } from '@/interfaces';
 
 interface DashboardContentProps {
   dashboardContent: DashboardContent;

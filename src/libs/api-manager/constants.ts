@@ -5,6 +5,7 @@ const Endpoints = {
   getProfile: '/wp/v2/users/me',
   getBrands: '/wp/v2/brand-profiles',
   getDashboardContent: '/wp/v2/vip-profiles/dashboard-content',
+  getDashboard: '/wp/v2/vip-profiles/dashboard',
   getBrandDetails: (brandId: number) => `/wp/v2/brand-profiles/${brandId}`,
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,
   getBrandProductDetails: (productId: number) => `/wc/v3/products/${productId}`,
@@ -36,7 +37,8 @@ const Endpoints = {
   addToWishlist: (postId: number) => `/wp/v2/vip-profiles/wishlist/${postId}`,
   getPageContent: (id: number) => `/wp/v2/pages/${id}`,
   referVIP: '/wp/v2/vip-profiles/refer-vip',
-  MakeRequest: '/wp/v2/vip-profiles/make-request',
+  makeRequest: '/wp/v2/vip-profiles/make-request',
+  vipSearch: (keyword: string) => `/wp/v2/vip-profiles/search?keyword=${keyword}`,
 };
 
 export { Endpoints };

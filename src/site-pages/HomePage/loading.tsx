@@ -6,7 +6,7 @@ const HomePageLoading = () => {
   return (
     <>
       <Box my={2.5}>
-        <SearchBar searchTerm={''} placeholder="Search for events..." aria-label="Search events" />
+        <SearchBar searchTerm={''} placeholder="Search for anything..." aria-label="Search anything" />
       </Box>
       <Box my={2.5}>
         <Grid container spacing={2}>

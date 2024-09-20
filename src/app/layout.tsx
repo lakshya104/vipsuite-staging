@@ -19,16 +19,16 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <SessionProvider session={session}>
-      <html lang="en">
-        <body>
+    <html lang="en">
+      <body>
+        <SessionProvider session={session}>
           <AppRouterCacheProvider>
             <ThemeRegistry options={{ key: 'mui-theme' }}>
               <ProgressBar>{children}</ProgressBar>
             </ThemeRegistry>
           </AppRouterCacheProvider>
-        </body>
-      </html>
-    </SessionProvider>
+        </SessionProvider>
+      </body>
+    </html>
   );
 }

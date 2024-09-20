@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import BrandCard from './BrandCard';
-import { Brand, DashboardContent } from '@/interfaces/brand';
+import { Brand } from '@/interfaces/brand';
 import { get, partition } from 'lodash';
 import DashboardContentComponent from '../DashboardContent';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { DashboardContent } from '@/interfaces';
 
 interface BrandsListingProps {
   brands: Brand[];

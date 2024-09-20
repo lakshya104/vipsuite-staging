@@ -15,11 +15,14 @@ export default async function HomeSectionLayout({
   const profile_status = get(session, 'user.acf.profile_status', {});
   if (profile_status === 'pending') redirect('/vip-profile-builder');
   const token = (session?.user as unknown as Session)?.token;
+  const role = (session?.user as unknown as Session)?.role;
+  const id = (session?.user as unknown as Session)?.id;
+  const vipId = (session?.user as unknown as Session)?.vip_profile_id;
   return (
     <>
-      <HomeHeader token={token} />
+      <HomeHeader token={token} role={role} />
       {children}
-      <HomeFooter />
+      <HomeFooter token={token} id={id} vipId={vipId} />
     </>
   );
 }

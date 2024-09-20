@@ -7,6 +7,7 @@ type SelectBoxWithoutLabelProps<T extends FieldValues> = {
   control: Control<T>;
   options: { value: string; label: string }[] | undefined;
   errors: FieldErrors<T>;
+  placeholder?: string;
 };
 
 const SelectBoxWithoutLabel = <T extends FieldValues>({
@@ -14,6 +15,7 @@ const SelectBoxWithoutLabel = <T extends FieldValues>({
   control,
   options,
   errors,
+  placeholder,
 }: SelectBoxWithoutLabelProps<T>) => {
   return (
     <FormControl fullWidth error={!!errors[name]}>
@@ -30,7 +32,7 @@ const SelectBoxWithoutLabel = <T extends FieldValues>({
               field.onChange(event);
             }}
           >
-            <MenuItem value="">Select one</MenuItem>
+            <MenuItem value="">{placeholder ? placeholder : 'Select one'}</MenuItem>
             {options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}

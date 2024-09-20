@@ -171,6 +171,9 @@
           @include fontSize(12);
         }
       }
+      .home-separator {
+        opacity: 20%;
+      }
     }
   }
 }

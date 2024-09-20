@@ -17,7 +17,8 @@ export function calculateAge(dateOfBirth: string | undefined): number {
   return yearsDiff;
 }
 
-export function truncateDescription(description: string, maxLength: number): string {
+export function truncateDescription(description?: string, maxLength?: number): string {
+  if (!description || !maxLength) return '';
   const words = description.split(' ');
   if (words.length <= maxLength) {
     return description;

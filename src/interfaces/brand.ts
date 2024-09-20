@@ -283,6 +283,7 @@ export interface Product {
 
 export interface Brand {
   id: number;
+  type: string;
   title: {
     rendered: string;
   };
@@ -293,7 +294,7 @@ export interface Brand {
     brand_name: string;
     contact_name: string;
     type_of_business: string;
-    short_description?: string;
+    short_description: string;
     brand_logo?: BrandLogo;
   };
   'brand-category': string[];
@@ -325,13 +326,4 @@ export interface BrandLogo {
   width: number;
   height: number;
   sizes: EventImageSizes;
-}
-
-export interface DashboardContent {
-  rafer_vip_heading: string;
-  rafer_vip_short_description: string;
-  rafer_vip_description: string;
-  make_request_heading: string;
-  make_request_short_description: string;
-  make_request_description: string;
 }

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, CardContent } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
 import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
@@ -99,7 +100,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
     },
     {
       name: 'eventTitle',
-      label: `Would you like ${event.title.rendered}?`,
+      label: `Would you like ${he.decode(event?.title?.rendered)}?`,
       options: adventureGolfOptions,
       placeholder: 'Select option...',
     },
@@ -120,7 +121,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
       <Box>
         <CardContent className="site-dialog__content">
           <Typography variant="h2" gutterBottom>
-            {event.title.rendered}
+            {he.decode(event?.title?.rendered)}
           </Typography>
           <Typography variant="body1">
             <Box component="strong">Date:</Box>
@@ -137,6 +138,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
                   {label}
                 </Typography>
                 <SelectBoxWithoutLabel
+                  placeholder="Select option..."
                   name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested'}
                   control={control}
                   options={options}

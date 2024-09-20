@@ -3,8 +3,9 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { Brand, DashboardContent } from '@/interfaces/brand';
+import { Brand } from '@/interfaces/brand';
 import BrandsListing from './BrandsListing';
+import { DashboardContent } from '@/interfaces';
 
 interface BrandsPageProps {
   brands: Brand[];

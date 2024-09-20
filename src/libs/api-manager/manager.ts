@@ -114,6 +114,18 @@ export const GetDashboardContent = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getDashboardContent);
 };
 
+export const GetDashboard = async () => {
+  return await FetchInstanceWithHeaders(Endpoints.getDashboard);
+};
+export const GetVipSearch = async (keyword: string, token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.vipSearch(keyword), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+  });
+};
+
 export const GetBrandDetails = async (id: number) => {
   return await FetchInstanceWithHeaders(Endpoints.getBrandDetails(id), {
     next: { tags: [TAGS.GET_BRAND_DETAILS] },
@@ -575,7 +587,7 @@ export const MakeRequestSubmit = async (
   },
 ) => {
   try {
-    const response = await Instance.post(`${Endpoints.MakeRequest}`, data, {
+    const response = await Instance.post(`${Endpoints.makeRequest}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'vip-profile-id': id.toString(),
