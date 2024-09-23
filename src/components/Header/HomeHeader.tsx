@@ -21,6 +21,7 @@ import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { usePathname } from 'next/navigation';
+import { deleteVipIdCookie } from '@/libs/actions';
 
 const navLinks = [
   {
@@ -123,6 +124,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
         setIsLoading(true);
         await LogOut(token);
         signOut();
+        deleteVipIdCookie();
       } catch (error) {
         setIsLoading(false);
         openToaster('Error during logging out. ' + error);

@@ -4,6 +4,7 @@ import { revalidateTag as revalidate, revalidatePath } from 'next/cache';
 import { AuthError } from 'next-auth';
 import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
+import { cookies } from 'next/headers';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -46,4 +47,12 @@ export async function revalidateTag(name: string) {
 
 export default async function revalidatePathAction(path: string) {
   revalidatePath(path);
+}
+
+export async function createVipIdCookie(id: string) {
+  cookies().set('vipId', id);
+}
+
+export async function deleteVipIdCookie() {
+  cookies().delete('vipId');
 }

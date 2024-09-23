@@ -40,6 +40,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   onPrev,
   token,
   id,
+  isAgent,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -228,7 +229,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           )}
         </Box>
       ))}
-      <CustomStepper currentStep={4} totalSteps={5} onPrev={onPrev} />
+      <CustomStepper currentStep={isAgent ? 5 : 4} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>

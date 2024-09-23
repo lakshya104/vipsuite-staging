@@ -1,38 +1,107 @@
 'use client';
 import React, { useState } from 'react';
 import StepOne from './StepOne';
-import StepTwo from './StepTwo';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { ProfileBuilderOptions, ACF } from '@/interfaces';
+import Step2Form from '../VipProfileBuilder/step2';
+import Step1Form from '../VipProfileBuilder/step1';
+import Step3Form from '../VipProfileBuilder/step3';
+import Step4Form from '../VipProfileBuilder/step4';
+import Step5Form from '../VipProfileBuilder/step5';
 
-const AgentProfileBuilder = () => {
+interface ProfileBuilderInterFace {
+  profileBuilderOptions: ProfileBuilderOptions;
+  token: string;
+}
+
+const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, token }) => {
   const [step, setStep] = useState(1);
-  const [profileDetail, setProfileDetail] = useState('');
-  const user = useCurrentUser();
-  const token = user?.token;
+  const [id, setId] = useState<number>(0);
+  const [profileDetail, setProfileDetail] = useState<ACF>({ first_name: '', last_name: '' });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleNext = async (profileDetail: any) => {
+  const handleNext = async (profileDetail: ACF) => {
     setProfileDetail(profileDetail);
     setStep((prevStep) => Math.min(prevStep + 1, 6));
   };
 
+  const handleId = (id: number) => {
+    setId(id);
+  };
   const handlePrev = () => {
     setStep((prevStep) => Math.max(prevStep - 1, 1));
   };
+
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <StepOne
+            handleId={handleId}
+            profileDetail={profileDetail}
+            token={token}
+            onNext={handleNext}
+            onPrev={handlePrev}
+          />
+        );
       case 2:
-        return <StepTwo profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <Step1Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+            isAgent={true}
+          />
+        );
       case 3:
-        return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <Step2Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+            isAgent={true}
+          />
+        );
       case 4:
-        return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <Step3Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+            isAgent={true}
+          />
+        );
       case 5:
-        return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <Step4Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+            isAgent={true}
+          />
+        );
       case 6:
-        return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <Step5Form
+            profileBuilderOptions={profileBuilderOptions}
+            profileDetail={profileDetail}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            token={token}
+            id={id}
+            isAgent={true}
+          />
+        );
       default:
         return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
     }

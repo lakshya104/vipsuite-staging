@@ -72,7 +72,7 @@ const LoginForm = () => {
               setIsReviewDialogOpen(true);
               reset();
             } else {
-              setError(errorMessage);
+              setError(errorMessage || 'An unexpected error occurred while login');
               setToasterOpen(true);
             }
           }

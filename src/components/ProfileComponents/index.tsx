@@ -9,8 +9,9 @@ interface ProfileComponentProps {
 }
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+  const dateOfBirth = get(profileDetails, 'acf.date_of_birth', '');
   const bioData = [
-    { label: 'Date of Birth', value: formatDateWithMonth(get(profileDetails, 'acf.date_of_birth', '')) },
+    { label: 'Date of Birth', value: dateOfBirth && formatDateWithMonth(dateOfBirth) },
     { label: 'Born', value: get(profileDetails, 'acf.birth_place', '') },
     { label: 'Resides', value: get(profileDetails, 'acf.nationality', '') },
     {
@@ -20,6 +21,7 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
     },
   ];
   const filteredBioData = bioData.filter((data) => data.value !== '');
+
   return (
     <Grid container>
       {filteredBioData.map((item, index) => (
@@ -69,47 +71,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     </Grid>
   );
 };
-
-// export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
-//   const contactData = [
-//     { type: 'Email', value: get(profileDetails, 'email', '') },
-//     { type: 'Phone', value: get(profileDetails, 'acf.phone', '') },
-//     { type: 'Secondary Email', value: get(profileDetails, 'acf.secondary_email', '') },
-//     { type: 'Primary Event Contact', value: get(profileDetails, 'acf.event_contacts.email', '') },
-//     { type: 'Secondary Event Contact', value: get(profileDetails, 'acf.event_contacts.secondary_email', '') },
-//     { type: 'Primary Stylist Contact', value: get(profileDetails, 'acf.stylist_contacts.email', '') },
-//     {
-//       type: 'Secondary Stylist Contact',
-//       value: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
-//     },
-//     { type: 'Primary Commercial Opportunity Contact', value: get(profileDetails, 'acf.stylist_contacts.email', '') },
-//     {
-//       type: 'Secondary Commercial Opportunity Contact',
-//       value: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
-//     },
-//   ];
-//   const filteredContactData = contactData.filter((contact) => contact.value !== '');
-//   return (
-//     <Grid container>
-//       {filteredContactData.map((item, index) => (
-//         <Grid item xs={12} key={index} className="user-profile__details-item">
-//           <Paper elevation={0}>
-//             <Grid container>
-//               <Grid item xs={4}>
-//                 <Typography variant="body1" fontWeight="500">
-//                   {item?.type}
-//                 </Typography>
-//               </Grid>
-//               <Grid item xs={8}>
-//                 <Typography variant="body2">{item?.value}</Typography>
-//               </Grid>
-//             </Grid>
-//           </Paper>
-//         </Grid>
-//       ))}
-//     </Grid>
-//   );
-// };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const contactData = [

@@ -25,7 +25,14 @@ const dialogBoxContent = {
   isCrossIcon: true,
 };
 
-const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, profileDetail, onPrev, token, id }) => {
+const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
+  profileBuilderOptions,
+  profileDetail,
+  onPrev,
+  token,
+  id,
+  isAgent,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const interestOptions = profileBuilderOptions?.interests_options;
   const interests = profileDetail?.interests;
@@ -69,7 +76,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
   };
 
   const filteredInterests = interestOptions.filter((interest: string) =>
-    interest.toLowerCase().includes(searchTerm.toLowerCase()),
+    interest?.toLowerCase()?.includes(searchTerm.toLowerCase()),
   );
 
   const watchInterests = watch('interests');
@@ -77,8 +84,8 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
   const maxSelection = 3;
   const toggleInterest = (value: string) => {
     const currentInterests = watchInterests;
-    if (currentInterests.length < maxSelection || currentInterests.includes(value)) {
-      const newInterests = currentInterests.includes(value)
+    if (currentInterests?.length < maxSelection || currentInterests?.includes(value)) {
+      const newInterests = currentInterests?.includes(value)
         ? currentInterests.filter((i) => i !== value)
         : [...currentInterests, value];
       setValue('interests', newInterests);
@@ -98,7 +105,9 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
       await UpdateProfile(id, token, profile);
       await revalidatePathAction('/profile');
       if (isApproved) {
-        router.push('/profile');
+        router.push(isAgent ? '/my-vips' : '/profile');
+      } else if (isAgent) {
+        router.push('/my-vips');
       } else {
         setIsDialogOpen(true);
       }
@@ -133,18 +142,18 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
         </Box>
         <FormGroup className="profile-builder__form-group">
           <Box className="profile-builder__form-row">
-            {filteredInterests.length > 0 ? (
+            {filteredInterests?.length > 0 ? (
               filteredInterests.map((interest: string) => (
                 <FormControlLabel
                   key={interest}
-                  checked={watchInterests.includes(interest)}
+                  checked={watchInterests?.includes(interest)}
                   control={
                     <Checkbox
-                      checked={watchInterests.includes(interest)}
+                      checked={watchInterests?.includes(interest)}
                       onClick={() => toggleInterest(interest)}
                       {...register('interests')}
                       value={interest}
-                      disabled={watchInterests.length >= maxSelection && !watchInterests.includes(interest)}
+                      disabled={watchInterests?.length >= maxSelection && !watchInterests?.includes(interest)}
                     />
                   }
                   label={interest}
@@ -164,7 +173,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({ profileBuilderOptions, 
             {errors.interests.message}
           </Typography>
         )}
-        <CustomStepper currentStep={5} totalSteps={5} onPrev={onPrev} />
+        <CustomStepper currentStep={isAgent ? 6 : 5} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>

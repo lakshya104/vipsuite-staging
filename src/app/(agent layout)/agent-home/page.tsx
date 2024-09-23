@@ -4,12 +4,12 @@ import './Home.scss';
 import HomePage from '@/site-pages/HomePage';
 import HomePageLoading from '@/site-pages/HomePage/loading';
 
-export default  function Page() {
+export default function Page() {
   return (
     <Box component={'main'} className="landing-page">
       <Container>
         <Suspense fallback={<HomePageLoading />}>
-          <HomePage />
+          <HomePage isAgent={true} />
         </Suspense>
       </Container>
     </Box>

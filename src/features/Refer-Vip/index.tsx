@@ -11,14 +11,12 @@ import './ReferVip.scss';
 import { useRouter } from 'next/navigation';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
-import { DashboardContent } from '@/interfaces/brand';
 import { ReferaVIP } from '@/libs/api-manager/manager';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { DashboardContent } from '@/interfaces';
 
-// Define FormValues type based on Zod schema
 type FormValues = z.infer<typeof ReferVipSchema>;
 
-// Define the props interface for the component
 interface ReferVIPFormProps {
   dashboardContent: DashboardContent;
 }
@@ -30,7 +28,6 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
-  // Set up form handling with React Hook Form and Zod validation
   const {
     register,
     handleSubmit,
@@ -44,7 +41,6 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
     },
   });
 
-  // Function called on form submission
   const onSubmit = async (data: FormValues) => {
     try {
       setIsPending(true);

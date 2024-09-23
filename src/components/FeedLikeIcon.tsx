@@ -4,12 +4,12 @@ import { Box, styled } from '@mui/material';
 import React, { useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { AddToWishlist, DeleteFromWishlist } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
@@ -40,15 +40,12 @@ interface FeedLikeIconProps {
   postId: number;
   type: string;
   token: string;
-  vipId: number;
+  vipId: number | RequestCookie | undefined;
 }
-const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type }) => {
+const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type, token, vipId }) => {
   const [isWislist, setIsWishlist] = useState(isWishlisted ?? isWishlisted);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
-  const user = useCurrentUser();
-  const token = user?.token;
-  const vipId = user?.vip_profile_id;
 
   const handleIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();

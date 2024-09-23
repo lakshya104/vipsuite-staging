@@ -8,11 +8,12 @@ import FeedLikeIcon from './FeedLikeIcon';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 interface DashboardCardProps {
   item: DashboardItem;
   token: string;
-  vipId: number;
+  vipId: number | RequestCookie | undefined;
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => {

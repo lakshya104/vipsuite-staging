@@ -39,6 +39,7 @@ const Endpoints = {
   referVIP: '/wp/v2/vip-profiles/refer-vip',
   makeRequest: '/wp/v2/vip-profiles/make-request',
   vipSearch: (keyword: string) => `/wp/v2/vip-profiles/search?keyword=${keyword}`,
+  getAllVip: `/wp/v2/agent/vip-profiles`,
 };
 
 export { Endpoints };

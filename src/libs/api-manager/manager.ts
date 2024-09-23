@@ -8,13 +8,13 @@ import TAGS from '../apiTags';
 
 export const GetToken = async () => {
   const session = await auth();
-  const token = (session?.user as unknown as Session).token;
+  const token = (session?.user as unknown as Session)?.token;
   return token;
 };
 
 export const GetLoginUserId = async () => {
   const session = await auth();
-  const id = (session?.user as unknown as Session).vip_profile_id;
+  const id = (session?.user as unknown as Session)?.vip_profile_id;
   return id;
 };
 
@@ -22,8 +22,8 @@ export const GetTokenAndEmail = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
   return {
-    token: user.token,
-    email: user.email,
+    token: user?.token,
+    email: user?.email,
   };
 };
 
@@ -31,30 +31,30 @@ export const GetUserIdAndToken = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
   return {
-    id: user.vip_profile_id,
-    token: user.token,
+    id: user?.vip_profile_id,
+    token: user?.token,
   };
 };
 
 export const GetCustomerId = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
-  return user.id;
+  return user?.id;
 };
 
 export const GetUserRole = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
-  return user.role;
+  return user?.role;
 };
 
 export const GetCustomerIdTokenAndUserId = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
   return {
-    id: user.id,
-    token: user.token,
-    userId: user.vip_profile_id,
+    id: user?.id,
+    token: user?.token,
+    userId: user?.vip_profile_id,
   };
 };
 
@@ -117,7 +117,8 @@ export const GetDashboardContent = async () => {
 export const GetDashboard = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getDashboard);
 };
-export const GetVipSearch = async (keyword: string, token: string, vipId: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const GetVipSearch = async (keyword: string, token: string, vipId: any) => {
   return await FetchInstance(Endpoints.vipSearch(keyword), {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -516,7 +517,8 @@ export const EventFeedback = async (
   }
 };
 
-export const AddToWishlist = async (token: string, vipId: number, postId: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const AddToWishlist = async (token: string, vipId: any, postId: number) => {
   try {
     const response = await Instance.post(
       Endpoints.addToWishlist(postId),
@@ -537,7 +539,8 @@ export const AddToWishlist = async (token: string, vipId: number, postId: number
   }
 };
 
-export const DeleteFromWishlist = async (token: string, vipId: number, postId: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const DeleteFromWishlist = async (token: string, vipId: any, postId: number) => {
   try {
     const response = await Instance.delete(Endpoints.addToWishlist(postId), {
       headers: {
@@ -604,4 +607,13 @@ export const MakeRequestSubmit = async (
 
 export const GetPageContent = async (id: number) => {
   return await FetchInstance(Endpoints.getPageContent(id));
+};
+
+export const GetAllVips = async (token: string) => {
+  return await FetchInstance(Endpoints.getAllVip, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    next: { tags: [TAGS.GET_VIP_CART] },
+  });
 };

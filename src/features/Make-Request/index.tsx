@@ -10,9 +10,9 @@ import './MakeRequest.scss';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter } from 'next/navigation';
-import { DashboardContent } from '@/interfaces/brand';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { MakeRequestSubmit } from '@/libs/api-manager/manager';
+import { DashboardContent } from '@/interfaces';
 
 const formSchema = z.object({
   request_content: z

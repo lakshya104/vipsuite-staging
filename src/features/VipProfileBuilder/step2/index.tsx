@@ -12,7 +12,7 @@ import { UpdateProfile } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 
-const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, token, id }) => {
+const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, token, id, isAgent }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
@@ -163,7 +163,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           />
         </Box>
       ))}
-      <CustomStepper currentStep={2} totalSteps={5} onPrev={onPrev} />
+      <CustomStepper currentStep={isAgent ? 3 : 2} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>

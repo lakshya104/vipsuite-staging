@@ -11,10 +11,7 @@ const EventDetailsPage = async ({ id }: { id: number }) => {
     return <ErrorFallback errorMessage="Invalid Event ID provided." />;
   }
   try {
-    const [session, eventDetails] = await Promise.all([
-      auth(),
-      GetVipEventDetails(Number(id)), // Fetch event details directly
-    ]);
+    const [session, eventDetails] = await Promise.all([auth(), GetVipEventDetails(Number(id))]);
     const token = (session?.user as unknown as Session)?.token;
     const vipId = (session?.user as unknown as Session)?.vip_profile_id;
     if (!token) {

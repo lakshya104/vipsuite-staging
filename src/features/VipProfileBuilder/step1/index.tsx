@@ -20,6 +20,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
   onPrev,
   token,
   id,
+  isAgent,
 }) => {
   const knownForOptions = profileBuilderOptions?.known_for_options || [];
   const knownFor = profileDetail.known_for || [];
@@ -223,7 +224,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
           </FormGroup>
         </>
       )}
-      <CustomStepper currentStep={1} totalSteps={5} onPrev={onPrev} />
+      <CustomStepper currentStep={isAgent ? 2 : 1} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>

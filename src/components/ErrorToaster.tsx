@@ -37,7 +37,7 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({ errorMessage, message, logi
 
   return (
     <Fragment>
-      <ErrorFallback errorMessage={message} />;
+      <ErrorFallback errorMessage={message} />
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </Fragment>
   );

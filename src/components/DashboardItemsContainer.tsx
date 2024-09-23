@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Container, Grid, Skeleton, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import { partition } from 'lodash';
 import { DashboardContent, DashboardItem } from '@/interfaces';
@@ -9,11 +9,12 @@ import SearchBar from './SearchBar';
 import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
   dashboardContent: DashboardContent | null;
-  vipId: number;
+  vipId: number | RequestCookie | undefined;
   token: string;
   totalFollowerCount: number;
 }
@@ -90,6 +91,13 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     </Grid>
   );
 
+  const renderDashboard = () =>
+    dashboardContent && (
+      <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
+        <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
+      </Box>
+    );
+
   return (
     <>
       <Box my={2.5}>
@@ -110,33 +118,25 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
             <>
               {featuredItems.length === 0 && nonFeaturedItems.length === 0 ? (
                 <>
-                  {dashboardContent && (
-                    <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
-                      <DashboardContentComponent
-                        dashboardContent={dashboardContent}
-                        totalFollowers={totalFollowerCount}
-                      />
-                    </Box>
-                  )}
+                  {dashboardContent && renderDashboard()}
                   <ErrorFallback errorMessage="No dashboard items available currently" hideSubtext />
                 </>
               ) : (
                 <>
                   {featuredItems.length > 0 && renderItems(featuredItems)}
-                  {dashboardContent && (
-                    <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
-                      <DashboardContentComponent
-                        dashboardContent={dashboardContent}
-                        totalFollowers={totalFollowerCount}
-                      />
-                    </Box>
-                  )}
+                  {dashboardContent && renderDashboard()}
                   {nonFeaturedItems.length > 0 && renderItems(nonFeaturedItems)}
                 </>
               )}
             </>
+          ) : hasSearched && searchResults.length > 0 ? (
+            renderItems(searchResults)
           ) : (
-            hasSearched && searchResults.length > 0 && renderItems(searchResults)
+            <Container>
+              <Typography marginTop={5} variant="h2" textAlign="center">
+                No results found
+              </Typography>
+            </Container>
           )}
         </>
       )}

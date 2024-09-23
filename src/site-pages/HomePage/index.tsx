@@ -6,8 +6,15 @@ import { Session } from '@/interfaces';
 import DashboardItemsContainer from '@/components/DashboardItemsContainer';
 import { auth } from '@/auth';
 import { get } from 'lodash';
+import { cookies } from 'next/headers';
 
-const HomePage = async () => {
+interface HomePageProps {
+  isAgent?: boolean;
+}
+const HomePage: React.FC<HomePageProps> = async ({ isAgent }) => {
+  const cookieStore = cookies();
+  const userId = cookieStore.get('vipId');
+
   try {
     const [session, dashboardContent, dashboardItems] = await Promise.all([
       auth(),
@@ -16,14 +23,15 @@ const HomePage = async () => {
     ]);
 
     const token = (session?.user as unknown as Session)?.token;
-    const vipId = (session?.user as unknown as Session)?.vip_profile_id;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : userId;
     const tiktokFollowerCount = get(session?.user, 'acf.tiktok_follower_count', 0);
     const instagramFollowerCount = get(session?.user, 'acf.instagram_follower_count', 0);
-    const totalFollowerCount = tiktokFollowerCount + instagramFollowerCount;
+    const totalFollowerCount = Number(tiktokFollowerCount) + Number(instagramFollowerCount);
 
     if (!dashboardItems) {
       return <ErrorFallback errorMessage="Currently there is no dashboard item." hideSubtext={true} />;
     }
+    console.log({ userId, isAgent, vipId });
 
     return (
       <DashboardItemsContainer
@@ -31,7 +39,7 @@ const HomePage = async () => {
         dashboardContent={dashboardContent}
         vipId={vipId}
         token={token}
-        totalFollowerCount={totalFollowerCount}
+        totalFollowerCount={!isAgent ? totalFollowerCount : 0}
       />
     );
   } catch (error) {

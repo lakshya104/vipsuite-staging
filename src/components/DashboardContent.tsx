@@ -8,6 +8,8 @@ interface DashboardContentProps {
 }
 
 const DashboardContentComponent: React.FC<DashboardContentProps> = ({ dashboardContent, totalFollowers }) => {
+  console.log({ totalFollowers });
+
   return (
     <>
       <ReferCard
@@ -16,7 +18,7 @@ const DashboardContentComponent: React.FC<DashboardContentProps> = ({ dashboardC
         href="/refer-a-vip"
         isPdf={false}
       />
-      {totalFollowers >= 100000 && (
+      {totalFollowers > 100000 && (
         <ReferCard
           heading={dashboardContent?.make_request_heading}
           text={dashboardContent?.make_request_short_description}

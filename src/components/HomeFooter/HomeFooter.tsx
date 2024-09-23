@@ -12,7 +12,7 @@ import { useOrderStore } from '@/store/useStore';
 interface HomeFooterProps {
   token: string;
   id: number;
-  vipId: number;
+  vipId?: number;
 }
 
 const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
