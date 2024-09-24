@@ -19,12 +19,12 @@ interface MyVipCardProps {
 const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tiktokFollowers, link, status, vipId }) => {
   const itemImage = image || '/img/placeholder-image.jpg';
   const handleClick = (vipId: string) => {
-    console.log('created');
     createVipIdCookie(vipId);
   };
   return (
     <ProgressBarLink href={link}>
       <Box
+        onClick={() => handleClick(vipId)}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -77,7 +77,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tikt
             </Typography>
           </Box>
         </Box>
-        <IconButton onClick={() => handleClick(vipId)}>
+        <IconButton>
           <ArrowForwardIosIcon color="primary" />
         </IconButton>
       </Box>

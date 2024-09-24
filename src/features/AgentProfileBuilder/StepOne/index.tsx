@@ -44,6 +44,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({ onNext, onPrev, toke
     setIsLoading(true);
     try {
       const profile = {
+        title: `${data.first_name} ${data.last_name}`,
         acf: {
           first_name: data.first_name,
           last_name: data.last_name,

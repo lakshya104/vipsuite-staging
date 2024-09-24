@@ -48,10 +48,12 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   const onSubmit = async (data: FormValues) => {
     try {
       setIsPending(true);
-      await MakeRequestSubmit(user?.vip_profile_id, user?.token, data);
+      const res = await MakeRequestSubmit(user?.vip_profile_id, user?.token, data);
       setToasterType('success');
-      openToaster('Request submitted successfully');
-      router.push('/home');
+      openToaster(res.message);
+      setTimeout(() => {
+        router.push('/home');
+      }, 1500);
     } catch (error) {
       setToasterType('error');
       openToaster('Error during submit the form. ' + error);
@@ -79,14 +81,14 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
                 errors={errors}
               />
             </Box>
-            <Btn look="dark-filled" className="button button--white" width="100%" type="submit">
-              Submit Request
+            <Btn look="dark-filled" disabled={isPending} className="button button--white" width="100%" type="submit">
+              {isPending ? 'Submitting' : 'Submit'}
             </Btn>
           </form>
         </Box>
       </Box>
-      <Backdrop sx={{ zIndex: 100 }} open={isPending}>
-        <CircularProgress color="inherit" />
+      <Backdrop sx={{ zIndex: 100000 }} open={isPending}>
+        <CircularProgress sx={{ color: 'white' }} />
       </Backdrop>
       <Toaster
         open={toasterOpen}

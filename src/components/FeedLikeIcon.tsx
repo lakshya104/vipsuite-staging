@@ -9,7 +9,6 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
@@ -40,7 +39,7 @@ interface FeedLikeIconProps {
   postId: number;
   type: string;
   token: string;
-  vipId: number | RequestCookie | undefined;
+  vipId: number | string | undefined;
 }
 const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type, token, vipId }) => {
   const [isWislist, setIsWishlist] = useState(isWishlisted ?? isWishlisted);

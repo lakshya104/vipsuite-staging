@@ -292,9 +292,12 @@ type AgentSignUpFormField = {
 };
 
 export const representationTypeOptions = [
-  { value: 'direct', label: 'Direct' },
-  { value: 'manager', label: 'Manager' },
-  { value: 'supervisor', label: 'Supervisor' },
+  { value: 'Manager', label: 'Manager' },
+  { value: 'Agent', label: 'Agent' },
+  { value: 'Commercial Agent', label: 'Commercial Agent' },
+  { value: 'Publicist', label: 'Publicist' },
+  { value: 'Personal Assistant', label: 'Personal Assistant' },
+  { value: 'Stylist', label: 'Stylist' },
 ];
 
 export const AgentSignUpFormFields: AgentSignUpFormField[] = [

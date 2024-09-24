@@ -23,7 +23,7 @@ import Toaster from '../Toaster';
 import { usePathname } from 'next/navigation';
 import { deleteVipIdCookie } from '@/libs/actions';
 
-const navLinks = [
+const vipNavLinks = [
   {
     label: 'Home',
     href: '/home',
@@ -47,6 +47,34 @@ const navLinks = [
   {
     label: 'My Orders',
     href: '/my-orders',
+    paths: ['/my-orders'],
+  },
+];
+
+const agentNavLinks = [
+  {
+    label: 'Home',
+    href: '/agent-home',
+    paths: ['/home', '/brands/', '/product'],
+  },
+  {
+    label: 'Opportunities',
+    href: '/agent-opportunities',
+    paths: ['/opportunities'],
+  },
+  {
+    label: 'Events',
+    href: '/agent-events',
+    paths: ['/events'],
+  },
+  {
+    label: 'Inbox',
+    href: '/agent-inbox',
+    paths: ['/inbox'],
+  },
+  {
+    label: 'My Orders',
+    href: '/agent-orders',
     paths: ['/my-orders'],
   },
 ];
@@ -113,6 +141,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
   const menuItems = role === 'vip' ? vipMenuItems : agentMenuItems;
+  const navItems = role === 'vip' ? vipNavLinks : agentNavLinks;
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -144,7 +173,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
 
           <Box className="site-header__navbar">
             <MenuList className="site-header__navigation">
-              {navLinks.map((link) => {
+              {navItems.map((link) => {
                 const isActive = link.paths.some((path) => pathname.startsWith(path));
                 return (
                   <MenuItem

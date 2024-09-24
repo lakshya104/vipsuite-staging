@@ -17,6 +17,7 @@
   --color-textBlack-60: #767673;
   --color-textBlack-80: rgba(27, 27, 27, 0.8);
   --color-red: #de4b23;
+  --color-darkgray: #1b1b1b;
   --font-family: 'Graphik', serif;
 }
 
@@ -451,4 +452,8 @@ div.site-dialog {
 }
 .MuiPaper-elevation.MuiPopover-paper {
   background-color: var(--color-marble) !important;
+}
+
+.light-separator {
+  opacity: 20%;
 }

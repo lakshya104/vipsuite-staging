@@ -110,12 +110,42 @@ export const GetBrands = async () => {
   });
 };
 
-export const GetDashboardContent = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getDashboardContent);
+export const GetDashboardContent = async (token: string, vipId: string | number | undefined) => {
+  if (vipId) {
+    try {
+      const response = await Instance.get(Endpoints.getDashboardContent, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'vip-profile-id': vipId?.toString(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred while fetching dashboard content';
+        throw errorMessage;
+      }
+    }
+  }
 };
 
-export const GetDashboard = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getDashboard);
+export const GetDashboard = async (token: string, vipId: string | number | undefined) => {
+  if (vipId) {
+    try {
+      const response = await Instance.get(Endpoints.getDashboard, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'vip-profile-id': vipId?.toString(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred while fetching dashboard items';
+        throw errorMessage;
+      }
+    }
+  }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GetVipSearch = async (keyword: string, token: string, vipId: any) => {

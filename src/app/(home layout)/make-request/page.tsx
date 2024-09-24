@@ -3,13 +3,17 @@ import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import MakeRequest from '@/features/Make-Request';
 import { GetDashboardContent } from '@/libs/api-manager/manager';
-import { DashboardContent } from '@/interfaces';
+import { DashboardContent, Session } from '@/interfaces';
+import { auth } from '@/auth';
 
 const Page = async () => {
   let dashboardContent: DashboardContent | null = null;
 
   try {
-    dashboardContent = await GetDashboardContent();
+    const session = await auth();
+    const token = (session?.user as unknown as Session)?.token;
+    const vipId = (session?.user as unknown as Session)?.vip_profile_id;
+    dashboardContent = await GetDashboardContent(token, vipId);
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Something went wrong." />;
   }

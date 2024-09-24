@@ -8,12 +8,11 @@ import FeedLikeIcon from './FeedLikeIcon';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 interface DashboardCardProps {
   item: DashboardItem;
   token: string;
-  vipId: number | RequestCookie | undefined;
+  vipId: number | string | undefined;
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => {
@@ -79,6 +78,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
           </Box>
         )}
         <Box
+          className="landing-product__text"
           sx={{
             position: 'absolute',
             bottom: 0,
@@ -90,7 +90,9 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
         >
           {isEvent && (item as Event)?.acf?.is_featured && (
             <Box sx={{ mb: 1, fontWeight: 'bold' }}>
-              <Typography variant="overline">Featured Event</Typography>
+              <Typography className="featured-event" variant="overline">
+                Featured Event
+              </Typography>
             </Box>
           )}
           <Typography variant="h2" dangerouslySetInnerHTML={{ __html: postTitle || '' }} />
@@ -136,10 +138,9 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
           {isOpportunity && (
             <Typography
               variant="body2"
+              className="landing-product__paragraph"
               dangerouslySetInnerHTML={{
-                __html: (item as Opportunity)['opportunity-category']?.join(
-                  ' <span className = "home-separator">|</span>',
-                ),
+                __html: (item as Opportunity)['opportunity-category']?.join(' <span>|</span> '),
               }}
             />
           )}

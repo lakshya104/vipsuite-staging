@@ -8,8 +8,6 @@ interface DashboardContentProps {
 }
 
 const DashboardContentComponent: React.FC<DashboardContentProps> = ({ dashboardContent, totalFollowers }) => {
-  console.log({ totalFollowers });
-
   return (
     <>
       <ReferCard

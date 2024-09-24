@@ -9,12 +9,11 @@ import SearchBar from './SearchBar';
 import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
   dashboardContent: DashboardContent | null;
-  vipId: number | RequestCookie | undefined;
+  vipId: number | string | undefined;
   token: string;
   totalFollowerCount: number;
 }
@@ -34,10 +33,11 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.acf?.is_featured);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchQuery(value);
-    setIsPending(!!value);
-    if (!value) {
+    setSearchQuery(event.target.value);
+    if (event.target.value) {
+      setIsPending(true);
+    } else {
+      setIsPending(false);
       setHasSearched(false);
     }
   }, []);
@@ -69,7 +69,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
 
   useEffect(() => {
     fetchSearchResults();
-  }, [debouncedSearchQuery, fetchSearchResults]);
+  }, [fetchSearchResults]);
 
   const renderSkeletons = () => (
     <Grid container spacing={2}>
@@ -130,7 +130,19 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
               )}
             </>
           ) : hasSearched && searchResults.length > 0 ? (
-            renderItems(searchResults)
+            <>
+              <Grid container mb={2.5}>
+                <Grid item xs={12}>
+                  <Box width="100%">
+                    <Typography variant="h3" component="h2" mb={1}>
+                      {searchResults.length} {searchResults.length > 1 ? 'Results' : 'Result'} for &quot;{searchQuery}
+                      &quot;
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+              {renderItems(searchResults)}
+            </>
           ) : (
             <Container>
               <Typography marginTop={5} variant="h2" textAlign="center">
