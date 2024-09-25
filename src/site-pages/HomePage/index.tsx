@@ -19,9 +19,6 @@ const HomePage: React.FC<HomePageProps> = async ({ isAgent }) => {
     const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
     const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : userId?.value;
-    if (!vipId) {
-      return <ErrorFallback errorMessage="Not able to fetch vip-id." />;
-    }
     const [dashboardContent, dashboardItems] = await Promise.all([
       GetDashboardContent(token, vipId),
       GetDashboard(token, vipId),
