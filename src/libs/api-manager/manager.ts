@@ -87,6 +87,25 @@ export const AgentSignUp = async (formData: any) => {
   }
 };
 
+export const AgentProfileUpdate = async (agentId: number, token: string, formData: FormData) => {
+  try {
+    const response = await Instance.post(Endpoints.agentProfileUpdate(agentId), formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'auto',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error during profile update:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during profile update';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
+
 export const Login = async (data: LoginFormValues) => {
   try {
     const response = await Instance.post(Endpoints.login, data);
@@ -109,6 +128,16 @@ export const GetVipProfile = async (token: string, vipId: number) => {
     headers: {
       Authorization: `Bearer ${token}`,
       'vip-profile-id': vipId?.toString(),
+    },
+  });
+};
+
+export const GetAgentProfile = async () => {
+  const session = await auth();
+  const token = (session?.user as unknown as Session).token;
+  return await FetchInstance(Endpoints.getProfile, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -349,13 +378,13 @@ export const GetVipOpportunities = async () => {
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const SendRsvp = async (data: any, token: string, vipId: number) => {
+export const SendRsvp = async (data: FormData, token: string, vipId: number) => {
   try {
     const response = await Instance.post(Endpoints.sendRsvp, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'vip-profile-id': vipId?.toString(),
+        'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;

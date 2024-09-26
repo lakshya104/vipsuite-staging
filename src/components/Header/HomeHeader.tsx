@@ -22,6 +22,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { usePathname } from 'next/navigation';
 import { deleteVipIdCookie } from '@/libs/actions';
+import { useUserInfoStore } from '@/store/useStore';
 
 const vipNavLinks = [
   {
@@ -142,6 +143,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
   const pathname = usePathname();
   const menuItems = role === 'vip' ? vipMenuItems : agentMenuItems;
   const navItems = role === 'vip' ? vipNavLinks : agentNavLinks;
+  const { clearAll } = useUserInfoStore();
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -151,9 +153,10 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
       try {
         setDrawerOpen(false);
         setIsLoading(true);
-        await LogOut(token);
         signOut();
+        await LogOut(token);
         deleteVipIdCookie();
+        clearAll();
       } catch (error) {
         setIsLoading(false);
         openToaster('Error during logging out. ' + error);

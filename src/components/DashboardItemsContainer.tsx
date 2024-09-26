@@ -9,6 +9,7 @@ import SearchBar from './SearchBar';
 import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
@@ -31,6 +32,14 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const [hasSearched, setHasSearched] = useState(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.acf?.is_featured);
+  const { setVipIdStore, setTokenStore, setUserIdStore } = useUserInfoStore();
+
+  useEffect(() => {
+    setVipIdStore(vipId);
+    setTokenStore(token);
+    setUserIdStore(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);

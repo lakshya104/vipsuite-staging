@@ -9,7 +9,7 @@ import { SendRsvp } from '@/libs/api-manager/manager';
 import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
 import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface RSVPProps {
   onClose: () => void;
@@ -35,8 +35,7 @@ const adventureGolfOptions = [
 
 const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, handleToasterMessage }) => {
   const [isePending, setIsPending] = useState<boolean>(false);
-  const user = useCurrentUser();
-  const vipId = user?.vip_profile_id;
+  const { vipIdStore } = useUserInfoStore();
   const {
     control,
     handleSubmit,
@@ -58,8 +57,13 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         number_of_attendees: 0,
         would_you_like: false,
       };
+      const formData = new FormData();
+      Object.entries(rsvp).forEach(([key, value]) => {
+        const valueToAppend = value === null ? '' : String(value);
+        formData.append(key, valueToAppend);
+      });
       try {
-        await SendRsvp(rsvp, token, vipId);
+        await SendRsvp(formData, token, vipIdStore);
         revalidateTag('getEventDetails');
         handleToasterMessage('success');
       } catch (error) {
@@ -77,8 +81,13 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         number_of_attendees: data.adultsChildren,
         would_you_like: true,
       };
+      const formData = new FormData();
+      Object.entries(rsvp).forEach(([key, value]) => {
+        const valueToAppend = value === null ? '' : String(value);
+        formData.append(key, valueToAppend);
+      });
       try {
-        await SendRsvp(rsvp, token, vipId);
+        await SendRsvp(formData, token, vipIdStore);
         revalidateTag('getEventDetails');
         handleToasterMessage('success');
         onConfirmation();

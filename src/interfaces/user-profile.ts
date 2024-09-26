@@ -14,6 +14,8 @@ export interface ACF {
   last_name: string;
   created_by?: number;
   created_by_type?: string;
+  email?: string;
+  company_name?: string;
   type_of_representation?: string;
   avg_engagement?: string | null;
   instagram_handle?: string;
@@ -28,6 +30,8 @@ export interface ACF {
   nationality?: string | null;
   ethnicity?: string | null;
   number_of_children?: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  examples_of_vip_managed: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   child_info?: any;
   pets?: string;

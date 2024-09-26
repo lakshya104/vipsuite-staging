@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
 // /* eslint-disable no-unused-vars */
 // import { create } from 'zustand';
 // import { persist, createJSONStorage } from 'zustand/middleware';
@@ -40,11 +42,11 @@
 
 // store/orderStore.ts
 import { create } from 'zustand';
+import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
 
 interface OrderState {
   orderCount: number;
   increaseOrderCount: () => void;
-  // eslint-disable-next-line no-unused-vars
   setOrderCount: (count: number) => void;
 }
 
@@ -56,7 +58,6 @@ export const useOrderStore = create<OrderState>((set) => ({
 
 interface LookbookOrderState {
   lookbookDescription: string;
-  // eslint-disable-next-line no-unused-vars
   setLookbookDescription: (description: string) => void;
   clearLookbookDescription: () => void;
 }
@@ -70,7 +71,6 @@ export const useLookbookOrder = create<LookbookOrderState>((set) => ({
 interface RequestOnlyState {
   requestProductId: number | null;
   clearRequestProductId: () => void;
-  // eslint-disable-next-line no-unused-vars
   setRequestProductId: (count: number) => void;
 }
 
@@ -79,3 +79,37 @@ export const useRequestOnlyStore = create<RequestOnlyState>((set) => ({
   clearRequestProductId: () => set({ requestProductId: null }),
   setRequestProductId: (count) => set({ requestProductId: count }),
 }));
+
+interface UserInfoState {
+  vipIdStore: any;
+  tokenStore: string | null;
+  userIdStore: number | null;
+  clearVipIdStore: () => void;
+  setVipIdStore: (id: any) => void;
+  clearTokenStore: () => void;
+  setTokenStore: (token: string) => void;
+  clearUserIdStore: () => void;
+  setUserIdStore: (id: number) => void;
+  clearAll: () => void;
+}
+
+export const useUserInfoStore = create<UserInfoState>()(
+  persist(
+    (set) => ({
+      vipIdStore: null,
+      tokenStore: null,
+      userIdStore: null,
+      clearVipIdStore: () => set({ vipIdStore: null }),
+      setVipIdStore: (id) => set({ vipIdStore: id }),
+      clearTokenStore: () => set({ tokenStore: null }),
+      setTokenStore: (token) => set({ tokenStore: token }),
+      clearUserIdStore: () => set({ userIdStore: null }),
+      setUserIdStore: (id) => set({ userIdStore: id }),
+      clearAll: () => set({ vipIdStore: null, tokenStore: null, userIdStore: null }),
+    }),
+    {
+      name: 'user-info-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    } as PersistOptions<UserInfoState>,
+  ),
+);

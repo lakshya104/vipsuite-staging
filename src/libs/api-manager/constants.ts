@@ -2,6 +2,7 @@ const Endpoints = {
   login: '/wp/v2/login',
   vipSignup: '/wp/v2/signup/vip',
   agentSignup: '/wp/v2/signup/agent',
+  agentProfileUpdate: (agentId: number) => `/wp/v2/agent-profile/${agentId}`,
   getProfile: '/wp/v2/users/me',
   getBrands: '/wp/v2/brand-profiles',
   getDashboardContent: '/wp/v2/vip-profiles/dashboard-content',

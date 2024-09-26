@@ -1,3 +1,4 @@
+import { AgentEditProfileValues } from '@/features/AgentProfile/types';
 import { AgentSignupValues } from '@/features/AgentSignupForm/types';
 import { ProductDetail } from '@/interfaces/product';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
@@ -286,7 +287,7 @@ type AgentSignUpFormField = {
   name: keyof AgentSignupValues;
   placeholder?: string | undefined;
   autocomplete?: string | undefined;
-  type: string | undefined;
+  type?: string | undefined;
   label?: string | undefined;
   options?: Array<{ value: string; label: string }>;
 };
@@ -296,6 +297,23 @@ export const AgentSignUpFormFields: AgentSignUpFormField[] = [
   { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
   { name: 'email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
   { name: 'password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
+  { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
+  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
+  { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
+];
+
+type AgentEditProfileFormField = {
+  name: keyof AgentEditProfileValues;
+  placeholder?: string | undefined;
+  autocomplete?: string | undefined;
+  type?: string | undefined;
+  label?: string | undefined;
+  options?: Array<{ value: string; label: string }>;
+};
+
+export const AgentEditProfileFields: AgentEditProfileFormField[] = [
+  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
+  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
   { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
   { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
