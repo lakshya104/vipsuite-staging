@@ -50,7 +50,7 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
       setIsPending(true);
       const res = await MakeRequestSubmit(user?.vip_profile_id, user?.token, data);
       setToasterType('success');
-      openToaster(res.message);
+      openToaster(res?.message);
       setTimeout(() => {
         router.push('/home');
       }, 1500);

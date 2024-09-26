@@ -75,7 +75,6 @@ const AgentSignupForm = () => {
             password: formData?.password,
             phone: formData?.phone,
             company_name: formData?.company_name,
-            type_of_representation: formData.type_of_representation,
             examples_of_vip_managed: allVipExamples,
           };
           const response = await AgentSignUp(data);

@@ -291,15 +291,6 @@ type AgentSignUpFormField = {
   options?: Array<{ value: string; label: string }>;
 };
 
-export const representationTypeOptions = [
-  { value: 'Manager', label: 'Manager' },
-  { value: 'Agent', label: 'Agent' },
-  { value: 'Commercial Agent', label: 'Commercial Agent' },
-  { value: 'Publicist', label: 'Publicist' },
-  { value: 'Personal Assistant', label: 'Personal Assistant' },
-  { value: 'Stylist', label: 'Stylist' },
-];
-
 export const AgentSignUpFormFields: AgentSignUpFormField[] = [
   { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
   { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
@@ -307,12 +298,6 @@ export const AgentSignUpFormFields: AgentSignUpFormField[] = [
   { name: 'password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
   { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
-  {
-    name: 'type_of_representation',
-    label: 'Type of Representation',
-    options: representationTypeOptions,
-    type: 'select',
-  },
   { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
 ];
 

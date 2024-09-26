@@ -123,6 +123,24 @@
     margin-bottom: rem(40);
   }
   &__item {
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+    .featured-event {
+      color: var(--color-darkgray);
+      background-color: var(--color-marble);
+      padding: rem(6) rem(10);
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      display: inline-block;
+      line-height: rem(11.2);
+      @include fontSize(8);
+      @include border-radius(3px);
+    }
     &-inner {
       position: relative;
       height: 440px;
@@ -171,9 +189,17 @@
           @include fontSize(12);
         }
       }
-      .home-separator {
-        opacity: 20%;
-      }
     }
   }
+  &__text {
+    background: linear-gradient(0deg, #1b1b1b 0%, rgba(27, 27, 27, 0) 100%);
+  }
+  &__paragraph {
+    span {
+      opacity: 20%;
+    }
+  }
+}
+.home-separator {
+  opacity: 20%;
 }

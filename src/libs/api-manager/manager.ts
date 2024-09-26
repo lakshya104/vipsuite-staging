@@ -104,6 +104,15 @@ export const GetProfile = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getProfile);
 };
 
+export const GetVipProfile = async (token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getProfile, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+  });
+};
+
 export const GetBrands = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getBrands, {
     next: { tags: [TAGS.GET_BRANDS] },
@@ -112,41 +121,28 @@ export const GetBrands = async () => {
 
 export const GetDashboardContent = async (token: string, vipId: string | number | undefined) => {
   if (vipId) {
-    try {
-      const response = await Instance.get(Endpoints.getDashboardContent, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'vip-profile-id': vipId?.toString(),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || 'An error occurred while fetching dashboard content';
-        throw errorMessage;
-      }
-    }
+    return await FetchInstance(Endpoints.getDashboardContent, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+      next: { tags: [TAGS.GET_DASHBOARD_CONTENT] },
+    });
   }
 };
 
 export const GetDashboard = async (token: string, vipId: string | number | undefined) => {
   if (vipId) {
-    try {
-      const response = await Instance.get(Endpoints.getDashboard, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'vip-profile-id': vipId?.toString(),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || 'An error occurred while fetching dashboard items';
-        throw errorMessage;
-      }
-    }
+    return await FetchInstance(Endpoints.getDashboard, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+      next: { tags: [TAGS.GET_DASHBOARD] },
+    });
   }
 };
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GetVipSearch = async (keyword: string, token: string, vipId: any) => {
   return await FetchInstance(Endpoints.vipSearch(keyword), {

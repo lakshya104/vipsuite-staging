@@ -4,7 +4,9 @@ import { ProgressBarLink } from './ProgressBar';
 import { Box, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { createVipIdCookie } from '@/libs/actions';
+import revalidatePathAction, { createVipIdCookie, revalidateTag } from '@/libs/actions';
+import { useRouter } from 'next/navigation';
+import TAGS from '@/libs/apiTags';
 
 interface MyVipCardProps {
   image: string;
@@ -17,10 +19,17 @@ interface MyVipCardProps {
 }
 
 const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tiktokFollowers, link, status, vipId }) => {
+  const router = useRouter();
   const itemImage = image || '/img/placeholder-image.jpg';
   const handleClick = (vipId: string) => {
-    createVipIdCookie(vipId);
+    if (status !== 'pending') {
+      createVipIdCookie(vipId);
+      revalidateTag(TAGS.GET_DASHBOARD);
+      revalidatePathAction(`/agent-home`);
+      router.refresh();
+    }
   };
+
   return (
     <ProgressBarLink href={link}>
       <Box

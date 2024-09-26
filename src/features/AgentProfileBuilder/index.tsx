@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StepOne from './StepOne';
 import { ProfileBuilderOptions, ACF } from '@/interfaces';
 import Step2Form from '../VipProfileBuilder/step2';
@@ -7,16 +7,28 @@ import Step1Form from '../VipProfileBuilder/step1';
 import Step3Form from '../VipProfileBuilder/step3';
 import Step4Form from '../VipProfileBuilder/step4';
 import Step5Form from '../VipProfileBuilder/step5';
+import { useSearchParams } from 'next/navigation';
 
 interface ProfileBuilderInterFace {
   profileBuilderOptions: ProfileBuilderOptions;
   token: string;
+  profileDetails: ACF | undefined;
 }
 
-const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, token }) => {
+const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, token, profileDetails }) => {
   const [step, setStep] = useState(1);
   const [id, setId] = useState<number>(0);
-  const [profileDetail, setProfileDetail] = useState<ACF>({ first_name: '', last_name: '' });
+  const [profileDetail, setProfileDetail] = useState<ACF>(
+    profileDetails ? profileDetails : { first_name: '', last_name: '' },
+  );
+  const searchParams = useSearchParams();
+  const isEditVip = searchParams.get('vipId');
+
+  useEffect(() => {
+    if (isEditVip) {
+      setId(Number(isEditVip));
+    }
+  }, [isEditVip]);
 
   const handleNext = async (profileDetail: ACF) => {
     setProfileDetail(profileDetail);
@@ -36,10 +48,12 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
         return (
           <StepOne
             handleId={handleId}
-            profileDetail={profileDetail}
+            profileBuilderOptions={profileBuilderOptions}
             token={token}
             onNext={handleNext}
             onPrev={handlePrev}
+            profileDetail={profileDetail}
+            id={id}
           />
         );
       case 2:
@@ -103,7 +117,17 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
           />
         );
       default:
-        return <StepOne profileDetail={profileDetail} token={token} onNext={handleNext} onPrev={handlePrev} />;
+        return (
+          <StepOne
+            handleId={handleId}
+            profileBuilderOptions={profileBuilderOptions}
+            token={token}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            profileDetail={profileDetail}
+            id={id}
+          />
+        );
     }
   };
   return <>{renderStep()}</>;

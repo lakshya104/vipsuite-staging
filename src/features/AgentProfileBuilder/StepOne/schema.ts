@@ -11,15 +11,6 @@ export const formSchema = z.object({
 
 export type AgentFormValues = z.infer<typeof formSchema>;
 
-export const representationType = [
-  { value: 'Manager', label: 'Manager' },
-  { value: 'Agent', label: 'Agent' },
-  { value: 'Commercial Agent', label: 'Commercial Agent' },
-  { value: 'Publicist', label: 'Publicist' },
-  { value: 'Personal Assistant', label: 'Personal Assistant' },
-  { value: 'Stylist', label: 'Stylist' },
-];
-
 export const agentFields = [
   { name: 'first_name', label: 'First Name', type: 'text', placeholder: 'First Name' },
   { name: 'last_name', label: 'Last Name', type: 'text', placeholder: 'Last Name' },

@@ -7,20 +7,30 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextFormField from '@/components/InputTextFormField';
 import SelectBox from '@/components/SelectBox';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
-import { agentFields, AgentFormValues, formSchema, representationType } from './schema';
-import { CreateVipProfile } from '@/libs/api-manager/manager';
-import { ACF } from '@/interfaces';
+import { agentFields, AgentFormValues, formSchema } from './schema';
+import { CreateVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
+import { ACF, ProfileBuilderOptions } from '@/interfaces';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 
 export interface AgentProfileBuilderStepsProps {
-  profileDetail: ACF | null;
-  onNext: (profileDetail: ACF) => void;
   handleId?: (id: number) => void;
+  profileBuilderOptions: ProfileBuilderOptions;
   token: string;
+  onNext: (profileDetail: ACF) => void;
   onPrev: () => void;
+  profileDetail: ACF;
+  id: number;
 }
-const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({ onNext, onPrev, token, handleId }) => {
+const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
+  handleId,
+  profileBuilderOptions,
+  token,
+  onNext,
+  onPrev,
+  profileDetail,
+  id,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
@@ -31,18 +41,27 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({ onNext, onPrev, toke
   } = useForm<AgentFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      first_name: '',
-      last_name: '',
-      type_of_representation: '',
-      instagram_handle: '',
-      tiktok_handle: '',
-      avg_engagement: '',
+      first_name: profileDetail.first_name || '',
+      last_name: profileDetail.last_name || '',
+      type_of_representation: profileDetail.type_of_representation || '',
+      instagram_handle: profileDetail.instagram_handle || '',
+      tiktok_handle: profileDetail.tiktok_handle || '',
+      avg_engagement: profileDetail.avg_engagement || '',
     },
   });
 
   const onSubmit = async (data: AgentFormValues) => {
     setIsLoading(true);
     try {
+      const updatedProfileDetail: ACF = {
+        ...profileDetail,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        type_of_representation: data.type_of_representation,
+        avg_engagement: data.avg_engagement,
+        instagram_handle: data.instagram_handle,
+        tiktok_handle: data.tiktok_handle,
+      };
       const profile = {
         title: `${data.first_name} ${data.last_name}`,
         acf: {
@@ -54,11 +73,15 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({ onNext, onPrev, toke
           tiktok_handle: data.tiktok_handle,
         },
       };
-      const response = await CreateVipProfile(token, profile);
-      if (handleId) {
-        handleId(response.id);
+      if (id) {
+        await UpdateProfile(id, token, profile);
+      } else {
+        const response = await CreateVipProfile(token, profile);
+        if (handleId) {
+          handleId(response.id);
+        }
       }
-      onNext(data);
+      onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('An error occurred while creating the VIP profile:' + error);
       console.log(error);
@@ -104,7 +127,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({ onNext, onPrev, toke
                   }
                   control={control}
                   placeholder={field.placeholder}
-                  options={representationType}
+                  options={profileBuilderOptions?.representation_options?.map((value) => ({ label: value, value }))}
                   label={field.label || 'select'}
                   errors={errors}
                 />

@@ -50,7 +50,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
           width={600}
           height={400}
           quality={75}
-          style={{ objectFit: 'cover', height: 'auto', width: 'auto', minHeight: '440px' }}
+          style={{ objectFit: 'cover', height: '450px' }}
           placeholder="blur"
           blurDataURL="/img/image-placeholder.png"
         />

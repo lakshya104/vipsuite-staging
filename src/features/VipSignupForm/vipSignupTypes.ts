@@ -11,16 +11,10 @@ export const VipSignupSchema = z.object({
   password: z
     .string()
     .min(1, { message: 'Password is required' })
-    .regex(/[a-zA-Z]/, {
-      message: 'Password must contain at least one letter, one digit and one special character',
-    })
-    .regex(/[0-9]/, {
-      message: 'Password must contain at least one letter, one digit and one special character',
-    })
-    .regex(/[@#$%^&*()_+\-=[\]{};':"\\|,.<>!/?]/, {
-      message: 'Password must contain at least one letter, one digit and one special character',
-    })
-    .min(6, { message: 'Password must be at least 6 characters long' }),
+    .regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/, {
+      message:
+        'Password must contain at least one uppercase letter, one digit, one special character and minimum 6 character long',
+    }),
   phone: z
     .string()
     .regex(/^\+?([1-9]\d?)\d{10}$/, {

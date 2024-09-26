@@ -4,6 +4,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ProgressBarLink } from '../ProgressBar';
 import Image from 'next/image';
 import { formatDate } from '@/helpers/utils';
+import he from 'he';
 import './WishlistItemCard.scss';
 
 interface WishlistItemCardProps {
@@ -25,7 +26,7 @@ const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date,
           <Image src={itemImage} width={100} height={100} alt={title} style={{ width: '100%', height: '100%' }} />
           <Box>
             <Typography gutterBottom variant="h2">
-              {title}
+              {he.decode(title)}
             </Typography>
             <Typography variant="body2" color="textSecondary" sx={{ textTransform: 'capitalize' }}>
               Type : {type}

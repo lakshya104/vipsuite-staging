@@ -1,5 +1,6 @@
 import { ACF } from '@/interfaces';
 export interface ProfileBuilderOptions {
+  representation_options: string[];
   known_for_options: string[];
   nationality_options: string[];
   ethnicity_options: string[];

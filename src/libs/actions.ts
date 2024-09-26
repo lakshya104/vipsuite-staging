@@ -50,8 +50,6 @@ export default async function revalidatePathAction(path: string) {
 }
 
 export async function createVipIdCookie(id: string) {
-  console.log({ id });
-
   cookies().set('vipId', id);
 }
 

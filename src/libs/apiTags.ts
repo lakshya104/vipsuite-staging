@@ -9,6 +9,8 @@ const TAGS = {
   GET_ADDRESSES: 'getAddress',
   GET_MYORDERS: 'getMyOrders',
   GET_PRODUCT_DETAILS: 'getProductDetails',
+  GET_DASHBOARD: 'getDashboard',
+  GET_DASHBOARD_CONTENT: 'getDashboardContent',
 };
 
 export default TAGS;

@@ -18,7 +18,7 @@ const HomePage: React.FC<HomePageProps> = async ({ isAgent }) => {
   try {
     const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : userId?.value;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
     const [dashboardContent, dashboardItems] = await Promise.all([
       GetDashboardContent(token, vipId),
       GetDashboard(token, vipId),
