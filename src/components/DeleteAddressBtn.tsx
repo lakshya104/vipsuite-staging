@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 interface DeleteAddressBtnProps {
   token: string;
   vipId: number;
-  addressId: number;
+  addressId: string;
   startTransition: typeof import('react').startTransition;
 }
 
@@ -21,7 +21,7 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, t
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const deleteAddress = async (vipId: number, addressId: number, token: string) => {
+  const deleteAddress = async (vipId: number, addressId: string, token: string) => {
     try {
       startTransition(async () => {
         await DeleteAddress(vipId, addressId, token);

@@ -30,7 +30,7 @@ interface AddressFormProps {
   userId: number;
   token: string;
   defaultValues: AddAddressFormValue;
-  addressId?: number;
+  addressId?: string;
 }
 
 const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues, addressId }) => {
@@ -102,7 +102,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
         router.push('/my-addresses');
       }
     } catch (error) {
-      openToaster('Error during adding address: ' + error);
+      openToaster('Error during submit address: ' + error);
       setIsLoading(false);
     } finally {
       revalidateTag(TAGS.GET_ADDRESSES);

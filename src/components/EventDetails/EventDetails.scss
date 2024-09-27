@@ -80,3 +80,21 @@ div.product-detail {
     }
   }
 }
+
+.MuiInputBase-root {
+  padding: 0;
+  &::before,
+  &::after {
+    display: none;
+  }
+  textarea {
+    padding: rem(16);
+    color: var(--color-black);
+    border: 1px solid black;
+    height: rem(188) !important;
+    font-weight: 400;
+    line-height: 1.142;
+    @include border-radius(10px);
+    @include fontSize(14);
+  }
+}

@@ -29,12 +29,12 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
     setConfirmationOpen(false);
     router.push('/events');
   };
-  const handleToasterMessage = (type: 'error' | 'success') => {
+  const handleToasterMessage = (type: 'error' | 'success', message: string) => {
     setToasterType(type);
     if (type === 'success') {
-      setToasterMessage('Response submitted successfully');
+      setToasterMessage(message ?? 'Response submitted successfully');
     } else {
-      setToasterMessage('Error submitting response');
+      setToasterMessage(message ?? 'Error submitting response');
     }
   };
 

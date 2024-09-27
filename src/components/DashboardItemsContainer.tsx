@@ -32,12 +32,11 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const [hasSearched, setHasSearched] = useState(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.acf?.is_featured);
-  const { setVipIdStore, setTokenStore, setUserIdStore } = useUserInfoStore();
+  const { setVipIdStore, setTokenStore } = useUserInfoStore();
 
   useEffect(() => {
     setVipIdStore(vipId);
     setTokenStore(token);
-    setUserIdStore(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

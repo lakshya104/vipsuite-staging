@@ -10,6 +10,7 @@ import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
 import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
 import { useUserInfoStore } from '@/store/useStore';
+import { InputTextAreaFormField } from '../InputTextFormField';
 
 interface RSVPProps {
   onClose: () => void;
@@ -17,7 +18,7 @@ interface RSVPProps {
   event: EventDetails;
   token: string;
   // eslint-disable-next-line no-unused-vars
-  handleToasterMessage: (type: 'error' | 'success') => void;
+  handleToasterMessage: (type: 'error' | 'success', message: string) => void;
 }
 
 const adultsChildrenOptions = [
@@ -63,11 +64,11 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         formData.append(key, valueToAppend);
       });
       try {
-        await SendRsvp(formData, token, vipIdStore);
+        const res = await SendRsvp(formData, token, vipIdStore);
         revalidateTag('getEventDetails');
-        handleToasterMessage('success');
+        handleToasterMessage('success', res?.message);
       } catch (error) {
-        handleToasterMessage('error');
+        handleToasterMessage('error', String(error));
       } finally {
         onClose();
         reset();
@@ -80,6 +81,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         is_pleases: 'interested',
         number_of_attendees: data.adultsChildren,
         would_you_like: true,
+        message: data.message,
       };
       const formData = new FormData();
       Object.entries(rsvp).forEach(([key, value]) => {
@@ -87,31 +89,38 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         formData.append(key, valueToAppend);
       });
       try {
-        await SendRsvp(formData, token, vipIdStore);
+        const res = await SendRsvp(formData, token, vipIdStore);
         revalidateTag('getEventDetails');
-        handleToasterMessage('success');
+        handleToasterMessage('success', res?.message);
         onConfirmation();
       } catch (error) {
-        handleToasterMessage('error');
+        handleToasterMessage('error', String(error));
         onClose();
       } finally {
         reset();
       }
     }
   };
-
   const rsvpFields = [
     {
       name: 'adultsChildren',
       label: 'How many adults and children?',
       options: adultsChildrenOptions,
       placeholder: 'Select option...',
+      type: 'select',
     },
     {
       name: 'eventTitle',
       label: `Would you like ${he.decode(event?.title?.rendered)}?`,
       options: adventureGolfOptions,
       placeholder: 'Select option...',
+      type: 'select',
+    },
+    {
+      name: 'message',
+      label: `Would you like to add anything?`,
+      placeholder: `Would you like to add anything?`,
+      type: 'textarea',
     },
   ];
 
@@ -141,18 +150,31 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
             <Box component="strong">Location:</Box> {event.acf.event_location}
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {rsvpFields.map(({ name, options, label }) => (
+            {rsvpFields.map(({ name, options, label, type, placeholder }) => (
               <Box key={name}>
-                <Typography variant="body1" className="form-label">
-                  {label}
-                </Typography>
-                <SelectBoxWithoutLabel
-                  placeholder="Select option..."
-                  name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested'}
-                  control={control}
-                  options={options}
-                  errors={errors}
-                />
+                {type === 'select' ? (
+                  <Box>
+                    <Typography variant="body1" className="form-label">
+                      {label}
+                    </Typography>
+                    <SelectBoxWithoutLabel
+                      placeholder={placeholder}
+                      name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested'}
+                      control={control}
+                      options={options}
+                      errors={errors}
+                    />
+                  </Box>
+                ) : (
+                  <Box>
+                    <InputTextAreaFormField
+                      name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested' | 'message'}
+                      control={control}
+                      placeholder={placeholder}
+                      errors={errors}
+                    />
+                  </Box>
+                )}
               </Box>
             ))}
             <Box mb={2.5}>

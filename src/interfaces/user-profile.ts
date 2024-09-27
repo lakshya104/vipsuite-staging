@@ -31,7 +31,7 @@ export interface ACF {
   ethnicity?: string | null;
   number_of_children?: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  examples_of_vip_managed: any;
+  examples_of_vip_managed?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   child_info?: any;
   pets?: string;

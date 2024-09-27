@@ -9,13 +9,12 @@ import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 
 const MyEventsPage = async () => {
-  let vipRsvpEvents: MyEvent[] | null = null;
+  let vipRsvpEvents: MyEvent[] = [];
   try {
     vipRsvpEvents = await GetVipRsvpEvents();
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Events not available at the moment." />;
   }
-
   if (!vipRsvpEvents || vipRsvpEvents.length === 0) {
     return <ErrorFallback errorMessage="No upcoming events found." hideSubtext={true} />;
   }

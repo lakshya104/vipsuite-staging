@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { VipSignUpRequestBody, UserProfile, Session, Address } from '@/interfaces';
+import { VipSignUpRequestBody, UserProfile, Session, AddressInput } from '@/interfaces';
 import { Endpoints } from './constants';
 import { FetchInstance, FetchInstanceWithHeaders, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
@@ -433,7 +433,12 @@ export const GetAddresses = async () => {
   });
 };
 
-export const addUpdateAddress = async (id: number, token: string, address: Address, addressId: number | undefined) => {
+export const addUpdateAddress = async (
+  id: number,
+  token: string,
+  address: AddressInput,
+  addressId: string | undefined,
+) => {
   try {
     let url = `${Endpoints.getAddresses}`;
     if (addressId) url = `${Endpoints.getAddresses}/${addressId}`;
@@ -452,7 +457,7 @@ export const addUpdateAddress = async (id: number, token: string, address: Addre
   }
 };
 
-export const DeleteAddress = async (vipId: number, addressId: number, token: string) => {
+export const DeleteAddress = async (vipId: number, addressId: string, token: string) => {
   try {
     const response = await Instance.delete(Endpoints.deleteAddress(addressId), {
       headers: {

@@ -6,10 +6,10 @@ import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 
 interface EditAddressPageProps {
-  id: number;
+  id: string;
 }
 const EditAddressPage: React.FC<EditAddressPageProps> = async ({ id }) => {
-  let addresses: Address[] | null = null;
+  let addresses: Address[] = [];
   let userId: number | null = null;
   let token: string | null = null;
   try {
@@ -24,7 +24,7 @@ const EditAddressPage: React.FC<EditAddressPageProps> = async ({ id }) => {
   if (!addresses) {
     return <ErrorFallback errorMessage="Editing address not possible at the moment." />;
   }
-  const defaultValues: Address = addresses[id - 1];
+  const defaultValues: Address = addresses?.find((add) => add.unique_id === id) || ({} as Address);
   return <AddressForm userId={userId} token={token} defaultValues={defaultValues} addressId={id} />;
 };
 

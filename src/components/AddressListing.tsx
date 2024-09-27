@@ -22,8 +22,8 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId
         isPending ? (
           <MyAddressesPageLoading />
         ) : (
-          map(addresses, (add, index) => (
-            <Box className="address__list" key={index}>
+          map(addresses, (add) => (
+            <Box className="address__list" key={add.unique_id}>
               <Box className="address__list-info">
                 <Typography gutterBottom variant="h3" component="h2">
                   {add?.first_name} {add?.last_name}
@@ -33,10 +33,15 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId
                 <Typography variant="body2">{`${add?.company}, (${add?.phone})`}</Typography>
               </Box>
               <Box className="address__list-action">
-                <ProgressBarLink href={`/my-addresses/edit/${index + 1}`}>
+                <ProgressBarLink href={`/my-addresses/edit/${add.unique_id}`}>
                   <EditOutlinedIcon />
                 </ProgressBarLink>
-                <DeleteAddressBtn token={token} vipId={vipId} addressId={index + 1} startTransition={startTransition} />
+                <DeleteAddressBtn
+                  token={token}
+                  vipId={vipId}
+                  addressId={add.unique_id}
+                  startTransition={startTransition}
+                />
               </Box>
             </Box>
           ))

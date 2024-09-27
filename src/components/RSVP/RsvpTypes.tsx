@@ -6,6 +6,7 @@ export const RsvpFormSchema = z
     eventTitle: z.string().nullable(),
     notAvailable: z.string().nullable(),
     notInterested: z.string().nullable(),
+    message: z.string().nullable(),
   })
   .refine(
     (data) => {
@@ -39,4 +40,5 @@ export const defaultValues: RsvpFormValues = {
   eventTitle: '',
   notAvailable: null,
   notInterested: null,
+  message: '',
 };
