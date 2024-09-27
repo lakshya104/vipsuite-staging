@@ -19,6 +19,7 @@ const HomePage: React.FC<HomePageProps> = async ({ isAgent }) => {
     const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
     const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const userRole = (session?.user as unknown as Session)?.role;
     const [dashboardContent, dashboardItems] = await Promise.all([
       GetDashboardContent(token, vipId),
       GetDashboard(token, vipId),
@@ -36,6 +37,7 @@ const HomePage: React.FC<HomePageProps> = async ({ isAgent }) => {
         vipId={vipId}
         token={token}
         totalFollowerCount={!isAgent ? totalFollowerCount : 0}
+        userRole={userRole}
       />
     );
   } catch (error) {

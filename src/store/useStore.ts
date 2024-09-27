@@ -83,13 +83,13 @@ export const useRequestOnlyStore = create<RequestOnlyState>((set) => ({
 interface UserInfoState {
   vipIdStore: any;
   tokenStore: string | null;
-  userIdStore: number | null;
+  userRoleStore: string | null;
   clearVipIdStore: () => void;
   setVipIdStore: (id: any) => void;
   clearTokenStore: () => void;
   setTokenStore: (token: string) => void;
-  clearUserIdStore: () => void;
-  setUserIdStore: (id: number) => void;
+  clearUserRoleStore: () => void;
+  setUserRoleStore: (role: string) => void;
   clearAll: () => void;
 }
 
@@ -97,15 +97,15 @@ export const useUserInfoStore = create<UserInfoState>()(
   persist(
     (set) => ({
       vipIdStore: null,
-      tokenStore: null,
-      userIdStore: null,
-      clearVipIdStore: () => set({ vipIdStore: null }),
       setVipIdStore: (id) => set({ vipIdStore: id }),
-      clearTokenStore: () => set({ tokenStore: null }),
+      clearVipIdStore: () => set({ vipIdStore: null }),
+      tokenStore: null,
       setTokenStore: (token) => set({ tokenStore: token }),
-      clearUserIdStore: () => set({ userIdStore: null }),
-      setUserIdStore: (id) => set({ userIdStore: id }),
-      clearAll: () => set({ vipIdStore: null, tokenStore: null, userIdStore: null }),
+      clearTokenStore: () => set({ tokenStore: null }),
+      userRoleStore: null,
+      setUserRoleStore: (role) => set({ userRoleStore: role }),
+      clearUserRoleStore: () => set({ userRoleStore: null }),
+      clearAll: () => set({ vipIdStore: null, tokenStore: null, userRoleStore: null }),
     }),
     {
       name: 'user-info-storage',

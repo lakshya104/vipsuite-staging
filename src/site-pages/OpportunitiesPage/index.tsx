@@ -5,12 +5,21 @@ import ErrorHandler from '@/components/ErrorHandler';
 import OpportunitiesContainer from '@/components/OpportunitiesContainer';
 import { auth } from '@/auth';
 import { Session } from '@/interfaces';
+import { cookies } from 'next/headers';
 
-const OpportunitiesPage = async () => {
+interface OpportunitiesPageProps {
+  isAgent?: boolean;
+}
+
+const OpportunitiesPage: React.FC<OpportunitiesPageProps> = async ({ isAgent }) => {
+  const cookieStore = cookies();
+  const userId = cookieStore.get('vipId');
   try {
-    const [session, allOpportunities] = await Promise.all([auth(), GetVipOpportunities()]);
+    const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
-    const vipId = (session?.user as unknown as Session)?.vip_profile_id;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const allOpportunities = await GetVipOpportunities(token, vipId);
+
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }

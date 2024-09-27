@@ -372,13 +372,17 @@ export const CreateOrder = async (data: any, token: string, nonce: string, vipId
   }
 };
 
-export const GetVipOpportunities = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getVipOpportunities, {
+export const GetVipOpportunities = async (token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getVipOpportunities, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: [TAGS.GET_OPPORTUNITY] },
   });
 };
 
-export const SendRsvp = async (data: FormData, token: string, vipId: number) => {
+export const SendRsvp = async (data: FormData, token: string | null, vipId: number) => {
   try {
     const response = await Instance.post(Endpoints.sendRsvp, data, {
       headers: {
@@ -474,13 +478,14 @@ export const DeleteAddress = async (vipId: number, addressId: string, token: str
   }
 };
 
-export const GetVipOpportunityDetails = async (id: number) => {
-  return await FetchInstanceWithHeaders(
-    `${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf,is_wishlisted`,
-    {
-      next: { tags: [TAGS.GET_OPPORTUNITY_DETAILS] },
+export const GetVipOpportunityDetails = async (id: number, token: string, vipId: number) => {
+  return await FetchInstance(`${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf,is_wishlisted`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
     },
-  );
+    next: { tags: [TAGS.GET_OPPORTUNITY_DETAILS] },
+  });
 };
 
 export const OrderFeedback = async (

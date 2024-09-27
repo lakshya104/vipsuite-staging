@@ -6,7 +6,7 @@ import { formatDateWithOrdinalAndTime } from '@/helpers/utils';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface RSVPProps {
   onClose: () => void;
@@ -28,9 +28,7 @@ const defaultValues: RsvpFormValues = {
 
 const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, handleToasterMessage }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const user = useCurrentUser();
-  const token = user?.token;
-  const vipId = user?.vip_profile_id;
+  const { vipIdStore, tokenStore } = useUserInfoStore();
   const { handleSubmit, setValue, reset } = useForm<RsvpFormValues>({
     defaultValues,
   });
@@ -43,8 +41,13 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         rsvp_post: opportunity.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
       };
+      const formData = new FormData();
+      Object.entries(rsvp).forEach(([key, value]) => {
+        const valueToAppend = value === null ? '' : String(value);
+        formData.append(key, valueToAppend);
+      });
       try {
-        const res = await SendRsvp(rsvp, token, vipId);
+        const res = await SendRsvp(formData, tokenStore, vipIdStore);
         revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
         handleToasterMessage('success', res?.message);
       } catch (error) {
@@ -62,8 +65,13 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         rsvp_post: opportunity.id,
         is_pleases: 'interested',
       };
+      const formData = new FormData();
+      Object.entries(rsvp).forEach(([key, value]) => {
+        const valueToAppend = value === null ? '' : String(value);
+        formData.append(key, valueToAppend);
+      });
       try {
-        const res = await SendRsvp(rsvp, token, vipId);
+        const res = await SendRsvp(formData, tokenStore, vipIdStore);
         revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
         handleToasterMessage('success', res?.message);
       } catch (error) {

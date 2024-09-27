@@ -17,6 +17,7 @@ interface DashboardItemsContainerProps {
   vipId: number | string | undefined;
   token: string;
   totalFollowerCount: number;
+  userRole: string;
 }
 
 const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
@@ -25,6 +26,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   vipId,
   token,
   totalFollowerCount,
+  userRole,
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<DashboardItem[]>([]);
@@ -32,11 +34,12 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const [hasSearched, setHasSearched] = useState(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.acf?.is_featured);
-  const { setVipIdStore, setTokenStore } = useUserInfoStore();
+  const { setVipIdStore, setTokenStore, setUserRoleStore } = useUserInfoStore();
 
   useEffect(() => {
     setVipIdStore(vipId);
     setTokenStore(token);
+    setUserRoleStore(userRole);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
