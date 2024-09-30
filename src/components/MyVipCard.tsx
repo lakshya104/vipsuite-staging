@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-// import { ProgressBarLink } from './ProgressBar';
 import { Backdrop, Box, CircularProgress, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -79,7 +78,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
               alt={name}
               style={{ width: 18, height: 18, marginRight: 10 }}
             />
-            {instaFollowers}
+            {instaFollowers || 0}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             <Image
@@ -89,7 +88,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
               alt={name}
               style={{ width: 18, height: 18, marginRight: 10 }}
             />
-            {tiktokFollowers}
+            {tiktokFollowers || 0}
           </Typography>
           <Typography
             fontSize="12px"
@@ -101,11 +100,9 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
           </Typography>
         </Box>
       </Box>
-      {/* <ProgressBarLink href={link}> */}
       <IconButton>
         <ArrowForwardIosIcon color="primary" />
       </IconButton>
-      {/* </ProgressBarLink> */}
       <Backdrop sx={{ color: 'black', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>

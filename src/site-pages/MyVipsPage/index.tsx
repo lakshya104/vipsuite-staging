@@ -12,19 +12,18 @@ export interface MyVips {
   last_name: string;
   profile_image: string;
   profile_status: string;
+  instagram_follower_count: string;
+  tiktok_follower_count: string;
 }
 
 const MyVipPage = async () => {
   try {
     const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
-
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
-
     const myVips: MyVips[] = await GetAllVips(token);
-
     if (!myVips || myVips.length === 0) {
       return (
         <ErrorFallback
@@ -33,7 +32,6 @@ const MyVipPage = async () => {
         />
       );
     }
-
     return <MyVipsListing myVips={myVips} />;
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show VIP list currently." />;
