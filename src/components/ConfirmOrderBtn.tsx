@@ -11,7 +11,7 @@ import Toaster from './Toaster';
 import { map } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useLookbookOrder, useOrderStore, useRequestOnlyStore } from '@/store/useStore';
+import { useLookbookOrder, useOrderStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -27,6 +27,7 @@ interface ConfirmOrderBtnProps {
   cartData: Cart;
   nonce: string;
   startTransition: typeof import('react').startTransition;
+  vipId: number;
 }
 
 const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
@@ -35,6 +36,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   nonce,
   token,
   startTransition,
+  vipId,
 }) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -45,13 +47,14 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const { increaseOrderCount } = useOrderStore();
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const { requestProductId, clearRequestProductId } = useRequestOnlyStore();
+  const { userRoleStore } = useUserInfoStore();
+  const orderConfirmationRedirect = userRoleStore === 'vip' ? '/home' : '/agent-home';
   const user = useCurrentUser();
   const userEmail = user?.email;
-  const vipProfileId = user?.vip_profile_id;
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
-    router.push('/');
+    router.push(orderConfirmationRedirect);
   };
 
   const handleCreateOrder = async () => {
@@ -109,7 +112,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     };
     try {
       startTransition(async () => {
-        await CreateOrder(orderDetails, token, nonce, vipProfileId);
+        await CreateOrder(orderDetails, token, nonce, vipId);
         increaseOrderCount();
         setIsDialogOpen(true);
         clearLookbookDescription();

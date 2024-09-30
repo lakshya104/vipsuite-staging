@@ -1,41 +1,31 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { GetAllOrders } from '@/libs/api-manager/manager';
-import { Order } from '@/interfaces';
-import { formatDate, formatString } from '@/helpers/utils';
-import { ProgressBarLink } from '@/components/ProgressBar';
+import { GetAllOrders, GetNonce } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
+import OrderListing from '@/components/OrderListing';
+import { cookies } from 'next/headers';
+import { auth } from '@/auth';
+import { Session } from '@/interfaces';
 
-const MyOrdersPage: React.FC = async () => {
-  let allOrders: Order[] | null = null;
+interface MyOrdersPageProps {
+  isAgent?: boolean;
+}
+const MyOrdersPage: React.FC<MyOrdersPageProps> = async ({ isAgent }) => {
   try {
-    allOrders = await GetAllOrders();
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await auth();
+    const token = (session?.user as unknown as Session)?.token;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const nonce = await GetNonce(token);
+    const allOrders = await GetAllOrders(token, vipId, nonce);
+    if (!allOrders || allOrders.length === 0) {
+      return <ErrorFallback errorMessage="No orders found" hideSubtext={true} />;
+    }
+    return <OrderListing allOrders={allOrders} />;
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show orders currently." />;
   }
-  if (!allOrders || allOrders.length === 0) {
-    return <ErrorFallback errorMessage="No orders found" hideSubtext={true} />;
-  }
-  return (
-    <Box className="order-product__items">
-      {allOrders.map((order: Order) => (
-        <ProgressBarLink href={`/my-orders/${order?.id}`} key={order?.id}>
-          <Box className="order-product__item" display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-            <Box>
-              <Typography gutterBottom variant="h2">
-                Order #{order?.id}
-              </Typography>
-              <Typography variant="body1">Date: {formatDate(order?.date_created)}</Typography>
-              <Typography variant="body1">Status: {formatString(order?.status)}</Typography>
-            </Box>
-            <ArrowForwardIcon />
-          </Box>
-        </ProgressBarLink>
-      ))}
-    </Box>
-  );
 };
 
 export default MyOrdersPage;

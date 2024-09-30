@@ -13,6 +13,7 @@ import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
 import revalidateTag from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
+import { useUserInfoStore } from '@/store/useStore';
 
 type FormFieldNames =
   | 'first_name'
@@ -38,6 +39,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const search = searchParams.get('route');
+  const { userRoleStore } = useUserInfoStore();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const addNewAddressField = [
@@ -97,9 +99,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
     try {
       await addUpdateAddress(userId, token, data, addressId);
       if (search === 'order-journey') {
-        router.push('/basket?step=1');
+        router.push(userRoleStore === 'vip' ? '/basket?step=1' : '/agent-basket?step=1');
       } else {
-        router.push('/my-addresses');
+        router.push(userRoleStore === 'vip' ? '/my-addresses' : '/agent-addresses');
       }
     } catch (error) {
       openToaster('Error during submit address: ' + error);

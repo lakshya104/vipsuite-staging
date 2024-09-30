@@ -10,16 +10,21 @@ import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import { auth } from '@/auth';
 import { Session } from '@/interfaces';
+import { cookies } from 'next/headers';
 
 interface BrandDetailsPageProps {
   brandId: number;
+  isAgent?: boolean;
 }
 
-const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) => {
+const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId, isAgent }) => {
   try {
-    const [session, brandDetails] = await Promise.all([auth(), GetBrandDetails(brandId)]);
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
-    const vipId = (session?.user as unknown as Session)?.vip_profile_id;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const brandDetails = await GetBrandDetails(brandId, token, vipId);
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }
@@ -51,7 +56,7 @@ const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) =>
             Products
           </Typography>
           <Suspense fallback={<ProductCardLoading />}>
-            <ProductList brandId={brandDetails?.id} />
+            <ProductList brandId={brandDetails?.id} token={token} vipId={vipId} />
           </Suspense>
         </Box>
       </Container>

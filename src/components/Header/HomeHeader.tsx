@@ -123,6 +123,11 @@ const agentMenuItems = [
     href: '/my-vips',
   },
   {
+    label: 'Basket',
+    icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
+    href: '/agent-basket',
+  },
+  {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
     href: '/login-security',

@@ -8,6 +8,7 @@ import FeedLikeIcon from './FeedLikeIcon';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -16,6 +17,7 @@ interface DashboardCardProps {
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => {
+  const { userRoleStore } = useUserInfoStore();
   const isBrand = (item as Brand)?.type === 'brand-profile';
   const isEvent = (item as Event)?.type === 'event';
   const isOpportunity = (item as Opportunity)?.type === 'opportunity';
@@ -27,6 +29,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
   const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
+  const postLink = userRoleStore === 'vip' ? `/${postPath}/${postId}` : `/agent-${postPath}/${postId}`;
   const image = isBrand
     ? BrandImage
     : isEvent
@@ -36,7 +39,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
         : '/img/placeholder-image.jpg';
 
   return (
-    <ProgressBarLink href={`/${postPath}/${postId}`}>
+    <ProgressBarLink href={postLink}>
       <Box
         sx={{
           position: 'relative',

@@ -10,9 +10,9 @@ import './MakeRequest.scss';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter } from 'next/navigation';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { MakeRequestSubmit } from '@/libs/api-manager/manager';
 import { DashboardContent } from '@/interfaces';
+import { useUserInfoStore } from '@/store/useStore';
 
 const formSchema = z.object({
   request_content: z
@@ -30,7 +30,7 @@ interface MakeRequestProps {
 
 const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   const router = useRouter();
-  const user = useCurrentUser();
+  const { vipIdStore, tokenStore } = useUserInfoStore();
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
@@ -48,7 +48,7 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   const onSubmit = async (data: FormValues) => {
     try {
       setIsPending(true);
-      const res = await MakeRequestSubmit(user?.vip_profile_id, user?.token, data);
+      const res = await MakeRequestSubmit(vipIdStore, tokenStore, data);
       setToasterType('success');
       openToaster(res?.message);
       setTimeout(() => {

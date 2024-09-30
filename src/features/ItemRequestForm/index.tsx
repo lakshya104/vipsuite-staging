@@ -15,26 +15,25 @@ import { useProductFilters } from '@/hooks/useProductFilters';
 import { first } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { useRequestOnlyStore } from '@/store/useStore';
+import { useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
 
 interface ItemRequestFormProps {
   product: Product;
   token: string | null;
   nonce: string | null;
   isRequestOnly: boolean;
+  vipId: number;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce, isRequestOnly }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce, isRequestOnly, vipId }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const user = useCurrentUser();
-  const vipId = user?.vip_profile_id;
   const { product_ordered: isProductOrdered = false } = product;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const { dropdowns, onChangeDropDown, getSelectedProductVariation, formSchema } = useProductFilters(product);
   const { setRequestProductId, clearRequestProductId } = useRequestOnlyStore();
+  const { userRoleStore } = useUserInfoStore();
 
   const {
     handleSubmit,
@@ -54,7 +53,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
         router.back();
       },
     },
-    { href: '/basket', text: 'Go to Basket' },
+    { href: userRoleStore === 'vip' ? '/basket' : '/agent-basket', text: 'Go to Basket' },
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -182,18 +182,32 @@ export const GetVipSearch = async (keyword: string, token: string, vipId: any) =
   });
 };
 
-export const GetBrandDetails = async (id: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrandDetails(id), {
+export const GetBrandDetails = async (id: number, token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getBrandDetails(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: [TAGS.GET_BRAND_DETAILS] },
   });
 };
 
-export const GetBrandProducts = async (id: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrandProducts(id));
+export const GetBrandProducts = async (id: number, token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getBrandProducts(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+    next: { tags: [TAGS.GET_BRAND_PRODUCTS] },
+  });
 };
 
-export const GetBrandProductDetail = async (id: number) => {
+export const GetBrandProductDetail = async (id: number, token: string, vipId: number) => {
   return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: [TAGS.GET_PRODUCT_DETAILS] },
   });
 };
@@ -202,8 +216,12 @@ export const GetSignupContent = async () => {
   return await FetchInstance(Endpoints.getSignupContent);
 };
 
-export const GetVipEvents = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getVipEvents, {
+export const GetVipEvents = async (token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getVipEvents, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: [TAGS.GET_EVENTS] },
   });
 };
@@ -278,9 +296,14 @@ export const ResetPassword = async ({
   }
 };
 
-export const GetAllOrders = async () => {
+export const GetAllOrders = async (token: string, vipId: number, nonce: string) => {
   const id = await GetCustomerId();
-  return await FetchInstanceWithHeaders(Endpoints.getAllOrders(id), {
+  return await FetchInstance(Endpoints.getAllOrders(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+      'X-WC-Store-API-Nonce': nonce,
+    },
     next: { tags: [TAGS.GET_MYORDERS] },
   });
 };
@@ -298,8 +321,12 @@ export const GetOrderById = async (id: number) => {
   return await FetchInstanceWithHeaders(Endpoints.getOrderById(id));
 };
 
-export const GetVipEventDetails = async (id: number) => {
-  return await FetchInstanceWithHeaders(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`, {
+export const GetVipEventDetails = async (id: number, token: string, vipId: number) => {
+  return await FetchInstance(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: [TAGS.GET_EVENT_DETAILS] },
   });
 };
@@ -431,8 +458,12 @@ export const GetVipWishlistItems = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getWishlistItems);
 };
 
-export const GetAddresses = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getAddresses, {
+export const GetAddresses = async (token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getAddresses, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
     next: { tags: ['getAddress'] },
   });
 };
@@ -624,7 +655,7 @@ export const DeleteFromWishlist = async (token: string, vipId: any, postId: numb
 
 export const ReferaVIP = async (
   id: number,
-  token: string,
+  token: string | null,
   data: {
     email: string;
     instagram_handle: string;
@@ -649,7 +680,7 @@ export const ReferaVIP = async (
 
 export const MakeRequestSubmit = async (
   id: number,
-  token: string,
+  token: string | null,
   data: {
     request_content: string;
   },

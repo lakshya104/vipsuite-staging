@@ -7,6 +7,7 @@ import { Box, Button, Checkbox, Typography } from '@mui/material';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import AddIcon from '@mui/icons-material/Add';
 import ErrorFallback from '@/components/ErrorFallback';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface SelectAddressFormProps {
   addresses: Address[];
@@ -25,10 +26,12 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   startTransition,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const { userRoleStore, vipIdStore } = useUserInfoStore();
   const handleAddressChange = (address: Address) => {
     setSelectedAddress((prevAdd) => (prevAdd === address ? null : address));
   };
-
+  const addAddressLink =
+    userRoleStore === 'vip' ? '/my-addresses/add?route=order-journey' : '/agent-addresses/add?route=order-journey';
   return (
     <Fragment>
       <Box className="address-page__head">
@@ -38,7 +41,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
         <Typography className="page-title" variant="h2" align="center" component="h1">
           Select Address
         </Typography>
-        <ProgressBarLink className="button button--black" href="/my-addresses/add?route=order-journey">
+        <ProgressBarLink className="button button--black" href={addAddressLink}>
           Add <AddIcon />
         </ProgressBarLink>
       </Box>
@@ -64,6 +67,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
               cartData={cartData}
               nonce={nonce}
               startTransition={startTransition}
+              vipId={vipIdStore}
             />
           </Box>
         </>

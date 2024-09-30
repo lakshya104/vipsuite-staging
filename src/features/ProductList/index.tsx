@@ -9,14 +9,16 @@ import ErrorHandler from '@/components/ErrorHandler';
 
 interface ProductListProps {
   brandId: number;
+  token: string;
+  vipId: number;
 }
-const ProductList: React.FC<ProductListProps> = async ({ brandId }) => {
+const ProductList: React.FC<ProductListProps> = async ({ brandId, token, vipId }) => {
   if (!brandId) {
     return <ErrorFallback errorMessage="Brand Id is invalid." />;
   }
   let brandProducts: BrandProduct[] | null = null;
   try {
-    brandProducts = await GetBrandProducts(brandId);
+    brandProducts = await GetBrandProducts(brandId, token, vipId);
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Products are not available currently." />;
   }

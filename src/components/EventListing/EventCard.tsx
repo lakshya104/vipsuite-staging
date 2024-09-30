@@ -5,6 +5,7 @@ import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatEventDates } from '@/helpers/utils';
 import Image from 'next/image';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface EventCardProps {
   item: Event;
@@ -14,10 +15,12 @@ interface EventCardProps {
 }
 
 const EventCard: React.FC<EventCardProps> = ({ item, isFeatured, token, vipId }) => {
+  const { userRoleStore } = useUserInfoStore();
+  const eventDetailLink = userRoleStore === 'vip' ? `/events/${item.id}` : `/agent-events/${item.id}`;
   const brandLogo = item.acf?.brand_logo?.url;
   const eventImage = item?.acf?.event_image?.sizes?.large || '/img/placeholder-image.jpg';
   return (
-    <ProgressBarLink href={`/events/${item?.id}`}>
+    <ProgressBarLink href={eventDetailLink}>
       <Card
         className="landing-product__item-inner"
         sx={{

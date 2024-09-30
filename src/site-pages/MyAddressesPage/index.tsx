@@ -1,27 +1,33 @@
 import React from 'react';
-import { GetAddresses, GetLoginUserId, GetToken } from '@/libs/api-manager/manager';
-import { Address } from '@/interfaces';
+import { GetAddresses } from '@/libs/api-manager/manager';
+import { Address, Session } from '@/interfaces';
 import AddressListing from '@/components/AddressListing';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
+import { auth } from '@/auth';
+import { cookies } from 'next/headers';
 
-const MyAddressesPage = async () => {
-  let addresses: Address[] | null = null;
-  let userId: number | null = null;
-  let token: string | null = null;
+interface MyAddressesPageProps {
+  isAgent?: boolean;
+}
+const MyAddressesPage: React.FC<MyAddressesPageProps> = async ({ isAgent }) => {
   try {
-    [userId, token] = await Promise.all([GetLoginUserId(), GetToken()]);
-    if (!token) {
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await auth();
+    const token = (session?.user as unknown as Session)?.token;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    if (!userId || !token) {
       return <ErrorFallback errorMessage="Invalid Token or User Id" />;
     }
-    addresses = await GetAddresses();
+    const addresses: Address[] = await GetAddresses(token, vipId);
+    if (!addresses || addresses.length === 0) {
+      return <ErrorFallback errorMessage="No Address found" hideSubtext={true} />;
+    }
+    return <AddressListing addresses={addresses} token={token} vipId={vipId} />;
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Address page not available at the moment." />;
   }
-  if (!addresses || addresses.length === 0) {
-    return <ErrorFallback errorMessage="No Address found" hideSubtext={true} />;
-  }
-  return <AddressListing addresses={addresses} token={token} vipId={userId} />;
 };
 
 export default MyAddressesPage;

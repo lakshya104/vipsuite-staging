@@ -7,6 +7,9 @@ import ProductDetailsPage from '@/site-pages/ProductDetailsPage';
 import ProductDetailsPageLoading from '@/site-pages/ProductDetailsPage/loading';
 import { Product } from '@/interfaces/brand';
 import { htmlToPlainText } from '@/helpers/utils';
+import { Session } from '@/interfaces';
+import { cookies } from 'next/headers';
+import { auth } from '@/auth';
 
 type Props = {
   params: { id: string };
@@ -15,7 +18,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   try {
-    const product: Product = await GetBrandProductDetail(parseInt(params.id));
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await auth();
+    const isAgent = (session?.user as unknown as Session)?.role === 'agent';
+    const token = (session?.user as unknown as Session)?.token;
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const product: Product = await GetBrandProductDetail(parseInt(params.id), token, vipId);
     const previousImages = (await parent).openGraph?.images || [];
 
     return {

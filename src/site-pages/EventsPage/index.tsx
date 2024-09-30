@@ -5,14 +5,19 @@ import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 import { Session } from '@/interfaces';
 import { auth } from '@/auth';
+import { cookies } from 'next/headers';
 
-const EventsPage = async () => {
+interface EventsPageProps {
+  isAgent?: boolean;
+}
+const EventsPage: React.FC<EventsPageProps> = async ({ isAgent }) => {
   try {
-    const [session, events] = await Promise.all([auth(), GetVipEvents()]);
-
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
-    const vipId = (session?.user as unknown as Session)?.vip_profile_id;
-
+    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const events = await GetVipEvents(token, vipId);
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }

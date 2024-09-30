@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import { Box, Card, CardContent, Typography } from '@mui/material';
@@ -5,19 +6,22 @@ import { BrandProduct } from '@/interfaces/brand';
 import Btn from '../Button/CommonBtn';
 import { truncateDescription } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
+import { useUserInfoStore } from '@/store/useStore';
 
 interface ProductCardProps {
   data: BrandProduct;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
+  const { userRoleStore } = useUserInfoStore();
   const { id, name, short_description, meta_data, images } = data;
   const isRequestOnlyValue = meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
   const productImage = images[0]?.src || '/img/placeholder-image.jpg';
   const productDesctiption = truncateDescription(short_description, 18);
+  const productLink = userRoleStore === 'vip' ? `/products/${id}` : `/agent-products/${id}`;
   return (
     <Card className="product-card" sx={{ cursor: 'pointer' }}>
-      <ProgressBarLink href={`/products/${id}`}>
+      <ProgressBarLink href={productLink}>
         <Image src={productImage} alt={name} height={768} width={768} />
         <Box>
           <CardContent className="product-card__content">

@@ -12,9 +12,9 @@ interface OpportunitiesPageProps {
 }
 
 const OpportunitiesPage: React.FC<OpportunitiesPageProps> = async ({ isAgent }) => {
-  const cookieStore = cookies();
-  const userId = cookieStore.get('vipId');
   try {
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
     const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
     const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);

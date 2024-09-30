@@ -1,0 +1,127 @@
+/*
+* Address page style.
+*/
+
+@import '../../../styles/mixins';
+
+.address {
+  &-page {
+    margin: rem(23) 0;
+    @media only screen and (min-width: 768px) {
+      margin: rem(50) 0;
+    }
+    &__head {
+      margin-bottom: rem(28);
+      @include relative;
+      h1 {
+        margin: 0;
+        padding: rem(7.5) 0;
+        @media only screen and (max-width: 767px) {
+          padding: rem(5) 0;
+        }
+      }
+      a {
+        line-height: 1.33;
+        letter-spacing: -0.01em;
+        padding: rem(7) rem(14);
+        @include fontSize(16);
+        @include absolute(right 0 top 4px);
+        @media only screen and (max-width: 767px) {
+          @include fontSize(12);
+        }
+        svg {
+          display: inline-block;
+          width: rem(20);
+          height: rem(20);
+          vertical-align: bottom;
+          @media only screen and (max-width: 767px) {
+            width: rem(18);
+            height: rem(18);
+          }
+        }
+      }
+      button {
+        @include absolute(right 0 top 0);
+        @media only screen and (max-width: 767px) {
+          padding: rem(1.1) rem(12.2);
+          line-height: 1.66;
+          @include fontSize(12);
+          svg {
+            width: rem(16);
+            height: rem(16);
+          }
+        }
+        &.button-arrow {
+          padding: 0;
+          margin: 0;
+          width: auto;
+          min-width: auto;
+          right: auto;
+          @include absolute(left 0 top 11px);
+          button {
+            position: static;
+          }
+        }
+      }
+    }
+    h2 {
+      @media only screen and (max-width: 767px) {
+        margin-bottom: rem(6);
+        line-height: 1.38;
+        letter-spacing: -0.02em;
+        @include fontSize(13);
+      }
+    }
+    p {
+      color: var(--color-textBlack-80);
+      @media only screen and (max-width: 767px) {
+        line-height: 1.33;
+        letter-spacing: -0.01em;
+        @include fontSize(12);
+      }
+    }
+    button {
+      @media only screen and (min-width: 768px) {
+        max-width: rem(200);
+        float: right;
+      }
+    }
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: auto 28px;
+    gap: rem(20);
+    padding: rem(16) 0;
+    border-top: rem(1) solid var(--color-textBlack-10);
+    align-items: center;
+    &:last-of-type {
+      border-bottom: rem(1) solid var(--color-textBlack-10);
+      margin-bottom: rem(20);
+    }
+    .MuiCheckbox-root {
+      justify-content: flex-end;
+      padding: 0;
+      border-radius: 0;
+      svg {
+        width: rem(27);
+        height: rem(27);
+        fill: var(--color-textBlack-20);
+      }
+      &.Mui-checked {
+        svg {
+          fill: var(--color-textBlack);
+        }
+      }
+    }
+    &-action {
+      button {
+        width: 100%;
+        @media only screen and (min-width: 768px) {
+          width: auto;
+          max-width: rem(200);
+          float: right;
+        }
+      }
+    }
+  }
+}
