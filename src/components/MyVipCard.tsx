@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 // import { ProgressBarLink } from './ProgressBar';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import revalidatePathAction, { createVipIdCookie, revalidateTag } from '@/libs/actions';
@@ -18,16 +18,27 @@ interface MyVipCardProps {
   vipId: string;
 }
 
-const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tiktokFollowers, status, vipId }) => {
+const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link, tiktokFollowers, status, vipId }) => {
   const router = useRouter();
+  const [isLoading, setLoading] = useState<boolean>(false);
   const itemImage = image || '/img/placeholder-image.jpg';
   const handleClick = async (vipId: string) => {
+    setLoading(true);
     try {
-      await createVipIdCookie(vipId);
-      await revalidateTag(TAGS.GET_DASHBOARD);
-      await revalidatePathAction(`/agent-home`);
-      router.refresh();
+      if (status === 'pending') {
+        router.push(link);
+      } else {
+        try {
+          await createVipIdCookie(vipId);
+          await revalidateTag(TAGS.GET_DASHBOARD);
+          await revalidatePathAction(`/agent-home`);
+          router.push(link);
+        } catch (error) {
+          console.error('Error in handleClick:', error);
+        }
+      }
     } catch (error) {
+      setLoading(false);
       console.error('Error in handleClick:', error);
     }
   };
@@ -45,6 +56,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tikt
         borderBottom: '1px solid #e0e0e0',
         textDecoration: 'none',
         color: 'inherit',
+        cursor: 'pointer',
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -94,6 +106,9 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tikt
         <ArrowForwardIosIcon color="primary" />
       </IconButton>
       {/* </ProgressBarLink> */}
+      <Backdrop sx={{ color: 'black', zIndex: 100 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };
