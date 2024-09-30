@@ -21,19 +21,26 @@ interface MyVipCardProps {
 const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, tiktokFollowers, link, status, vipId }) => {
   const router = useRouter();
   const itemImage = image || '/img/placeholder-image.jpg';
-  const handleClick = (vipId: string) => {
+  const handleClick = async (vipId: string) => {
     if (status !== 'pending') {
-      createVipIdCookie(vipId);
-      revalidateTag(TAGS.GET_DASHBOARD);
-      revalidatePathAction(`/agent-home`);
-      router.refresh();
+      try {
+        await createVipIdCookie(vipId);
+        await revalidateTag(TAGS.GET_DASHBOARD);
+        await revalidatePathAction(`/agent-home`);
+        router.refresh();
+      } catch (error) {
+        console.error('Error in handleClick:', error);
+      }
     }
   };
 
   return (
     <ProgressBarLink href={link}>
       <Box
-        onClick={() => handleClick(vipId)}
+        onClick={(e) => {
+          e.preventDefault();
+          handleClick(vipId);
+        }}
         sx={{
           display: 'flex',
           alignItems: 'center',
