@@ -58,6 +58,13 @@ export interface CTA {
   cta_hide_title_attr: boolean;
   cta_title_attr: string;
   cta_accessibility_text: string;
+  cta: PublicCta;
+}
+
+export interface PublicCta {
+  title: string;
+  url: string;
+  target: '_self' | '_blank' | '_parent' | '_top';
 }
 
 export interface ContentModule {

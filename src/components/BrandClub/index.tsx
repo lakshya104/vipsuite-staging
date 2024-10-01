@@ -12,33 +12,41 @@ interface BrandClubProps {
 
 const BrandClub: React.FC<BrandClubProps> = ({ data }) => {
   const brandclub = data?.acf?.content_modules?.[2]?.content_blocks?.[0];
-  const brandpoints = he.decode(brandclub?.description);
-  const brandpointsArray = brandpoints
-    ? brandpoints.match(/<li>(.*?)<\/li>/g)?.map((item: string) => item.replace(/<\/?li>/g, ''))
-    : [];
+  const decodedDescription = he.decode(brandclub?.description || '');
+  const [introText, listHTML] = decodedDescription.split(/<ul>/);
+  const listItems = listHTML?.match(/<li>(.*?)<\/li>/g)?.map((item) => item.replace(/<\/?li>/g, '')) || [];
 
   return (
     <Box component="section" className="section-club">
       <Container>
         <Grid container spacing={0} className="section-club__wrapper">
           <Grid item xs={12} sm={5.9} className="section-club__image">
-            <Box component="img" src="/img/brandClub.svg" alt="VIP Brand Club members" />
+            <Box
+              component="img"
+              src={brandclub?.image?.url}
+              alt={brandclub?.image?.alt || 'VIP Brand Club members'}
+              className="club-image"
+            />
           </Grid>
           <Grid item xs={12} sm={6} className="section-club__content">
-            <Typography variant="h2">Annual VIP Brand Club</Typography>
-            <Typography variant="body1" paragraph>
-              {brandclub?.heading}
-            </Typography>
-            <List>
-              {brandpointsArray?.map((item: string, index: number) => (
-                <ListItem key={index} disableGutters>
-                  <ListItemIcon>
-                    <CheckIcon color="success" />
-                  </ListItemIcon>
-                  <ListItemText primary={item} />
-                </ListItem>
-              ))}
-            </List>
+            <Typography variant="h2">{brandclub?.heading}</Typography>
+            {introText && (
+              <Typography variant="body1" paragraph>
+                {introText.trim()}
+              </Typography>
+            )}
+            {listItems.length > 0 && (
+              <List>
+                {listItems.map((item, index) => (
+                  <ListItem key={index} disableGutters>
+                    <ListItemIcon>
+                      <CheckIcon color="success" />
+                    </ListItemIcon>
+                    <ListItemText primary={item} />
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Grid>
         </Grid>
       </Container>

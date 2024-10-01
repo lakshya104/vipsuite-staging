@@ -10,7 +10,7 @@ interface JoinUsProps {
   data: PageData;
 }
 const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
-  const contentModules = data.acf.content_modules || [];
+  const contentModules = data?.acf?.content_modules || [];
   let listItems = null;
   let heading = null;
   let cta = null;
@@ -48,8 +48,8 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
                       <StarOutlineIcon />
                     </Box>
                     <Box>
-                      <Typography variant="h3">{item.heading}</Typography>
-                      <Typography variant="body1">{item.copy}</Typography>
+                      <Typography variant="h3">{item?.heading}</Typography>
+                      <Typography variant="body1">{item?.copy}</Typography>
                     </Box>
                   </Paper>
                 </Grid>

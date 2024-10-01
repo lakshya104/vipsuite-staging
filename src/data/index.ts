@@ -1,5 +1,6 @@
 import { AgentEditProfileValues } from '@/features/AgentProfile/types';
 import { AgentSignupValues } from '@/features/AgentSignupForm/types';
+import { BrandSignupValues } from '@/features/BrandSignupForm/types';
 import { ProductDetail } from '@/interfaces/product';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 
@@ -300,6 +301,35 @@ export const AgentSignUpFormFields: AgentSignUpFormField[] = [
   { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
   { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
+];
+
+type BrandSignUpFormField = {
+  name: keyof BrandSignupValues;
+  placeholder?: string | undefined;
+  autocomplete?: string | undefined;
+  type?: string | undefined;
+  label?: string | undefined;
+  options?: Array<{ value: string; label: string }>;
+};
+
+export const BrandSignUpFormFields: BrandSignUpFormField[] = [
+  { name: 'brand_name', placeholder: 'Brand Name', autocomplete: 'brand-name', type: 'text' },
+  { name: 'contact_name', placeholder: 'Contact Name', autocomplete: 'contact-name', type: 'text' },
+  { name: 'email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
+  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
+  { name: 'password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
+  {
+    name: 'type_of_business',
+    placeholder: 'Type of Business',
+    label: 'Type of Business',
+    type: 'select',
+    options: [
+      { value: 'retail', label: 'Retail' },
+      { value: 'wholesale', label: 'Wholesale' },
+      { value: 'service', label: 'Service' },
+      { value: 'manufacturing', label: 'Manufacturing' },
+    ],
+  },
 ];
 
 type AgentEditProfileFormField = {

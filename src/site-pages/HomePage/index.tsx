@@ -17,10 +17,8 @@ const HomePage: React.FC<HomePageProps> = async ({ isAgent }) => {
   const userId = cookieStore.get('vipId');
   try {
     const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
-    const userRole = (session?.user as unknown as Session)?.role;
-    const userEmail = (session?.user as unknown as Session)?.email;
+    const { token, vip_profile_id, role: userRole, email: userEmail } = session?.user as unknown as Session;
+    const vipId = !isAgent ? vip_profile_id : Number(userId?.value);
     const [dashboardContent, dashboardItems] = await Promise.all([
       GetDashboardContent(token, vipId),
       GetDashboard(token, vipId),

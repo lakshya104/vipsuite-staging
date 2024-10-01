@@ -30,8 +30,10 @@
     h2,
     p,
     button {
-      opacity: 0;
-      visibility: hidden;
+      @media only screen and (min-width: 768px) {
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   }
   .accordionItem {

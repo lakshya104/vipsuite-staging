@@ -87,6 +87,21 @@ export const AgentSignUp = async (formData: any) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const BrandSignUp = async (formData: any) => {
+  try {
+    const response = await Instance.post(Endpoints.brandSignup, formData);
+    return response.data;
+  } catch (error) {
+    console.error('Error during signup:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
+
 export const AgentProfileUpdate = async (agentId: number, token: string, formData: FormData) => {
   try {
     const response = await Instance.post(Endpoints.agentProfileUpdate(agentId), formData, {

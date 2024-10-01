@@ -1,14 +1,9 @@
-import React from 'react';
-import { Box } from '@mui/material';
-import HeroSection from '@/components/HeroSection/HeroSection';
-import Partner from '@/components/Partner/Partner';
+import React, { Suspense } from 'react';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
-import SocialAccordion from '@/components/SocialAccordion';
-import JoinUs from '@/components/JoinUs';
-import TestimonialSection from '@/components/TestimonialSection';
-import { GetPageContent } from '@/libs/api-manager/manager';
+import LandingPage from '@/site-pages/LandingPage';
+import LandingPageLoading from '@/site-pages/LandingPage/loading';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -37,17 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   const session = await auth();
   if (session) redirect('/home');
-  const pageData = await GetPageContent(234);
 
   return (
-    <Box>
-      <HeroSection data={pageData} />
-      <Box component="section" className="site-card">
-        <SocialAccordion data={pageData} />
-      </Box>
-      <JoinUs data={pageData} />
-      <Partner data={pageData} />
-      <TestimonialSection data={pageData} />
-    </Box>
+    <Suspense fallback={<LandingPageLoading />}>
+      <LandingPage />
+    </Suspense>
   );
 }
