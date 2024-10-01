@@ -20,7 +20,7 @@ export interface AgentProfileBuilderStepsProps {
   onNext: (profileDetail: ACF) => void;
   onPrev: () => void;
   profileDetail: ACF;
-  id: number;
+  id?: number;
 }
 const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
   handleId,

@@ -16,27 +16,27 @@ const ProductList: React.FC<ProductListProps> = async ({ brandId, token, vipId }
   if (!brandId) {
     return <ErrorFallback errorMessage="Brand Id is invalid." />;
   }
-  let brandProducts: BrandProduct[] | null = null;
   try {
-    brandProducts = await GetBrandProducts(brandId, token, vipId);
+    const brandProducts = await GetBrandProducts(brandId, token, vipId);
+    if (!brandProducts || brandProducts.length === 0) {
+      return (
+        <ErrorFallback errorMessage="No products available for this brand" hideSubtext={true} smallHeight={true} />
+      );
+    }
+    return (
+      <Box className="product-listing">
+        <Grid container spacing={2.5}>
+          {brandProducts.map((product: BrandProduct) => (
+            <Grid item xs={6} sm={4} key={product?.id}>
+              <ProductCard data={product} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    );
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Products are not available currently." />;
   }
-  if (!brandProducts || brandProducts.length === 0) {
-    return <ErrorFallback errorMessage="No products available for this brand" hideSubtext={true} smallHeight={true} />;
-  }
-
-  return (
-    <Box className="product-listing">
-      <Grid container spacing={2.5}>
-        {brandProducts.map((product: BrandProduct) => (
-          <Grid item xs={6} sm={4} key={product?.id}>
-            <ProductCard data={product} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
 };
 
 export default ProductList;

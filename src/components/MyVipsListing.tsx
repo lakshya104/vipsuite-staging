@@ -21,8 +21,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
   return (
     <Box>
       {myVips.map((item) => {
-        const link =
-          item.profile_status === 'pending' ? `/agent-profile-builder?vipId=${item?.vip_profile_id}` : `/agent-home`;
+        const link = item.profile_status === 'pending' ? `/agent-profile-builder?edit=true` : `/agent-home`;
         const name = `${item?.first_name} ${item?.last_name}`;
         return (
           <MyVipCard

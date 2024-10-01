@@ -6,6 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import revalidatePathAction, { createVipIdCookie, revalidateTag } from '@/libs/actions';
 import { useRouter } from 'next/navigation';
 import TAGS from '@/libs/apiTags';
+import { useEditVipIdStore } from '@/store/useStore';
 
 interface MyVipCardProps {
   image: string;
@@ -19,12 +20,14 @@ interface MyVipCardProps {
 
 const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link, tiktokFollowers, status, vipId }) => {
   const router = useRouter();
+  const { setVipId } = useEditVipIdStore();
   const [isLoading, setLoading] = useState<boolean>(false);
   const itemImage = image || '/img/placeholder-image.jpg';
   const handleClick = async (vipId: string) => {
     setLoading(true);
     try {
       if (status === 'pending') {
+        setVipId(vipId);
         router.push(link);
       } else {
         try {
@@ -33,7 +36,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
           await revalidatePathAction(`/agent-home`);
           router.push(link);
         } catch (error) {
-          console.error('Error in handleClick:', error);
+          console.error('Error while selecting vipId:', error);
         }
       }
     } catch (error) {
