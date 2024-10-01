@@ -10,8 +10,6 @@ interface OrderListingProps {
 }
 
 const OrderListing: React.FC<OrderListingProps> = ({ allOrders }) => {
-  console.log({ allOrders });
-
   return (
     <Box className="order-product__items">
       {allOrders.map((order: Order) => {

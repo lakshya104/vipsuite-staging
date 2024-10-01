@@ -5,7 +5,6 @@ import DialogBox from './Dialog/Dialog';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
 import { CreateOrder, RemoveAllVipCartItems } from '@/libs/api-manager/manager';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { map } from 'lodash';
@@ -47,10 +46,8 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const { increaseOrderCount } = useOrderStore();
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const { requestProductId, clearRequestProductId } = useRequestOnlyStore();
-  const { userRoleStore } = useUserInfoStore();
+  const { userRoleStore, userEmailStore } = useUserInfoStore();
   const orderConfirmationRedirect = userRoleStore === 'vip' ? '/home' : '/agent-home';
-  const user = useCurrentUser();
-  const userEmail = user?.email;
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
@@ -83,7 +80,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       set_paid: true,
       billing: {
         ...address,
-        email: userEmail,
+        email: userEmailStore,
         phone: selectedAddress?.phone,
       },
       shipping: {

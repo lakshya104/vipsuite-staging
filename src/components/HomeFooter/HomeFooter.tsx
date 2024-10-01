@@ -7,20 +7,20 @@ import { map } from 'lodash';
 import './HomeFooter.scss';
 import { usePathname } from 'next/navigation';
 import { GetAllOrdersClient } from '@/libs/api-manager/manager';
-import { useOrderStore } from '@/store/useStore';
+import { useOrderStore, useUserInfoStore } from '@/store/useStore';
 
 interface HomeFooterProps {
   token: string;
   id: number;
-  vipId?: number;
 }
 
-const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
+const HomeFooter: React.FC<HomeFooterProps> = ({ token, id }) => {
   const [showFooter, setShowFooter] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { setOrderCount, orderCount } = useOrderStore();
   const lastScrollY = useRef(0);
   const pathname = usePathname();
+  const { vipIdStore, userRoleStore } = useUserInfoStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,12 +51,12 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
       }
       setIsLoading(false);
     };
-    if (token && id && vipId) fetchCart(token, id, vipId);
-  }, [token, id, vipId, setOrderCount]);
+    if (token && id && vipIdStore) fetchCart(token, id, vipIdStore);
+  }, [token, id, vipIdStore, setOrderCount]);
 
-  const footerItems = [
+  const vipFooterItems = [
     {
-      href: '/',
+      href: '/home',
       src: '/img/home.svg',
       alt: 'Home',
       label: 'Home',
@@ -96,6 +96,50 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ token, id, vipId }) => {
       srcselected: '/img/basket.png',
     },
   ];
+
+  const agentFooterItems = [
+    {
+      href: '/agent-home',
+      src: '/img/home.svg',
+      alt: 'Home',
+      label: 'Home',
+      paths: ['/agent-home', '/agent-brands/', '/agent-product'],
+      srcselected: '/img/home-selected.svg',
+    },
+    {
+      href: '/agent-opportunities',
+      src: '/img/opportunity.svg',
+      alt: 'Opportunities',
+      label: 'Opportunities',
+      paths: ['/agent-opportunities'],
+      srcselected: '/img/opportunities-selected.svg',
+    },
+    {
+      href: '/agent-events',
+      src: '/img/event.svg',
+      alt: 'Events',
+      label: 'Events',
+      paths: ['/agent-events'],
+      srcselected: '/img/events-selected.svg',
+    },
+    {
+      href: '/agent-inbox',
+      src: '/img/inbox.svg',
+      alt: 'Inbox',
+      label: 'Inbox',
+      paths: ['/agent-inbox'],
+      srcselected: '/img/inbox-selected.svg',
+    },
+    {
+      href: '/agent-orders',
+      src: '/img/basket.png',
+      alt: 'My-Orders',
+      label: 'My Orders',
+      paths: ['/agent-orders'],
+      srcselected: '/img/basket.png',
+    },
+  ];
+  const footerItems = userRoleStore === 'vip' ? vipFooterItems : agentFooterItems;
 
   return (
     <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>

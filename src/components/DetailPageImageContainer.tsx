@@ -12,7 +12,7 @@ interface DetailPageImageContainerProps {
 
 const DetailPageImageContainer: React.FC<DetailPageImageContainerProps> = ({ item, token, vipId }) => {
   const productImage = item?.acf?.brand_image?.sizes?.large || '/img/placeholder-image.jpg';
-  const brandLogo = item.acf?.brand_logo?.url;
+  const brandLogo = item?.acf?.brand_logo?.url;
   return (
     <Card
       className="product-detail__item"
