@@ -36,12 +36,13 @@ export interface PageData {
   class_list: string[];
   acf: {
     use_default_hero_panel: boolean;
-    image: string | null;
+    image: Image;
     heading: string;
     subheading: string;
     copy: string;
     cta: CTA;
     content_modules: ContentModule[];
+    subhading: string;
   };
   _links: Links;
   sizes: HomeImageSizes;

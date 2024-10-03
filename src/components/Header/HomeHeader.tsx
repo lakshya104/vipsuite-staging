@@ -23,6 +23,7 @@ import Toaster from '../Toaster';
 import { usePathname } from 'next/navigation';
 import { deleteVipIdCookie } from '@/libs/actions';
 import { useUserInfoStore } from '@/store/useStore';
+import { UserRole } from '@/helpers/enums';
 
 const vipNavLinks = [
   {
@@ -41,14 +42,14 @@ const vipNavLinks = [
     paths: ['/events'],
   },
   {
-    label: 'Inbox',
-    href: '/inbox',
-    paths: ['/inbox'],
-  },
-  {
-    label: 'My Orders',
+    label: 'Messages',
     href: '/my-orders',
     paths: ['/my-orders'],
+  },
+  {
+    label: 'My Profile',
+    href: '/profile',
+    paths: ['/profile'],
   },
 ];
 
@@ -56,36 +57,31 @@ const agentNavLinks = [
   {
     label: 'Home',
     href: '/agent-home',
-    paths: ['/home', '/brands/', '/product'],
+    paths: ['/agent-home', '/agent-brands/', '/agent-product'],
   },
   {
     label: 'Opportunities',
     href: '/agent-opportunities',
-    paths: ['/opportunities'],
+    paths: ['/agent-opportunities'],
   },
   {
     label: 'Events',
     href: '/agent-events',
-    paths: ['/events'],
+    paths: ['/agent-events'],
   },
   {
-    label: 'Inbox',
-    href: '/agent-inbox',
-    paths: ['/inbox'],
-  },
-  {
-    label: 'My Orders',
+    label: 'Messages',
     href: '/agent-orders',
-    paths: ['/my-orders'],
+    paths: ['/agent-orders'],
+  },
+  {
+    label: 'My Profile',
+    href: '/agent-profile',
+    paths: ['/agent-profile'],
   },
 ];
 
 const vipMenuItems = [
-  {
-    label: 'My Profile',
-    icon: <Image src="/img/user.svg" alt="Logo" width={20} height={20} />,
-    href: '/profile',
-  },
   {
     label: 'Basket',
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
@@ -112,11 +108,6 @@ const vipMenuItems = [
 ];
 
 const agentMenuItems = [
-  {
-    label: 'My Profile',
-    icon: <Image src="/img/user.svg" alt="Logo" width={20} height={20} />,
-    href: '/profile',
-  },
   {
     label: 'My VIPs',
     icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
@@ -146,10 +137,9 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
-  const menuItems = role === 'vip' ? vipMenuItems : agentMenuItems;
-  const navItems = role === 'vip' ? vipNavLinks : agentNavLinks;
+  const menuItems = role === UserRole.Vip ? vipMenuItems : agentMenuItems;
+  const navItems = role === UserRole.Vip ? vipNavLinks : agentNavLinks;
   const { clearAll } = useUserInfoStore();
-
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
@@ -158,9 +148,9 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
       try {
         setDrawerOpen(false);
         setIsLoading(true);
-        signOut();
+        await deleteVipIdCookie();
         await LogOut(token);
-        deleteVipIdCookie();
+        signOut();
         clearAll();
       } catch (error) {
         setIsLoading(false);

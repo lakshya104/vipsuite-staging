@@ -11,7 +11,7 @@ const VipSignupPage = async () => {
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">
-        <Typography variant="h2">Apply as an Agent</Typography>
+        <Typography variant="h2">Sign up as a manager, publicist or commercial agent</Typography>
         <Typography component="p">{agentSignupContent}</Typography>
         <AgentSignupForm />
       </Box>

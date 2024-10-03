@@ -1,11 +1,11 @@
 import React from 'react';
+import { cookies } from 'next/headers';
+import { auth } from '@/auth';
+import { Session } from '@/interfaces';
 import { GetVipOpportunities } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import OpportunitiesContainer from '@/components/OpportunitiesContainer';
-import { auth } from '@/auth';
-import { Session } from '@/interfaces';
-import { cookies } from 'next/headers';
 
 interface OpportunitiesPageProps {
   isAgent?: boolean;

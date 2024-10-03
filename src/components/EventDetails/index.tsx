@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Card, Typography } from '@mui/material';
 import Image from 'next/image';
 import he from 'he';
-import FeedLikeIcon from '@/components/FeedLikeIcon';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
@@ -11,10 +10,9 @@ import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
 interface EventDetailsCardProps {
   event: EventDetails;
   token: string;
-  vipId: number;
 }
 
-const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token, vipId }) => {
+const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => {
   const eventDetail = wrapInParagraph(event?.acf?.event_details);
 
   return (
@@ -22,7 +20,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token, vipId
       <Typography className="page-title" variant="h2" component="h1" align="center">
         {he.decode(event?.title?.rendered)}
       </Typography>
-      <EventContainer event={event} vipId={vipId} token={token} />
+      <EventContainer event={event} />
       <Box className="product-detail__content">
         <Typography
           sx={{
@@ -63,11 +61,9 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token, vipId
 
 interface EventContainerProps {
   event: EventDetails;
-  token: string;
-  vipId: number;
 }
 
-const EventContainer = ({ event, token, vipId }: EventContainerProps) => {
+const EventContainer = ({ event }: EventContainerProps) => {
   const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || '/img/placeholder-image.jpg';
   const brandLogo = event?.acf?.brand_logo?.url;
 
@@ -78,7 +74,6 @@ const EventContainer = ({ event, token, vipId }: EventContainerProps) => {
         backgroundImage: `url(${eventImageUrl})`,
       }}
     >
-      <FeedLikeIcon postId={event.id} isWishlisted={event.is_wishlisted} type="event" vipId={vipId} token={token} />
       {brandLogo && (
         <Box className="brand-logo">
           <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />

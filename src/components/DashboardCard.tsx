@@ -4,7 +4,6 @@ import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { formatEventDates, truncateDescription } from '@/helpers/utils';
 import { ProgressBarLink } from './ProgressBar';
-import FeedLikeIcon from './FeedLikeIcon';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
@@ -12,11 +11,9 @@ import { useUserInfoStore } from '@/store/useStore';
 
 interface DashboardCardProps {
   item: DashboardItem;
-  token: string;
-  vipId: number | string | undefined;
 }
 
-const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => {
+const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const { userRoleStore } = useUserInfoStore();
   const isBrand = (item as Brand)?.type === 'brand-profile';
   const isEvent = (item as Event)?.type === 'event';
@@ -25,7 +22,6 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
   const BrandImage = (item as Brand)?.acf?.brand_image?.sizes?.medium_large;
   const OpportunityImage = (item as Opportunity)?.acf?.featured_image?.sizes?.medium_large;
   const brandLogo = (item as Brand)?.acf?.brand_logo?.url;
-  const isWishlisted = item?.is_wishlisted;
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
   const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
@@ -57,7 +53,6 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
           placeholder="blur"
           blurDataURL="/img/image-placeholder.png"
         />
-        <FeedLikeIcon isWishlisted={isWishlisted} postId={postId} type={item.type} token={token} vipId={vipId} />
         {isBrand && brandLogo && (
           <Box
             sx={{
@@ -117,35 +112,6 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item, token, vipId }) => 
                 {(item as Event)?.acf?.event_location}
               </Typography>
             </>
-          )}
-          {isBrand && (
-            <Typography variant="body2">
-              {(item as Brand)['brand-category']?.map((category, index) => (
-                <span key={index}>
-                  {category}
-                  {index < (item as Brand)['brand-category']?.length - 1 && <span className="home-separator"> | </span>}
-                </span>
-              ))}
-            </Typography>
-          )}
-          {isEvent && (
-            <Typography variant="body2">
-              {(item as Event)['event-category']?.map((category, index) => (
-                <span key={index}>
-                  {category}
-                  {index < (item as Event)['event-category']?.length - 1 && <span className="home-separator"> | </span>}
-                </span>
-              ))}
-            </Typography>
-          )}
-          {isOpportunity && (
-            <Typography
-              variant="body2"
-              className="landing-product__paragraph"
-              dangerouslySetInnerHTML={{
-                __html: (item as Opportunity)['opportunity-category']?.join(' <span>|</span> '),
-              }}
-            />
           )}
         </Box>
       </Box>

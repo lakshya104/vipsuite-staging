@@ -8,12 +8,11 @@ import MyOrderDetailLoading from '@/site-pages/MyOrderDetailPage/loading';
 
 export default async function Page({ params }: { params: { orderId: number } }) {
   const orderId = params['orderId'];
-
   return (
     <Box className="user-profile order-details-page">
       <Container>
         <Typography className="page-title" variant="h2" align="center">
-          <ProgressBarLink href={'/my-orders'} aria-label="Back to My Orders">
+          <ProgressBarLink href={'/agent-orders'} aria-label="Back to My Orders">
             <ArrowBackIcon />
           </ProgressBarLink>
           Order #{orderId}

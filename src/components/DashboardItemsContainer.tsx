@@ -99,7 +99,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
       {items.map((item, index) => (
         <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
-          <DashboardCard item={item} vipId={vipId} token={token} />
+          <DashboardCard item={item} />
         </Grid>
       ))}
     </Grid>

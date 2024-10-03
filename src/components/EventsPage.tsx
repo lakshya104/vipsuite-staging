@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import { Box, Container, Grid, Typography } from '@mui/material';
@@ -8,11 +7,9 @@ import { Event } from '@/interfaces/events';
 
 interface EventCardsProps {
   eventsData: Event[];
-  token: string;
-  vipId: number;
 }
 
-const EventCards: React.FC<EventCardsProps> = ({ eventsData, token, vipId }) => {
+const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredEvents = useMemo(() => {
@@ -44,7 +41,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData, token, vipId }) => 
         />
       </Box>
       {!searchQuery ? (
-        <EventsListing events={eventsData} vipId={vipId} token={token} />
+        <EventsListing events={eventsData} />
       ) : searchQuery && filteredEvents.length > 0 ? (
         <>
           <Grid container mb={2.5}>
@@ -56,7 +53,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData, token, vipId }) => 
               </Box>
             </Grid>
           </Grid>
-          <EventsListing events={filteredEvents} vipId={vipId} token={token} />
+          <EventsListing events={filteredEvents} />
         </>
       ) : (
         <Container>

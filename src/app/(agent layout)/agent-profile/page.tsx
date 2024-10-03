@@ -1,22 +1,20 @@
 import React, { Suspense } from 'react';
-import './order.scss';
-import MyOrdersPage from '@/site-pages/MyOrdersPage';
 import { Box, Container, Typography } from '@mui/material';
-import MyOrdersLoading from '@/site-pages/MyOrdersPage/loading';
+import './profile.scss';
+import ProfilePage from '@/site-pages/ProfilePage';
+import ProfilePageLoading from '@/site-pages/ProfilePage/loading';
 
-const MyOrders: React.FC = () => {
+export default async function Page() {
   return (
     <Box className="user-profile">
       <Container>
         <Typography className="page-title" variant="h2" align="center">
-          My Orders
+          Your Profile
         </Typography>
-        <Suspense fallback={<MyOrdersLoading />}>
-          <MyOrdersPage />
+        <Suspense fallback={<ProfilePageLoading />}>
+          <ProfilePage />
         </Suspense>
       </Container>
     </Box>
   );
-};
-
-export default MyOrders;
+}

@@ -1,10 +1,10 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import { GetBrandDetails } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import { auth } from '@/auth';
 import { Session } from '@/interfaces';
-import { cookies } from 'next/headers';
 import { BrandDetails } from '@/interfaces/brand';
 import BrandDetailsContainer from '@/components/BrandDetailsContainer';
 

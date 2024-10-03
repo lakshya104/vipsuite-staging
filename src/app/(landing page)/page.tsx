@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
         images: ['/img/maldives.png'],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       metadataBase: new URL('https://vipsuite-staging.vercel.app'),
       title: 'Welcome to VIP Suite',

@@ -1,11 +1,11 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import { GetVipEvents } from '@/libs/api-manager/manager';
 import EventCards from '@/components/EventsPage';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 import { Session } from '@/interfaces';
 import { auth } from '@/auth';
-import { cookies } from 'next/headers';
 
 interface EventsPageProps {
   isAgent?: boolean;

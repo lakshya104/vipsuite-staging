@@ -1,11 +1,11 @@
 import React from 'react';
+import { cookies } from 'next/headers';
+import { auth } from '@/auth';
 import { FetchCartItemsAndNonce, GetAddresses } from '@/libs/api-manager/manager';
 import { Address, Cart, Session } from '@/interfaces';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import OrderJourney from '@/features/OrderJourney';
-import { auth } from '@/auth';
-import { cookies } from 'next/headers';
 
 interface BasketPageProps {
   isAgent?: boolean;

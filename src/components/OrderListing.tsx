@@ -4,18 +4,21 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ProgressBarLink } from './ProgressBar';
 import { formatDate, formatString } from '@/helpers/utils';
 import { Order } from '@/interfaces';
+import { UserRole } from '@/helpers/enums';
 
 interface OrderListingProps {
   allOrders: Order[];
+  role: string;
 }
 
-const OrderListing: React.FC<OrderListingProps> = ({ allOrders }) => {
+const OrderListing: React.FC<OrderListingProps> = ({ allOrders, role }) => {
   return (
     <Box className="order-product__items">
       {allOrders.map((order: Order) => {
         if (order.id) {
+          const orderDetailLink = role === UserRole.Vip ? `/my-orders/${order?.id}` : `/agent-orders/${order?.id}`;
           return (
-            <ProgressBarLink href={`/my-orders/${order?.id}`} key={order?.id}>
+            <ProgressBarLink href={orderDetailLink} key={order?.id}>
               <Box
                 className="order-product__item"
                 display={'flex'}

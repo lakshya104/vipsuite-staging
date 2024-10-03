@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { VipSignUpRequestBody, UserProfile, Session, AddressInput } from '@/interfaces';
+import { VipSignUpRequestBody, UserProfile, AddressInput, Session } from '@/interfaces';
 import { Endpoints } from './constants';
 import { FetchInstance, FetchInstanceWithHeaders, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
@@ -10,6 +10,11 @@ export const GetToken = async () => {
   const session = await auth();
   const token = (session?.user as unknown as Session)?.token;
   return token;
+};
+
+export const GetSession = async () => {
+  const session = await auth();
+  return session?.user as unknown as Session;
 };
 
 export const GetLoginUserId = async () => {
@@ -134,8 +139,12 @@ export const Login = async (data: LoginFormValues) => {
   }
 };
 
-export const GetProfile = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getProfile);
+export const GetProfile = async (token: string) => {
+  return await FetchInstance(Endpoints.getProfile, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const GetVipProfile = async (token: string, vipId: number) => {
@@ -332,8 +341,13 @@ export const GetAllOrdersClient = async (token: string, id: number, vipId: numbe
   });
 };
 
-export const GetOrderById = async (id: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getOrderById(id));
+export const GetOrderById = async (id: number, token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getOrderById(id), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+  });
 };
 
 export const GetVipEventDetails = async (id: number, token: string, vipId: number) => {

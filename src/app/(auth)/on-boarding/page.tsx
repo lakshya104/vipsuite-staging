@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
-import './style.scss';
 import Image from 'next/image';
+import { Box, Typography } from '@mui/material';
+import './style.scss';
 
 const Onboarding = () => {
   return (
@@ -17,10 +17,10 @@ const Onboarding = () => {
             VIP
           </Link>
           <Link href="/signup/agent" className="onboarding__link" passHref>
-            Agent
+            Agencies
           </Link>
           <Link href="/signup/brand" className="onboarding__link" passHref>
-            Brand
+            Brands & PR
           </Link>
         </Box>
       </Box>

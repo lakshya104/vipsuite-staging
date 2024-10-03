@@ -1,20 +1,17 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
-import FeedLikeIcon from '../FeedLikeIcon';
+import Image from 'next/image';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatEventDates } from '@/helpers/utils';
-import Image from 'next/image';
 import { useUserInfoStore } from '@/store/useStore';
 
 interface EventCardProps {
   item: Event;
   isFeatured?: boolean;
-  token: string;
-  vipId: number;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ item, isFeatured, token, vipId }) => {
+const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
   const { userRoleStore } = useUserInfoStore();
   const eventDetailLink = userRoleStore === 'vip' ? `/events/${item.id}` : `/agent-events/${item.id}`;
   const brandLogo = item.acf?.brand_logo?.url;
@@ -32,7 +29,6 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured, token, vipId })
             <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 199px) 100vw, 199px" />
           </Box>
         )}
-        <FeedLikeIcon isWishlisted={item?.is_wishlisted} postId={item?.id} type="event" vipId={vipId} token={token} />
         <CardContent className="landing-product__item-content">
           {isFeatured && (
             <Box className="category-label">
@@ -53,14 +49,6 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured, token, vipId })
               Location:
             </Typography>{' '}
             {item.acf.event_location}
-          </Typography>
-          <Typography variant="body2">
-            {item['event-category']?.map((category, index) => (
-              <span key={index}>
-                {category}
-                {index < item['event-category'].length - 1 && <span className="event-separator"> | </span>}
-              </span>
-            ))}
           </Typography>
         </CardContent>
       </Card>

@@ -48,7 +48,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
     try {
       const response = await GetVipProfile(token, profileId);
       setProfileDetail(response.acf);
-    } catch (error) {
+    } catch {
       setProfileDetail({ first_name: '', last_name: '' });
     }
   };

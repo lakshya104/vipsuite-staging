@@ -2,9 +2,9 @@ import React from 'react';
 import { GetAllVips } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
-import { Session } from '@/interfaces';
 import { auth } from '@/auth';
 import MyVipsListing from '@/components/MyVipsListing';
+import { Session } from '@/interfaces';
 
 export interface MyVips {
   vip_profile_id: number;

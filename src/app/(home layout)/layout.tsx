@@ -17,13 +17,12 @@ export default async function HomeSectionLayout({
   const token = (session?.user as unknown as Session)?.token;
   const role = (session?.user as unknown as Session)?.role;
   const id = (session?.user as unknown as Session)?.id;
-  const vipId = (session?.user as unknown as Session)?.vip_profile_id;
   if (role === 'agent') redirect('/my-vips');
   return (
     <>
       <HomeHeader token={token} role={role} />
       {children}
-      <HomeFooter token={token} id={id} vipId={vipId} />
+      <HomeFooter token={token} id={id} />
     </>
   );
 }

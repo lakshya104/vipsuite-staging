@@ -1,11 +1,11 @@
 import React from 'react';
+import { cookies } from 'next/headers';
+import { auth } from '@/auth';
 import { GetAddresses } from '@/libs/api-manager/manager';
 import { Address, Session } from '@/interfaces';
 import AddressListing from '@/components/AddressListing';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
-import { auth } from '@/auth';
-import { cookies } from 'next/headers';
 
 interface MyAddressesPageProps {
   isAgent?: boolean;
@@ -17,7 +17,7 @@ const MyAddressesPage: React.FC<MyAddressesPageProps> = async ({ isAgent }) => {
     const session = await auth();
     const token = (session?.user as unknown as Session)?.token;
     const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
-    if (!userId || !token) {
+    if (!vipId || !token) {
       return <ErrorFallback errorMessage="Invalid Token or User Id" />;
     }
     const addresses: Address[] = await GetAddresses(token, vipId);

@@ -1,3 +1,5 @@
+import React from 'react';
+import { Box } from '@mui/material';
 import ErrorHandler from '@/components/ErrorHandler';
 import HeroSection from '@/components/HeroSection/HeroSection';
 import JoinUs from '@/components/JoinUs';
@@ -6,8 +8,6 @@ import SocialAccordion from '@/components/SocialAccordion';
 import TestimonialSection from '@/components/TestimonialSection';
 import { PageData } from '@/interfaces/public-page';
 import { GetPageContent } from '@/libs/api-manager/manager';
-import { Box } from '@mui/material';
-import React from 'react';
 
 const LandingPage = async () => {
   try {

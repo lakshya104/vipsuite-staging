@@ -8,6 +8,7 @@ import './HomeFooter.scss';
 import { usePathname } from 'next/navigation';
 import { GetAllOrdersClient } from '@/libs/api-manager/manager';
 import { useOrderStore, useUserInfoStore } from '@/store/useStore';
+import { UserRole } from '@/helpers/enums';
 
 interface HomeFooterProps {
   token: string;
@@ -80,20 +81,20 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ token, id }) => {
       srcselected: '/img/events-selected.svg',
     },
     {
-      href: '/inbox',
+      href: '/my-orders',
       src: '/img/inbox.svg',
-      alt: 'Inbox',
-      label: 'Inbox',
-      paths: ['/inbox'],
+      alt: 'Messages',
+      label: 'Messages',
+      paths: ['/my-orders'],
       srcselected: '/img/inbox-selected.svg',
     },
     {
-      href: '/my-orders',
-      src: '/img/basket.png',
-      alt: 'My-Orders',
-      label: 'My Orders',
-      paths: ['/my-orders'],
-      srcselected: '/img/basket.png',
+      href: '/profile',
+      src: '/img/user.svg',
+      alt: 'My Profile',
+      label: 'My Profile',
+      paths: ['/profile'],
+      srcselected: '/img/user.svg',
     },
   ];
 
@@ -139,8 +140,7 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ token, id }) => {
       srcselected: '/img/basket.png',
     },
   ];
-  const footerItems = userRoleStore === 'vip' ? vipFooterItems : agentFooterItems;
-
+  const footerItems = userRoleStore === UserRole.Vip ? vipFooterItems : agentFooterItems;
   return (
     <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>
       {map(footerItems, (item) => {

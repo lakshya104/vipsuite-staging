@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react';
+import type { Metadata, ResolvingMetadata } from 'next';
+import { cookies } from 'next/headers';
 import { Box } from '@mui/material';
 import './ProductDetails.scss';
 import { GetBrandProductDetail } from '@/libs/api-manager/manager';
-import type { Metadata, ResolvingMetadata } from 'next';
 import ProductDetailsPage from '@/site-pages/ProductDetailsPage';
 import ProductDetailsPageLoading from '@/site-pages/ProductDetailsPage/loading';
 import { Product } from '@/interfaces/brand';
 import { htmlToPlainText } from '@/helpers/utils';
 import { Session } from '@/interfaces';
-import { cookies } from 'next/headers';
 import { auth } from '@/auth';
 
 type Props = {
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
         images: [product.images[0].src, ...previousImages],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       title: 'Product Details',
       description: 'Product details not available.',

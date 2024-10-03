@@ -11,7 +11,7 @@ const VipSignupPage = async () => {
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">
-        <Typography variant="h2">Signup as a Brand</Typography>
+        <Typography variant="h2">Sign up as a brand or PR agency</Typography>
         <Typography component="p">{brandSignupContent}</Typography>
         <BrandSignupForm />
       </Box>

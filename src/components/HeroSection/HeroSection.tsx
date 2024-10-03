@@ -21,12 +21,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
         {ctaGroup?.map((ctaItem, index) => (
           <a
             key={index}
-            href={ctaItem.cta.url}
-            target={ctaItem.cta.target || '_self'}
+            href={ctaItem?.cta?.url}
+            target={ctaItem?.cta?.target || '_self'}
             className="button button--black"
-            rel={ctaItem.cta.target === '_blank' ? 'noopener noreferrer' : undefined}
+            rel={ctaItem?.cta?.target === '_blank' ? 'noopener noreferrer' : undefined}
           >
-            {ctaItem.cta.title}
+            {ctaItem?.cta?.title}
           </a>
         ))}
       </Container>

@@ -9,34 +9,37 @@ import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 
 const MyEventsPage = async () => {
-  let vipRsvpEvents: MyEvent[] = [];
   try {
-    vipRsvpEvents = await GetVipRsvpEvents();
+    const vipRsvpEvents: MyEvent[] = await GetVipRsvpEvents();
+    if (!vipRsvpEvents || vipRsvpEvents.length === 0) {
+      return <ErrorFallback errorMessage="No upcoming events found." hideSubtext={true} />;
+    }
+    return (
+      <Box className="order-product__items">
+        {vipRsvpEvents.map((event: MyEvent) => (
+          <ProgressBarLink href={`/my-events/${event?.ID}`} key={event?.ID}>
+            <Box
+              className="order-product__item"
+              display={'flex'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Box>
+                <Typography gutterBottom variant="h2">
+                  {event?.post_title}
+                </Typography>
+                <Typography variant="body1">{formatDate(event?.acf?.event_start_date)}</Typography>
+                <Typography variant="body1">Location: {event?.acf?.event_location}</Typography>
+              </Box>
+              <ArrowForwardIcon />
+            </Box>
+          </ProgressBarLink>
+        ))}
+      </Box>
+    );
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Events not available at the moment." />;
   }
-  if (!vipRsvpEvents || vipRsvpEvents.length === 0) {
-    return <ErrorFallback errorMessage="No upcoming events found." hideSubtext={true} />;
-  }
-
-  return (
-    <Box className="order-product__items">
-      {vipRsvpEvents.map((event: MyEvent) => (
-        <ProgressBarLink href={`/my-events/${event?.ID}`} key={event?.ID}>
-          <Box className="order-product__item" display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-            <Box>
-              <Typography gutterBottom variant="h2">
-                {event?.post_title}
-              </Typography>
-              <Typography variant="body1">{formatDate(event?.acf?.event_start_date)}</Typography>
-              <Typography variant="body1">Location: {event?.acf?.event_location}</Typography>
-            </Box>
-            <ArrowForwardIcon />
-          </Box>
-        </ProgressBarLink>
-      ))}
-    </Box>
-  );
 };
 
 export default MyEventsPage;
