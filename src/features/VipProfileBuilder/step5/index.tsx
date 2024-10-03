@@ -47,7 +47,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   } = useForm<FormValues>({
     resolver: zodResolver(interestSchema),
     defaultValues: {
-      interests: interests,
+      interests: interests || [],
     },
   });
   const [searchTerm, setSearchTerm] = React.useState<string>('');
@@ -79,7 +79,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
     interest?.toLowerCase()?.includes(searchTerm.toLowerCase()),
   );
 
-  const watchInterests = watch('interests');
+  const watchInterests = watch('interests') || [];
 
   const maxSelection = 3;
   const toggleInterest = (value: string) => {
@@ -146,14 +146,14 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
               filteredInterests.map((interest: string) => (
                 <FormControlLabel
                   key={interest}
-                  checked={watchInterests?.includes(interest)}
+                  checked={Array.isArray(watchInterests) && watchInterests.includes(interest)}
                   control={
                     <Checkbox
-                      checked={watchInterests?.includes(interest)}
+                    checked={Array.isArray(watchInterests) && watchInterests.includes(interest)} 
                       onClick={() => toggleInterest(interest)}
                       {...register('interests')}
                       value={interest}
-                      disabled={watchInterests?.length >= maxSelection && !watchInterests?.includes(interest)}
+                      disabled={Array.isArray(watchInterests) && watchInterests.length >= maxSelection && !watchInterests.includes(interest)} 
                     />
                   }
                   label={interest}
