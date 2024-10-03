@@ -29,7 +29,7 @@ const EventDetailsPage: React.FC<EventDetailsPageProps> = async ({ id, isAgent }
     if (!eventDetails) {
       return <ErrorFallback errorMessage="Event Details not found." />;
     }
-    return <EventDetailsCard event={eventDetails} token={token} vipId={vipId} />;
+    return <EventDetailsCard event={eventDetails} token={token} />;
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show event details currently." />;
   }

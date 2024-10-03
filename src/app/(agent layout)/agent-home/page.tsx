@@ -9,7 +9,7 @@ export default function Page() {
     <Box component={'main'} className="landing-page">
       <Container>
         <Suspense fallback={<HomePageLoading />}>
-          <HomePage isAgent={true} />
+          <HomePage />
         </Suspense>
       </Container>
     </Box>

@@ -26,7 +26,7 @@ const EventsPage: React.FC<EventsPageProps> = async ({ isAgent }) => {
       return <ErrorFallback errorMessage="Currently there are no events." hideSubtext={true} />;
     }
 
-    return <EventCards eventsData={events} token={token} vipId={vipId} />;
+    return <EventCards eventsData={events} />;
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show events currently!" />;
   }
