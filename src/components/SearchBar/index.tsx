@@ -35,7 +35,7 @@ const SearchBar: FC<SearchBarProps> = ({
 
   const handleMenuClick = () => {
     setIsMenuOpen(false);
-    handleSearch && handleSearch();
+    if (handleSearch) handleSearch();
   };
 
   return (

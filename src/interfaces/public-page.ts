@@ -180,7 +180,7 @@ interface Author {
   name: string;
   job_title: string;
 }
-interface AuthorPhoto extends BrandLogo {}
+type AuthorPhoto = BrandLogo
 
 export interface BrandLogo {
   ID: number;
