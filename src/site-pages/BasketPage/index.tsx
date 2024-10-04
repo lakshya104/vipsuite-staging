@@ -1,23 +1,22 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { auth } from '@/auth';
-import { FetchCartItemsAndNonce, GetAddresses } from '@/libs/api-manager/manager';
-import { Address, Cart, Session } from '@/interfaces';
+import { FetchCartItemsAndNonce, GetAddresses, GetSession } from '@/libs/api-manager/manager';
+import { Address, Cart } from '@/interfaces';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import OrderJourney from '@/features/OrderJourney';
+import { getVipId } from '@/helpers/utils';
 
-interface BasketPageProps {
-  isAgent?: boolean;
-}
-
-const BasketPage: React.FC<BasketPageProps> = async ({ isAgent }) => {
+const BasketPage = async () => {
   try {
     const cookieStore = cookies();
     const userId = cookieStore.get('vipId');
-    const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
+    }
     const [fetchedAddresses, cartData] = await Promise.all([GetAddresses(token, vipId), FetchCartItemsAndNonce(token)]);
     if (!cartData || !fetchedAddresses) {
       return <ErrorFallback errorMessage="Not able to process order currently." />;

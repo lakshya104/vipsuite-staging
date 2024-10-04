@@ -6,14 +6,15 @@ import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import DashboardItemsContainer from '@/components/DashboardItemsContainer';
 import { UserRole } from '@/helpers/enums';
+import { getVipId } from '@/helpers/utils';
 
 const HomePage = async () => {
   const cookieStore = cookies();
   const userId = cookieStore.get('vipId');
   try {
     const session = await GetSession();
-    const { token, vip_profile_id, role: userRole, email: userEmail } = session;
-    const vipId = userRole === UserRole.Vip ? vip_profile_id : Number(userId?.value);
+    const { token, role: userRole, email: userEmail } = session;
+    const vipId = getVipId(userRole, userId, session);
     const [dashboardContent, dashboardItems] = await Promise.all([
       GetDashboardContent(token, vipId),
       GetDashboard(token, vipId),

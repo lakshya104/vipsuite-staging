@@ -1,27 +1,28 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { auth } from '@/auth';
-import { GetVipEventDetails } from '@/libs/api-manager/manager';
+import { GetSession, GetVipEventDetails } from '@/libs/api-manager/manager';
 import EventDetailsCard from '@/components/EventDetails';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
-import { Session } from '@/interfaces';
+import { getVipId } from '@/helpers/utils';
 
 interface EventDetailsPageProps {
   id: number;
-  isAgent?: boolean;
 }
 
-const EventDetailsPage: React.FC<EventDetailsPageProps> = async ({ id, isAgent }) => {
+const EventDetailsPage: React.FC<EventDetailsPageProps> = async ({ id }) => {
   if (!id) {
     return <ErrorFallback errorMessage="Invalid Event ID provided." />;
   }
   try {
     const cookieStore = cookies();
     const userId = cookieStore.get('vipId');
-    const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
+    }
     const eventDetails = await GetVipEventDetails(Number(id), token, vipId);
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;

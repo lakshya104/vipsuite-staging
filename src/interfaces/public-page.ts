@@ -180,7 +180,7 @@ interface Author {
   name: string;
   job_title: string;
 }
-type AuthorPhoto = BrandLogo
+type AuthorPhoto = BrandLogo;
 
 export interface BrandLogo {
   ID: number;

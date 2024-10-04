@@ -1,5 +1,8 @@
 import { escape, join, split, trim } from 'lodash';
 import moment from 'moment';
+import { UserRole } from './enums';
+import { Session } from '@/interfaces';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export function calculateAge(dateOfBirth: string | undefined): number {
   if (!dateOfBirth) return 0;
@@ -122,4 +125,8 @@ export const formatString = (str: string) => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+};
+
+export const getVipId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number => {
+  return role === UserRole.Vip ? Number(session?.vip_profile_id) : Number(userId?.value);
 };

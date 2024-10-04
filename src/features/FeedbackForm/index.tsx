@@ -51,7 +51,7 @@ const defaultEventValues: EventFeedbackFormValues = {
 interface FeedbackFormProps {
   type: 'order' | 'event';
   token: string;
-  vipId: number;
+  vipId: number | string;
   orderId: number;
 }
 

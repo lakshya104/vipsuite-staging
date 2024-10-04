@@ -1,10 +1,8 @@
 import React from 'react';
-import { GetAllVips } from '@/libs/api-manager/manager';
+import { GetAllVips, GetSession } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
-import { auth } from '@/auth';
 import MyVipsListing from '@/components/MyVipsListing';
-import { Session } from '@/interfaces';
 
 export interface MyVips {
   vip_profile_id: number;
@@ -18,8 +16,8 @@ export interface MyVips {
 
 const MyVipPage = async () => {
   try {
-    const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
+    const session = await GetSession();
+    const token = session?.token;
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }

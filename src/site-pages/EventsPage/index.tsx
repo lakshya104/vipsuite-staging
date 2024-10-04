@@ -1,27 +1,22 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { GetVipEvents } from '@/libs/api-manager/manager';
+import { GetSession, GetVipEvents } from '@/libs/api-manager/manager';
 import EventCards from '@/components/EventsPage';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
-import { Session } from '@/interfaces';
-import { auth } from '@/auth';
+import { getVipId } from '@/helpers/utils';
 
-interface EventsPageProps {
-  isAgent?: boolean;
-}
-const EventsPage: React.FC<EventsPageProps> = async ({ isAgent }) => {
+const EventsPage = async () => {
   try {
     const cookieStore = cookies();
     const userId = cookieStore.get('vipId');
-    const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
-    const events = await GetVipEvents(token, vipId);
-    if (!token) {
-      return <ErrorFallback errorMessage="Your token is invalid." />;
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
     }
-
+    const events = await GetVipEvents(token, vipId);
     if (!events || events.length === 0) {
       return <ErrorFallback errorMessage="Currently there are no events." hideSubtext={true} />;
     }

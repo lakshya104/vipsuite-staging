@@ -1,34 +1,28 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import { Box, Typography } from '@mui/material';
 import FeedbackForm from '@/features/FeedbackForm';
-import { GetOrderById } from '@/libs/api-manager/manager';
-import { formatDate, formatString } from '@/helpers/utils';
+import { GetOrderById, GetSession } from '@/libs/api-manager/manager';
+import { formatDate, formatString, getVipId } from '@/helpers/utils';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 import OrderItem from '@/components/OrderItem';
 import { Order } from '@/interfaces';
-import { cookies } from 'next/headers';
-import { auth } from '@/auth';
-import { UserRole } from '@/helpers/enums';
-import { Session } from 'next-auth';
 
 interface MyOrderDetailPageProps {
   orderId: number;
-}
-
-interface SessionUser extends Session {
-  token: string;
-  vip_profile_id: number;
-  role: string;
 }
 
 const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) => {
   try {
     const cookieStore = cookies();
     const userId = cookieStore.get('vipId');
-    const session = await auth();
-    const { token, vip_profile_id, role } = session?.user as SessionUser;
-    const vipId = role === UserRole.Vip ? vip_profile_id : Number(userId?.value);
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
+    }
     if (!token || !vipId) {
       return <ErrorFallback errorMessage="Your token is invalid." />;
     }

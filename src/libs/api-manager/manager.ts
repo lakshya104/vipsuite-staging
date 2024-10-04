@@ -139,11 +139,15 @@ export const Login = async (data: LoginFormValues) => {
   }
 };
 
-export const GetProfile = async (token: string) => {
+export const GetProfile = async (token: string, vipId?: number | string | undefined) => {
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${token}`,
+  };
+  if (vipId) {
+    headers['vip-profile-id'] = vipId.toString();
+  }
   return await FetchInstance(Endpoints.getProfile, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers,
   });
 };
 
@@ -163,6 +167,7 @@ export const GetAgentProfile = async () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    next: { tags: [TAGS.GET_AGENT_PROFILE] },
   });
 };
 
@@ -206,7 +211,7 @@ export const GetVipSearch = async (keyword: string, token: string, vipId: any) =
   });
 };
 
-export const GetBrandDetails = async (id: number, token: string, vipId: number) => {
+export const GetBrandDetails = async (id: number, token: string, vipId: number | string) => {
   return await FetchInstance(Endpoints.getBrandDetails(id), {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -216,7 +221,7 @@ export const GetBrandDetails = async (id: number, token: string, vipId: number) 
   });
 };
 
-export const GetBrandProducts = async (id: number, token: string, vipId: number) => {
+export const GetBrandProducts = async (id: number, token: string, vipId: number | string) => {
   return await FetchInstance(Endpoints.getBrandProducts(id), {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -240,7 +245,7 @@ export const GetSignupContent = async () => {
   return await FetchInstance(Endpoints.getSignupContent);
 };
 
-export const GetVipEvents = async (token: string, vipId: number) => {
+export const GetVipEvents = async (token: string, vipId: number | string) => {
   return await FetchInstance(Endpoints.getVipEvents, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -320,7 +325,7 @@ export const ResetPassword = async ({
   }
 };
 
-export const GetAllOrders = async (token: string, vipId: number, nonce: string) => {
+export const GetAllOrders = async (token: string, vipId: number | string, nonce: string) => {
   const id = await GetCustomerId();
   return await FetchInstance(Endpoints.getAllOrders(id), {
     headers: {
@@ -341,7 +346,7 @@ export const GetAllOrdersClient = async (token: string, id: number, vipId: numbe
   });
 };
 
-export const GetOrderById = async (id: number, token: string, vipId: number) => {
+export const GetOrderById = async (id: number, token: string, vipId: number | string) => {
   return await FetchInstance(Endpoints.getOrderById(id), {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -350,7 +355,7 @@ export const GetOrderById = async (id: number, token: string, vipId: number) => 
   });
 };
 
-export const GetVipEventDetails = async (id: number, token: string, vipId: number) => {
+export const GetVipEventDetails = async (id: number, token: string, vipId: number | string) => {
   return await FetchInstance(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -428,7 +433,7 @@ export const CreateOrder = async (data: any, token: string, nonce: string, vipId
   }
 };
 
-export const GetVipOpportunities = async (token: string, vipId: number) => {
+export const GetVipOpportunities = async (token: string, vipId: number | string) => {
   return await FetchInstance(Endpoints.getVipOpportunities, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -487,7 +492,7 @@ export const GetVipWishlistItems = async () => {
   return await FetchInstanceWithHeaders(Endpoints.getWishlistItems);
 };
 
-export const GetAddresses = async (token: string, vipId: number) => {
+export const GetAddresses = async (token: string, vipId: number | string) => {
   return await FetchInstance(Endpoints.getAddresses, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -550,7 +555,7 @@ export const GetVipOpportunityDetails = async (id: number, token: string, vipId:
 
 export const OrderFeedback = async (
   token: string,
-  vipId: number,
+  vipId: number | string,
   orderNumber: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any,
@@ -621,7 +626,7 @@ export const FetchCartItemsAndNonce = async (token: string) => {
 
 export const EventFeedback = async (
   token: string,
-  vipId: number,
+  vipId: number | string,
   eventId: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any,

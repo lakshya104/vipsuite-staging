@@ -149,11 +149,15 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
                   checked={Array.isArray(watchInterests) && watchInterests.includes(interest)}
                   control={
                     <Checkbox
-                    checked={Array.isArray(watchInterests) && watchInterests.includes(interest)} 
+                      checked={Array.isArray(watchInterests) && watchInterests.includes(interest)}
                       onClick={() => toggleInterest(interest)}
                       {...register('interests')}
                       value={interest}
-                      disabled={Array.isArray(watchInterests) && watchInterests.length >= maxSelection && !watchInterests.includes(interest)} 
+                      disabled={
+                        Array.isArray(watchInterests) &&
+                        watchInterests.length >= maxSelection &&
+                        !watchInterests.includes(interest)
+                      }
                     />
                   }
                   label={interest}

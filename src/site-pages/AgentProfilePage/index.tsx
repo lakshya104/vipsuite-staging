@@ -1,30 +1,21 @@
 import React from 'react';
 import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
-import ProfileTabs from '@/components/ProfileTabs';
-import { calculateAge, getVipId } from '@/helpers/utils';
 import { UserProfile } from '@/interfaces';
 import { GetProfile, GetSession } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
-import { cookies } from 'next/headers';
-import EditProfileBtn from '@/components/EditProfileBtn';
+import { ContactsComponent } from '@/components/ProfileComponents';
+import { ProgressBarLink } from '@/components/ProgressBar';
 
-const ProfilePage = async () => {
+const AgentProfilePage = async () => {
   try {
-    const cookieStore = cookies();
-    const userId = cookieStore.get('vipId');
     const session = await GetSession();
-    const { token, role } = session;
-    const vipId = getVipId(role, userId, session);
-    if (!vipId) {
-      return <ErrorFallback errorMessage="VIP ID not found." />;
-    }
-    const profileDetails: UserProfile = await GetProfile(token, vipId);
+    const { token } = session;
+    const profileDetails: UserProfile = await GetProfile(token);
     if (!profileDetails) {
       return <ErrorFallback errorMessage="Not able to show Profile currently." />;
     }
-    const age = calculateAge(profileDetails?.acf.date_of_birth);
     return (
       <>
         <Box className="user-profile__info" textAlign={'center'} mb={3}>
@@ -38,13 +29,14 @@ const ProfilePage = async () => {
           <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
             {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
           </Typography>
-          <Typography variant="body2" mb={1}>
-            Age {age}
-          </Typography>
-          <EditProfileBtn role={role} vipId={vipId} />
+          <ProgressBarLink href={'edit-profile'} className="button button--link">
+            <span style={{ textDecoration: 'underline', fontWeight: '400' }}>Edit Profile</span>
+          </ProgressBarLink>
         </Box>
-        <Box>
-          <ProfileTabs profileData={profileDetails} />
+        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '80%', justifyContent: 'center' }}>
+            <ContactsComponent profileDetails={profileDetails} />
+          </Box>
         </Box>
       </>
     );
@@ -53,4 +45,4 @@ const ProfilePage = async () => {
   }
 };
 
-export default ProfilePage;
+export default AgentProfilePage;

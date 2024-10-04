@@ -2,9 +2,8 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import BrandCard from './BrandCard';
 import { Brand } from '@/interfaces/brand';
-import { get, partition } from 'lodash';
+import { partition } from 'lodash';
 import DashboardContentComponent from '../DashboardContent';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { DashboardContent } from '@/interfaces';
 
 interface BrandsListingProps {
@@ -15,10 +14,7 @@ interface BrandsListingProps {
 
 const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard, dashboardContent }) => {
   const [featuredBrands, nonFeaturedBrands] = partition(brands, (brand) => brand?.acf?.is_featured);
-  const user = useCurrentUser();
-  const tiktokFollowerCount = get(user, 'acf.tiktok_follower_count', 0);
-  const instagramFollowerCount = get(user, 'acf.instagram_follower_count', 0);
-  const totalFollowerCount = tiktokFollowerCount + instagramFollowerCount;
+  const totalFollowerCount = 0 + 0;
 
   return (
     <>

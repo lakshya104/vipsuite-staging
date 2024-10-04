@@ -1,27 +1,28 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { auth } from '@/auth';
-import { Session } from '@/interfaces';
 import OpportunityDetailsCard from '@/components/OpportunityDetails';
-import { GetVipOpportunityDetails } from '@/libs/api-manager/manager';
+import { GetSession, GetVipOpportunityDetails } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
+import { getVipId } from '@/helpers/utils';
 
 interface OpportunityDetailsPageProps {
   id: number;
-  isAgent?: boolean;
 }
 
-const OpportunityDetailsPage: React.FC<OpportunityDetailsPageProps> = async ({ id, isAgent }) => {
+const OpportunityDetailsPage: React.FC<OpportunityDetailsPageProps> = async ({ id }) => {
   if (!id) {
     return <ErrorFallback errorMessage="Opportunity ID is invalid." />;
   }
   const cookieStore = cookies();
   const userId = cookieStore.get('vipId');
   try {
-    const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
+    }
     const opportunityDetails = await GetVipOpportunityDetails(Number(id), token, vipId);
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;

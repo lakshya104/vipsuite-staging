@@ -15,7 +15,7 @@ import { useProductFilters } from '@/hooks/useProductFilters';
 import { first } from 'lodash';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
+import { useRequestOnlyStore } from '@/store/useStore';
 
 interface ItemRequestFormProps {
   product: Product;
@@ -33,7 +33,6 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const { dropdowns, onChangeDropDown, getSelectedProductVariation, formSchema } = useProductFilters(product);
   const { setRequestProductId, clearRequestProductId } = useRequestOnlyStore();
-  const { userRoleStore } = useUserInfoStore();
 
   const {
     handleSubmit,
@@ -53,7 +52,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
         router.back();
       },
     },
-    { href: userRoleStore === 'vip' ? '/basket' : '/agent-basket', text: 'Go to Basket' },
+    { href: '/basket', text: 'Go to Basket' },
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

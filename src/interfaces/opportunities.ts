@@ -40,7 +40,7 @@ interface FeaturedImage {
   };
 }
 
-type GalleryItem = FeaturedImage
+type GalleryItem = FeaturedImage;
 
 interface Acf {
   associated_brand_profile: number;

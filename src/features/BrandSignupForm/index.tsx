@@ -48,7 +48,6 @@ const BrandSignupForm = () => {
   });
 
   const onSubmit = async (formData: BrandSignupValues) => {
-    console.log(formData);
     setError('');
     try {
       startTransition(async () => {

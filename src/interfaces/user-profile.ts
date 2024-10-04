@@ -1,3 +1,5 @@
+import { UserRole } from '@/helpers/enums';
+
 export interface ChildInfo {
   gender: string | null;
   dob: string | null;
@@ -71,7 +73,7 @@ export type Session = {
   acf: ACF;
   vip_profile_id: number;
   account_status: string;
-  role: string;
+  role: UserRole;
   email: string;
   token: string;
 };

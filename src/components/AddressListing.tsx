@@ -7,7 +7,6 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteAddressBtn from '@/components/DeleteAddressBtn';
 import { Address } from '@/interfaces';
 import MyAddressesPageLoading from '@/site-pages/MyAddressesPage/loading';
-import { useUserInfoStore } from '@/store/useStore';
 
 interface AddressListingProps {
   addresses: Address[];
@@ -17,7 +16,6 @@ interface AddressListingProps {
 
 const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId }) => {
   const [isPending, startTransition] = useTransition();
-  const { userRoleStore } = useUserInfoStore();
   return (
     <Box>
       {addresses.length > 0 ? (
@@ -25,10 +23,6 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId
           <MyAddressesPageLoading />
         ) : (
           map(addresses, (add) => {
-            const editLink =
-              userRoleStore === 'vip'
-                ? `/my-addresses/edit/${add.unique_id}`
-                : `/agent-addresses/edit/${add.unique_id}`;
             return (
               <Box className="address__list" key={add.unique_id}>
                 <Box className="address__list-info">
@@ -40,7 +34,7 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId
                   <Typography variant="body2">{`${add?.company}, (${add?.phone})`}</Typography>
                 </Box>
                 <Box className="address__list-action">
-                  <ProgressBarLink href={editLink}>
+                  <ProgressBarLink href={`/my-addresses/edit/${add.unique_id}`}>
                     <EditOutlinedIcon />
                   </ProgressBarLink>
                   <DeleteAddressBtn

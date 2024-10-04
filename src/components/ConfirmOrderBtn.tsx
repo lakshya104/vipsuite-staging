@@ -46,12 +46,11 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const { increaseOrderCount } = useOrderStore();
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const { requestProductId, clearRequestProductId } = useRequestOnlyStore();
-  const { userRoleStore, userEmailStore } = useUserInfoStore();
-  const orderConfirmationRedirect = userRoleStore === 'vip' ? '/home' : '/agent-home';
+  const { userEmailStore } = useUserInfoStore();
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
-    router.push(orderConfirmationRedirect);
+    router.push('/home');
   };
 
   const handleCreateOrder = async () => {

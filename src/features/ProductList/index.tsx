@@ -10,7 +10,7 @@ import ErrorHandler from '@/components/ErrorHandler';
 interface ProductListProps {
   brandId: number;
   token: string;
-  vipId: number;
+  vipId: number | string;
 }
 const ProductList: React.FC<ProductListProps> = async ({ brandId, token, vipId }) => {
   if (!brandId) {

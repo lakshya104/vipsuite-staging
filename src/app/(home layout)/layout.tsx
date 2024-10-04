@@ -1,23 +1,26 @@
 import React from 'react';
 import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter/HomeFooter';
-import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { get } from 'lodash';
-import { Session } from '@/interfaces';
+import { GetSession } from '@/libs/api-manager/manager';
+import { cookies } from 'next/headers';
+import { UserRole } from '@/helpers/enums';
 
 export default async function HomeSectionLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  const profile_status = get(session, 'user.acf.profile_status', {});
+  const session = await GetSession();
+  const { token, role, id } = session;
+  const profile_status = get(session, 'acf.profile_status', {});
   if (profile_status === 'pending') redirect('/vip-profile-builder');
-  const token = (session?.user as unknown as Session)?.token;
-  const role = (session?.user as unknown as Session)?.role;
-  const id = (session?.user as unknown as Session)?.id;
-  if (role === 'agent') redirect('/my-vips');
+  const cookieStore = cookies();
+  const userId = cookieStore.get('vipId');
+  if (role === UserRole.Agent && (!userId || userId?.value === undefined)) {
+    return redirect('/my-vips');
+  }
   return (
     <>
       <HomeHeader token={token} role={role} />

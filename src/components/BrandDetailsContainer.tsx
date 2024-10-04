@@ -10,7 +10,7 @@ import ProductList from '@/features/ProductList';
 interface BrandDetailsContainerProps {
   brandDetails: BrandDetails;
   token: string;
-  vipId: number;
+  vipId: number | string;
 }
 const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDetails, token, vipId }) => {
   return (
@@ -18,7 +18,7 @@ const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDeta
       <Typography className="page-title" variant="h2" component="h1" align="center">
         {brandDetails?.title?.rendered}
       </Typography>
-      <DetailPageImageContainer item={brandDetails} token={token} vipId={vipId} />
+      <DetailPageImageContainer item={brandDetails} />
       <Typography className="product-detail__content">{brandDetails?.acf?.short_description}</Typography>
       {brandDetails?.acf?.is_lookbook_available && (
         <>

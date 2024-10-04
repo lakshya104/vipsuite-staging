@@ -12,6 +12,7 @@ const TAGS = {
   GET_BRAND_PRODUCTS: 'getBrandProducts',
   GET_DASHBOARD: 'getDashboard',
   GET_DASHBOARD_CONTENT: 'getDashboardContent',
+  GET_AGENT_PROFILE: 'getAgentProfile',
 };
 
 export default TAGS;

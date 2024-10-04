@@ -1,30 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  MenuItem,
-  MenuList,
-  Drawer,
-  Typography,
-  Backdrop,
-  CircularProgress,
-} from '@mui/material';
+import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography } from '@mui/material';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
-import { signOut } from 'next-auth/react';
 import { ProgressBarLink } from '../ProgressBar';
-import { LogOut } from '@/libs/api-manager/manager';
-import UseToaster from '@/hooks/useToaster';
-import Toaster from '../Toaster';
 import { usePathname } from 'next/navigation';
-import { deleteVipIdCookie } from '@/libs/actions';
-import { useUserInfoStore } from '@/store/useStore';
-import { UserRole } from '@/helpers/enums';
-import HomeHeaderLoading from './loading';
 
 const vipNavLinks = [
   {
@@ -80,63 +62,12 @@ const vipMenuItems = [
   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
 ];
 
-const agentMenuItems = [
-  {
-    label: 'Agent Profile',
-    icon: <Image src={'/img/user.svg'} alt="Logo" width={20} height={20} priority />,
-    href: '/agent-profile',
-  },
-  {
-    label: 'My VIPs',
-    icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-vips',
-  },
-  {
-    label: 'Basket',
-    icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
-    href: '/basket',
-  },
-  {
-    label: 'Login & Security',
-    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: '/login-security',
-  },
-  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
-  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
-];
-
-interface HomeHeaderProps {
-  token?: string;
-  role?: string;
-}
-
-const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+const HomeHeaderLoading = () => {
   const pathname = usePathname();
-  const menuItems = role === UserRole.Vip ? vipMenuItems : agentMenuItems;
-  const { clearAll } = useUserInfoStore();
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
-  const handleLogout = async () => {
-    if (token) {
-      try {
-        setDrawerOpen(false);
-        setIsLoading(true);
-        await LogOut(token);
-        signOut();
-        clearAll();
-      } catch (error) {
-        setIsLoading(false);
-        openToaster('Error during logging out. ' + error);
-      } finally {
-        await deleteVipIdCookie();
-      }
-    }
-  };
-
   return (
     <>
       <AppBar className="site-header site-header__logged" position="sticky">
@@ -183,7 +114,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
             </MenuList>
           </Box>
 
-          <Box className="navbar-toggler" onClick={toggleDrawer(true)}>
+          <Box className="navbar-toggler">
             <span aria-label="account of current user" aria-controls="menu-appbar"></span>
           </Box>
           <Drawer className="drawer-menu" anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -195,7 +126,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
                 <CloseIcon onClick={toggleDrawer(false)} />
               </Box>
               <Box className="drawer-menu__list">
-                {menuItems.map((item) => (
+                {vipMenuItems.map((item) => (
                   <ProgressBarLink href={item.href} key={item.label}>
                     <Box className="drawer-menu__item" onClick={toggleDrawer(false)}>
                       <Box>
@@ -206,7 +137,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
                     </Box>
                   </ProgressBarLink>
                 ))}
-                <Box className="drawer-menu__item" onClick={handleLogout}>
+                <Box className="drawer-menu__item">
                   <Box>
                     <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
                     <Typography variant="body1">Sign Out</Typography>
@@ -218,35 +149,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
           </Drawer>
         </Toolbar>
       </AppBar>
-      <Backdrop
-        sx={{
-          zIndex: 10000,
-          backgroundColor: '#fffff7',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'column',
-          width: '100vw',
-        }}
-        open={isLoading}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'column',
-            width: '100%',
-            height: '50vh',
-          }}
-        >
-          <HomeHeaderLoading />
-          <CircularProgress sx={{ height: '50vh' }} />
-        </Box>
-      </Backdrop>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );
 };
 
-export default HomeHeader;
+export default HomeHeaderLoading;

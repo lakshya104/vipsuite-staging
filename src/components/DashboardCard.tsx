@@ -7,14 +7,12 @@ import { ProgressBarLink } from './ProgressBar';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
-import { useUserInfoStore } from '@/store/useStore';
 
 interface DashboardCardProps {
   item: DashboardItem;
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
-  const { userRoleStore } = useUserInfoStore();
   const isBrand = (item as Brand)?.type === 'brand-profile';
   const isEvent = (item as Event)?.type === 'event';
   const isOpportunity = (item as Opportunity)?.type === 'opportunity';
@@ -25,7 +23,6 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
   const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
-  const postLink = userRoleStore === 'vip' ? `/${postPath}/${postId}` : `/agent-${postPath}/${postId}`;
   const image = isBrand
     ? BrandImage
     : isEvent
@@ -35,7 +32,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
         : '/img/placeholder-image.jpg';
 
   return (
-    <ProgressBarLink href={postLink}>
+    <ProgressBarLink href={`${postPath}/${postId}`}>
       <Box
         sx={{
           position: 'relative',

@@ -1,25 +1,26 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { GetBrandDetails } from '@/libs/api-manager/manager';
+import { GetBrandDetails, GetSession } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
-import { auth } from '@/auth';
-import { Session } from '@/interfaces';
 import { BrandDetails } from '@/interfaces/brand';
 import BrandDetailsContainer from '@/components/BrandDetailsContainer';
+import { getVipId } from '@/helpers/utils';
 
 interface BrandDetailsPageProps {
   brandId: number;
-  isAgent?: boolean;
 }
 
-const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId, isAgent }) => {
+const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId }) => {
   try {
     const cookieStore = cookies();
     const userId = cookieStore.get('vipId');
-    const session = await auth();
-    const token = (session?.user as unknown as Session)?.token;
-    const vipId = !isAgent ? (session?.user as unknown as Session)?.vip_profile_id : Number(userId?.value);
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
+    }
     const brandDetails: BrandDetails = await GetBrandDetails(brandId, token, vipId);
     if (!token) {
       return <ErrorFallback errorMessage="Your token is invalid." />;

@@ -11,8 +11,9 @@ import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { AgentProfileUpdate } from '@/libs/api-manager/manager';
 import { ACF } from '@/interfaces';
-import { map } from 'lodash';
 import { useRouter } from 'next/navigation';
+import { revalidateTag } from '@/libs/actions';
+import TAGS from '@/libs/apiTags';
 
 interface AgentEditProfileFormProps {
   profileDetails: ACF;
@@ -31,14 +32,13 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
     phone: profileDetails.phone || '',
     company_name: profileDetails.company_name || '',
     examples_of_vip_managed:
-      (profileDetails.examples_of_vip_managed && map(profileDetails.examples_of_vip_managed, 'text').join(', ')) || '',
+      (profileDetails.examples_of_vip_managed && profileDetails.examples_of_vip_managed.join(', ')) || '',
   };
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<AgentEditProfileValues>({
     resolver: zodResolver(AgentEditProfileSchema),
     defaultValues,
@@ -74,21 +74,11 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
         formDataObj.append('examples_of_vip_managed', allVipExamples);
         try {
           const response = await AgentProfileUpdate(agentId, token, formDataObj);
-          reset({
-            first_name: '',
-            last_name: '',
-            phone: '',
-            company_name: '',
-            examples_of_vip_managed: '',
-            vip_examples: [],
-          });
-          router.push('/my-vips');
-
+          await revalidateTag(TAGS.GET_AGENT_PROFILE);
+          router.push('/agent-profile');
           if (response && response.error) {
             setError(`Error: ${response.error}`);
             setToasterOpen(true);
-          } else {
-            reset();
           }
         } catch (error) {
           console.error('Error in AgentProfileUpdate:', error);
