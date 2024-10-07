@@ -24,7 +24,7 @@ import { usePathname } from 'next/navigation';
 import { deleteVipIdCookie } from '@/libs/actions';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
-import HomeHeaderLoading from './loading';
+import { HomeHeaderLoading } from './loading';
 
 const vipNavLinks = [
   {

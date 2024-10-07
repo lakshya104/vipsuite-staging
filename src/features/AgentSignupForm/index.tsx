@@ -172,11 +172,6 @@ const AgentSignupForm = () => {
                 <Typography>Including Country Code</Typography>
               </Box>
             )}
-            {name === 'examples_of_vip_managed' && !errors[name] && (
-              <Box className="input-text" sx={{ cursor: 'pointer' }} onClick={addAnotherVip}>
-                <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
-              </Box>
-            )}
           </Box>
         ))}
         {fields.map((field, index) => (
@@ -195,6 +190,11 @@ const AgentSignupForm = () => {
             )}
           />
         ))}
+        <Box sx={{ cursor: 'pointer' }} onClick={addAnotherVip}>
+          <Box className="input-text">
+            <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
+          </Box>
+        </Box>
         <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}
         </Button>

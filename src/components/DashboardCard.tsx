@@ -12,24 +12,28 @@ interface DashboardCardProps {
   item: DashboardItem;
 }
 
+const getImage = (item: DashboardItem): string => {
+  switch (item.type) {
+    case 'brand-profile':
+      return (item as Brand).acf?.brand_image?.sizes?.medium_large ?? '/img/placeholder-image.jpg';
+    case 'event':
+      return (item as Event).acf?.event_image?.sizes?.medium_large ?? '/img/placeholder-image.jpg';
+    case 'opportunity':
+      return (item as Opportunity).acf?.featured_image?.sizes?.medium_large ?? '/img/placeholder-image.jpg';
+    default:
+      return '/img/placeholder-image.jpg';
+  }
+};
+
 const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const isBrand = (item as Brand)?.type === 'brand-profile';
   const isEvent = (item as Event)?.type === 'event';
   const isOpportunity = (item as Opportunity)?.type === 'opportunity';
-  const EventImage = (item as Event)?.acf?.event_image?.sizes?.medium_large;
-  const BrandImage = (item as Brand)?.acf?.brand_image?.sizes?.medium_large;
-  const OpportunityImage = (item as Opportunity)?.acf?.featured_image?.sizes?.medium_large;
   const brandLogo = (item as Brand)?.acf?.brand_logo?.url;
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
   const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
-  const image = isBrand
-    ? BrandImage
-    : isEvent
-      ? EventImage
-      : isOpportunity
-        ? OpportunityImage
-        : '/img/placeholder-image.jpg';
+  const image = getImage(item);
 
   return (
     <ProgressBarLink href={`${postPath}/${postId}`}>

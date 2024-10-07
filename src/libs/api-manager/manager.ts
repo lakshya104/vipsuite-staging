@@ -747,3 +747,7 @@ export const GetAllVips = async (token: string) => {
     next: { tags: [TAGS.GET_VIP_CART] },
   });
 };
+
+export const GetMenuItems = async () => {
+  return await FetchInstance(Endpoints.getMenuItems);
+};

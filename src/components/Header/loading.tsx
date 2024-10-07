@@ -1,12 +1,26 @@
 'use client';
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography } from '@mui/material';
+import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
 import { ProgressBarLink } from '../ProgressBar';
 import { usePathname } from 'next/navigation';
+
+const HeaderSkeleton = () => {
+  return (
+    <Box>
+      <MenuList className="site-header__navigation">
+        <MenuItem>
+          <Skeleton variant="text" width={80} height={40} />
+        </MenuItem>
+      </MenuList>
+    </Box>
+  );
+};
+
+export default HeaderSkeleton;
 
 const vipNavLinks = [
   {
@@ -62,7 +76,7 @@ const vipMenuItems = [
   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
 ];
 
-const HomeHeaderLoading = () => {
+export const HomeHeaderLoading = () => {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const toggleDrawer = (open: boolean) => () => {
@@ -152,5 +166,3 @@ const HomeHeaderLoading = () => {
     </>
   );
 };
-
-export default HomeHeaderLoading;

@@ -13,8 +13,8 @@ const HomePage = async () => {
   const userId = cookieStore.get('vipId');
   try {
     const session = await GetSession();
-    const { token, role: userRole, email: userEmail } = session;
-    const vipId = getVipId(userRole, userId, session);
+    const { token, role, email } = session;
+    const vipId = getVipId(role, userId, session);
     const [dashboardContent, dashboardItems] = await Promise.all([
       GetDashboardContent(token, vipId),
       GetDashboard(token, vipId),
@@ -31,9 +31,9 @@ const HomePage = async () => {
         dashboardContent={dashboardContent}
         vipId={vipId}
         token={token}
-        totalFollowerCount={userRole === UserRole.Vip ? totalFollowerCount : 0}
-        userRole={userRole}
-        userEmail={userEmail}
+        totalFollowerCount={role === UserRole.Vip ? totalFollowerCount : 0}
+        userRole={role}
+        userEmail={email}
       />
     );
   } catch (error) {

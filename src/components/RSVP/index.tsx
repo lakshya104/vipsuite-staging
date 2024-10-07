@@ -57,6 +57,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
         number_of_attendees: 0,
         would_you_like: false,
+        message: data.message,
       };
       const formData = new FormData();
       Object.entries(rsvp).forEach(([key, value]) => {
@@ -126,12 +127,10 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
 
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
-    reset({ adultsChildren: '', eventTitle: '', notAvailable: 'yes', notInterested: null });
   };
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
-    reset({ adultsChildren: '', eventTitle: '', notAvailable: null, notInterested: 'yes' });
   };
 
   return (
@@ -168,7 +167,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
                 ) : (
                   <Box>
                     <InputTextAreaFormField
-                      name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested' | 'message'}
+                      name={'message'}
                       control={control}
                       placeholder={placeholder}
                       errors={errors}
