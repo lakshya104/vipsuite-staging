@@ -4,6 +4,7 @@ export interface ProductDetail {
   imageUrl: string;
   description: string;
   requestOnly?: boolean;
+  category: string;
   size: string;
   quantity: number;
 }
@@ -13,6 +14,7 @@ export interface Product {
   name: string;
   imageUrl: string;
   description: string;
+  category: string;
   size: string;
   quantity: number;
 }
