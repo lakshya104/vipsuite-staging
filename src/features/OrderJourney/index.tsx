@@ -4,7 +4,7 @@ import BasketCard from '@/components/BasketCard';
 import { Address, Cart } from '@/interfaces';
 import { Backdrop, CircularProgress } from '@mui/material';
 import SelectAddressForm from '../SelectAddressForm';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface OrderJourneyProps {
   addresses: Address[];
@@ -19,14 +19,22 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, cartData,
   const currentStep = step === '1' ? step : 0;
   const [activeStep, setActiveStep] = useState(Number(currentStep));
   const [isPending, startTransition] = useTransition();
+  const isRequestedProduct = searchParams.get('isRequestOnly');
+  const isLookbookOrder = searchParams.get('isLookbook');
+  const router = useRouter();
 
   const handleNext = () => {
     startTransition(() => setActiveStep((prev) => prev + 1));
   };
 
   const handleBack = () => {
-    setActiveStep((prev) => prev - 1);
+    if (isRequestedProduct || isLookbookOrder) {
+      router.back();
+    } else {
+      setActiveStep((prev) => prev - 1);
+    }
   };
+
   return (
     <Fragment>
       {activeStep === 0 && (

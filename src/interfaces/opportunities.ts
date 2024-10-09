@@ -70,7 +70,6 @@ export interface Opportunity {
     rendered: string;
   };
   template: string;
-  'opportunity-category': string[];
   class_list: string[];
   acf: Acf;
   is_wishlisted?: boolean;

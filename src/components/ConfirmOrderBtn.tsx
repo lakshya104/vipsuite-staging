@@ -117,7 +117,9 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     } catch (error) {
       openToaster(error?.toString() ?? 'Error processing Order');
     } finally {
-      await RemoveAllVipCartItems(token, nonce);
+      if (!isRequestedProduct && !isLookbookOrder) {
+        await RemoveAllVipCartItems(token, nonce);
+      }
       await revalidateTag(TAGS.GET_MYORDERS);
       await revalidateTag(TAGS.GET_VIP_CART);
     }

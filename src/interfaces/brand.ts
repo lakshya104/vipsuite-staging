@@ -17,7 +17,6 @@ export interface BrandDetails {
     rendered: string;
   };
   template?: string;
-  brand_category?: number[];
   class_list?: string[];
   acf: {
     associated_brand: number;
@@ -297,7 +296,6 @@ export interface Brand {
     short_description: string;
     brand_logo?: BrandLogo;
   };
-  'brand-category': string[];
   is_wishlisted?: boolean;
 }
 

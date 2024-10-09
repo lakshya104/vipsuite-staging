@@ -23,7 +23,6 @@ export interface OpportunityDetails {
   link: string;
   title: RenderedString;
   template: string;
-  opportunity_category: number[];
   class_list: string[];
   acf: Acf;
   is_wishlisted?: boolean;

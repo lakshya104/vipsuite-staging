@@ -51,7 +51,6 @@ export interface Event {
   link: string;
   title: EventTitle;
   template: string;
-  'event-category': string[];
   class_list: string[];
   acf: EventACF;
   _links: EventLinks;
@@ -75,7 +74,6 @@ export interface EventDetails {
     rendered: string;
   };
   template: string;
-  event_category: number[];
   class_list: string[];
   acf: {
     event_status: string;

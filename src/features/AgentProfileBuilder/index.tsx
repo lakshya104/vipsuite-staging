@@ -11,6 +11,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEditVipIdStore } from '@/store/useStore';
 import { GetVipProfile } from '@/libs/api-manager/manager';
 import CustomLoader from '@/components/CustomLoader';
+import BackToHome from '@/components/BackToHome';
 
 interface ProfileBuilderInterFace {
   profileBuilderOptions: ProfileBuilderOptions;
@@ -98,7 +99,12 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
     }
   };
 
-  return <>{renderStep()}</>;
+  return (
+    <>
+      {profileDetail?.first_name !== '' && <BackToHome />}
+      {renderStep()}
+    </>
+  );
 };
 
 export default AgentProfileBuilder;
