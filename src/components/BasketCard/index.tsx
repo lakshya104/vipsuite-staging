@@ -21,6 +21,8 @@ interface BasketCardProps {
 
 const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTransition, onNext }) => {
   const cartItems = get(cartData, 'items', []);
+  console.log({ cartItems });
+
   return (
     <Fragment>
       <Box className="address-page__head">
@@ -38,7 +40,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTr
                   <Image src={productImage} alt={product?.name} height={110} width={110} />
                   <Box className="product-info">
                     <Typography gutterBottom variant="h2">
-                      {he.decode(product.name)}
+                      {he.decode(product?.brand_name)}
                     </Typography>
                     <Typography variant="body1">{he.decode(product?.name)}</Typography>
                     {product.type === 'variation' && (
@@ -56,6 +58,11 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTr
                         {product?.variation[2] && (
                           <Typography variant="body1">
                             {product?.variation[2]?.attribute}: {product?.variation[2]?.value}
+                          </Typography>
+                        )}
+                        {product?.variation[3] && (
+                          <Typography variant="body1">
+                            {product?.variation[3]?.attribute}: {product?.variation[3]?.value}
                           </Typography>
                         )}
                       </>

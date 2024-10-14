@@ -82,24 +82,9 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
       type: 'Phone',
       primary: get(profileDetails, 'acf.phone', ''),
     },
-    {
-      type: 'Event Contact',
-      primary: get(profileDetails, 'acf.event_contacts.email', ''),
-      secondary: get(profileDetails, 'acf.event_contacts.secondary_email', ''),
-    },
-    {
-      type: 'Stylist Contact',
-      primary: get(profileDetails, 'acf.stylist_contacts.email', ''),
-      secondary: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
-    },
-    {
-      type: 'Commercial Opportunity Contact',
-      primary: get(profileDetails, 'acf.commercial_contacts.email', ''),
-      secondary: get(profileDetails, 'acf.commercial_contacts.secondary_email', ''),
-    },
   ];
 
-  const filteredContactData = contactData.filter((contact) => contact.primary || contact.secondary);
+  const filteredContactData = contactData.filter((contact) => contact.primary);
 
   return (
     <Grid container>
@@ -116,11 +101,6 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
                 {item.primary && (
                   <Typography variant="body2">
                     {item.primary} {item.type.includes('Contact') && '(Primary)'}
-                  </Typography>
-                )}
-                {item.secondary && (
-                  <Typography variant="body2">
-                    {item.secondary} {item.type.includes('Contact') && '(Secondary)'}
                   </Typography>
                 )}
               </Grid>

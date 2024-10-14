@@ -2,15 +2,21 @@ import React from 'react';
 import { Typography, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ProgressBarLink } from '@/components/ProgressBar';
-import { GetVipRsvpEvents } from '@/libs/api-manager/manager';
+import { GetSession, GetVipRsvpEvents } from '@/libs/api-manager/manager';
 import { MyEvent } from '@/interfaces';
-import { formatDate } from '@/helpers/utils';
+import { formatDate, getVipId } from '@/helpers/utils';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
+import { cookies } from 'next/headers';
 
 const MyEventsPage = async () => {
   try {
-    const vipRsvpEvents: MyEvent[] = await GetVipRsvpEvents();
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+    const vipRsvpEvents: MyEvent[] = await GetVipRsvpEvents(token, vipId);
     if (!vipRsvpEvents || vipRsvpEvents.length === 0) {
       return <ErrorFallback errorMessage="No upcoming events found." hideSubtext={true} />;
     }

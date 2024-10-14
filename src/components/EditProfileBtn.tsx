@@ -15,7 +15,8 @@ const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ role, vipId }) => {
       setVipId(vipId.toString());
     }
   };
-  const editProfileLink = role === UserRole.Vip ? '/vip-profile-builder' : `/agent-profile-builder?edit=true`;
+  const editProfileLink =
+    role === UserRole.Vip ? '/vip-profile-builder' : `/agent-profile-builder?edit=true&profile-route=true`;
   return (
     <ProgressBarLink href={editProfileLink} className="button button--link">
       <span

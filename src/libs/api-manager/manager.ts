@@ -484,12 +484,23 @@ export const LogOut = async (token: string) => {
   }
 };
 
-export const GetVipRsvpEvents = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getVipRsvpEvents);
+export const GetVipRsvpEvents = async (token: string, vipId: number | string) => {
+  return await FetchInstance(Endpoints.getVipRsvpEvents, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+  });
 };
 
-export const GetVipWishlistItems = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getWishlistItems);
+export const GetVipWishlistItems = async (token: string, vipId: number | string) => {
+  return await FetchInstance(Endpoints.getWishlistItems, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+    next: { tags: ['getWishlistItems'] },
+  });
 };
 
 export const GetAddresses = async (token: string, vipId: number | string) => {

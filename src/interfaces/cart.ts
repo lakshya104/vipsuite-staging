@@ -25,6 +25,7 @@ interface CartItem {
     editable: boolean;
   };
   name: string;
+  brand_name: string;
   short_description: string;
   description: string;
   sku: string;

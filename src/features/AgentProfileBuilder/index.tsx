@@ -23,6 +23,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
   const [profileDetail, setProfileDetail] = useState<ACF>({ first_name: '', last_name: '' });
   const searchParams = useSearchParams();
   const isEditVip = searchParams.get('edit');
+  const isProfileEdit = searchParams.get('profile-route');
   const { editVipId } = useEditVipIdStore();
   const [id, setId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,7 +102,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
 
   return (
     <>
-      {profileDetail?.first_name !== '' && <BackToHome />}
+      {isEditVip && <BackToHome path={isProfileEdit ? '/profile' : '/my-vips'} />}
       {renderStep()}
     </>
   );

@@ -4,14 +4,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
 import revalidatePathAction from '@/libs/actions';
 import { useRouter } from 'next/navigation';
+import { useEditVipIdStore } from '@/store/useStore';
 
-const BackToHome = () => {
+interface BackToHomeProps {
+  path?: string;
+}
+
+const BackToHome: React.FC<BackToHomeProps> = ({ path }) => {
   const [isPending, startTransition] = useTransition();
+  const { clearVipId } = useEditVipIdStore();
+  const redirectPath = path ? path : '/profile';
   const router = useRouter();
   const handleBack = () => {
     startTransition(() => {
       revalidatePathAction('/profile');
-      router.push('/profile');
+      router.push(redirectPath);
+      clearVipId();
     });
   };
   return (

@@ -1,17 +1,36 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
-import { GetVipWishlistItems } from '@/libs/api-manager/manager';
+import { GetVipWishlistItems, GetSession } from '@/libs/api-manager/manager';
 import { Box } from '@mui/material';
 import { WishlistItem } from '@/interfaces';
 import WishlistItemCard from '@/components/WishListItemCard';
+import { getVipId } from '@/helpers/utils';
 
-const MyInterestsPage = async () => {
+const MyInterestsPage: React.FC = async () => {
   try {
-    const vipWishListItems: WishlistItem[] = await GetVipWishlistItems();
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+
+    const session = await GetSession();
+    const { token, role } = session;
+
+    const vipId = getVipId(role, userId, session);
+
+    if (!vipId) {
+      return <ErrorFallback errorMessage="VIP ID not found." />;
+    }
+
+    if (!token) {
+      return <ErrorFallback errorMessage="Session token not found." />;
+    }
+
+    const vipWishListItems: WishlistItem[] = await GetVipWishlistItems(token, vipId);
     if (!vipWishListItems || vipWishListItems.length === 0) {
       return <ErrorFallback errorMessage="No Wishlisted items." hideSubtext={true} />;
     }
+
     return (
       <Box>
         {vipWishListItems.map((item) => {
@@ -21,6 +40,7 @@ const MyInterestsPage = async () => {
               : item.post_type === 'event'
                 ? `/events/${item.id}`
                 : `/opportunities/${item.id}`;
+
           return (
             <WishlistItemCard
               key={item.id}

@@ -13,8 +13,9 @@ import { LogOut, UpdateProfile } from '@/libs/api-manager/manager';
 import { signOut } from 'next-auth/react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import revalidatePathAction from '@/libs/actions';
+import { useEditVipIdStore } from '@/store/useStore';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -37,6 +38,8 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   const interestOptions = profileBuilderOptions?.interests_options;
   const interests = profileDetail?.interests;
   const isApproved = profileDetail?.profile_status === 'approved' ? true : false;
+  const searchParams = useSearchParams();
+  const isProfileEdit = searchParams.get('profile-route');
 
   const {
     register,
@@ -53,6 +56,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   const [searchTerm, setSearchTerm] = React.useState<string>('');
   const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
   const router = useRouter();
+  const { clearVipId } = useEditVipIdStore();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const handleDialogBoxDataChange = async (data: boolean) => {
@@ -104,10 +108,11 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       };
       await UpdateProfile(id, token, profile);
       await revalidatePathAction('/profile');
+      clearVipId();
       if (isApproved) {
-        router.push(isAgent ? '/my-vips' : '/profile');
+        router.push('/profile');
       } else if (isAgent) {
-        router.push('/my-vips');
+        router.push(isProfileEdit ? '/profile' : '/my-vips');
       } else {
         setIsDialogOpen(true);
       }

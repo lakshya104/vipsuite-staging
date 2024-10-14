@@ -96,6 +96,22 @@ const agentMenuItems = [
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
     href: '/basket',
   },
+  { label: 'VIP Orders', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/my-orders' },
+  {
+    label: 'VIP Events',
+    icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />,
+    href: '/my-events',
+  },
+  {
+    label: 'VIP Addresses',
+    icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
+    href: '/my-addresses',
+  },
+  {
+    label: 'VIP Interests',
+    icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
+    href: '/my-interests',
+  },
   {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
