@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputForm from '@/components/InputForm/InputForm';
 import Toaster from '@/components/Toaster';
-import DialogBox from '@/components/Dialog/Dialog';
+import DialogBox from '@/components/Dialog';
 import './ResetPasswordForm.scss';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ResetPassword } from '@/libs/api-manager/manager';

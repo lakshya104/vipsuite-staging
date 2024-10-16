@@ -1,9 +1,10 @@
 'use client';
 import React, { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import InputForm from '../../components/InputForm/InputForm';
 import { zodResolver } from '@hookform/resolvers/zod';
+import InputForm from '../../components/InputForm/InputForm';
 import { AgentEditProfileFields } from '@/data';
 import './AgentSignupForm.scss';
 import { AgentEditProfileSchema, AgentEditProfileValues } from './types';
@@ -11,7 +12,6 @@ import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { AgentProfileUpdate } from '@/libs/api-manager/manager';
 import { ACF } from '@/interfaces';
-import { useRouter } from 'next/navigation';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
 

@@ -73,10 +73,11 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
 };
 
 export default DialogBox;
+
 interface MessageDialogBoxProps {
   isDialogOpen: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onClose: any;
+  // eslint-disable-next-line no-unused-vars
+  onClose: (isOpen: boolean) => void;
   content: {
     title: string;
     isCrossIcon?: boolean;
@@ -88,10 +89,11 @@ interface MessageDialogBoxProps {
 }
 
 export const MessageDialogBox: React.FC<MessageDialogBoxProps> = ({ isDialogOpen, onClose, content }) => {
+  const handleDialogClose = () => onClose(false);
   return (
     <Dialog
       className="site-dialog"
-      onClose={onClose} // Pass the onClose function directly
+      onClose={onClose}
       aria-labelledby="customized-dialog-title"
       open={isDialogOpen}
       maxWidth="sm"
@@ -104,7 +106,7 @@ export const MessageDialogBox: React.FC<MessageDialogBoxProps> = ({ isDialogOpen
         >
           {content?.title}
           {content?.isCrossIcon && (
-            <IconButton aria-label="close" onClick={onClose}>
+            <IconButton aria-label="close" onClick={handleDialogClose}>
               <CloseIcon />
             </IconButton>
           )}
@@ -135,7 +137,7 @@ export const MessageDialogBox: React.FC<MessageDialogBoxProps> = ({ isDialogOpen
           )}
         </DialogContent>
         <DialogActions>
-          <Btn onClick={onClose} look="dark-filled" width="100%">
+          <Btn onClick={handleDialogClose} look="dark-filled" width="100%">
             {content?.buttonText || 'Close'}
           </Btn>
         </DialogActions>

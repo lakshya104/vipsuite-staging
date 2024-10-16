@@ -84,7 +84,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('An error occurred while creating the VIP profile:' + error);
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

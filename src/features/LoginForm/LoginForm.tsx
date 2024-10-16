@@ -8,7 +8,7 @@ import InputForm from '@/components/InputForm/InputForm';
 import { LoginFormValues, LoginSchema } from './loginTypes';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
-import DialogBox from '@/components/Dialog/Dialog';
+import DialogBox from '@/components/Dialog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 

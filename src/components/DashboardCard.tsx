@@ -7,28 +7,30 @@ import { ProgressBarLink } from './ProgressBar';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface DashboardCardProps {
   item: DashboardItem;
 }
 
-const getImage = (item: DashboardItem): string => {
+const getImage = (item: DashboardItem) => {
   switch (item.type) {
     case 'brand-profile':
-      return (item as Brand).acf?.brand_image?.sizes?.medium_large ?? '/img/placeholder-image.jpg';
+      return (item as Brand).acf?.brand_image?.sizes?.medium_large;
     case 'event':
-      return (item as Event).acf?.event_image?.sizes?.medium_large ?? '/img/placeholder-image.jpg';
+      return (item as Event).acf?.event_image?.sizes?.medium_large;
     case 'opportunity':
-      return (item as Opportunity).acf?.featured_image?.sizes?.medium_large ?? '/img/placeholder-image.jpg';
+      return (item as Opportunity).acf?.featured_image?.sizes?.medium_large;
     default:
-      return '/img/placeholder-image.jpg';
+      return DefaultImageFallback.placeholder;
   }
 };
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
-  const isBrand = (item as Brand)?.type === 'brand-profile';
-  const isEvent = (item as Event)?.type === 'event';
-  const isOpportunity = (item as Opportunity)?.type === 'opportunity';
+  const itemType = item.type;
+  const isBrand = itemType === 'brand-profile';
+  const isEvent = itemType === 'event';
+  const isOpportunity = itemType === 'opportunity';
   const brandLogo = (item as Brand)?.acf?.brand_logo?.url;
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
@@ -45,14 +47,17 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
         }}
       >
         <Image
-          src={image || '/img/placeholder-image.jpg'}
-          alt={postTitle || 'Image'}
+          src={image || DefaultImageFallback.placeholder}
+          alt={`${postTitle} image`}
           width={600}
           height={400}
           quality={75}
           style={{ objectFit: 'cover', height: '450px' }}
           placeholder="blur"
-          blurDataURL="/img/image-placeholder.png"
+          blurDataURL={DefaultImageFallback.placeholder}
+          onError={(e) => {
+            e.currentTarget.src = DefaultImageFallback.placeholder;
+          }}
         />
         {isBrand && brandLogo && (
           <Box
@@ -87,7 +92,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             color: 'white',
           }}
         >
-          {isEvent && (item as Event)?.acf?.is_featured && (
+          {isEvent && (item as Event)?.is_featured && (
             <Box sx={{ mb: 1, fontWeight: 'bold' }}>
               <Typography className="featured-event" variant="overline">
                 Featured Event

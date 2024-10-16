@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Btn from './Button/CommonBtn';
-import DialogBox from './Dialog/Dialog';
+import DialogBox from './Dialog';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
 import { CreateOrder, RemoveAllVipCartItems } from '@/libs/api-manager/manager';

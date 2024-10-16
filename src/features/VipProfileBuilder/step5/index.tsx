@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Typography, Checkbox, FormGroup, FormControlLabel, Backdrop, CircularProgress } from '@mui/material';
-import DialogBox from '@/components/Dialog/Dialog';
+import DialogBox from '@/components/Dialog';
 import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';

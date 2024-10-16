@@ -21,8 +21,6 @@ interface BasketCardProps {
 
 const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTransition, onNext }) => {
   const cartItems = get(cartData, 'items', []);
-  console.log({ cartItems });
-
   return (
     <Fragment>
       <Box className="address-page__head">

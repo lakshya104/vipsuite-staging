@@ -53,7 +53,9 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
                 </Typography>
                 <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}, ${add?.state},`}</Typography>
                 <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
-                <Typography variant="body2">{`${add?.company}, (${add?.phone})`}</Typography>
+                <Typography variant="body2">
+                  {add?.company ? `${add.company} , (${add?.phone})` : `(${add?.phone})`}
+                </Typography>
               </Box>
               <Checkbox checked={selectedAddress === add} onChange={() => handleAddressChange(add)} />
             </Box>

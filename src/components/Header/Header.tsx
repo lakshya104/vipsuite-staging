@@ -15,6 +15,7 @@ interface MenuItemData {
   title: string;
   url: string;
   menu_item_parent: string;
+  object: string; // added to track type of object
 }
 
 const Header = () => {
@@ -28,8 +29,23 @@ const Header = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       const data: MenuItemData[] = await GetMenuItems();
-      setMenuItems(data);
+      const updatedMenuItems = data.map((item) => {
+        if (item.object === 'page' && item.url.startsWith('https://vip.anktech.in/wordpress')) {
+          item.url = item.url.replace('https://vip.anktech.in/wordpress', 'http://localhost:3000');
+        }
+        return item;
+      });
+
+      setMenuItems(updatedMenuItems);
       setLoading(false);
+      try {
+        const data: MenuItemData[] = await GetMenuItems();
+        setMenuItems(data);
+      } catch (err) {
+        console.error('Error fetching menu items:', err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchMenuItems();
   }, []);

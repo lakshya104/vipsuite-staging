@@ -5,7 +5,6 @@ import { GetDashboard, GetDashboardContent, GetSession } from '@/libs/api-manage
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import DashboardItemsContainer from '@/components/DashboardItemsContainer';
-import { UserRole } from '@/helpers/enums';
 import { getVipId } from '@/helpers/utils';
 
 const HomePage = async () => {
@@ -31,7 +30,7 @@ const HomePage = async () => {
         dashboardContent={dashboardContent}
         vipId={vipId}
         token={token}
-        totalFollowerCount={role === UserRole.Vip ? totalFollowerCount : 0}
+        totalFollowerCount={totalFollowerCount}
         userRole={role}
         userEmail={email}
       />

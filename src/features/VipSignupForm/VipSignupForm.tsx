@@ -1,19 +1,19 @@
 'use client';
 import React, { useState } from 'react';
-import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
-import InputForm from '../../components/InputForm/InputForm';
-import { VipSignupSchema, defaultValues } from '@/features/VipSignupForm/vipSignupTypes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useRouter } from 'next/navigation';
-import DialogBox from '@/components/Dialog/Dialog';
+import InputForm from '../../components/InputForm/InputForm';
+import { VipSignupSchema, defaultValues } from '@/features/VipSignupForm/vipSignupTypes';
+import DialogBox from '@/components/Dialog';
 import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
-import Link from 'next/link';
 import { VipSignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {

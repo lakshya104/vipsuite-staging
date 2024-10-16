@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputForm from '@/components/InputForm/InputForm';
 import Toaster from '@/components/Toaster';
-import DialogBox from '@/components/Dialog/Dialog';
+import DialogBox from '@/components/Dialog';
 import './ForgotPasswordForm.scss';
 import { useRouter } from 'next/navigation';
 import { ForgotPassword } from '@/libs/api-manager/manager';

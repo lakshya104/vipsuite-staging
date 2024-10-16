@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
-import DialogBox from '@/components/Dialog/Dialog';
+import DialogBox from '@/components/Dialog';
 import { AgentSignUpFormFields } from '@/data';
 import './AgentSignupForm.scss';
 import { AgentSignupSchema, AgentSignupValues, defaultValues } from './types';

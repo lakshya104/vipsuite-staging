@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Box, Container, Grid, Skeleton, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
-import { partition } from 'lodash';
+import { isEmpty, partition } from 'lodash';
 import { DashboardContent, DashboardItem } from '@/interfaces';
 import { GetVipSearch } from '@/libs/api-manager/manager';
 import SearchBar from './SearchBar';
@@ -17,7 +17,7 @@ interface DashboardItemsContainerProps {
   dashboardContent: DashboardContent | null;
   vipId: number | string | undefined;
   token: string;
-  totalFollowerCount: number;
+  totalFollowerCount?: number;
   userRole: string;
   userEmail: string;
 }
@@ -36,7 +36,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const [isPending, setIsPending] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-  const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.acf?.is_featured);
+  const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.is_featured);
   const { setVipIdStore, setTokenStore, setUserRoleStore, setUserEmailStore } = useUserInfoStore();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   }, []);
 
   const fetchSearchResults = useCallback(async () => {
-    if (!debouncedSearchQuery) {
+    if (isEmpty(debouncedSearchQuery)) {
       setSearchResults([]);
       setHasSearched(false);
       setIsPending(false);
@@ -88,7 +88,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
 
   const renderSkeletons = () => (
     <Grid container spacing={2}>
-      {[...Array(4)].map((_, index) => (
+      {[...Array(3)].map((_, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
           <Skeleton variant="rectangular" width="100%" height={450} />
         </Grid>
@@ -109,10 +109,53 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   const renderDashboard = () =>
     dashboardContent &&
     userRole === UserRole.Vip && (
-      <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
-        <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
-      </Box>
+      <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
     );
+
+  const renderContent = () => {
+    if (searchQuery) {
+      return hasSearched && !isEmpty(searchResults) ? renderSearchResults() : renderNoResults();
+    }
+    if (isEmpty(featuredItems) && isEmpty(nonFeaturedItems)) {
+      return (
+        <>
+          {dashboardContent && renderDashboard()}
+          <ErrorFallback errorMessage="No dashboard items available currently" hideSubtext />
+        </>
+      );
+    }
+
+    return (
+      <>
+        {!isEmpty(featuredItems) && renderItems(featuredItems)}
+        {dashboardContent && renderDashboard()}
+        {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems)}
+      </>
+    );
+  };
+
+  const renderSearchResults = () => (
+    <>
+      <Grid container mb={2.5}>
+        <Grid item xs={12}>
+          <Box width="100%">
+            <Typography variant="h3" component="h2" mb={1}>
+              {searchResults.length} {searchResults.length > 1 ? 'Results' : 'Result'} for &quot;{searchQuery}&quot;
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+      {renderItems(searchResults)}
+    </>
+  );
+
+  const renderNoResults = () => (
+    <Container>
+      <Typography marginTop={5} variant="h2" textAlign="center">
+        No results found
+      </Typography>
+    </Container>
+  );
 
   return (
     <>
@@ -126,48 +169,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
         />
       </Box>
 
-      {isPending ? (
-        renderSkeletons()
-      ) : (
-        <>
-          {!searchQuery ? (
-            <>
-              {featuredItems.length === 0 && nonFeaturedItems.length === 0 ? (
-                <>
-                  {dashboardContent && renderDashboard()}
-                  <ErrorFallback errorMessage="No dashboard items available currently" hideSubtext />
-                </>
-              ) : (
-                <>
-                  {featuredItems.length > 0 && renderItems(featuredItems)}
-                  {dashboardContent && renderDashboard()}
-                  {nonFeaturedItems.length > 0 && renderItems(nonFeaturedItems)}
-                </>
-              )}
-            </>
-          ) : hasSearched && searchResults.length > 0 ? (
-            <>
-              <Grid container mb={2.5}>
-                <Grid item xs={12}>
-                  <Box width="100%">
-                    <Typography variant="h3" component="h2" mb={1}>
-                      {searchResults.length} {searchResults.length > 1 ? 'Results' : 'Result'} for &quot;{searchQuery}
-                      &quot;
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-              {renderItems(searchResults)}
-            </>
-          ) : (
-            <Container>
-              <Typography marginTop={5} variant="h2" textAlign="center">
-                No results found
-              </Typography>
-            </Container>
-          )}
-        </>
-      )}
+      {isPending ? renderSkeletons() : <>{renderContent()}</>}
     </>
   );
 };

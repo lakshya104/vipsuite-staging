@@ -286,6 +286,7 @@ export interface Brand {
   title: {
     rendered: string;
   };
+  is_featured?: boolean;
   acf?: {
     is_featured?: boolean;
     associated_brand: number;

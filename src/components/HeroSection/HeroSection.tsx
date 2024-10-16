@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import './HeroSection.scss';
 import { PageData } from '@/interfaces/public-page';
+import Link from 'next/link';
 
 interface HeroSectionProps {
   data: PageData;
@@ -17,17 +18,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
         <Typography component="h1" variant="h1">
           {contentModule?.heading}
         </Typography>
-
         {ctaGroup?.map((ctaItem, index) => (
-          <a
+          <Link
+            legacyBehavior
             key={index}
             href={ctaItem?.cta?.url}
             target={ctaItem?.cta?.target || '_self'}
-            className="button button--black"
             rel={ctaItem?.cta?.target === '_blank' ? 'noopener noreferrer' : undefined}
           >
-            {ctaItem?.cta?.title}
-          </a>
+            <a className="button button--black">{ctaItem?.cta?.title}</a>
+          </Link>
         ))}
       </Container>
     </Box>
