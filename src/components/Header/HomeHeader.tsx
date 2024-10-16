@@ -1,30 +1,20 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  MenuItem,
-  MenuList,
-  Drawer,
-  Typography,
-  Backdrop,
-  CircularProgress,
-} from '@mui/material';
+import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
+import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography, Backdrop } from '@mui/material';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
-import { signOut } from 'next-auth/react';
 import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
-import { usePathname } from 'next/navigation';
 import { deleteVipIdCookie } from '@/libs/actions';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
-import { HomeHeaderLoading } from './loading';
+import { SignOutLoading } from './loading';
 
 const vipNavLinks = [
   {
@@ -256,8 +246,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
             height: '50vh',
           }}
         >
-          <HomeHeaderLoading />
-          <CircularProgress sx={{ height: '50vh' }} />
+          <SignOutLoading />
         </Box>
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />

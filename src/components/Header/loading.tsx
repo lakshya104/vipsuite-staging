@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
 import { ProgressBarLink } from '../ProgressBar';
 import { usePathname } from 'next/navigation';
+import LandingPageLoading from '@/site-pages/LandingPage/loading';
 
 const HeaderSkeleton = () => {
   return (
@@ -76,7 +77,7 @@ const vipMenuItems = [
   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
 ];
 
-export const HomeHeaderLoading = () => {
+export const SignOutLoading = () => {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const toggleDrawer = (open: boolean) => () => {
@@ -163,6 +164,7 @@ export const HomeHeaderLoading = () => {
           </Drawer>
         </Toolbar>
       </AppBar>
+      <LandingPageLoading />
     </>
   );
 };

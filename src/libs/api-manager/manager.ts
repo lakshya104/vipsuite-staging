@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { VipSignUpRequestBody, UserProfile, AddressInput, Session } from '@/interfaces';
 import { Endpoints } from './constants';
-import { FetchInstance, FetchInstanceWithHeaders, Instance } from './instance';
+import { FetchInstance, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 import TAGS from '../apiTags';
@@ -171,38 +171,33 @@ export const GetAgentProfile = async () => {
   });
 };
 
-export const GetBrands = async () => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrands, {
-    next: { tags: [TAGS.GET_BRANDS] },
+// export const GetBrands = async () => {
+//   return await FetchInstance(Endpoints.getBrands, {
+//     next: { tags: [TAGS.GET_BRANDS] },
+//   });
+// };
+
+export const GetDashboardContent = async (token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getDashboardContent, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+    next: { tags: [TAGS.GET_DASHBOARD_CONTENT] },
   });
 };
 
-export const GetDashboardContent = async (token: string, vipId: string | number | undefined) => {
-  if (vipId) {
-    return await FetchInstance(Endpoints.getDashboardContent, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-      next: { tags: [TAGS.GET_DASHBOARD_CONTENT] },
-    });
-  }
+export const GetDashboard = async (token: string, vipId: number) => {
+  return await FetchInstance(Endpoints.getDashboard, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'vip-profile-id': vipId?.toString(),
+    },
+    next: { tags: [TAGS.GET_DASHBOARD] },
+  });
 };
 
-export const GetDashboard = async (token: string, vipId: string | number | undefined) => {
-  if (vipId) {
-    return await FetchInstance(Endpoints.getDashboard, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-      next: { tags: [TAGS.GET_DASHBOARD] },
-    });
-  }
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const GetVipSearch = async (keyword: string, token: string, vipId: any) => {
+export const GetVipSearch = async (keyword: string, token: string, vipId: number) => {
   return await FetchInstance(Endpoints.vipSearch(keyword), {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -232,7 +227,7 @@ export const GetBrandProducts = async (id: number, token: string, vipId: number 
 };
 
 export const GetBrandProductDetail = async (id: number, token: string, vipId: number) => {
-  return await FetchInstanceWithHeaders(Endpoints.getBrandProductDetails(id), {
+  return await FetchInstance(Endpoints.getBrandProductDetails(id), {
     headers: {
       Authorization: `Bearer ${token}`,
       'vip-profile-id': vipId?.toString(),

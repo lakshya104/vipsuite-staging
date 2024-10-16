@@ -1,8 +1,8 @@
 import React from 'react';
+import Link from 'next/link';
 import { Box, Typography, Container } from '@mui/material';
 import './HeroSection.scss';
 import { PageData } from '@/interfaces/public-page';
-import Link from 'next/link';
 
 interface HeroSectionProps {
   data: PageData;

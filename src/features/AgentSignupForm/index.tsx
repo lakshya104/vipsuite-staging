@@ -64,9 +64,7 @@ const AgentSignupForm = () => {
           const allVipExamples = [
             formData.examples_of_vip_managed,
             ...formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== ''),
-          ]
-            .filter(Boolean)
-            .join(', ');
+          ].filter(Boolean);
 
           const data = {
             first_name: formData?.first_name,

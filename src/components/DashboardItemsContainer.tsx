@@ -15,7 +15,7 @@ import { UserRole } from '@/helpers/enums';
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
   dashboardContent: DashboardContent | null;
-  vipId: number | string | undefined;
+  vipId: number;
   token: string;
   totalFollowerCount?: number;
   userRole: string;
