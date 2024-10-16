@@ -28,19 +28,17 @@ const Header = () => {
 
   useEffect(() => {
     const fetchMenuItems = async () => {
-      const data: MenuItemData[] = await GetMenuItems();
-      const updatedMenuItems = data.map((item) => {
-        if (item.object === 'page' && item.url.startsWith('https://vip.anktech.in/wordpress')) {
-          item.url = item.url.replace('https://vip.anktech.in/wordpress', 'http://localhost:3000');
-        }
-        return item;
-      });
-
-      setMenuItems(updatedMenuItems);
-      setLoading(false);
       try {
         const data: MenuItemData[] = await GetMenuItems();
-        setMenuItems(data);
+        const updatedMenuItems = data.map((item) => {
+          const currentDomain = window.location.origin;
+          if (item?.object === 'page' && item.url.startsWith('https://vip.anktech.in/wordpress')) {
+            item.url = item?.url.replace('https://vip.anktech.in/wordpress', currentDomain);
+          }
+          return item;
+        });
+        setMenuItems(updatedMenuItems);
+        setLoading(false);
       } catch (err) {
         console.error('Error fetching menu items:', err);
       } finally {
@@ -50,7 +48,7 @@ const Header = () => {
     fetchMenuItems();
   }, []);
 
-  const getChildItems = (parentId: number) => menuItems.filter((item) => item.menu_item_parent === String(parentId));
+  const getChildItems = (parentId: number) => menuItems.filter((item) => item?.menu_item_parent === String(parentId));
 
   const handleOpenNavMenu = () => setIsMobileOpen(!isMobileOpen);
 
