@@ -15,7 +15,7 @@ const FetchInstance = async (url: string, options: RequestInit = {}) => {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
     },
-    next: { revalidate: 10 },
+    cache: 'no-store',
   });
   if (!response.ok) {
     const errorData = await response.json();
