@@ -20,3 +20,46 @@ export const formSchema = z.object({
 });
 
 export type AddAddressFormValue = z.infer<typeof formSchema>;
+
+export const addNewAddressField = [
+  {
+    name: 'first_name',
+    placeholder: 'First Name',
+  },
+  {
+    name: 'last_name',
+    placeholder: 'Last Name',
+  },
+  {
+    name: 'address_line_1',
+    placeholder: 'Address Line 1',
+  },
+  {
+    name: 'address_line_2',
+    placeholder: 'Address Line 2',
+  },
+  {
+    name: 'city',
+    placeholder: 'City',
+  },
+  {
+    name: 'state',
+    placeholder: 'State',
+  },
+  {
+    name: 'country',
+    placeholder: 'Country',
+  },
+  {
+    name: 'postcode',
+    placeholder: 'Postcode',
+  },
+  {
+    name: 'phone',
+    placeholder: 'Phone',
+  },
+  {
+    name: 'company',
+    placeholder: 'Company',
+  },
+];

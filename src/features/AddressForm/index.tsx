@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop, Box, CircularProgress, Container, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { formSchema, AddAddressFormValue } from './schema';
+import { formSchema, AddAddressFormValue, addNewAddressField } from './schema';
 import InputTextFormField from '@/components/InputTextFormField';
 import Toaster from '@/components/Toaster';
 import Btn from '@/components/Button/CommonBtn';
@@ -13,6 +13,7 @@ import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
 import revalidateTag from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
+import revalidatePathAction from '@/libs/actions';
 
 type FormFieldNames =
   | 'first_name'
@@ -40,49 +41,6 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
   const search = searchParams.get('route');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
-  const addNewAddressField = [
-    {
-      name: 'first_name',
-      placeholder: 'First Name',
-    },
-    {
-      name: 'last_name',
-      placeholder: 'Last Name',
-    },
-    {
-      name: 'address_line_1',
-      placeholder: 'Address Line 1',
-    },
-    {
-      name: 'address_line_2',
-      placeholder: 'Address Line 2',
-    },
-    {
-      name: 'city',
-      placeholder: 'City',
-    },
-    {
-      name: 'state',
-      placeholder: 'State',
-    },
-    {
-      name: 'country',
-      placeholder: 'Country',
-    },
-    {
-      name: 'postcode',
-      placeholder: 'Postcode',
-    },
-    {
-      name: 'phone',
-      placeholder: 'Phone',
-    },
-    {
-      name: 'company',
-      placeholder: 'Company',
-    },
-  ];
-
   const {
     handleSubmit,
     control,
@@ -98,14 +56,16 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
       await addUpdateAddress(userId, token, data, addressId);
       if (search === 'order-journey') {
         router.push('/basket?step=1');
+        await revalidatePathAction('/basket?step=1');
       } else {
         router.push('/my-addresses');
+        await revalidatePathAction('/my-addresses');
       }
     } catch (error) {
-      openToaster('Error during submit address: ' + error);
+      openToaster('Error during adding address: ' + error);
       setIsLoading(false);
     } finally {
-      revalidateTag(TAGS.GET_ADDRESSES);
+      await revalidateTag(TAGS.GET_ADDRESSES);
       router.refresh();
     }
   };
