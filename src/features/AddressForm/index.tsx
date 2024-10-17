@@ -55,18 +55,17 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
     try {
       await addUpdateAddress(userId, token, data, addressId);
       if (search === 'order-journey') {
-        router.push('/basket?step=1');
         await revalidatePathAction('/basket?step=1');
+        router.push('/basket?step=1');
       } else {
-        router.push('/my-addresses');
         await revalidatePathAction('/my-addresses');
+        router.push('/my-addresses');
       }
     } catch (error) {
       openToaster('Error during adding address: ' + error);
       setIsLoading(false);
     } finally {
       await revalidateTag(TAGS.GET_ADDRESSES);
-      router.refresh();
     }
   };
   return (

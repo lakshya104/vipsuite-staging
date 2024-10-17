@@ -6,6 +6,8 @@ import { DeleteAddress } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter } from 'next/navigation';
+import { revalidateTag } from '@/libs/actions';
+import TAGS from '@/libs/apiTags';
 
 interface DeleteAddressBtnProps {
   token: string;
@@ -25,12 +27,13 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, t
     try {
       startTransition(async () => {
         await DeleteAddress(vipId, addressId, token);
-        router.refresh();
       });
     } catch (error) {
       openToaster(error?.toString() ?? 'Error deleting address');
     } finally {
       setOpenDialog(false);
+      await revalidateTag(TAGS.GET_ADDRESSES);
+      router.refresh();
     }
   };
 

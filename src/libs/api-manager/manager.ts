@@ -504,7 +504,7 @@ export const GetAddresses = async (token: string, vipId: number | string) => {
       Authorization: `Bearer ${token}`,
       'vip-profile-id': vipId?.toString(),
     },
-    next: { tags: ['getAddress'] },
+    next: { tags: [TAGS.GET_ADDRESSES] },
   });
 };
 
