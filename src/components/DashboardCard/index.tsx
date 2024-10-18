@@ -3,11 +3,12 @@ import { DashboardItem } from '@/interfaces';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { formatEventDates, truncateDescription } from '@/helpers/utils';
-import { ProgressBarLink } from './ProgressBar';
+import { ProgressBarLink } from '../ProgressBar';
 import { Brand } from '@/interfaces/brand';
 import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
 import { DefaultImageFallback } from '@/helpers/enums';
+import './Dashboard.scss';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -31,7 +32,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const isBrand = itemType === 'brand-profile';
   const isEvent = itemType === 'event';
   const isOpportunity = itemType === 'opportunity';
-  const brandLogo = (item as Brand)?.acf?.brand_logo?.url;
+  const brandLogo = ((item as Brand) || (item as Event))?.acf?.brand_logo?.url;
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
   const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
@@ -39,13 +40,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
 
   return (
     <ProgressBarLink href={`${postPath}/${postId}`}>
-      <Box
-        sx={{
-          position: 'relative',
-          overflow: 'hidden',
-          borderRadius: '4px',
-        }}
-      >
+      <Box className="dashboard-card">
         <Image
           src={image || DefaultImageFallback.placeholder}
           alt={`${postTitle} image`}
@@ -59,17 +54,15 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             e.currentTarget.src = DefaultImageFallback.placeholder;
           }}
         />
-        {isBrand && brandLogo && (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 16,
-              left: 16,
-              width: 60,
-              height: 60,
-              overflow: 'hidden',
-            }}
-          >
+        {isOpportunity && (
+          <Box>
+            <Typography className="dashboard-card__item-overline" variant="overline" gutterBottom>
+              VIP Club
+            </Typography>
+          </Box>
+        )}
+        {(isBrand || isEvent) && brandLogo && (
+          <Box className="dashboard-card__item-brandImage">
             <Image
               src={brandLogo}
               alt="brand logo"
@@ -81,20 +74,10 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             />
           </Box>
         )}
-        <Box
-          className="landing-product__text"
-          sx={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            p: 2,
-            color: 'white',
-          }}
-        >
-          {isEvent && (item as Event)?.is_featured && (
-            <Box sx={{ mb: 1, fontWeight: 'bold' }}>
-              <Typography className="featured-event" variant="overline">
+        <Box className="dashboard-card__item-featured">
+          {isEvent && !(item as Event)?.is_featured && (
+            <Box className="dashboard-card__item-featuredBox">
+              <Typography className="dashboard-card__item-featuredText" variant="overline">
                 Featured Event
               </Typography>
             </Box>
@@ -106,13 +89,13 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
           {isEvent && (
             <>
               <Typography variant="body2">
-                <Typography component="span" sx={{ fontWeight: '500' }}>
+                <Typography component="span" fontWeight={500}>
                   Date:
                 </Typography>{' '}
                 {formatEventDates((item as Event)?.acf?.event_start_date, (item as Event)?.acf?.event_end_date)}
               </Typography>
               <Typography variant="body2">
-                <Typography component="span" sx={{ fontWeight: '500' }}>
+                <Typography component="span" fontWeight={500}>
                   Location:
                 </Typography>{' '}
                 {(item as Event)?.acf?.event_location}
