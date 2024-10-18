@@ -15,6 +15,7 @@ interface DialogBoxProps {
     image?: string;
     subTitle?: string;
     description?: string;
+    description2?: string;
     buttonText?: string;
   };
 }
@@ -59,6 +60,11 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
           {content?.description && (
             <Typography variant="body1" gutterBottom>
               {content.description}
+            </Typography>
+          )}
+          {content?.description2 && (
+            <Typography variant="body1" gutterBottom>
+              {content.description2}
             </Typography>
           )}
         </DialogContent>

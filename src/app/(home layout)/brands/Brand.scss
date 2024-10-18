@@ -83,9 +83,6 @@ main.product-detail {
       box-shadow: 0 0 0 transparent;
       @include relative;
       @include border-radius(8px);
-      @media only screen and (min-width: 768px) {
-        padding-bottom: 80px;
-      }
       h2 {
         margin-bottom: rem(16);
         @media only screen and (max-width: 767px) {

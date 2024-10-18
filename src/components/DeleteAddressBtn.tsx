@@ -5,7 +5,6 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { DeleteAddress } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
-import { useRouter } from 'next/navigation';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
 
@@ -18,23 +17,25 @@ interface DeleteAddressBtnProps {
 
 const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, token, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const router = useRouter();
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
   const deleteAddress = async (vipId: number, addressId: string, token: string) => {
-    try {
-      startTransition(async () => {
-        await DeleteAddress(vipId, addressId, token);
-      });
-    } catch (error) {
-      openToaster(error?.toString() ?? 'Error deleting address');
-    } finally {
-      setOpenDialog(false);
-      await revalidateTag(TAGS.GET_ADDRESSES);
-      router.refresh();
-    }
+    startTransition(async () => {
+      try {
+        const res = await DeleteAddress(vipId, addressId, token);
+        setToasterType('success');
+        openToaster(res?.message);
+      } catch (error) {
+        setToasterType('error');
+        openToaster(error?.toString() ?? 'Error deleting address');
+      } finally {
+        setOpenDialog(false);
+        await revalidateTag(TAGS.GET_ADDRESSES);
+      }
+    });
   };
 
   return (
@@ -47,7 +48,7 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, t
         title="Delete Address"
         description={'Are you sure you want to delete the address?'}
       />
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
     </>
   );
 };

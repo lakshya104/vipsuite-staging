@@ -21,7 +21,8 @@ const dialogBoxContent = {
   title: 'Thank You!',
   subTitle: 'Profile in Review',
   description:
-    'Thanks for completing your profile. Your profile will be moderated and we will contact you once your profile has been verified. You can update your profile at any time.',
+    'Thanks for completing your profile. Your profile will be moderated and we will contact you once your profile has been verified.',
+  description2: 'You can update your profile at any time.',
   buttonText: 'Done',
   isCrossIcon: true,
 };

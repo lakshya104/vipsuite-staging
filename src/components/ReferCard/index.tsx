@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import EastIcon from '@mui/icons-material/East';
-import { ProgressBarLink } from './ProgressBar';
+import { ProgressBarLink } from '../ProgressBar';
 
 interface ReferCardProps {
   heading: string;

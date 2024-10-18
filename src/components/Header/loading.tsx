@@ -63,11 +63,11 @@ const vipMenuItems = [
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: '/my-addresses',
   },
-  {
-    label: 'My Interests',
-    icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-interests',
-  },
+  // {
+  //   label: 'My Interests',
+  //   icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
+  //   href: '/my-interests',
+  // },
   {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
