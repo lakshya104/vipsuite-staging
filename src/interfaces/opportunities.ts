@@ -1,3 +1,5 @@
+import { BrandLogo } from './brand';
+
 // Define the interface for the featured image
 interface FeaturedImage {
   ID: number;
@@ -51,6 +53,7 @@ interface Acf {
   date: string;
   location: string;
   is_featured: boolean;
+  brand_logo: BrandLogo;
 }
 
 export interface Opportunity {
@@ -64,7 +67,7 @@ export interface Opportunity {
   modified_gmt: string;
   slug: string;
   status: string;
-  type: string;
+  type: 'opportunity';
   link: string;
   title: {
     rendered: string;

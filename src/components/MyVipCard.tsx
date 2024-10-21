@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { createVipIdCookie, revalidateTag } from '@/libs/actions';
+import { createVipFollowersCookie, createVipIdCookie, revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
 import { useEditVipIdStore } from '@/store/useStore';
 import { MessageDialogBox } from './Dialog';
@@ -26,6 +26,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isVipPendingDialogOpen, setIsVipPendingDialogOpen] = useState<boolean>(false);
   const [isVipRejectedDialogOpen, setIsVipRejectedDialogOpen] = useState<boolean>(false);
+  const totalFollowerCount = instaFollowers + tiktokFollowers;
 
   const handleClick = async () => {
     try {
@@ -40,6 +41,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
           setLoading(true);
           try {
             await createVipIdCookie(vipId);
+            await createVipFollowersCookie(totalFollowerCount.toString());
             await revalidateTag(TAGS.GET_DASHBOARD);
             router.push(link);
           } catch (error) {

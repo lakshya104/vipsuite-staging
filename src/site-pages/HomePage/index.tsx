@@ -6,11 +6,12 @@ import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import DashboardItemsContainer from '@/components/DashboardItemsContainer';
 import { getVipId } from '@/helpers/utils';
+import { UserRole } from '@/helpers/enums';
 
 const HomePage = async () => {
-  const cookieStore = cookies();
-  const userId = cookieStore.get('vipId');
   try {
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
     const session = await GetSession();
     const { token, role, email } = session;
     const vipId = getVipId(role, userId, session);
@@ -20,17 +21,20 @@ const HomePage = async () => {
     ]);
     const tiktokFollowerCount = get(session, 'acf.tiktok_follower_count', 0);
     const instagramFollowerCount = get(session, 'acf.instagram_follower_count', 0);
-    const totalFollowerCount = Number(tiktokFollowerCount) + Number(instagramFollowerCount);
+    const totalFollowerCount =
+      role === UserRole.Vip ? tiktokFollowerCount + instagramFollowerCount : cookieStore.get('followers')?.value;
     if (!dashboardItems) {
       return <ErrorFallback errorMessage="Currently there is no dashboard item." hideSubtext={true} />;
     }
+    console.log(cookieStore.get('followers'));
+
     return (
       <DashboardItemsContainer
         dashboardItems={dashboardItems}
         dashboardContent={dashboardContent}
         vipId={vipId}
         token={token}
-        totalFollowerCount={totalFollowerCount}
+        totalFollowerCount={Number(totalFollowerCount)}
         userRole={role}
         userEmail={email}
       />

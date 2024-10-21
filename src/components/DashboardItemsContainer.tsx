@@ -10,7 +10,6 @@ import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
 import { useUserInfoStore } from '@/store/useStore';
-import { UserRole } from '@/helpers/enums';
 
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
@@ -107,8 +106,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   );
 
   const renderDashboard = () =>
-    dashboardContent &&
-    userRole === UserRole.Vip && (
+    dashboardContent && (
       <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
     );
 

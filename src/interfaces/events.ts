@@ -47,7 +47,7 @@ export interface Event {
   modified_gmt: string;
   slug: string;
   status: string;
-  type: string;
+  type: 'event';
   link: string;
   title: EventTitle;
   template: string;

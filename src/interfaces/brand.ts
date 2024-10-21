@@ -282,7 +282,7 @@ export interface Product {
 
 export interface Brand {
   id: number;
-  type: string;
+  type: 'brand-profile';
   title: {
     rendered: string;
   };
