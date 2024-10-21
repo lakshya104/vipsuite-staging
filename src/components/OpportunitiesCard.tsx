@@ -1,5 +1,5 @@
 import React from 'react';
-import { map } from 'lodash';
+import { isUndefined, map } from 'lodash';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { ProgressBarLink } from './ProgressBar';
 import { Opportunity } from '@/interfaces/opportunities';
@@ -21,9 +21,12 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) 
                   backgroundImage: `url(${opportunity?.acf.featured_image?.link})`,
                 }}
               >
-                <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
-                  VIP Club
-                </Typography>
+                {!isUndefined(opportunity['opportunity-category'][0]) && (
+                  <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
+                    {opportunity?.['opportunity-category']}
+                  </Typography>
+                )}
+
                 <CardContent className="opportunities-card__item-content">
                   <Typography variant="h2">{opportunity?.title?.rendered}</Typography>
                 </CardContent>

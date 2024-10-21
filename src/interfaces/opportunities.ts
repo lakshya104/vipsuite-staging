@@ -74,4 +74,5 @@ export interface Opportunity {
   acf: Acf;
   is_wishlisted?: boolean;
   is_featured?: boolean;
+  ['opportunity-category']: string[];
 }

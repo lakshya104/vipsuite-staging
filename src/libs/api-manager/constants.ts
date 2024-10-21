@@ -26,7 +26,7 @@ const Endpoints = {
   removeVipCartItem: (key: string) => `/wc/store/v1/cart/remove-item?key=${key}`,
   removeAllCartItems: `/wc/store/v1/cart/items`,
   createOrder: `/wc/v3/orders`,
-  getVipOpportunities: '/wp/v2/opportunities?_fields=id,title,acf.featured_image,is_wishlisted',
+  getVipOpportunities: '/wp/v2/opportunities?_fields=id,title,acf.featured_image,is_wishlisted,opportunity-category',
   sendRsvp: '/wp/v2/rsvp-request',
   logOut: '/wp/v2/logout',
   getVipRsvpEvents: `/wp/v2/vip-profiles/rsvp-events`,

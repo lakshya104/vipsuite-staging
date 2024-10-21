@@ -9,6 +9,7 @@ import { Event } from '@/interfaces/events';
 import { Opportunity } from '@/interfaces/opportunities';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
+import { isUndefined } from 'lodash';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -54,10 +55,10 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             e.currentTarget.src = DefaultImageFallback.placeholder;
           }}
         />
-        {isOpportunity && (
+        {isOpportunity && !isUndefined((item as Opportunity)['opportunity-category'][0]) && (
           <Box>
             <Typography className="dashboard-card__item-overline" variant="overline" gutterBottom>
-              VIP Club
+              {(item as Opportunity)?.['opportunity-category']?.[0]}
             </Typography>
           </Box>
         )}
@@ -75,7 +76,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
           </Box>
         )}
         <Box className="dashboard-card__item-featured">
-          {isEvent && !(item as Event)?.is_featured && (
+          {isEvent && (item as Event)?.is_featured && (
             <Box className="dashboard-card__item-featuredBox">
               <Typography className="dashboard-card__item-featuredText" variant="overline">
                 Featured Event

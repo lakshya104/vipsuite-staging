@@ -33,8 +33,8 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<DashboardItem[]>([]);
-  const [isPending, setIsPending] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.is_featured);
   const { setVipIdStore, setTokenStore, setUserRoleStore, setUserEmailStore } = useUserInfoStore();
