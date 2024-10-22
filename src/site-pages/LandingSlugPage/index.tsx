@@ -1,12 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
-import { first, get } from 'lodash';
+import { first, get, isEmpty } from 'lodash';
 import ErrorHandler from '@/components/ErrorHandler';
 import { PageData } from '@/interfaces/public-page';
 import { GetPageContent } from '@/libs/api-manager/manager';
 import ModuleSlides from '@/components/ModuleSlides';
 import { ProgressBarLink } from '@/components/ProgressBar';
+import LandingPage from '../LandingPage';
+import './LandingSlugPage.scss';
 
 interface LandingSlugPageProps {
   slug: string;
@@ -18,6 +20,9 @@ const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
     const data = first(pageData);
     const isDefaultHeroPanel = get(data, 'acf.use_default_hero_panel', false) === true;
 
+    if (isEmpty(pageData)) {
+      return <LandingPage />;
+    }
     return (
       <Box component="main" className="site-main">
         <Container>
@@ -40,7 +45,7 @@ const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
                 <Grid container spacing={4}>
                   <Grid item xs={12} md={6}>
                     <Typography variant="h4" component="h2" gutterBottom>
-                      {data?.acf?.subheading}
+                      {data?.acf?.subhading}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -48,22 +53,7 @@ const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
                       {data?.acf?.copy}
                     </Typography>
                     <ProgressBarLink href={'/on-boarding'}>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                          backgroundColor: 'black',
-                          color: 'white',
-                          borderRadius: '50px',
-                          px: { xs: 4, sm: 7 },
-                          py: { xs: 1, sm: 2 },
-                          border: '2px solid black',
-                          mb: { xs: 2, sm: 0 },
-                          '&:hover': {
-                            backgroundColor: 'black',
-                          },
-                        }}
-                      >
+                      <Button variant="contained" type="submit" className="joinbtn">
                         {data?.acf?.cta?.cta_text}
                       </Button>
                     </ProgressBarLink>
@@ -79,6 +69,8 @@ const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
       </Box>
     );
   } catch (error) {
+    console.log({ error });
+
     return <ErrorHandler error={error} errMessage="Error fetching page content" />;
   }
 };

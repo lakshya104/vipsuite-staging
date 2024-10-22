@@ -32,7 +32,10 @@ const Header = () => {
         const data: MenuItemData[] = await GetMenuItems();
         const updatedMenuItems = data.map((item) => {
           const currentDomain = window.location.origin;
-          if (item?.object === 'page' && item.url.startsWith('https://vip.anktech.in/wordpress')) {
+          if (
+            (item?.object === 'page' || item?.object === 'post') &&
+            item?.url.startsWith('https://vip.anktech.in/wordpress')
+          ) {
             item.url = item?.url.replace('https://vip.anktech.in/wordpress', currentDomain);
           }
           return item;
