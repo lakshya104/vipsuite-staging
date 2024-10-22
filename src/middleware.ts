@@ -22,9 +22,9 @@ export default auth((req) => {
   if (isLoggedIn && isPublicRoute) {
     return Response.redirect(new URL('/home', nextUrl));
   }
-  // if (!isLoggedIn && !isPublicRoute) {
-  //   return Response.redirect(new URL('/', nextUrl));
-  // }
+  if (!isLoggedIn && !isPublicRoute) {
+    return Response.redirect(new URL('/', nextUrl));
+  }
 
   return;
 });
