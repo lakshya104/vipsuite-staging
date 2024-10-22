@@ -11,7 +11,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
-import { deleteVipIdCookie } from '@/libs/actions';
+import { deleteVipCookies } from '@/libs/actions';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
 import { SignOutLoading } from './loading';
@@ -138,7 +138,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
         setIsLoading(false);
         openToaster('Error during logging out. ' + error);
       } finally {
-        await deleteVipIdCookie();
+        await deleteVipCookies();
       }
     }
   };

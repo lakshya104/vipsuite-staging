@@ -53,8 +53,9 @@ export async function createVipIdCookie(id: string) {
   cookies().set('vipId', id);
 }
 
-export async function deleteVipIdCookie() {
+export async function deleteVipCookies() {
   cookies().delete('vipId');
+  cookies().delete('followers');
 }
 
 export async function createVipFollowersCookie(followers: string) {

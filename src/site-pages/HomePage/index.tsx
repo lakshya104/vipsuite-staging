@@ -26,7 +26,6 @@ const HomePage = async () => {
     if (!dashboardItems) {
       return <ErrorFallback errorMessage="Currently there is no dashboard item." hideSubtext={true} />;
     }
-    console.log(cookieStore.get('followers'));
 
     return (
       <DashboardItemsContainer

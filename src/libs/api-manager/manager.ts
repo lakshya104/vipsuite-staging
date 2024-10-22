@@ -741,8 +741,8 @@ export const MakeRequestSubmit = async (
   }
 };
 
-export const GetPageContent = async (id: number) => {
-  return await FetchInstance(Endpoints.getPageContent(id));
+export const GetPageContent = async (slug: string) => {
+  return await FetchInstance(Endpoints.getPageContent(slug));
 };
 
 export const GetAllVips = async (token: string) => {

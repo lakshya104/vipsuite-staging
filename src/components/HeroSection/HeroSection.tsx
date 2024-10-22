@@ -2,23 +2,20 @@ import React from 'react';
 import Link from 'next/link';
 import { Box, Typography, Container } from '@mui/material';
 import './HeroSection.scss';
-import { PageData } from '@/interfaces/public-page';
+import { ContentModule } from '@/interfaces/public-page';
 
 interface HeroSectionProps {
-  data: PageData;
+  data: ContentModule;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
-  const contentModule = data?.acf?.content_modules?.[0];
-  const ctaGroup = contentModule?.cta_group;
-
   return (
     <Box component="section" className="site-hero">
       <Container>
         <Typography component="h1" variant="h1">
-          {contentModule?.heading}
+          {data?.heading}
         </Typography>
-        {ctaGroup?.map((ctaItem, index) => (
+        {data?.cta_group?.map((ctaItem, index) => (
           <Link
             legacyBehavior
             key={index}

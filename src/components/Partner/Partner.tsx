@@ -6,17 +6,14 @@ import Image from 'next/image';
 import './Partner.scss';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { PageData } from '@/interfaces/public-page';
-import { find } from 'lodash';
+import { ContentModule } from '@/interfaces/public-page';
 
 interface PartnerProps {
-  data: PageData;
+  data: ContentModule;
 }
 
 const Partner: React.FC<PartnerProps> = ({ data }) => {
-  const contentModules = data.acf.content_modules;
-  const filteredModule = find(contentModules, { acf_fc_layout: 'module_logo_list' });
-  const logos = filteredModule?.list_items;
+  const logos = data?.list_items;
 
   const settings = {
     dots: false,
@@ -50,10 +47,10 @@ const Partner: React.FC<PartnerProps> = ({ data }) => {
   };
 
   return (
-    filteredModule && (
+    data && (
       <Box component="section" className="site-partner">
         <Typography component="h2" variant="h2">
-          {filteredModule?.heading}
+          {data?.heading}
         </Typography>
         <Box>
           <Slider {...settings}>

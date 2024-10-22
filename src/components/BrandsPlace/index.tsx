@@ -3,7 +3,7 @@ import { Box, Typography, Button, Grid, Container } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import './BrandsPlace.scss';
 import { ProgressBarLink } from '../ProgressBar';
-import { PageData } from '@/interfaces/public-page';
+import { ContentModule } from '@/interfaces/public-page';
 
 interface TableDataItem {
   heading: string;
@@ -26,12 +26,11 @@ const FeatureCell: React.FC<TableDataItem> = ({ heading, points }) => {
 };
 
 interface BrandsPlaceProps {
-  data: PageData;
+  data: ContentModule;
 }
 
 const BrandsPlace: React.FC<BrandsPlaceProps> = ({ data }) => {
-  const contentModule = data?.acf?.content_modules?.[1];
-  const tableData = contentModule?.table_columns as TableDataItem[] | undefined;
+  const tableData = data?.table_columns as TableDataItem[] | undefined;
 
   return (
     <Box component="section" className="brand-section">
@@ -39,9 +38,9 @@ const BrandsPlace: React.FC<BrandsPlaceProps> = ({ data }) => {
         <Grid container>
           <Grid item xs={12} md={4}>
             <Box className="brand-section__head">
-              <Typography variant="h2">{contentModule?.heading}</Typography>
+              <Typography variant="h2">{data?.heading}</Typography>
               <Typography variant="body1" paragraph>
-                {contentModule?.description}
+                {data?.description}
               </Typography>
               <ProgressBarLink href="/on-boarding">
                 <Button variant="contained" className="button button--white">

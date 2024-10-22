@@ -1,21 +1,20 @@
 'use client';
 import React, { Fragment, useState, useEffect } from 'react';
 import Image from 'next/image';
-import Slider from 'react-slick';
 import { Box, Button, Container, Typography } from '@mui/material';
-import './SocialAccordion.scss';
-import { PageData } from '@/interfaces/public-page';
-
-// Import slick-carousel styles
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import './SocialAccordion.scss';
+import { ContentModule } from '@/interfaces/public-page';
 
 interface SocialAccordionProps {
-  data: PageData;
+  data: ContentModule;
 }
 
 const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
-  const socialLinks = data?.acf?.content_modules?.[1]?.slides;
+  const socialLinks = data?.slides;
+
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const handleResize = () => {

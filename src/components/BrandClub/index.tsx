@@ -1,17 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Container, Grid, Typography, Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import he from 'he';
 import './BrandClub.scss';
-import { PageData } from '@/interfaces/public-page';
+import { ContentModule } from '@/interfaces/public-page';
 
 interface BrandClubProps {
-  data: PageData;
+  data: ContentModule;
 }
 
 const BrandClub: React.FC<BrandClubProps> = ({ data }) => {
-  const brandclub = data?.acf?.content_modules?.[2]?.content_blocks?.[0];
+  const brandclub = data?.content_blocks?.[0];
   const decodedDescription = he.decode(brandclub?.description || '');
   const [introText, listHTML] = decodedDescription.split(/<ul>/);
   const listItems = listHTML?.match(/<li>(.*?)<\/li>/g)?.map((item) => item.replace(/<\/?li>/g, '')) || [];

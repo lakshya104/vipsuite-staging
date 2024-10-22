@@ -1,47 +1,31 @@
-'use client';
 import React from 'react';
 import { Box, Typography, Button, Grid, Paper, Container } from '@mui/material';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import './JoinUs.scss';
 import { ProgressBarLink } from '../ProgressBar';
-import { PageData } from '@/interfaces/public-page';
+import { ContentModule } from '@/interfaces/public-page';
 
 interface JoinUsProps {
-  data: PageData;
+  data: ContentModule;
 }
 const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
-  const contentModules = data?.acf?.content_modules || [];
-  let listItems = null;
-  let heading = null;
-  let cta = null;
-
-  // eslint-disable-next-line @next/next/no-assign-module-variable
-  for (const module of contentModules) {
-    if (module.list_items) {
-      listItems = module.list_items;
-      heading = module.heading;
-      cta = module.cta?.link?.title;
-      break;
-    }
-  }
-
   return (
     <Box component="section" className="joinus-section">
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <Box className="joinus-section__head">
-              <Typography variant="h2">{heading}</Typography>
+              <Typography variant="h2">{data?.heading}</Typography>
               <ProgressBarLink href={'/on-boarding'}>
                 <Button variant="outlined" className="button button--white">
-                  {cta}
+                  {data?.cta?.link?.title}
                 </Button>
               </ProgressBarLink>
             </Box>
           </Grid>
           <Grid item xs={12} sm={8} className="joinus-section__content">
             <Grid container spacing={2.5} justifyContent={'space-between'}>
-              {listItems?.map((item, index) => (
+              {data.list_items?.map((item, index) => (
                 <Grid item xs={12} md={6} key={index}>
                   <Paper elevation={0} className="joinus-section__feature">
                     <Box className="joinus-section__icon">

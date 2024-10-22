@@ -1,6 +1,4 @@
 import React, { Suspense } from 'react';
-import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import LandingPage from '@/site-pages/LandingPage';
 import LandingPageLoading from '@/site-pages/LandingPage/loading';
@@ -30,9 +28,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const session = await auth();
-  if (session) redirect('/home');
-
   return (
     <Suspense fallback={<LandingPageLoading />}>
       <LandingPage />
