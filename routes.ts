@@ -13,3 +13,5 @@ export const authRoutes = [
 export const DEFAULT_LOGIN_REDIRECT = '/home';
 
 export const apiAuthPrefix = '/api/auth';
+
+export const landingSlugPrefix = '/welcome';
