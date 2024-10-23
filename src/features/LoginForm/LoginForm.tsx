@@ -11,6 +11,7 @@ import Toaster from '@/components/Toaster';
 import DialogBox from '@/components/Dialog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { isUndefined } from 'lodash';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -72,7 +73,7 @@ const LoginForm = () => {
               setIsReviewDialogOpen(true);
               reset();
             } else {
-              setError(errorMessage || 'An unexpected error occurred while login');
+              setError(!isUndefined(errorMessage) ? errorMessage : 'An error occurred during login');
               setToasterOpen(true);
             }
           }

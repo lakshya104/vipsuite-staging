@@ -62,10 +62,10 @@ const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
               </Box>
             </>
           )}
-          {data?.acf?.content_modules.map((module, index) => {
-            return <ModuleSlides key={index} module={module} />;
-          })}
         </Container>
+        {data?.acf?.content_modules.map((module, index) => {
+          return <ModuleSlides key={index} module={module} />;
+        })}
       </Box>
     );
   } catch (error) {

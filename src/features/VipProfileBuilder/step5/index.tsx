@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Box, Typography, Checkbox, FormGroup, FormControlLabel, Backdrop, CircularProgress } from '@mui/material';
+import { signOut } from 'next-auth/react';
 import DialogBox from '@/components/Dialog';
 import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar';
@@ -10,10 +12,8 @@ import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps } from '@/interfaces';
 import { LogOut, UpdateProfile } from '@/libs/api-manager/manager';
-import { signOut } from 'next-auth/react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
-import { useRouter, useSearchParams } from 'next/navigation';
 import revalidatePathAction from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 
@@ -27,6 +27,16 @@ const dialogBoxContent = {
   isCrossIcon: true,
 };
 
+const vipAddedDialogBoxContent = {
+  title: 'Thank You!',
+  subTitle: 'VIP Added',
+  description: 'Thanks for adding a VIP. You can update your VIP’s profile at any time.',
+  description2: 'Would you like to add another VIP?',
+  buttonText: 'Add Another Vip',
+  buttonText2: 'Continue',
+  isCrossIcon: true,
+};
+
 const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
   profileDetail,
@@ -36,12 +46,17 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   isAgent,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const searchParams = useSearchParams();
+  const isProfileEdit = searchParams.get('profile-route');
+  const [searchTerm, setSearchTerm] = React.useState<string>('');
+  const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
+  const [isVipAddedDialogOpen, setIsVipAddedDialogOpen] = React.useState<boolean>(false);
+  const router = useRouter();
+  const { clearVipId } = useEditVipIdStore();
   const interestOptions = profileBuilderOptions?.interests_options;
   const interests = profileDetail?.interests;
   const isApproved = profileDetail?.profile_status === 'approved' ? true : false;
-  const searchParams = useSearchParams();
-  const isProfileEdit = searchParams.get('profile-route');
-
   const {
     register,
     handleSubmit,
@@ -54,11 +69,6 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       interests: interests || [],
     },
   });
-  const [searchTerm, setSearchTerm] = React.useState<string>('');
-  const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
-  const router = useRouter();
-  const { clearVipId } = useEditVipIdStore();
-  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const handleDialogBoxDataChange = async (data: boolean) => {
     try {
@@ -66,6 +76,29 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       setIsLoading(true);
       await LogOut(token);
       signOut();
+    } catch (error) {
+      setIsLoading(false);
+      openToaster('Error: ' + error);
+    }
+  };
+
+  const handleVipAddedDataChange = async (data: boolean) => {
+    try {
+      setIsVipAddedDialogOpen(data);
+      setIsLoading(true);
+      window.location.href = '/agent-profile-builder';
+      router.refresh();
+    } catch (error) {
+      setIsLoading(false);
+      openToaster('Error: ' + error);
+    }
+  };
+  const handleVipAddedDataChange2 = async (data: boolean) => {
+    try {
+      setIsVipAddedDialogOpen(data);
+      setIsLoading(true);
+      router.push(isProfileEdit ? '/profile' : '/my-vips');
+      router.refresh();
     } catch (error) {
       setIsLoading(false);
       openToaster('Error: ' + error);
@@ -113,7 +146,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       if (isApproved) {
         router.push('/profile');
       } else if (isAgent) {
-        router.push(isProfileEdit ? '/profile' : '/my-vips');
+        setIsVipAddedDialogOpen(true);
       } else {
         setIsDialogOpen(true);
       }
@@ -186,6 +219,12 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
         <CustomStepper currentStep={isAgent ? 6 : 5} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
+      <DialogBox
+        isDialogOpen={isVipAddedDialogOpen}
+        onDataChange={handleVipAddedDataChange}
+        onDataChange2={handleVipAddedDataChange2}
+        content={vipAddedDialogBoxContent}
+      />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>

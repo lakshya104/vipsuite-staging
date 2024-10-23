@@ -9,6 +9,7 @@ import Btn from '../Button/CommonBtn';
 interface DialogBoxProps {
   isDialogOpen: boolean;
   onDataChange: RefCallBack;
+  onDataChange2?: RefCallBack;
   content: {
     title: string;
     isCrossIcon?: boolean;
@@ -17,18 +18,22 @@ interface DialogBoxProps {
     description?: string;
     description2?: string;
     buttonText?: string;
+    buttonText2?: string;
   };
 }
 
-const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, content }) => {
+const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, content, onDataChange2 }) => {
   const handleClose = () => {
     onDataChange(false);
+  };
+  const handleClose2 = () => {
+    if (onDataChange2) onDataChange2(false);
   };
 
   return (
     <Dialog
       className="site-dialog"
-      onClose={handleClose}
+      onClose={onDataChange2 ? handleClose2 : handleClose}
       aria-labelledby="customized-dialog-title"
       open={isDialogOpen}
       maxWidth="sm"
@@ -69,9 +74,16 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
           )}
         </DialogContent>
         <DialogActions>
-          <Btn onClick={handleClose} look="dark-filled" width="100%">
-            {content?.buttonText || 'Close'}
-          </Btn>
+          <Box display="flex" flexDirection="column" width="100%" gap={2}>
+            <Btn onClick={handleClose} look="dark-filled" width="100%">
+              {content?.buttonText || 'Close'}
+            </Btn>
+            {content?.buttonText2 && (
+              <Btn onClick={handleClose2} look="dark-filled" width="100%">
+                {content?.buttonText2 || 'Close'}
+              </Btn>
+            )}
+          </Box>
         </DialogActions>
       </Box>
     </Dialog>
