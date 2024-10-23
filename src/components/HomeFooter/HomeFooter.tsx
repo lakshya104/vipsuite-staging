@@ -76,7 +76,7 @@ const HomeFooter: React.FC<HomeFooterProps> = () => {
       alt: 'My Profile',
       label: 'My Profile',
       paths: ['/profile'],
-      srcselected: '/img/user.svg',
+      srcselected: '/img/user-selected.svg',
     },
   ];
   return (

@@ -20,7 +20,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
         <Typography gutterBottom variant="h2">
           {item?.name}
         </Typography>
-        <Typography variant="body1">Item Name</Typography>
         {item?.variation_id !== 0 &&
           item?.meta_data?.map((attr, index) => (
             <Typography variant="body1" key={attr.id || index}>
