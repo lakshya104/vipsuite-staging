@@ -2,13 +2,13 @@
 import React, { useState, useTransition } from 'react';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import InputForm from '../../components/InputForm/InputForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
 import DialogBox from '@/components/Dialog';
 import { BrandSignUpFormFields } from '@/data';
+import InputForm from '../../components/InputForm/InputForm';
 import './BrandSignupForm.scss';
 import { BrandSignupSchema, BrandSignupValues, defaultValues } from './types';
 import SelectBox from '@/components/SelectBox';

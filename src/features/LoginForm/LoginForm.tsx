@@ -1,17 +1,19 @@
 'use client';
 import React, { useState, useTransition } from 'react';
-import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { isUndefined } from 'lodash';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { login } from '@/libs/actions';
 import InputForm from '@/components/InputForm/InputForm';
 import { LoginFormValues, LoginSchema } from './loginTypes';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
 import DialogBox from '@/components/Dialog';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { isUndefined } from 'lodash';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -19,6 +21,7 @@ const LoginForm = () => {
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 
   const reviewDialogBoxContent = {
@@ -99,10 +102,32 @@ const LoginForm = () => {
         {...register('password')}
         placeholder="Password"
         label="Password"
-        type="password"
+        type={showPassword ? 'text' : 'password'}
         error={!!errors.password}
         helperText={errors.password?.message}
         autoComplete="current-password"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Box
+                sx={{
+                  p: 0,
+                  m: 0,
+                  minWidth: 'auto',
+                  width: 'auto',
+                  height: 'auto',
+                }}
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? (
+                  <VisibilityOffIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
+                ) : (
+                  <RemoveRedEyeIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
+                )}
+              </Box>
+            </InputAdornment>
+          ),
+        }}
       />
       <Box className="forgot-password">
         <Typography className="forgot-password__text">

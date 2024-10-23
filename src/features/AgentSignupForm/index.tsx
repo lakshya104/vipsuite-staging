@@ -1,13 +1,13 @@
 'use client';
 import React, { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import InputForm from '../../components/InputForm/InputForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useRouter } from 'next/navigation';
 import DialogBox from '@/components/Dialog';
+import InputForm from '../../components/InputForm/InputForm';
 import { AgentSignUpFormFields } from '@/data';
 import './AgentSignupForm.scss';
 import { AgentSignupSchema, AgentSignupValues, defaultValues } from './types';

@@ -13,7 +13,7 @@ interface ReferCardProps {
 
 const ReferCard: React.FC<ReferCardProps> = ({ heading, text, href, isPdf }) => {
   return isPdf ? (
-    <Card className="gray-card__item" sx={{ padding: 5 }}>
+    <Card className="gray-card__item" sx={{ padding: { xs: 8, sm: 10, md: 13 } }}>
       <CardContent>
         <a target="_blank" href={href} rel="noreferrer">
           <Typography variant="h2">{heading}</Typography>

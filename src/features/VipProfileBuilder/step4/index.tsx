@@ -16,7 +16,6 @@ import { filter, includes, union } from 'lodash';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
-// import { formSchema, Step4FormValues } from './schema';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';

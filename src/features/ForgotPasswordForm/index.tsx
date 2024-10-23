@@ -1,5 +1,7 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -8,10 +10,8 @@ import InputForm from '@/components/InputForm/InputForm';
 import Toaster from '@/components/Toaster';
 import DialogBox from '@/components/Dialog';
 import './ForgotPasswordForm.scss';
-import { useRouter } from 'next/navigation';
 import { ForgotPassword } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
-import Link from 'next/link';
 
 const ForgotPasswordForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);

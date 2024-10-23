@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Typography, Checkbox, FormGroup, FormControlLabel, CircularProgress, Backdrop } from '@mui/material';
 import { z } from 'zod';
+import { filter, includes, map, union } from 'lodash';
 import SearchBar from '@/components/SearchBar';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
@@ -11,7 +12,6 @@ import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
-import { filter, includes, map, union } from 'lodash';
 
 const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
