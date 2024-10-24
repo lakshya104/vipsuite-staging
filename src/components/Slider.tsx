@@ -1,9 +1,9 @@
 import React from 'react';
+import Image from 'next/image';
+import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Image from 'next/image';
-import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 
 interface SliderProps {

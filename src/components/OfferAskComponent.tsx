@@ -15,9 +15,9 @@ const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
         {opportunity.title.rendered}
       </Typography>
       {show === 'offer' ? (
-        <Box dangerouslySetInnerHTML={{ __html: opportunity.acf.the_offer }} />
+        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.the_offer }} />
       ) : (
-        <Box dangerouslySetInnerHTML={{ __html: opportunity.acf.the_ask }} />
+        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.the_ask }} />
       )}
     </>
   );

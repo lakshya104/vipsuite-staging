@@ -54,10 +54,10 @@ export const VIPSignUpFormFields: VipSignUpFormField[] = [
 
 type AgentSignUpFormField = {
   name: keyof AgentSignupValues;
-  placeholder?: string | undefined;
-  autocomplete?: string | undefined;
-  type?: string | undefined;
-  label?: string | undefined;
+  placeholder?: string;
+  autocomplete?: string;
+  type?: string;
+  label?: string;
   options?: Array<{ value: string; label: string }>;
 };
 
@@ -73,10 +73,10 @@ export const AgentSignUpFormFields: AgentSignUpFormField[] = [
 
 type BrandSignUpFormField = {
   name: keyof BrandSignupValues;
-  placeholder?: string | undefined;
-  autocomplete?: string | undefined;
-  type?: string | undefined;
-  label?: string | undefined;
+  placeholder?: string;
+  autocomplete?: string;
+  type?: string;
+  label?: string;
   options?: Array<{ value: string; label: string }>;
 };
 
@@ -102,10 +102,10 @@ export const BrandSignUpFormFields: BrandSignUpFormField[] = [
 
 type AgentEditProfileFormField = {
   name: keyof AgentEditProfileValues;
-  placeholder?: string | undefined;
-  autocomplete?: string | undefined;
-  type?: string | undefined;
-  label?: string | undefined;
+  placeholder?: string;
+  autocomplete?: string;
+  type?: string;
+  label?: string;
   options?: Array<{ value: string; label: string }>;
 };
 

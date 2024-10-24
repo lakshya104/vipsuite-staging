@@ -1,8 +1,8 @@
+import React from 'react';
+import Image from 'next/image';
+import { Box, Typography } from '@mui/material';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { LineItem } from '@/interfaces';
-import { Box, Typography } from '@mui/material';
-import Image from 'next/image';
-import React from 'react';
 
 interface OrderItemProps {
   item: LineItem;
@@ -14,7 +14,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
         height={110}
         width={110}
         style={{ width: '100%', height: '100%' }}
-        src={item?.image?.src || DefaultImageFallback.placeholder}
+        src={item?.image?.src || DefaultImageFallback.Placeholder}
         alt={item?.name || 'product-image'}
       />
       <Box>

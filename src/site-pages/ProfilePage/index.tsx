@@ -30,7 +30,7 @@ const ProfilePage = async () => {
       <>
         <Box className="user-profile__info" textAlign={'center'} mb={3}>
           <Image
-            src={DefaultImageFallback.personPlaceholder}
+            src={DefaultImageFallback.PersonPlaceholder}
             width={150}
             height={150}
             alt="User Avtar image"

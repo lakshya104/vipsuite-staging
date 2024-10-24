@@ -1,10 +1,11 @@
 import React from 'react';
 import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 import OpportunityDetailsCard from '@/components/OpportunityDetails';
 import { GetSession, GetVipOpportunityDetails } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
-import ErrorHandler from '@/components/ErrorHandler';
 import { getVipId } from '@/helpers/utils';
+import { CookieName } from '@/helpers/enums';
 
 interface OpportunityDetailsPageProps {
   id: number;
@@ -12,28 +13,17 @@ interface OpportunityDetailsPageProps {
 
 const OpportunityDetailsPage: React.FC<OpportunityDetailsPageProps> = async ({ id }) => {
   if (!id) {
-    return <ErrorFallback errorMessage="Opportunity ID is invalid." />;
+    notFound();
   }
-  const cookieStore = cookies();
-  const userId = cookieStore.get('vipId');
-  try {
-    const session = await GetSession();
-    const { token, role } = session;
-    const vipId = getVipId(role, userId, session);
-    if (!vipId) {
-      return <ErrorFallback errorMessage="VIP ID not found." />;
-    }
-    const opportunityDetails = await GetVipOpportunityDetails(Number(id), token, vipId);
-    if (!token) {
-      return <ErrorFallback errorMessage="Your token is invalid." />;
-    }
-    if (!opportunityDetails) {
-      return <ErrorFallback errorMessage="No opportunity details found." />;
-    }
-    return <OpportunityDetailsCard opportunity={opportunityDetails} token={token} vipId={vipId} />;
-  } catch (error) {
-    return <ErrorHandler error={error} errMessage="Not able to show opportunity details currently." />;
+  const userId = cookies().get(CookieName.VipId);
+  const session = await GetSession();
+  const { token, role } = session;
+  const vipId = getVipId(role, userId, session);
+  const opportunityDetails = await GetVipOpportunityDetails(Number(id), token, vipId);
+  if (!opportunityDetails) {
+    return <ErrorFallback errorMessage="No opportunity details found." />;
   }
+  return <OpportunityDetailsCard opportunity={opportunityDetails} token={token} vipId={vipId} />;
 };
 
 export default OpportunityDetailsPage;

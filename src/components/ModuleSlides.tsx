@@ -8,6 +8,7 @@ import Partner from './Partner/Partner';
 import TestimonialSection from './TestimonialSection';
 import BrandsPlace from './BrandsPlace';
 import BrandClub from './BrandClub';
+import { HomeModuleTypes } from '@/helpers/enums';
 
 interface ModuleSlidesProps {
   module: ContentModule;
@@ -16,23 +17,23 @@ interface ModuleSlidesProps {
 const ModuleSlides: React.FC<ModuleSlidesProps> = ({ module }) => {
   if (module?.settings?.hide_component) return null;
   switch (module?.acf_fc_layout) {
-    case 'module_intro':
+    case HomeModuleTypes.Intro:
       return <HeroSection data={module} />;
-    case 'module_slider':
+    case HomeModuleTypes.Slider:
       return (
         <Box component="section" className="site-card">
           <SocialAccordion data={module} />
         </Box>
       );
-    case 'module_info_list':
+    case HomeModuleTypes.InfoList:
       return <JoinUs data={module} />;
-    case 'module_info_table':
+    case HomeModuleTypes.InfoTable:
       return <BrandsPlace data={module} />;
-    case 'module_promo':
+    case HomeModuleTypes.Promo:
       return <BrandClub data={module} />;
-    case 'module_logo_list':
+    case HomeModuleTypes.LogoList:
       return <Partner data={module} />;
-    case 'module_testimonials':
+    case HomeModuleTypes.Testimonials:
       return <TestimonialSection data={module} />;
     default:
       return null;

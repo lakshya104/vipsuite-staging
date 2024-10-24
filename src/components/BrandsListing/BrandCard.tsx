@@ -12,7 +12,7 @@ interface BrandCardProps {
 }
 
 const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
-  const productImage = item?.acf?.brand_image?.url || DefaultImageFallback.placeholder;
+  const productImage = item?.acf?.brand_image?.url || DefaultImageFallback.Placeholder;
   const brandLogo = item.acf?.brand_logo?.url;
   return (
     <ProgressBarLink href={`/brands/${item.id}`}>

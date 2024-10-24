@@ -13,7 +13,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
   const brandLogo = item.acf?.brand_logo?.url;
-  const eventImage = item?.acf?.event_image?.sizes?.large || DefaultImageFallback.placeholder;
+  const eventImage = item?.acf?.event_image?.sizes?.large || DefaultImageFallback.Placeholder;
   return (
     <ProgressBarLink href={`/events/${item.id}`}>
       <Card

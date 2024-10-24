@@ -65,7 +65,7 @@ interface EventContainerProps {
 }
 
 const EventContainer = ({ event }: EventContainerProps) => {
-  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || DefaultImageFallback.placeholder;
+  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || DefaultImageFallback.Placeholder;
   const brandLogo = event?.acf?.brand_logo?.url;
 
   return (

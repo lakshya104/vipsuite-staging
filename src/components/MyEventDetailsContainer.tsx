@@ -1,8 +1,8 @@
 import React from 'react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { formatDateWithoutOrdinal } from '@/helpers/utils';
 import { Box, Container, Typography } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ProgressBarLink } from './ProgressBar';
+import { formatDateWithoutOrdinal } from '@/helpers/utils';
 import FeedbackForm from '@/features/FeedbackForm';
 import { EventDetails } from '@/interfaces/events';
 

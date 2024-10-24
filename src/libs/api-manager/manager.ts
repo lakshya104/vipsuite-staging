@@ -171,12 +171,6 @@ export const GetAgentProfile = async () => {
   });
 };
 
-// export const GetBrands = async () => {
-//   return await FetchInstance(Endpoints.getBrands, {
-//     next: { tags: [TAGS.GET_BRANDS] },
-//   });
-// };
-
 export const GetDashboardContent = async (token: string, vipId: number) => {
   return await FetchInstance(Endpoints.getDashboardContent, {
     headers: {
@@ -550,7 +544,7 @@ export const DeleteAddress = async (vipId: number, addressId: string, token: str
 };
 
 export const GetVipOpportunityDetails = async (id: number, token: string, vipId: number) => {
-  return await FetchInstance(`${Endpoints.getVipOpportunityDetails}/${id}?_fields=id,title,acf,is_wishlisted`, {
+  return await FetchInstance(Endpoints.getVipOpportunityDetails(id), {
     headers: {
       Authorization: `Bearer ${token}`,
       'vip-profile-id': vipId?.toString(),

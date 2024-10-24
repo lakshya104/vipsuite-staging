@@ -1,11 +1,11 @@
+import React from 'react';
+import Image from 'next/image';
+import { Box, Container, Grid, Typography } from '@mui/material';
+import { get } from 'lodash';
 import ItemRequestForm from '@/features/ItemRequestForm';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { wrapInParagraph } from '@/helpers/utils';
 import { Product } from '@/interfaces/brand';
-import { Box, Container, Grid, Typography } from '@mui/material';
-import { get } from 'lodash';
-import Image from 'next/image';
-import React from 'react';
 
 interface ProductDetailsContainerProps {
   product: Product;
@@ -16,7 +16,7 @@ interface ProductDetailsContainerProps {
 
 const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ product, token, nonce, vipId }) => {
   const isRequestOnly = product?.meta_data.find((item) => item.key === 'is_request_only')?.value === '1' || false;
-  const productImage = get(product, 'images[0].src', DefaultImageFallback.placeholder);
+  const productImage = get(product, 'images[0].src', DefaultImageFallback.Placeholder);
   const productDescription = wrapInParagraph(product?.description);
   return (
     <Box className="product-details__page">

@@ -33,7 +33,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTr
         {cartItems?.length > 0 ? (
           <>
             {cartItems.map((product) => {
-              const productImage = product?.images[0]?.src || DefaultImageFallback.placeholder;
+              const productImage = product?.images[0]?.src || DefaultImageFallback.Placeholder;
               return (
                 <Box className="basket-product__item" key={product.id}>
                   <Image src={productImage} alt={product?.name} height={110} width={110} />

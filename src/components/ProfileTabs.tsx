@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Grid, Typography } from '@mui/material';
+import { isUndefined } from 'lodash';
 import { BioComponent, ContactsComponent, SocialComponent } from './ProfileComponents';
 import { UserProfile } from '@/interfaces';
-import { isUndefined } from 'lodash';
 
 const TABS = [
   { section: 'bio', label: 'Bio' },

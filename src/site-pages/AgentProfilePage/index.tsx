@@ -7,6 +7,7 @@ import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 import { ContactsComponent } from '@/components/ProfileComponents';
 import { ProgressBarLink } from '@/components/ProgressBar';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 const AgentProfilePage = async () => {
   try {
@@ -20,7 +21,7 @@ const AgentProfilePage = async () => {
       <>
         <Box className="user-profile__info" textAlign={'center'} mb={3}>
           <Image
-            src="/img/aiavatar.png"
+            src={DefaultImageFallback.PersonPlaceholder}
             width={150}
             height={150}
             alt="User Avtar image"

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 'use client';
 
-import { AnimatePresence, motion, MotionValue, useMotionTemplate, useSpring } from 'framer-motion';
+import React, { createContext, startTransition, useContext, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { createContext, startTransition, useContext, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, MotionValue, useMotionTemplate, useSpring } from 'framer-motion';
 
 interface Progress {
   state: string;

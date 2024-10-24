@@ -4,15 +4,14 @@ import { Box, Typography } from '@mui/material';
 interface ErrorFallbackProps {
   errorMessage: string;
   hideSubtext?: boolean;
-  smallHeight?: boolean;
 }
 
-const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext, smallHeight }) => {
+const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext }) => {
   return (
     <Box
       component="main"
       sx={{
-        height: smallHeight ? '20vh' : '40vh',
+        height: '20vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -21,7 +20,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext
       }}
     >
       <Typography
-        variant={smallHeight ? 'h6' : 'h5'}
+        variant={'h6'}
         align="center"
         sx={{
           color: 'black',

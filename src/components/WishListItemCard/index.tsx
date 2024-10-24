@@ -18,7 +18,7 @@ interface WishlistItemCardProps {
 }
 
 const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date, location, link, type }) => {
-  const itemImage = image || DefaultImageFallback.placeholder;
+  const itemImage = image || DefaultImageFallback.Placeholder;
 
   return (
     <Box className="wishlist-card__items">

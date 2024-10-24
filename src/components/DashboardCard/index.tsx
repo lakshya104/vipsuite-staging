@@ -21,7 +21,7 @@ const getImage = (item: DashboardItem) => {
     case 'opportunity':
       return item.acf?.featured_image?.sizes?.medium_large;
     default:
-      return DefaultImageFallback.placeholder;
+      return DefaultImageFallback.Placeholder;
   }
 };
 
@@ -40,16 +40,16 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
     <ProgressBarLink href={`${postPath}/${postId}`}>
       <Box className="dashboard-card">
         <Image
-          src={image || DefaultImageFallback.placeholder}
+          src={image || DefaultImageFallback.Placeholder}
           alt={`${postTitle} image`}
           width={600}
           height={400}
           quality={75}
           style={{ objectFit: 'cover', height: '450px' }}
           placeholder="blur"
-          blurDataURL={DefaultImageFallback.placeholder}
+          blurDataURL={DefaultImageFallback.Placeholder}
           onError={(e) => {
-            e.currentTarget.src = DefaultImageFallback.placeholder;
+            e.currentTarget.src = DefaultImageFallback.Placeholder;
           }}
         />
         {isOpportunity && !isUndefined(item['opportunity-category'][0]) && (

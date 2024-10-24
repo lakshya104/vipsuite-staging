@@ -9,7 +9,7 @@ interface DetailPageImageContainerProps {
 }
 
 const DetailPageImageContainer: React.FC<DetailPageImageContainerProps> = ({ item }) => {
-  const productImage = item?.acf?.brand_image?.sizes?.large || DefaultImageFallback.placeholder;
+  const productImage = item?.acf?.brand_image?.sizes?.large || DefaultImageFallback.Placeholder;
   const brandLogo = item?.acf?.brand_logo?.url;
   return (
     <Card

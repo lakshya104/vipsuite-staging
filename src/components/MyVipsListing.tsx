@@ -1,6 +1,6 @@
 'use client';
-import { Box } from '@mui/material';
 import React from 'react';
+import { Box } from '@mui/material';
 import MyVipCard from './MyVipCard';
 import { MyVips } from '@/site-pages/MyVipsPage';
 import { ProfileStatus } from '@/helpers/enums';
@@ -8,6 +8,7 @@ import { ProfileStatus } from '@/helpers/enums';
 interface MyVipsListingProps {
   myVips: MyVips[];
 }
+
 const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
   return (
     <Box>

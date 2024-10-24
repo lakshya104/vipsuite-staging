@@ -32,7 +32,7 @@ const Endpoints = {
   getVipRsvpEvents: `/wp/v2/vip-profiles/rsvp-events`,
   getAddresses: '/wp/v2/vip-profiles/addresses',
   deleteAddress: (addressId: string) => `/wp/v2/vip-profiles/addresses/${addressId}`,
-  getVipOpportunityDetails: '/wp/v2/opportunities',
+  getVipOpportunityDetails: (id: number) => `/wp/v2/opportunities/${id}?_fields=id,title,acf,is_wishlisted`,
   orderFeedback: (orderNumber: number) => `/wp/v2/vip-profiles/orders/${orderNumber}/feedback`,
   eventFeedback: (eventId: number) => `/wp/v2/vip-profiles/events/${eventId}/feedback`,
   getWishlistItems: `/wp/v2/vip-profiles/wishlist`,
