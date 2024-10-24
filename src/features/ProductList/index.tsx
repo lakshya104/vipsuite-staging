@@ -19,9 +19,7 @@ const ProductList: React.FC<ProductListProps> = async ({ brandId, token, vipId }
   try {
     const brandProducts = await GetBrandProducts(brandId, token, vipId);
     if (!brandProducts || brandProducts.length === 0) {
-      return (
-        <ErrorFallback errorMessage="No products available for this brand" hideSubtext={true} smallHeight={true} />
-      );
+      return <ErrorFallback errorMessage="No products available for this brand" hideSubtext={true} />;
     }
     return (
       <Box className="product-listing">
