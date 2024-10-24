@@ -9,6 +9,7 @@ import ErrorHandler from '@/components/ErrorHandler';
 import ErrorFallback from '@/components/ErrorFallback';
 import { cookies } from 'next/headers';
 import EditProfileBtn from '@/components/EditProfileBtn';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 const ProfilePage = async () => {
   try {
@@ -29,7 +30,7 @@ const ProfilePage = async () => {
       <>
         <Box className="user-profile__info" textAlign={'center'} mb={3}>
           <Image
-            src="/img/aiavatar.png"
+            src={DefaultImageFallback.personPlaceholder}
             width={150}
             height={150}
             alt="User Avtar image"

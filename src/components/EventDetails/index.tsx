@@ -6,6 +6,7 @@ import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -64,7 +65,7 @@ interface EventContainerProps {
 }
 
 const EventContainer = ({ event }: EventContainerProps) => {
-  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || '/img/placeholder-image.jpg';
+  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || DefaultImageFallback.placeholder;
   const brandLogo = event?.acf?.brand_logo?.url;
 
   return (

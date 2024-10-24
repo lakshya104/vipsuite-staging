@@ -1,5 +1,5 @@
 import { auth } from './auth';
-import { DEFAULT_LOGIN_REDIRECT, publicRoutes, authRoutes, apiAuthPrefix, landingSlugPrefix } from '../routes';
+import { DEFAULT_LOGIN_REDIRECT, publicRoutes, authRoutes, apiAuthPrefix } from '../routes';
 
 export default auth((req) => {
   const { nextUrl } = req;
@@ -8,9 +8,8 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isLandingSlugRoute = nextUrl.pathname.startsWith(landingSlugPrefix);
 
-  if (isApiAuthRoute || isLandingSlugRoute) {
+  if (isApiAuthRoute) {
     return;
   }
 

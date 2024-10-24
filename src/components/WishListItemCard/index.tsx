@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { formatDate } from '@/helpers/utils';
 import he from 'he';
 import './WishlistItemCard.scss';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface WishlistItemCardProps {
   image: string;
@@ -17,7 +18,7 @@ interface WishlistItemCardProps {
 }
 
 const WishlistItemCard: React.FC<WishlistItemCardProps> = ({ image, title, date, location, link, type }) => {
-  const itemImage = image || '/img/placeholder-image.jpg';
+  const itemImage = image || DefaultImageFallback.placeholder;
 
   return (
     <Box className="wishlist-card__items">

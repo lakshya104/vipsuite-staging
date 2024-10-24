@@ -4,6 +4,7 @@ import { Box, Card, CardContent, Typography } from '@mui/material';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatEventDates } from '@/helpers/utils';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface EventCardProps {
   item: Event;
@@ -12,7 +13,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
   const brandLogo = item.acf?.brand_logo?.url;
-  const eventImage = item?.acf?.event_image?.sizes?.large || '/img/placeholder-image.jpg';
+  const eventImage = item?.acf?.event_image?.sizes?.large || DefaultImageFallback.placeholder;
   return (
     <ProgressBarLink href={`/events/${item.id}`}>
       <Card

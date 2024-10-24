@@ -102,7 +102,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
 
   return (
     <>
-      {isEditVip && <BackToHome path={isProfileEdit ? '/profile' : '/my-vips'} />}
+      <BackToHome path={isProfileEdit ? '/profile' : '/my-vips'} />
       {renderStep()}
     </>
   );

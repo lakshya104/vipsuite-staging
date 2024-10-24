@@ -6,6 +6,7 @@ import { BrandProduct } from '@/interfaces/brand';
 import Btn from '../Button/CommonBtn';
 import { truncateDescription } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface ProductCardProps {
   data: BrandProduct;
@@ -14,7 +15,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const { id, name, short_description, meta_data, images } = data;
   const isRequestOnlyValue = meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
-  const productImage = images[0]?.src || '/img/placeholder-image.jpg';
+  const productImage = images[0]?.src || DefaultImageFallback.placeholder;
   const productDesctiption = truncateDescription(short_description, 18);
   return (
     <Card className="product-card" sx={{ cursor: 'pointer' }}>

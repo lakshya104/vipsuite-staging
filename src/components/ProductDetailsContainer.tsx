@@ -1,4 +1,5 @@
 import ItemRequestForm from '@/features/ItemRequestForm';
+import { DefaultImageFallback } from '@/helpers/enums';
 import { wrapInParagraph } from '@/helpers/utils';
 import { Product } from '@/interfaces/brand';
 import { Box, Container, Grid, Typography } from '@mui/material';
@@ -15,7 +16,7 @@ interface ProductDetailsContainerProps {
 
 const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ product, token, nonce, vipId }) => {
   const isRequestOnly = product?.meta_data.find((item) => item.key === 'is_request_only')?.value === '1' || false;
-  const productImage = get(product, 'images[0].src', '/img/placeholder-image.jpg');
+  const productImage = get(product, 'images[0].src', DefaultImageFallback.placeholder);
   const productDescription = wrapInParagraph(product?.description);
   return (
     <Box className="product-details__page">

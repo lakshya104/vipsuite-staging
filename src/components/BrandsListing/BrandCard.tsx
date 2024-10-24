@@ -5,13 +5,14 @@ import { Brand } from '@/interfaces/brand';
 import { ProgressBarLink } from '../ProgressBar';
 import Image from 'next/image';
 import { truncateDescription } from '@/helpers/utils';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface BrandCardProps {
   item: Brand;
 }
 
 const BrandCard: React.FC<BrandCardProps> = ({ item }) => {
-  const productImage = item?.acf?.brand_image?.url || '/img/placeholder-image.jpg';
+  const productImage = item?.acf?.brand_image?.url || DefaultImageFallback.placeholder;
   const brandLogo = item.acf?.brand_logo?.url;
   return (
     <ProgressBarLink href={`/brands/${item.id}`}>

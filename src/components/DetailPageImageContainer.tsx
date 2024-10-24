@@ -2,13 +2,14 @@ import { BrandDetails } from '@/interfaces/brand';
 import { Box, Card } from '@mui/material';
 import React from 'react';
 import Image from 'next/image';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface DetailPageImageContainerProps {
   item: BrandDetails;
 }
 
 const DetailPageImageContainer: React.FC<DetailPageImageContainerProps> = ({ item }) => {
-  const productImage = item?.acf?.brand_image?.sizes?.large || '/img/placeholder-image.jpg';
+  const productImage = item?.acf?.brand_image?.sizes?.large || DefaultImageFallback.placeholder;
   const brandLogo = item?.acf?.brand_logo?.url;
   return (
     <Card

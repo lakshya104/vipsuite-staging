@@ -10,6 +10,7 @@ import he from 'he';
 import { get } from 'lodash';
 import RemoveAllItemsBtn from '../RemoveAllItemsBtn';
 import ErrorFallback from '../ErrorFallback';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface BasketCardProps {
   cartData: Cart;
@@ -32,7 +33,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTr
         {cartItems?.length > 0 ? (
           <>
             {cartItems.map((product) => {
-              const productImage = product?.images[0]?.src || '/img/placeholder-image.jpg';
+              const productImage = product?.images[0]?.src || DefaultImageFallback.placeholder;
               return (
                 <Box className="basket-product__item" key={product.id}>
                   <Image src={productImage} alt={product?.name} height={110} width={110} />
