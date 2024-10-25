@@ -65,3 +65,7 @@ export async function createVipFollowersCookie(followers: string) {
 export async function deleteVipVipFollowersCookie() {
   cookies().delete('followers');
 }
+
+export async function getVipIdCookie() {
+  return cookies().get('vipId');
+}

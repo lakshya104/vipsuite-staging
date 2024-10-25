@@ -171,24 +171,28 @@ export const GetAgentProfile = async () => {
   });
 };
 
-export const GetDashboardContent = async (token: string, vipId: number) => {
-  return await FetchInstance(Endpoints.getDashboardContent, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'vip-profile-id': vipId?.toString(),
-    },
-    next: { tags: [TAGS.GET_DASHBOARD_CONTENT] },
-  });
+export const GetDashboardContent = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getDashboardContent);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch dashboard content');
+  }
 };
 
-export const GetDashboard = async (token: string, vipId: number) => {
-  return await FetchInstance(Endpoints.getDashboard, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'vip-profile-id': vipId?.toString(),
-    },
-    next: { tags: [TAGS.GET_DASHBOARD] },
-  });
+export const GetDashboard = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getDashboard);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch dashboard');
+  }
 };
 
 export const GetVipSearch = async (keyword: string, token: string, vipId: number) => {
@@ -422,14 +426,16 @@ export const CreateOrder = async (data: any, token: string, nonce: string, vipId
   }
 };
 
-export const GetVipOpportunities = async (token: string, vipId: number | string) => {
-  return await FetchInstance(Endpoints.getVipOpportunities, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'vip-profile-id': vipId?.toString(),
-    },
-    next: { tags: [TAGS.GET_OPPORTUNITY] },
-  });
+export const GetVipOpportunities = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getVipOpportunities);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Opportunities');
+  }
 };
 
 export const SendRsvp = async (data: FormData, token: string | null, vipId: number) => {
@@ -543,14 +549,16 @@ export const DeleteAddress = async (vipId: number, addressId: string, token: str
   }
 };
 
-export const GetVipOpportunityDetails = async (id: number, token: string, vipId: number) => {
-  return await FetchInstance(Endpoints.getVipOpportunityDetails(id), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'vip-profile-id': vipId?.toString(),
-    },
-    next: { tags: [TAGS.GET_OPPORTUNITY_DETAILS] },
-  });
+export const GetVipOpportunityDetails = async (id: number) => {
+  try {
+    const response = await Instance.get(Endpoints.getVipOpportunityDetails(id));
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Opportunities');
+  }
 };
 
 export const OrderFeedback = async (
@@ -739,13 +747,16 @@ export const GetPageContent = async (slug: string) => {
   return await FetchInstance(Endpoints.getPageContent(slug));
 };
 
-export const GetAllVips = async (token: string) => {
-  return await FetchInstance(Endpoints.getAllVip, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    next: { tags: [TAGS.GET_VIP_CART] },
-  });
+export const GetAllVips = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getAllVip);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Opportunities');
+  }
 };
 
 export const GetMenuItems = async () => {

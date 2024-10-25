@@ -1,11 +1,13 @@
+'use client';
+import React from 'react';
+import { get } from 'lodash';
 import { formatDateWithMonth } from '@/helpers/utils';
 import { UserProfile } from '@/interfaces';
 import { Grid, Paper, Typography } from '@mui/material';
-import { get } from 'lodash';
-import React from 'react';
 
 interface ProfileComponentProps {
   profileDetails: UserProfile;
+  isAgent?: boolean;
 }
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
@@ -72,7 +74,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   );
 };
 
-export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent }) => {
   const contactData = [
     {
       type: 'Email',
@@ -82,6 +84,14 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
       type: 'Phone',
       primary: get(profileDetails, 'acf.phone', ''),
     },
+    ...(isAgent
+      ? [
+          {
+            type: 'Company',
+            primary: get(profileDetails, 'acf.company_name', ''),
+          },
+        ]
+      : []),
   ];
 
   const filteredContactData = contactData.filter((contact) => contact.primary);

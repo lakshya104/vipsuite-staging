@@ -35,7 +35,7 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
         <Image src={itemImage} width={100} height={100} alt={name} className="profileImage" />
         <Box className="info">
           <Box className="editProfileContainer">
-            <Typography variant="body1" className="name">
+            <Typography variant="body1" className="name" gutterBottom>
               {name}
             </Typography>
             {status === ProfileStatus.Pending && (
@@ -50,7 +50,7 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
               alt={name}
               style={{ width: 18, height: 18, marginRight: 10 }}
             />
-            {instaFollowers || 0}
+            {instaFollowers || 'NA'}
           </Typography>
           <Typography variant="body2" className="socialFollowers">
             <Image
@@ -60,7 +60,7 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
               alt={name}
               style={{ width: 18, height: 18, marginRight: 10 }}
             />
-            {tiktokFollowers || 0}
+            {tiktokFollowers || 'NA'}
           </Typography>
           <Box className="statusContainer">
             <Typography variant="body1" className="status">

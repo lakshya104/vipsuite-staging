@@ -12,16 +12,14 @@ import Toaster from '../Toaster';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
-  token: string;
-  vipId: number;
 }
 
-const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity, vipId, token }) => {
+const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
   const images = opportunity?.acf?.gallery?.map((item) => item.url) || [];
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [toasterMessage, setToasterMessage] = useState('');
-  const [toasterType, setToasterType] = useState('');
+  const [toasterMessage, setToasterMessage] = useState<string>('');
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => {
@@ -49,7 +47,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         {opportunity.title.rendered}
       </Typography>
       <Box>
-        <ImageSlider images={images} withLikeIcon={true} item={opportunity} token={token} vipId={vipId} />
+        <ImageSlider images={images} withLikeIcon={true} item={opportunity} />
       </Box>
       <CardContent>
         <OpportunityTabs opportunity={opportunity} />

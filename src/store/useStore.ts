@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
+import { UserRole } from '@/helpers/enums';
 import { create } from 'zustand';
 import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
 
@@ -42,14 +43,14 @@ export const useRequestOnlyStore = create<RequestOnlyState>((set) => ({
 interface UserInfoState {
   vipIdStore: any;
   tokenStore: string | null;
-  userRoleStore: string | null;
+  userRoleStore: UserRole | null;
   userEmailStore: string | null;
   clearVipIdStore: () => void;
   setVipIdStore: (id: any) => void;
   clearTokenStore: () => void;
   setTokenStore: (token: string) => void;
   clearUserRoleStore: () => void;
-  setUserRoleStore: (role: string) => void;
+  setUserRoleStore: (role: UserRole) => void;
   setUserEmailStore: (email: any) => void;
   clearUserEmailStore: () => void;
   clearAll: () => void;

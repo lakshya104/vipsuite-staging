@@ -17,6 +17,7 @@ const AgentProfilePage = async () => {
     if (!profileDetails) {
       return <ErrorFallback errorMessage="Not able to show Profile currently." />;
     }
+
     return (
       <>
         <Box className="user-profile__info" textAlign={'center'} mb={3}>
@@ -36,7 +37,7 @@ const AgentProfilePage = async () => {
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', width: '80%', justifyContent: 'center' }}>
-            <ContactsComponent profileDetails={profileDetails} />
+            <ContactsComponent profileDetails={profileDetails} isAgent={true} />
           </Box>
         </Box>
       </>

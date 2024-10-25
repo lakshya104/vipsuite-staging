@@ -10,8 +10,6 @@ interface SliderProps {
   images: string[];
   withLikeIcon?: boolean;
   item: OpportunityDetails;
-  token: string;
-  vipId: number;
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
