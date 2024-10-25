@@ -171,9 +171,14 @@ export const GetAgentProfile = async () => {
   });
 };
 
-export const GetDashboardContent = async () => {
+export const GetDashboardContent = async (vipId: number, token: string) => {
   try {
-    const response = await Instance.get(Endpoints.getDashboardContent);
+    const response = await Instance.get(Endpoints.getDashboardContent, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -183,9 +188,14 @@ export const GetDashboardContent = async () => {
   }
 };
 
-export const GetDashboard = async () => {
+export const GetDashboard = async (vipId: number, token: string) => {
   try {
-    const response = await Instance.get(Endpoints.getDashboard);
+    const response = await Instance.get(Endpoints.getDashboard, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -426,9 +436,14 @@ export const CreateOrder = async (data: any, token: string, nonce: string, vipId
   }
 };
 
-export const GetVipOpportunities = async () => {
+export const GetVipOpportunities = async (vipId: number, token: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipOpportunities);
+    const response = await Instance.get(Endpoints.getVipOpportunities, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -549,9 +564,14 @@ export const DeleteAddress = async (vipId: number, addressId: string, token: str
   }
 };
 
-export const GetVipOpportunityDetails = async (id: number) => {
+export const GetVipOpportunityDetails = async (id: number, vipId: number, token: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipOpportunityDetails(id));
+    const response = await Instance.get(Endpoints.getVipOpportunityDetails(id), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -747,9 +767,13 @@ export const GetPageContent = async (slug: string) => {
   return await FetchInstance(Endpoints.getPageContent(slug));
 };
 
-export const GetAllVips = async () => {
+export const GetAllVips = async (token: string) => {
   try {
-    const response = await Instance.get(Endpoints.getAllVip);
+    const response = await Instance.get(Endpoints.getAllVip, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

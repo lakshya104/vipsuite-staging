@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetAllVips } from '@/libs/api-manager/manager';
+import { GetAllVips, GetSession } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import MyVipsListing from '@/components/MyVipsListing';
 import { ProfileStatus } from '@/helpers/enums';
@@ -15,7 +15,8 @@ export interface MyVips {
 }
 
 const MyVipPage = async () => {
-  const myVips: MyVips[] = await GetAllVips();
+  const { token } = await GetSession();
+  const myVips: MyVips[] = await GetAllVips(token);
   if (!myVips || myVips.length === 0) {
     return (
       <ErrorFallback

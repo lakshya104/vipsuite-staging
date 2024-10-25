@@ -10,6 +10,7 @@ import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
 import { useUserInfoStore } from '@/store/useStore';
+import { UserRole } from '@/helpers/enums';
 
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
@@ -17,7 +18,7 @@ interface DashboardItemsContainerProps {
   vipId: number;
   token: string;
   totalFollowerCount?: number;
-  userRole: string;
+  userRole: UserRole;
   userEmail: string;
 }
 
