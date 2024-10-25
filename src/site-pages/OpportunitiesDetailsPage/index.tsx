@@ -1,9 +1,9 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import OpportunityDetailsCard from '@/components/OpportunityDetails';
 import { GetSession, GetVipOpportunityDetails } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
-import { cookies } from 'next/headers';
 import { CookieName } from '@/helpers/enums';
 import { getVipId } from '@/helpers/utils';
 

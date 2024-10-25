@@ -1,10 +1,10 @@
 import React from 'react';
+import { cookies } from 'next/headers';
 import { isUndefined } from 'lodash';
 import { GetSession, GetVipOpportunities } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import OpportunitiesContainer from '@/components/OpportunitiesContainer';
 import { Opportunity } from '@/interfaces/opportunities';
-import { cookies } from 'next/headers';
 import { CookieName } from '@/helpers/enums';
 import { getVipId } from '@/helpers/utils';
 
