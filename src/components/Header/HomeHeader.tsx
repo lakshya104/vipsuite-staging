@@ -139,6 +139,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
         openToaster('Error during logging out. ' + error);
       } finally {
         await deleteVipCookies();
+        localStorage.clear(); 
       }
     }
   };

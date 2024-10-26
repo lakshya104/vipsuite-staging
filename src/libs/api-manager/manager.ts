@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { VipSignUpRequestBody, UserProfile, AddressInput, Session } from '@/interfaces';
 import { Endpoints } from './constants';
-import { FetchInstance, Instance } from './instance';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 import TAGS from '../apiTags';
+import { FetchInstance, Instance } from './instance';
 
 export const GetToken = async () => {
   const session = await auth();

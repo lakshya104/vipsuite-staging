@@ -35,7 +35,6 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const postId = item?.id;
   const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
   const image = getImage(item);
-
   return (
     <ProgressBarLink href={`${postPath}/${postId}`}>
       <Box className="dashboard-card">
