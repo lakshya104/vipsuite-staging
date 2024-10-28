@@ -14,13 +14,12 @@ import { DefaultImageFallback } from '@/helpers/enums';
 
 interface BasketCardProps {
   cartData: Cart;
-  token: string;
   nonce: string;
   onNext: () => void;
   startTransition: typeof import('react').startTransition;
 }
 
-const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTransition, onNext }) => {
+const BasketCard: React.FC<BasketCardProps> = ({ cartData, nonce, startTransition, onNext }) => {
   const cartItems = get(cartData, 'items', []);
   return (
     <Fragment>
@@ -67,12 +66,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTr
                       </>
                     )}
                   </Box>
-                  <DeleteItemFromCartBtn
-                    itemKey={product.key}
-                    token={token}
-                    nonce={nonce}
-                    startTransition={startTransition}
-                  />
+                  <DeleteItemFromCartBtn itemKey={product.key} nonce={nonce} startTransition={startTransition} />
                 </Box>
               );
             })}
@@ -85,7 +79,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, token, nonce, startTr
                 flexDirection: { xs: 'column-reverse', md: 'row' },
               }}
             >
-              <RemoveAllItemsBtn token={token} nonce={nonce} startTransition={startTransition} />
+              <RemoveAllItemsBtn nonce={nonce} startTransition={startTransition} />
               <ContinueToCartBtn onNext={onNext} />
             </Box>
           </>

@@ -7,22 +7,21 @@ import { revalidateTag } from '@/libs/actions';
 import { RemoveAllVipCartItems } from '@/libs/api-manager/manager';
 
 interface RemoveAllItemsBtnProps {
-  token: string;
   nonce: string;
   startTransition: typeof import('react').startTransition;
 }
 
-const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ token, nonce, startTransition }) => {
+const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ nonce, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const removeProduct = async (token: string, nonce: string) => {
+  const removeProduct = async (nonce: string) => {
     startTransition(async () => {
       try {
-        await RemoveAllVipCartItems(token, nonce);
+        await RemoveAllVipCartItems(nonce);
         await revalidateTag('getVipCart');
       } catch (error) {
         openToaster('Error : ' + String(error));
@@ -39,7 +38,7 @@ const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ token, nonce, sta
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
-        onConfirm={() => removeProduct(token, nonce)}
+        onConfirm={() => removeProduct(nonce)}
         title="Remove all items From Cart"
         description="Are you sure you want to remove all items from the cart?"
       />

@@ -9,11 +9,9 @@ import { Address } from '@/interfaces';
 
 interface AddressListingProps {
   addresses: Address[];
-  token: string;
-  vipId: number;
 }
 
-const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId }) => {
+const AddressListing: React.FC<AddressListingProps> = ({ addresses }) => {
   const [isPending, startTransition] = useTransition();
   return (
     <Box>
@@ -35,12 +33,7 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses, token, vipId
                 <ProgressBarLink href={`/my-addresses/edit/${add.unique_id}`}>
                   <EditOutlinedIcon />
                 </ProgressBarLink>
-                <DeleteAddressBtn
-                  token={token}
-                  vipId={vipId}
-                  addressId={add.unique_id}
-                  startTransition={startTransition}
-                />
+                <DeleteAddressBtn addressId={add.unique_id} startTransition={startTransition} />
               </Box>
             </Box>
           );

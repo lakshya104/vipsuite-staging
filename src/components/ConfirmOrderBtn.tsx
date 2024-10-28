@@ -22,21 +22,13 @@ const dialogBoxContent = {
 };
 interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
-  token: string;
   cartData: Cart;
   nonce: string;
   startTransition: typeof import('react').startTransition;
   vipId: number;
 }
 
-const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
-  selectedAddress,
-  cartData,
-  nonce,
-  token,
-  startTransition,
-  vipId,
-}) => {
+const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cartData, nonce, startTransition }) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -108,7 +100,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     };
     try {
       startTransition(async () => {
-        await CreateOrder(orderDetails, token, nonce, vipId);
+        await CreateOrder(orderDetails, nonce);
         increaseOrderCount();
         setIsDialogOpen(true);
         clearLookbookDescription();
@@ -118,7 +110,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       openToaster(error?.toString() ?? 'Error processing Order');
     } finally {
       if (!isRequestedProduct && !isLookbookOrder) {
-        await RemoveAllVipCartItems(token, nonce);
+        await RemoveAllVipCartItems(nonce);
       }
       await revalidateTag(TAGS.GET_MYORDERS);
       await revalidateTag(TAGS.GET_VIP_CART);

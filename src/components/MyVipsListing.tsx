@@ -2,8 +2,8 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import MyVipCard from './MyVipCard';
-import { MyVips } from '@/site-pages/MyVipsPage';
 import { ProfileStatus } from '@/helpers/enums';
+import { MyVips } from '@/interfaces';
 
 interface MyVipsListingProps {
   myVips: MyVips[];

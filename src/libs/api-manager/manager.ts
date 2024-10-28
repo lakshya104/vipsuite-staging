@@ -6,6 +6,7 @@ import {
   Session,
   BrandSignUpRequestBody,
   AgentSignUpRequestBody,
+  OrderFeedbackData,
 } from '@/interfaces';
 import { Endpoints } from './constants';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
@@ -362,73 +363,60 @@ export const GetVipCart = async (token: string) => {
   });
 };
 
-export const RemoveVipCartItem = async (key: string, token: string, nonce: string) => {
+export const RemoveVipCartItem = async (key: string, nonce: string) => {
   try {
     const response = await Instance.post(
       Endpoints.removeVipCartItem(key),
       {},
       {
         headers: {
-          Authorization: `Bearer ${token}`,
           'X-WC-Store-API-Nonce': nonce,
         },
       },
     );
     return response.data;
   } catch (error) {
-    console.error('Error during removing cart item:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during removing item';
-      throw errorMessage;
-    }
+    console.error(error);
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred during removing item from cart';
+    throw new Error(errorMessage);
   }
 };
 
-export const RemoveAllVipCartItems = async (token: string, nonce: string) => {
+export const RemoveAllVipCartItems = async (nonce: string) => {
   try {
     const response = await Instance.delete(Endpoints.removeAllCartItems, {
       headers: {
-        Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error during removing cart item:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during removing item';
-      throw errorMessage;
-    }
+    console.error(error);
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred during removing items from cart';
+    throw new Error(errorMessage);
   }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CreateOrder = async (data: any, token: string, nonce: string, vipId: number) => {
+export const CreateOrder = async (data: any, nonce: string) => {
   try {
     const response = await Instance.post(Endpoints.createOrder, data, {
       headers: {
-        Authorization: `Bearer ${token}`,
         'X-WC-Store-API-Nonce': nonce,
-        'vip-profile-id': vipId?.toString(),
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error during creating order:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during creating order';
-      throw errorMessage;
-    }
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during creating order';
+    throw new Error(errorMessage);
   }
 };
 
-export const GetVipOpportunities = async (vipId: number, token: string) => {
+export const GetVipOpportunities = async () => {
   try {
-    const response = await Instance.get(Endpoints.getVipOpportunities, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
+    const response = await Instance.get(Endpoints.getVipOpportunities);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -498,65 +486,9 @@ export const GetVipWishlistItems = async (token: string, vipId: number | string)
   });
 };
 
-export const GetAddresses = async (token: string, vipId: number | string) => {
-  return await FetchInstance(Endpoints.getAddresses, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'vip-profile-id': vipId?.toString(),
-    },
-    next: { tags: [TAGS.GET_ADDRESSES] },
-  });
-};
-
-export const addUpdateAddress = async (
-  id: number,
-  token: string,
-  address: AddressInput,
-  addressId: string | undefined,
-) => {
+export const GetAddresses = async () => {
   try {
-    let url = `${Endpoints.getAddresses}`;
-    if (addressId) url = `${Endpoints.getAddresses}/${addressId}`;
-    const response = await Instance.post(url, address, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': id?.toString(),
-      },
-    });
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during add address';
-      throw errorMessage;
-    }
-  }
-};
-
-export const DeleteAddress = async (vipId: number, addressId: string, token: string) => {
-  try {
-    const response = await Instance.delete(Endpoints.deleteAddress(addressId), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during add address';
-      throw errorMessage;
-    }
-  }
-};
-
-export const GetVipOpportunityDetails = async (id: number, vipId: number, token: string) => {
-  try {
-    const response = await Instance.get(Endpoints.getVipOpportunityDetails(id), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
+    const response = await Instance.get(Endpoints.getAddresses);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -566,12 +498,47 @@ export const GetVipOpportunityDetails = async (id: number, vipId: number, token:
   }
 };
 
+export const addUpdateAddress = async (address: AddressInput, addressId: string | undefined) => {
+  try {
+    let url = `${Endpoints.getAddresses}`;
+    if (addressId) url = `${Endpoints.getAddresses}/${addressId}`;
+    const response = await Instance.post(url, address);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during adding address';
+    throw new Error(errorMessage);
+  }
+};
+
+export const DeleteAddress = async (addressId: string) => {
+  try {
+    const response = await Instance.delete(Endpoints.deleteAddress(addressId));
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during deleting address';
+    throw new Error(errorMessage);
+  }
+};
+
+export const GetVipOpportunityDetails = async (id: number) => {
+  try {
+    const response = await Instance.get(Endpoints.getVipOpportunityDetails(id));
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Opportunity Details');
+  }
+};
+
 export const OrderFeedback = async (
   token: string,
   vipId: number | string,
   orderNumber: number,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any,
+  data: OrderFeedbackData,
 ) => {
   try {
     const response = await Instance.post(Endpoints.orderFeedback(orderNumber), data, {
@@ -619,21 +586,17 @@ export const GetNonce = async (token: string) => {
   return nonce;
 };
 
-export const FetchCartItemsAndNonce = async (token: string) => {
+export const FetchCartItemsAndNonce = async () => {
   try {
-    const response = await Instance.get(Endpoints.getVipCart, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await Instance.get(Endpoints.getVipCart);
     const nonce = response.headers['nonce'];
     const items = response.data;
     return { items, nonce };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during fetching cart items';
-      throw errorMessage;
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
+    throw new Error('Failed to fetch Cart Content');
   }
 };
 
@@ -756,26 +719,30 @@ export const GetPageContent = async (slug: string) => {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
-    throw new Error('Failed to fetch Opportunities');
+    throw new Error('Failed to fetch page content');
   }
 };
 
-export const GetAllVips = async (token: string) => {
+export const GetAllVips = async () => {
   try {
-    const response = await Instance.get(Endpoints.getAllVip, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await Instance.get(Endpoints.getAllVip);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
-    throw new Error('Failed to fetch Opportunities');
+    throw new Error('Failed to fetch Vips');
   }
 };
 
 export const GetMenuItems = async () => {
-  return await FetchInstance(Endpoints.getMenuItems);
+  try {
+    const response = await Instance.get(Endpoints.getMenuItems);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Menu Items');
+  }
 };

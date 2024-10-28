@@ -8,12 +8,11 @@ import SelectAddressForm from '../SelectAddressForm';
 
 interface OrderJourneyProps {
   addresses: Address[];
-  token: string;
   cartData: Cart;
   nonce: string;
 }
 
-const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, cartData, nonce }) => {
+const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData, nonce }) => {
   const searchParams = useSearchParams();
   const step = searchParams.get('step');
   const currentStep = step === '1' ? step : 0;
@@ -38,18 +37,11 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, token, cartData,
   return (
     <Fragment>
       {activeStep === 0 && (
-        <BasketCard
-          cartData={cartData}
-          token={token}
-          nonce={nonce}
-          onNext={handleNext}
-          startTransition={startTransition}
-        />
+        <BasketCard cartData={cartData} nonce={nonce} onNext={handleNext} startTransition={startTransition} />
       )}
       {activeStep === 1 && (
         <SelectAddressForm
           addresses={addresses}
-          token={token}
           cartData={cartData}
           nonce={nonce}
           onPrevious={handleBack}

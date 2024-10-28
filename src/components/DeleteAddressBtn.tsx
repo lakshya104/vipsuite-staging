@@ -9,23 +9,21 @@ import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
 
 interface DeleteAddressBtnProps {
-  token: string;
-  vipId: number;
   addressId: string;
   startTransition: typeof import('react').startTransition;
 }
 
-const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, token, startTransition }) => {
+const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ addressId, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const deleteAddress = async (vipId: number, addressId: string, token: string) => {
+  const deleteAddress = async (addressId: string) => {
     startTransition(async () => {
       try {
-        const res = await DeleteAddress(vipId, addressId, token);
+        const res = await DeleteAddress(addressId);
         setToasterType('success');
         openToaster(res?.message);
       } catch (error) {
@@ -44,7 +42,7 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ vipId, addressId, t
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
-        onConfirm={() => deleteAddress(vipId, addressId, token)}
+        onConfirm={() => deleteAddress(addressId)}
         title="Delete Address"
         description={'Are you sure you want to delete the address?'}
       />

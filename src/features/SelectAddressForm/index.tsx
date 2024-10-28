@@ -11,7 +11,6 @@ import { useUserInfoStore } from '@/store/useStore';
 
 interface SelectAddressFormProps {
   addresses: Address[];
-  token: string;
   cartData: Cart;
   nonce: string;
   onPrevious?: () => void;
@@ -19,7 +18,6 @@ interface SelectAddressFormProps {
 }
 const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   addresses,
-  token,
   cartData,
   nonce,
   onPrevious,
@@ -63,7 +61,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
           <Box className="address__list-action">
             <ConfirmOrderBtn
               selectedAddress={selectedAddress}
-              token={token}
               cartData={cartData}
               nonce={nonce}
               startTransition={startTransition}

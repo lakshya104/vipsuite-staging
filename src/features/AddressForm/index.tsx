@@ -11,8 +11,6 @@ import Btn from '@/components/Button/CommonBtn';
 import UseToaster from '@/hooks/useToaster';
 import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
-import revalidateTag from '@/libs/actions';
-import TAGS from '@/libs/apiTags';
 import revalidatePathAction from '@/libs/actions';
 
 type FormFieldNames =
@@ -28,13 +26,11 @@ type FormFieldNames =
   | 'company';
 
 interface AddressFormProps {
-  userId: number;
-  token: string;
   defaultValues: AddAddressFormValue;
   addressId?: string;
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues, addressId }) => {
+const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
@@ -53,7 +49,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
   const onSubmit = async (data: AddAddressFormValue) => {
     setIsLoading(true);
     try {
-      await addUpdateAddress(userId, token, data, addressId);
+      await addUpdateAddress(data, addressId);
       if (search === 'order-journey') {
         await revalidatePathAction('/basket?step=1');
         router.push('/basket?step=1');
@@ -62,10 +58,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ userId, token, defaultValues,
         router.push('/my-addresses');
       }
     } catch (error) {
-      openToaster('Error during adding address: ' + error);
+      openToaster(String(error));
       setIsLoading(false);
     } finally {
-      await revalidateTag(TAGS.GET_ADDRESSES);
       router.refresh();
     }
   };

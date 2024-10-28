@@ -18,6 +18,14 @@ export const phoneValidation = z
   .optional()
   .or(z.literal(''));
 
+export const phoneRequiredValidation = z
+  .string()
+  .regex(/^\+?([1-9]\d?)\d{10}$/, {
+    message: en.signup.errorMessage.phoneValidation,
+  })
+  .min(11, { message: en.signup.errorMessage.phoneValidation })
+  .max(15, { message: en.signup.errorMessage.phoneValidation });
+
 export const optionalEmailValidation = z
   .string()
   .email({ message: en.signup.errorMessage.email })

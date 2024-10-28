@@ -9,22 +9,21 @@ import DialogConfirmBox from './Dialog/DialogConfirm';
 
 interface DeleteItemFromCartBtnProps {
   itemKey: string;
-  token: string;
   nonce: string;
   startTransition: typeof import('react').startTransition;
 }
 
-const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, token, nonce, startTransition }) => {
+const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, nonce, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const removeProduct = async (itemKey: string, token: string, nonce: string) => {
+  const removeProduct = async (itemKey: string, nonce: string) => {
     startTransition(async () => {
       try {
-        await RemoveVipCartItem(itemKey, token, nonce);
+        await RemoveVipCartItem(itemKey, nonce);
         await revalidateTag('getVipCart');
       } catch (error) {
         openToaster('Error : ' + String(error));
@@ -40,7 +39,7 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, 
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
-        onConfirm={() => removeProduct(itemKey, token, nonce)}
+        onConfirm={() => removeProduct(itemKey, nonce)}
         title="Delete Product From Cart"
         description="Are you sure you want to delete this product from the cart?"
       />

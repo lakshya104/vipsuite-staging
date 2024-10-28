@@ -8,3 +8,5 @@ export * from './my-events';
 export * from './address';
 export * from './wishlistItems';
 export * from './dashboard';
+export * from './vips';
+export * from './apiDataBody';
