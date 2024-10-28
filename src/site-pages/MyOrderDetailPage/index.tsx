@@ -30,9 +30,7 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
         )}
         {orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
       </Box>
-      {!orderDetail?.is_feedback_provided && (
-        <FeedbackForm type="order" token={token} vipId={vipId} orderId={orderDetail?.id} />
-      )}
+      {!orderDetail?.is_feedback_provided && <FeedbackForm type="order" orderId={orderDetail?.id} />}
     </>
   );
 };

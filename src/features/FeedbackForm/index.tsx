@@ -50,12 +50,10 @@ const defaultEventValues: EventFeedbackFormValues = {
 };
 interface FeedbackFormProps {
   type: 'order' | 'event';
-  token: string;
-  vipId: number | string;
   orderId: number;
 }
 
-const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId }) => {
+const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
   const schema = type === 'order' ? orderFeedbackSchema : eventFeedbackSchema;
   const defaultValues = type === 'order' ? defaultOrderValues : defaultEventValues;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -105,7 +103,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
           social_media_post_url: data.socialPostUrl,
           screenshot: screenshotBase64,
         };
-        await OrderFeedback(token, vipId, orderId, feedback);
+        await OrderFeedback(orderId, feedback);
         setIsSubmitted(true);
         setToasterType('success');
         openToaster('Your feedback has been successfully submitted!');
@@ -128,7 +126,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, token, vipId, orderId
           screenshot: screenshotBase64,
           rating: data.rating,
         };
-        await EventFeedback(token, vipId, orderId, feedback);
+        await EventFeedback(orderId, feedback);
         setIsSubmitted(true);
         setToasterType('success');
         openToaster('Your feedback has been successfully submitted!');

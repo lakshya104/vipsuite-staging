@@ -10,10 +10,9 @@ import { DefaultImageFallback } from '@/helpers/enums';
 
 interface EventDetailsCardProps {
   event: EventDetails;
-  token: string;
 }
 
-const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => {
+const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
   const eventDetail = wrapInParagraph(event?.acf?.event_details);
 
   return (
@@ -55,7 +54,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, token }) => 
         </Typography>
         <Box dangerouslySetInnerHTML={{ __html: eventDetail || '' }} />
       </Box>
-      <EventsDialog event={event} token={token} />
+      <EventsDialog event={event}  />
     </Box>
   );
 };

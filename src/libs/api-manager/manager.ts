@@ -344,14 +344,16 @@ export const GetOrderById = async (id: number, token: string, vipId: number | st
   });
 };
 
-export const GetVipEventDetails = async (id: number, token: string, vipId: number | string) => {
-  return await FetchInstance(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'vip-profile-id': vipId?.toString(),
-    },
-    next: { tags: [TAGS.GET_EVENT_DETAILS] },
-  });
+export const GetVipEventDetails = async (id: number) => {
+  try {
+    const response = await Instance.get(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Opportunities');
+  }
 };
 
 export const GetVipCart = async (token: string) => {
@@ -426,23 +428,18 @@ export const GetVipOpportunities = async () => {
   }
 };
 
-export const SendRsvp = async (data: FormData, token: string | null, vipId: number) => {
+export const SendRsvp = async (data: FormData) => {
   try {
     const response = await Instance.post(Endpoints.sendRsvp, data, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
         'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;
   } catch (error) {
     console.error('Error during sending Rsvp:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during submitting response';
-      throw new Error(`Not able to submit response ${errorMessage}`);
-    }
-    throw new Error('An unexpected error occurred');
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending Rsvp';
+    throw new Error(errorMessage);
   }
 };
 
@@ -460,10 +457,8 @@ export const LogOut = async (token: string) => {
     return response.data;
   } catch (error) {
     console.error('Error during signing out:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error?.message || 'An error occurred during signing out';
-      throw errorMessage;
-    }
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during signing out';
+    throw new Error(errorMessage);
   }
 };
 
@@ -534,25 +529,14 @@ export const GetVipOpportunityDetails = async (id: number) => {
   }
 };
 
-export const OrderFeedback = async (
-  token: string,
-  vipId: number | string,
-  orderNumber: number,
-  data: OrderFeedbackData,
-) => {
+export const OrderFeedback = async (orderNumber: number, data: OrderFeedbackData) => {
   try {
-    const response = await Instance.post(Endpoints.orderFeedback(orderNumber), data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
+    const response = await Instance.post(Endpoints.orderFeedback(orderNumber), data);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during submitting feedback';
-      throw errorMessage;
-    }
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending Rsvp';
+    throw new Error(errorMessage);
   }
 };
 
@@ -601,25 +585,17 @@ export const FetchCartItemsAndNonce = async () => {
 };
 
 export const EventFeedback = async (
-  token: string,
-  vipId: number | string,
   eventId: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any,
 ) => {
   try {
-    const response = await Instance.post(Endpoints.eventFeedback(eventId), data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
+    const response = await Instance.post(Endpoints.eventFeedback(eventId), data);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during submitting feedback';
-      throw errorMessage;
-    }
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during submitting Feedback';
+    throw new Error(errorMessage);
   }
 };
 
@@ -638,10 +614,9 @@ export const AddToWishlist = async (token: string, vipId: any, postId: number) =
     );
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred while adding item to wishlist';
-      throw errorMessage;
-    }
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during adding to wishlist';
+    throw new Error(errorMessage);
   }
 };
 

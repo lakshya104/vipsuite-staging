@@ -6,7 +6,6 @@ import { formatDateWithOrdinalAndTime } from '@/helpers/utils';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
-import { useUserInfoStore } from '@/store/useStore';
 
 interface RSVPProps {
   onClose: () => void;
@@ -28,7 +27,6 @@ const defaultValues: RsvpFormValues = {
 
 const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, handleToasterMessage }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const { vipIdStore, tokenStore } = useUserInfoStore();
   const { handleSubmit, setValue, reset } = useForm<RsvpFormValues>({
     defaultValues,
   });
@@ -47,7 +45,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         formData.append(key, valueToAppend);
       });
       try {
-        const res = await SendRsvp(formData, tokenStore, vipIdStore);
+        const res = await SendRsvp(formData);
         revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
         handleToasterMessage('success', res?.message);
       } catch (error) {
@@ -71,7 +69,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         formData.append(key, valueToAppend);
       });
       try {
-        const res = await SendRsvp(formData, tokenStore, vipIdStore);
+        const res = await SendRsvp(formData);
         revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
         handleToasterMessage('success', res?.message);
       } catch (error) {

@@ -9,9 +9,8 @@ import Toaster from './Toaster';
 
 interface EventsDialogProps {
   event: EventDetails;
-  token: string;
 }
-const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
+const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const router = useRouter();
@@ -61,7 +60,6 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, token }) => {
             onClose={handleDialogClose}
             event={event}
             onConfirmation={handleConfirmationOpen}
-            token={token}
             handleToasterMessage={handleToasterMessage}
           />
         </DialogContent>

@@ -9,14 +9,12 @@ import { SendRsvp } from '@/libs/api-manager/manager';
 import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
 import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
-import { useUserInfoStore } from '@/store/useStore';
 import { InputTextAreaFormField } from '../InputTextFormField';
 
 interface RSVPProps {
   onClose: () => void;
   onConfirmation: () => void;
   event: EventDetails;
-  token: string;
   // eslint-disable-next-line no-unused-vars
   handleToasterMessage: (type: 'error' | 'success', message: string) => void;
 }
@@ -34,9 +32,8 @@ const adventureGolfOptions = [
   { value: 'no', label: 'No' },
 ];
 
-const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, handleToasterMessage }) => {
+const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToasterMessage }) => {
   const [isePending, setIsPending] = useState<boolean>(false);
-  const { vipIdStore } = useUserInfoStore();
   const {
     control,
     handleSubmit,
@@ -65,7 +62,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         formData.append(key, valueToAppend);
       });
       try {
-        const res = await SendRsvp(formData, token, vipIdStore);
+        const res = await SendRsvp(formData);
         revalidateTag('getEventDetails');
         handleToasterMessage('success', res?.message);
       } catch (error) {
@@ -90,7 +87,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, token, hand
         formData.append(key, valueToAppend);
       });
       try {
-        const res = await SendRsvp(formData, token, vipIdStore);
+        const res = await SendRsvp(formData);
         revalidateTag('getEventDetails');
         handleToasterMessage('success', res?.message);
         onConfirmation();

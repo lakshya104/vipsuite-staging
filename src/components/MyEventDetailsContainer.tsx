@@ -9,12 +9,10 @@ import { EventDetails } from '@/interfaces/events';
 
 interface MyEventDetailsContainerProps {
   eventDetails: EventDetails;
-  token: string;
-  id: number;
   eventId: number;
 }
 
-const MyEventDetailsContainer: React.FC<MyEventDetailsContainerProps> = ({ eventDetails, token, id, eventId }) => {
+const MyEventDetailsContainer: React.FC<MyEventDetailsContainerProps> = ({ eventDetails, eventId }) => {
   return (
     <Container>
       <Typography className="page-title" variant="h2" align="center" gutterBottom>
@@ -33,7 +31,7 @@ const MyEventDetailsContainer: React.FC<MyEventDetailsContainerProps> = ({ event
         </Typography>
       </Box>
       {!eventDetails?.acf?.is_feedback_provided && (
-        <FeedbackForm type="event" token={token} vipId={id} orderId={eventId} />
+        <FeedbackForm type="event" orderId={eventId} />
       )}
     </Container>
   );
