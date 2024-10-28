@@ -53,7 +53,7 @@ const ResetPasswordForm = () => {
     reset();
     try {
       const data = {
-        email: email ?? '', 
+        email: email ?? '',
         code: Number(values.code),
         password: values.password,
       };

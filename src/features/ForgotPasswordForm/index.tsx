@@ -12,6 +12,7 @@ import DialogBox from '@/components/Dialog';
 import './ForgotPasswordForm.scss';
 import { ForgotPassword } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
+import { requiredEmailValidation } from '@/helpers/validations';
 
 const ForgotPasswordForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -36,7 +37,7 @@ const ForgotPasswordForm = () => {
   };
 
   const ForgotPasswordSchema = z.object({
-    email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
+    email: requiredEmailValidation,
   });
 
   type ForgotPasswordFormValues = z.infer<typeof ForgotPasswordSchema>;

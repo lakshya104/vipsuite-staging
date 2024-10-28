@@ -1,8 +1,9 @@
 import { z } from 'zod';
+import { interestValidation, typeOfContentValidation } from '@/helpers/validations';
 
 export const interestSchema = z.object({
-  interests: z.array(z.string()).min(1, { message: 'Please select one interest' }),
-  type_of_content_create: z.array(z.string()).min(1, { message: 'Please select one content creation type' }),
+  interests: interestValidation,
+  type_of_content_create: typeOfContentValidation,
 });
 
 export type FormValues = z.infer<typeof interestSchema>;

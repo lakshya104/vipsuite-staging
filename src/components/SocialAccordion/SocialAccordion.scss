@@ -21,6 +21,9 @@
   height: 100%;
   transform: translateZ(0);
   overflow: hidden;
+  @media only screen and (min-width: 768px) {
+    display: flex;
+  }
   &:hover {
     .accordionItem__link {
       @media only screen and (min-width: 768px) {
@@ -41,18 +44,18 @@
       height: 100%;
       overflow: hidden;
       cursor: pointer;
-      transition: width 0.5s ease-out;
+      transition: 0.5s ease-out;
       width: 100%;
       margin-bottom: rem(20);
       @include relative;
       @media only screen and (min-width: 768px) {
         margin-bottom: 0;
-        float: left;
-        width: 25%;
+        width: auto;
+        flex-basis: 25%;
       }
       &:hover {
         @media only screen and (min-width: 768px) {
-          width: 85%;
+          flex: 1 0 85%;
         }
         h2,
         p,
@@ -100,6 +103,7 @@
     }
     &__image {
       width: 100%;
+      background-color: $gray;
       @media only screen and (min-width: 768px) {
         @include absolute(left 0 top 0);
       }
@@ -116,9 +120,8 @@
         }
       }
       img {
-        min-width: 100%;
-        object-fit: cover;
-        object-position: left center;
+        width: auto;
+        max-width: 1085px;
       }
     }
   }

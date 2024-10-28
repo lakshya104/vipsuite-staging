@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { VipSignUpRequestBody, UserProfile, AddressInput, Session, BrandSignUpRequestBody, AgentSignUpRequestBody } from '@/interfaces';
+import {
+  VipSignUpRequestBody,
+  UserProfile,
+  AddressInput,
+  Session,
+  BrandSignUpRequestBody,
+  AgentSignUpRequestBody,
+} from '@/interfaces';
 import { Endpoints } from './constants';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
@@ -295,15 +302,7 @@ export const ForgotPassword = async ({ email }: { email: string }) => {
   }
 };
 
-export const ResetPassword = async ({
-  email,
-  code,
-  password,
-}: {
-  email: string;
-  code: number;
-  password: string;
-}) => {
+export const ResetPassword = async ({ email, code, password }: { email: string; code: number; password: string }) => {
   try {
     const response = await Instance.post(Endpoints.resetPassword, { email, code, password });
     return response.data;
@@ -750,7 +749,15 @@ export const MakeRequestSubmit = async (
 };
 
 export const GetPageContent = async (slug: string) => {
-  return await FetchInstance(Endpoints.getPageContent(slug));
+  try {
+    const response = await Instance.get(Endpoints.getPageContent(slug));
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Opportunities');
+  }
 };
 
 export const GetAllVips = async (token: string) => {

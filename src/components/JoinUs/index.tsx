@@ -9,8 +9,6 @@ interface JoinUsProps {
   data: ContentModule;
 }
 const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
-  console.log({ data });
-
   return (
     <Box component="section" className="joinus-section">
       <Container>

@@ -1,12 +1,20 @@
 import * as z from 'zod';
+import {
+  averageEngagementValidation,
+  firstNameValidation,
+  instagramValidation,
+  lastNameValidation,
+  tiktokValidation,
+  typeOfRepresentationValidation,
+} from '@/helpers/validations';
 
 export const formSchema = z.object({
-  first_name: z.string().min(1, { message: 'First Name is required' }),
-  last_name: z.string().min(1, { message: 'Last Name is required' }),
-  type_of_representation: z.string().min(1, { message: 'Type of Representation is required' }),
-  instagram_handle: z.string().min(1, { message: 'Instagram is required' }),
-  tiktok_handle: z.string().min(1, { message: 'TikTok is required' }),
-  avg_engagement: z.string().min(1, { message: 'Average Engagement is required' }),
+  first_name: firstNameValidation,
+  last_name: lastNameValidation,
+  type_of_representation: typeOfRepresentationValidation,
+  instagram_handle: instagramValidation,
+  tiktok_handle: tiktokValidation,
+  avg_engagement: averageEngagementValidation,
 });
 
 export type AgentFormValues = z.infer<typeof formSchema>;

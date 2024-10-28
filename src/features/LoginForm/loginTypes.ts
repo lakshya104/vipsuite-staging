@@ -1,23 +1,9 @@
 import * as z from 'zod';
+import { loginPasswordValidation, requiredEmailValidation } from '@/helpers/validations';
 
 export const LoginSchema = z.object({
-  email: z
-    .string()
-    .min(1, {
-      message: 'Email is required',
-    })
-    .email('Please enter a valid email')
-    .min(3, {
-      message: 'Email must be at least 3 characters',
-    }),
-  password: z
-    .string()
-    .min(1, {
-      message: 'Password is required',
-    })
-    .min(6, {
-      message: 'Password must be at least 6 characters',
-    }),
+  email: requiredEmailValidation,
+  password: loginPasswordValidation,
 });
 
 export interface LoginFormValues {

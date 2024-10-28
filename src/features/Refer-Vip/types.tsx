@@ -1,13 +1,10 @@
 import * as z from 'zod';
+import { instagramValidation, requiredEmailValidation, tiktokValidation } from '@/helpers/validations';
 
 export const ReferVipSchema = z.object({
-  email: z.string().min(1, { message: 'Email is required' }).email({ message: 'Please enter a valid email' }),
-  instagram_handle: z.string().min(3, {
-    message: 'Instagram field is required',
-  }),
-  tiktok_handle: z.string().min(3, {
-    message: 'TikTok field is required',
-  }),
+  email: requiredEmailValidation,
+  instagram_handle: instagramValidation,
+  tiktok_handle: tiktokValidation,
 });
 
 export const FormValues = {

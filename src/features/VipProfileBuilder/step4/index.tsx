@@ -10,7 +10,6 @@ import {
   Backdrop,
   FormHelperText,
 } from '@mui/material';
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { filter, includes, union } from 'lodash';
 import SelectBox from '@/components/SelectBox';
@@ -22,6 +21,7 @@ import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
+import { formSchema, Step4FormValues } from './schema';
 
 type FormFieldNames =
   | 'sportsPlay'
@@ -90,17 +90,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       options: look_feel_of_socials_options.map((opt: string) => ({ value: opt, label: opt })),
     },
   ];
-
-  const formSchema = z.object({
-    sportsPlay: z.string().min(1, 'Sports you play is required'),
-    sports: z.string().min(1, 'Sports is required'),
-    sportsFollow: z.string().min(1, 'Sports you follow is required'),
-    skills: z.string().min(1, 'Skills is required'),
-    socialLook: z.string().min(1, 'Look and feel of your socials is required'),
-    habits: z.array(z.string()).min(1, 'At least one habit is required'),
-  });
-
-  type Step4FormValues = z.infer<typeof formSchema>;
 
   const defaultValues: Step4FormValues = {
     habits: profileDetail.habits || [],

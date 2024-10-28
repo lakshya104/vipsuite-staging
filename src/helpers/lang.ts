@@ -154,19 +154,20 @@ const en = {
         petsHint: 'List your pets.',
       },
       errorMessage: {
-        dob: 'Invalid date of birth.',
+        dob: 'DOB is required.',
         birthplace: 'Birthplace is required.',
         nationality: 'Nationality is required.',
         ethnicity: 'Ethnicity is required.',
         child: 'Enter child details.',
         ageOfChild: "Enter child's age.",
+        genderOfChild: "Select child's gender.",
         pets: 'Invalid pet details.',
         homePostcode: 'Invalid postcode.',
       },
     },
     typeOfContent: {
       errorMessage: {
-        selectedCategory: 'Select a category.',
+        otherSports: 'Specify other sports.',
         sportsPlay: 'Specify sports you play.',
         sportsFollow: 'Specify sports you follow.',
         skills: 'Enter your skills.',
@@ -200,6 +201,16 @@ const en = {
   applyAndSignin: {
     apply: 'Apply',
     signin: 'Sign In',
+  },
+  address: {
+    errorMessage: {
+      addressLineOneRequired: 'Address line 1 is required.',
+      addressLineTwoRequired: 'Address line 2 is required.',
+      cityRequired: 'City is required.',
+      postcodeRequired: 'Postcode is required.',
+      stateRequired: 'State is required.',
+      countryRequired: 'Country is required.',
+    },
   },
   signup: {
     placeholder: {
@@ -238,15 +249,22 @@ const en = {
       addVip: 'Add VIP',
     },
     errorMessage: {
-      firstName: 'First name is required.',
-      lastName: 'Last name is required.',
+      firstName: 'First Name must be at least 3 characters long',
+      lastName: 'Last Name must be at least 3 characters long',
+      firstNameRequired: 'First name is required.',
+      lastNameRequired: 'Last name is required.',
       email: 'Invalid email.',
       requiredEmail: 'Email is required.',
       password: 'Invalid password.',
+      phoneValidation: 'Phone number must be 10 digits, with a mandatory 2-3 digit country code.',
+      passwordValidation:
+        'The password must be a minimum of 6 characters long and include at least one uppercase, one lowercase letter, one number, and one special character.',
       requiredPassword: 'Password is required.',
       phone: 'Invalid phone number.',
       instagram: 'Invalid Instagram handle.',
       tiktok: 'Invalid TikTok handle.',
+      instagramRequired: 'Invalid Instagram handle.',
+      tiktokRequired: 'Invalid TikTok handle.',
       companyName: 'Company name is required.',
       typeRepresentation: 'Specify representation type.',
       exampleOfVip: 'Provide examples of VIPs.',
@@ -258,6 +276,7 @@ const en = {
       passMatch: 'Passwords must match.',
       agencyType: 'Specify agency type.',
       brandType: 'Specify brand type.',
+      code: 'Reset code is required',
     },
   },
 };
