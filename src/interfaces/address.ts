@@ -22,5 +22,5 @@ export interface AddressInput {
   postcode: string;
   state: string;
   country: string;
-  phone: string;
+  phone?: string;
 }
