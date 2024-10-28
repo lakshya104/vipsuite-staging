@@ -124,9 +124,9 @@ const en = {
         title: 'Stylist Contact',
         paragraph: 'Available for styling services.',
       },
-      gifting: {
-        title: 'Gifting Contact',
-        paragraph: 'Reach out for gifting collaborations.',
+      commercialOpportunities: {
+        title: 'commercialOpportunities Contact',
+        paragraph: 'Reach out for commercial Opportunities collaborations.',
       },
       errorMessage: {
         email: 'Invalid email.',

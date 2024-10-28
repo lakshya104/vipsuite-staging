@@ -21,21 +21,12 @@ export function calculateAge(dateOfBirth: string | undefined): number {
 
 export function truncateDescription(description?: string, maxLength?: number): string {
   if (!description || !maxLength) return '';
-  let truncated = '';
-  let wordCount = 0;
-  for (let i = 0; i < description.length; i++) {
-    const char = description[i];
-    truncated += char;
-    if (char === ' ' && description[i + 1] !== ' ') {
-      wordCount++;
-    }
-    if (wordCount >= maxLength) {
-      return truncated.trimEnd() + '...';
-    }
+  const words = description.split(' ');
+  if (words.length <= maxLength) {
+    return description;
   }
-  return truncated;
+  return words.slice(0, maxLength).join(' ') + '...';
 }
-
 
 export function formatDate(timestamp: string | undefined) {
   if (timestamp) {
@@ -88,35 +79,20 @@ export const formatDateWithOrdinalAndTime = (date: string | Date): string => {
 export const wrapInParagraph = (content: string): string => {
   const trimmedContent = content.trim();
   const isHTML = /^<[^>]+>/.test(trimmedContent);
+
   if (isHTML) {
     return `<p>${trimmedContent
       .replace(/(\r\n|\r|\n){2,}/g, '</p><p>')
       .replace(/^<p>/, '')
       .replace(/<\/p>$/, '')}</p>`;
   } else {
-    const paragraphs: string[] = [];
-    let currentParagraph = '';
-    for (const line of trimmedContent.split(/\r\n|\r|\n/)) {
-      if (line.trim() === '') {
-        if (currentParagraph) {
-          paragraphs.push(`<p>${escape(currentParagraph.trim())}</p>`);
-          currentParagraph = '';
-        }
-      } else {
-        currentParagraph += `${line}\n`;
-      }
-    }
-    if (currentParagraph) {
-      paragraphs.push(`<p>${escape(currentParagraph.trim())}</p>`);
-    }
-    return paragraphs.join('');
+    const paragraphs = trimmedContent
+      .split(/(\r\n|\r|\n){2,}/)
+      .map((para) => `<p>${para.trim()}</p>`)
+      .join('');
+    return paragraphs;
   }
 };
-
-// Helper function to escape HTML entities
-const escape = (str: string): string =>
-  str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
 
 export const formatDateWithMonth = (date: string | Date): string => {
   const momentDate = moment(date);
@@ -155,4 +131,14 @@ export const formatString = (str: string) => {
 
 export const getVipId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number => {
   return role === UserRole.Vip ? Number(session?.vip_profile_id) : Number(userId?.value);
+};
+
+export const getRelativePath = (url: string) => {
+  try {
+    const parsedUrl = new URL(url);
+    return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+  } catch (error) {
+    console.error('Invalid URL', error);
+    return '';
+  }
 };

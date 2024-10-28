@@ -81,11 +81,41 @@ type BrandSignUpFormField = {
 };
 
 export const BrandSignUpFormFields: BrandSignUpFormField[] = [
-  { name: 'brand_name', placeholder: 'Brand Name', autocomplete: 'brand-name', type: 'text' },
-  { name: 'contact_name', placeholder: 'Contact Name', autocomplete: 'contact-name', type: 'text' },
-  { name: 'email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
-  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
-  { name: 'password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
+  {
+    name: 'brand_name',
+    label: 'Brand Name',
+    placeholder: 'Brand Name',
+    autocomplete: 'brand-name',
+    type: 'text',
+  },
+  {
+    name: 'contact_name',
+    label: 'Contact Name',
+    placeholder: 'Contact Name',
+    autocomplete: 'contact-name',
+    type: 'text',
+  },
+  {
+    name: 'email',
+    label: 'Email',
+    placeholder: 'Email',
+    autocomplete: 'email',
+    type: 'email',
+  },
+  {
+    name: 'phone',
+    label: 'Phone Number',
+    placeholder: 'Phone Number',
+    autocomplete: 'tel',
+    type: 'tel',
+  },
+  {
+    name: 'password',
+    label: 'Password',
+    placeholder: 'Password',
+    autocomplete: 'new-password',
+    type: 'password',
+  },
   {
     name: 'type_of_business',
     placeholder: 'Type of Business',
@@ -128,7 +158,7 @@ export const contacts = [
     description: 'Please provide an alternate contact that would handle your clothing opportunities.',
   },
   {
-    section: 'Gifting',
+    section: 'Commercial Opportunities',
     description: 'Please provide an alternate contact that would handle your gifting opportunities.',
   },
 ];

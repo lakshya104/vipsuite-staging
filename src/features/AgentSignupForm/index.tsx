@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -125,6 +126,7 @@ const AgentSignupForm = () => {
                   <InputForm
                     {...field}
                     placeholder={placeholder || ''}
+                    label={placeholder}
                     type={name === 'password' && showPassword ? 'text' : type || 'text'}
                     error={!!errors[name]}
                     helperText={errors[name]?.message}
@@ -196,6 +198,20 @@ const AgentSignupForm = () => {
         <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}
         </Button>
+        <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
+          Already have an account?{' '}
+          <Link
+            href={'/login'}
+            style={{
+              textDecoration: 'underline',
+              padding: 0,
+              margin: 0,
+              color: 'white',
+            }}
+          >
+            Login here
+          </Link>
+        </Typography>
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />

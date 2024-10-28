@@ -24,9 +24,10 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
     stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly ?? true,
-    giftingEmail: profileDetail.gifting_contacts?.email || '',
-    giftingSecondaryEmail: profileDetail.gifting_contacts?.secondary_email || '',
-    giftingContactMeDirectly: profileDetail.gifting_contacts?.contact_me_directly ?? true,
+    commercialOpportunitiesEmail: profileDetail.commercial_opportunities_contacts?.email || '',
+    commercialOpportunitiesSecondaryEmail: profileDetail.commercial_opportunities_contacts?.secondary_email || '',
+    commercialOpportunitiesContactMeDirectly:
+      profileDetail.commercial_opportunities_contacts?.contact_me_directly ?? true,
   };
 
   const {
@@ -48,9 +49,9 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     stylistEmail: false,
     stylistSecondaryEmail: false,
     stylistContactMeDirectly: defaultValues.stylistContactMeDirectly,
-    giftingEmail: false,
-    giftingSecondaryEmail: false,
-    giftingContactMeDirectly: defaultValues.giftingContactMeDirectly,
+    commercialOpportunitiesEmail: false,
+    commercialOpportunitiesSecondaryEmail: false,
+    commercialOpportunitiesContactMeDirectly: defaultValues.commercialOpportunitiesContactMeDirectly,
   });
 
   const handleCheckboxChange = (section: keyof FormValues) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,10 +86,10 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           secondary_email: data.stylistSecondaryEmail || '',
           contact_me_directly: data.stylistContactMeDirectly || false,
         },
-        gifting_contacts: {
-          email: data.giftingEmail || '',
-          secondary_email: data.giftingSecondaryEmail || '',
-          contact_me_directly: data.giftingContactMeDirectly || false,
+        commercial_opportunities_contacts: {
+          email: data.commercialOpportunitiesEmail || '',
+          secondary_email: data.commercialOpportunitiesSecondaryEmail || '',
+          contact_me_directly: data.commercialOpportunitiesContactMeDirectly || false,
         },
       };
 
@@ -98,7 +99,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           last_name: profileDetail.last_name,
           event_contacts: updatedProfileDetail.event_contacts,
           stylist_contacts: updatedProfileDetail.stylist_contacts,
-          gifting_contacts: updatedProfileDetail.gifting_contacts,
+          commercial_opportunities_contacts: updatedProfileDetail.commercial_opportunities_contacts,
         },
       };
       await UpdateProfile(id, token, profile);
@@ -120,7 +121,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
       {contacts.map(({ section, description }) => (
         <Box className="profile-builder__form-row" key={section}>
           <Typography variant="h3" gutterBottom>
-            {section === 'Gifting' ? 'Commercial Opportunities' : section}
+            {section}
           </Typography>
           <Typography variant="body2" gutterBottom>
             {description}

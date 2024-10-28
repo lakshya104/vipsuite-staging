@@ -1,7 +1,5 @@
 import axios from 'axios';
-// import { GetSession } from './manager';
-// import { getVipId } from '@/helpers/utils';
-// import { getVipIdCookie } from '../actions';
+import { getAuthData } from '../actions';
 
 const Instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -13,16 +11,9 @@ const Instance = axios.create({
 Instance.interceptors.request.use(
   async (config) => {
     try {
-      // const userId = await getVipIdCookie();
-      // const session = await GetSession();
-      // const { token } = session;
-      // const vipId = getVipId(role, userId, session);
-      // if (token) {
-      //   config.headers.Authorization = `Bearer ${token}`;
-      // }
-      // if (vipId) {
-      //   config.headers['vip-profile-id'] = vipId.toString();
-      // }
+      const { token, vipId } = await getAuthData();
+      if (token) config.headers.Authorization = 'Bearer ' + token;
+      if (vipId) config.headers['vip-profile-id'] = vipId;
     } catch (error) {
       console.error('Error getting session:', error);
     }

@@ -5,6 +5,8 @@ import { AuthError } from 'next-auth';
 import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
 import { cookies } from 'next/headers';
+import { GetSession } from './api-manager/manager';
+import { getVipId } from '@/helpers/utils';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -68,4 +70,18 @@ export async function deleteVipVipFollowersCookie() {
 
 export async function getVipIdCookie() {
   return cookies().get('vipId');
+}
+
+export async function getAuthData() {
+  try {
+    const cookieStore = cookies();
+    const userId = cookieStore.get('vipId');
+    const session = await GetSession();
+    const { token, role } = session;
+    const vipId = getVipId(role, userId, session);
+
+    return { token, vipId };
+  } catch {
+    return { token: '', vipId: 0 };
+  }
 }

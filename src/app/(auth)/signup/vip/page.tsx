@@ -6,7 +6,7 @@ import { SignupContent } from '@/interfaces/signup';
 
 const VipSignupPage = async () => {
   const signupContent: SignupContent = await GetSignupContent();
-  const vipSignupContent = signupContent.vip_intro_copy;
+  const vipSignupContent = signupContent?.vip_intro_copy;
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">

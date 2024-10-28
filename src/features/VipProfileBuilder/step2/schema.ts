@@ -10,9 +10,9 @@ export const vipStep2Schema = z
     stylistSecondaryEmail: z.string().email('Invalid email address').optional().or(z.literal('')),
     stylistContactMeDirectly: z.boolean(),
 
-    giftingEmail: z.string().email('Invalid email address').or(z.literal('')),
-    giftingSecondaryEmail: z.string().email('Invalid email address').optional().or(z.literal('')),
-    giftingContactMeDirectly: z.boolean(),
+    commercialOpportunitiesEmail: z.string().email('Invalid email address').or(z.literal('')),
+    commercialOpportunitiesSecondaryEmail: z.string().email('Invalid email address').optional().or(z.literal('')),
+    commercialOpportunitiesContactMeDirectly: z.boolean(),
   })
   .refine((data) => data.eventsContactMeDirectly || data.eventsEmail !== '', {
     path: ['eventsEmail'],
@@ -22,8 +22,8 @@ export const vipStep2Schema = z
     path: ['stylistEmail'],
     message: 'Email is required if you do not want to be contacted directly for stylist.',
   })
-  .refine((data) => data.giftingContactMeDirectly || data.giftingEmail !== '', {
-    path: ['giftingEmail'],
+  .refine((data) => data.commercialOpportunitiesContactMeDirectly || data.commercialOpportunitiesEmail !== '', {
+    path: ['commercialOpportunitiesEmail'],
     message: 'Email is required if you do not want to be contacted directly for commercial opportunities.',
   });
 

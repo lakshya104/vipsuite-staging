@@ -53,14 +53,14 @@ const ResetPasswordForm = () => {
     reset();
     try {
       const data = {
-        email: email,
-        code: values.code,
+        email: email ?? '', 
+        code: Number(values.code),
         password: values.password,
       };
       await ResetPassword(data);
       setIsDialogOpen(true);
     } catch (error) {
-      openToaster('Error during password update: ' + error);
+      openToaster(String(error));
     } finally {
       setIsPending(false);
       setShowNewPassword(false);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { VipSignUpRequestBody, UserProfile, AddressInput, Session } from '@/interfaces';
+import { VipSignUpRequestBody, UserProfile, AddressInput, Session, BrandSignUpRequestBody, AgentSignUpRequestBody } from '@/interfaces';
 import { Endpoints } from './constants';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
@@ -77,33 +77,25 @@ export const VipSignUp = async (formData: VipSignUpRequestBody) => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AgentSignUp = async (formData: any) => {
+export const AgentSignUp = async (formData: AgentSignUpRequestBody) => {
   try {
     const response = await Instance.post(Endpoints.agentSignup, formData);
     return response.data;
   } catch (error) {
     console.error('Error during signup:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
-      throw new Error(errorMessage);
-    }
-    throw new Error('An unexpected error occurred');
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during signup';
+    throw new Error(errorMessage);
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const BrandSignUp = async (formData: any) => {
+export const BrandSignUp = async (formData: BrandSignUpRequestBody) => {
   try {
     const response = await Instance.post(Endpoints.brandSignup, formData);
     return response.data;
   } catch (error) {
     console.error('Error during signup:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during signup';
-      throw new Error(errorMessage);
-    }
-    throw new Error('An unexpected error occurred');
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during signup';
+    throw new Error(errorMessage);
   }
 };
 
@@ -171,14 +163,9 @@ export const GetAgentProfile = async () => {
   });
 };
 
-export const GetDashboardContent = async (vipId: number, token: string) => {
+export const GetDashboardContent = async () => {
   try {
-    const response = await Instance.get(Endpoints.getDashboardContent, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
+    const response = await Instance.get(Endpoints.getDashboardContent);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -188,14 +175,9 @@ export const GetDashboardContent = async (vipId: number, token: string) => {
   }
 };
 
-export const GetDashboard = async (vipId: number, token: string) => {
+export const GetDashboard = async () => {
   try {
-    const response = await Instance.get(Endpoints.getDashboard, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
-      },
-    });
+    const response = await Instance.get(Endpoints.getDashboard);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -245,7 +227,15 @@ export const GetBrandProductDetail = async (id: number, token: string, vipId: nu
 };
 
 export const GetSignupContent = async () => {
-  return await FetchInstance(Endpoints.getSignupContent);
+  try {
+    const response = await Instance.get(Endpoints.getSignupContent);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Signup Content');
+  }
 };
 
 export const GetVipEvents = async (token: string, vipId: number | string) => {
@@ -300,10 +290,8 @@ export const ForgotPassword = async ({ email }: { email: string }) => {
     return response.data;
   } catch (error) {
     console.error('Error during sending link:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during sending link';
-      throw errorMessage;
-    }
+    const errorMessage = error instanceof Error ? error.message : 'Error during sending link';
+    throw new Error(errorMessage);
   }
 };
 
@@ -312,8 +300,8 @@ export const ResetPassword = async ({
   code,
   password,
 }: {
-  email: string | null;
-  code: string;
+  email: string;
+  code: number;
   password: string;
 }) => {
   try {
@@ -321,10 +309,8 @@ export const ResetPassword = async ({
     return response.data;
   } catch (error) {
     console.error('Error during resetting password:', error);
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || 'An error occurred during password reset';
-      throw errorMessage;
-    }
+    const errorMessage = error instanceof Error ? error.message : 'Error during resetting password';
+    throw new Error(errorMessage);
   }
 };
 

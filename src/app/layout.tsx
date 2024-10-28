@@ -5,6 +5,8 @@ import '../styles/globals.scss';
 import { ProgressBar } from '@/components/ProgressBar';
 import ThemeRegistry from './ThemeRegistry';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'THE VIP SUITE',
   description: 'By Run Ragged',

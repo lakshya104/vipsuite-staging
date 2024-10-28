@@ -17,3 +17,22 @@ export interface SignupContent {
   representation_options: string[];
   business_options: string[];
 }
+
+export type BrandSignUpRequestBody = {
+  brand_name: string;
+  contact_name: string;
+  email: string;
+  password: string;
+  phone: string;
+  type_of_business: string;
+};
+
+export type AgentSignUpRequestBody = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  phone: string;
+  company_name: string;
+  examples_of_vip_managed: string[];
+};

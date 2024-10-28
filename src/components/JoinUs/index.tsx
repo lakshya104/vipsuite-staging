@@ -9,6 +9,8 @@ interface JoinUsProps {
   data: ContentModule;
 }
 const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
+  console.log({ data });
+
   return (
     <Box component="section" className="joinus-section">
       <Container>
@@ -18,7 +20,7 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
               <Typography variant="h2">{data?.heading}</Typography>
               <ProgressBarLink href={'/on-boarding'}>
                 <Button variant="outlined" className="button button--white">
-                  {data?.cta?.link?.title}
+                  {data?.cta?.cta_text}
                 </Button>
               </ProgressBarLink>
             </Box>

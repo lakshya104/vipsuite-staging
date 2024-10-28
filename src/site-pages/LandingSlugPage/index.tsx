@@ -14,7 +14,6 @@ interface LandingSlugPageProps {
 }
 
 const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
-  // try {
   const pageData: PageData[] = await GetPageContent(slug);
   const data = first(pageData);
   const isDefaultHeroPanel = get(data, 'acf.use_default_hero_panel', false) === true;

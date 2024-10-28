@@ -1,11 +1,18 @@
-'use client';
-import React from 'react';
-import { SessionProvider } from 'next-auth/react';
+// import React from 'react';
+// import { SessionProvider } from 'next-auth/react';
+// import { GetSession } from '@/libs/api-manager/manager';
 
-export interface AuthContextProps {
-  children: React.ReactNode;
-}
+// const AuthStateHandler = async () => {
+//   const session = await GetSession();
 
-export default function AuthContext({ children }: AuthContextProps) {
-  return <SessionProvider>{children}</SessionProvider>;
-}
+//   return <SessionProvider session={session} />;
+// };
+
+// export function AuthProvider({ children }) {
+//   return (
+//     <SessionProvider>
+//       <AuthStateHandler />
+//       {children}
+//     </SessionProvider>
+//   );
+// }

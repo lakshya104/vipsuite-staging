@@ -55,15 +55,15 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async (values: ForgotPasswordFormValues) => {
     setIsPending(true);
-    reset();
     try {
       const data = { email: values.email };
       setResetPasswordLink(`/reset-password?email=${values.email}`);
       await ForgotPassword(data);
       setIsPending(false);
       setIsDialogOpen(true);
+      reset();
     } catch (error) {
-      openToaster('Error during sending link. ' + error);
+      openToaster(String(error));
     } finally {
       setIsPending(false);
     }

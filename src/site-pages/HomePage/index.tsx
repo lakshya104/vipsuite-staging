@@ -13,10 +13,7 @@ const HomePage = async () => {
   const session = await GetSession();
   const { token, role, email } = session;
   const vipId = getVipId(role, userId, session);
-  const [dashboardContent, dashboardItems] = await Promise.all([
-    GetDashboardContent(vipId, token),
-    GetDashboard(vipId, token),
-  ]);
+  const [dashboardContent, dashboardItems] = await Promise.all([GetDashboardContent(), GetDashboard()]);
   const totalFollowerCount =
     role === UserRole.Vip
       ? sum([get(session, 'acf.tiktok_follower_count', 0), get(session, 'acf.instagram_follower_count', 0)])

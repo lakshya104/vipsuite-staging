@@ -8,12 +8,13 @@ import { get } from 'lodash';
 const VipSignupPage = async () => {
   const signupContent: SignupContent = await GetSignupContent();
   const brandSignupContent = get(signupContent, 'brand_intro_copy', '');
+  const brandSignupOptions = get(signupContent, 'business_options', ['']);
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">
         <Typography variant="h2">Sign up as a brand or PR agency</Typography>
         <Typography component="p">{brandSignupContent}</Typography>
-        <BrandSignupForm />
+        <BrandSignupForm brandSignupOptions={brandSignupOptions} />
       </Box>
     </Box>
   );

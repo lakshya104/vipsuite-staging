@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useTransition } from 'react';
+import Link from 'next/link';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,13 +25,21 @@ const dialogBoxContent = {
   isCrossIcon: true,
 };
 
-const BrandSignupForm = () => {
+interface BrandSignupFormProps {
+  brandSignupOptions: string[];
+}
+
+const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
+  const brandOptions = brandSignupOptions.map((option) => ({
+    value: option,
+    label: option,
+  }));
 
   const handleDialogBoxDataChange = (data: boolean) => {
     setIsDialogOpen(data);
@@ -91,14 +100,14 @@ const BrandSignupForm = () => {
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
-        {BrandSignUpFormFields.map(({ name, placeholder, autocomplete, type, label, options }) => (
+        {BrandSignUpFormFields.map(({ name, placeholder, autocomplete, type, label }) => (
           <Box key={name}>
             {type === 'select' ? (
               <SelectBox
                 name={name}
                 control={control}
                 placeholder={placeholder}
-                options={options}
+                options={brandOptions}
                 label={label || 'select'}
                 errors={errors}
               />
@@ -110,6 +119,7 @@ const BrandSignupForm = () => {
                   <InputForm
                     {...field}
                     placeholder={placeholder || ''}
+                    label={label}
                     type={name === 'password' && showPassword ? 'text' : type || 'text'}
                     error={!!errors[name]}
                     helperText={errors[name]?.message}
@@ -154,6 +164,20 @@ const BrandSignupForm = () => {
         <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}
         </Button>
+        <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
+          Already have an account?{' '}
+          <Link
+            href={'/login'}
+            style={{
+              textDecoration: 'underline',
+              padding: 0,
+              margin: 0,
+              color: 'white',
+            }}
+          >
+            Login here
+          </Link>
+        </Typography>
       </Box>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />

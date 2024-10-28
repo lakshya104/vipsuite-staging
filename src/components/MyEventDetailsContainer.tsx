@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import he from 'he';
 import { ProgressBarLink } from './ProgressBar';
 import { formatDateWithoutOrdinal } from '@/helpers/utils';
 import FeedbackForm from '@/features/FeedbackForm';
@@ -20,7 +21,7 @@ const MyEventDetailsContainer: React.FC<MyEventDetailsContainerProps> = ({ event
         <ProgressBarLink href={'/my-events'}>
           <ArrowBackIcon />
         </ProgressBarLink>
-        {eventDetails?.title?.rendered}
+        {he.decode(eventDetails?.title?.rendered)}
       </Typography>
       <Box mb={2.5}>
         <Typography variant="body1">{formatDateWithoutOrdinal(eventDetails?.acf?.event_start_date)}</Typography>

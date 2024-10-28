@@ -4,29 +4,13 @@ export const ResetPasswordSchema = z
   .object({
     code: z.string().min(1, 'Reset code is required'),
     password: z
-      .string()
-      .min(1, { message: 'Password is required' })
-      .regex(/[a-zA-Z]/, {
-        message: 'Password must contain at least one letter, one digit and one special character',
-      })
-      .regex(/[0-9]/, {
-        message: 'Password must contain at least one letter, one digit and one special character',
-      })
-      .regex(/[@#$%^&*()_+\-=[\]{};':"\\|,.<>!/?]/, {
-        message: 'Password must contain at least one letter, one digit and one special character',
-      })
-      .min(6, { message: 'Password must be at least 6 characters long' }),
+    .string()
+    .min(1, { message: 'Password is required' })
+    .regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/, {
+      message:
+        'Password must contain at least one uppercase letter, one digit, one special character and minimum 6 character long',
+    }),
     repeatPassword: z.string().min(1, { message: 'Repeating password is required' }),
-    // .regex(/[a-zA-Z]/, {
-    //   message: 'Password must contain at least one letter, one digit and one special character',
-    // })
-    // .regex(/[0-9]/, {
-    //   message: 'Password must contain at least one letter, one digit and one special character',
-    // })
-    // .regex(/[@#$%^&*()_+\-=[\]{};':"\\|,.<>!/?]/, {
-    //   message: 'Password must contain at least one letter, one digit and one special character',
-    // })
-    // .min(6, { message: 'Password must be at least 6 characters long' }),
   })
   .refine((data) => data.password === data.repeatPassword, {
     path: ['repeatPassword'],

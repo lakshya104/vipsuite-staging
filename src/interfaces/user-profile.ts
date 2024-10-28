@@ -25,7 +25,7 @@ export interface ACF {
   known_for?: string[];
   event_contacts?: ContactInfo;
   stylist_contacts?: ContactInfo;
-  gifting_contacts?: ContactInfo;
+  commercial_opportunities_contacts?: ContactInfo;
   contact_me_directly?: boolean;
   date_of_birth?: string;
   birth_place?: string;
