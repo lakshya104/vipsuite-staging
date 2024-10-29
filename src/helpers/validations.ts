@@ -73,7 +73,7 @@ export const companyValidation = z
   .optional()
   .or(z.literal(''));
 
-export const vipManagedValidation = z.string().min(3, { message: en.signup.errorMessage.typeRepresentation });
+export const vipManagedValidation = z.string().min(3, { message: en.signup.errorMessage.exampleOfVip });
 
 export const vipExamplesValidation = z
   .array(
