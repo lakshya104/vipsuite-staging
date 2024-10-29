@@ -43,6 +43,7 @@ const Endpoints = {
   vipSearch: (keyword: string) => `/wp/v2/vip-profiles/search?keyword=${keyword}`,
   getAllVip: `/wp/v2/agent/vip-profiles`,
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,
+  verifyEmail: '/wp/v2/email-verification-code',
 };
 
 export { Endpoints };

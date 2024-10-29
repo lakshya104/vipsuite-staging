@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Box, Typography } from '@mui/material';
-import ProfilePageLoading from '@/site-pages/ProfilePage/loading';
 import AgentEditProfilePage from '@/site-pages/AgentEditProfilePage';
+import AddAddressesPageLoading from '@/site-pages/AddAddressPage/loading';
 
 const VipSignupPage = async () => {
   return (
@@ -10,7 +10,7 @@ const VipSignupPage = async () => {
         <Typography variant="h2" gutterBottom>
           Your Profile
         </Typography>
-        <Suspense fallback={<ProfilePageLoading />}>
+        <Suspense fallback={<AddAddressesPageLoading />}>
           <AgentEditProfilePage />
         </Suspense>
       </Box>

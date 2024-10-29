@@ -105,11 +105,12 @@ export const BrandSignUp = async (formData: BrandSignUpRequestBody) => {
   }
 };
 
-export const AgentProfileUpdate = async (agentId: number, formData: FormData) => {
+export const AgentProfileUpdate = async (agentId: number, formData: FormData, token: string) => {
   try {
-    const response = await Instance.post(Endpoints.agentProfileUpdate(agentId), formData, {
+    const response = await InstanceWithoutHeaders.post(Endpoints.agentProfileUpdate(agentId), formData, {
       headers: {
         'Content-Type': 'auto',
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -674,5 +675,16 @@ export const GetMenuItems = async () => {
       throw new Error(error.message);
     }
     throw new Error('Failed to fetch Menu Items');
+  }
+};
+
+export const VerifyEmail = async (email: string) => {
+  try {
+    const response = await Instance.post(Endpoints.verifyEmail, { email });
+    return response.data;
+  } catch (error) {
+    console.error('Error during signing out:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during signing out';
+    throw new Error(errorMessage);
   }
 };

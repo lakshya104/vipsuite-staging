@@ -12,15 +12,15 @@ import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { AgentProfileUpdate } from '@/libs/api-manager/manager';
 import { ACF } from '@/interfaces';
-import { revalidateTag } from '@/libs/actions';
-import TAGS from '@/libs/apiTags';
+import revalidatePathAction from '@/libs/actions';
 
 interface AgentEditProfileFormProps {
   profileDetails: ACF;
   agentId: number;
+  token: string;
 }
 
-const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDetails, agentId }) => {
+const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDetails, agentId, token }) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
@@ -72,8 +72,8 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
         formDataObj.append('company_name', formData.company_name || '');
         formDataObj.append('examples_of_vip_managed', allVipExamples);
         try {
-          const response = await AgentProfileUpdate(agentId, formDataObj);
-          await revalidateTag(TAGS.GET_AGENT_PROFILE);
+          const response = await AgentProfileUpdate(agentId, formDataObj, token);
+          revalidatePathAction('/agent-profile')
           router.push('/agent-profile');
           if (response && response.error) {
             setError(`Error: ${response.error}`);

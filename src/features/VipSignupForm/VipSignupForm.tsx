@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import DoneIcon from '@mui/icons-material/Done';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputForm from '../../components/InputForm/InputForm';
@@ -14,7 +15,7 @@ import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
-import { VipSignUp } from '@/libs/api-manager/manager';
+import { VerifyEmail, VipSignUp } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -32,6 +33,11 @@ const VipSignupForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<string>('');
+  const [apiResponseCode, setApiResponseCode] = useState<number | null>(null);
+  const [isCodeSent, setCodeSent] = useState<boolean>(false);
+  const [isCodeVerified, setIsCodeVerified] = useState<boolean>(false);
+  const [isCodeVerificationFailed, setIsCodeVerificationFailed] = useState<boolean>(false);
 
   const handleDialogBoxDataChange = (open: boolean) => {
     setIsDialogOpen(open);
@@ -78,6 +84,37 @@ const VipSignupForm = () => {
     setToasterOpen(true);
   };
 
+  const handleEmailVerification = async (email: string | undefined) => {
+    try {
+      setIsPending(true);
+      if (email) {
+        const response = await VerifyEmail(email);
+        setApiResponseCode(response.verification_code);
+        setCodeSent(true);
+      } else {
+        console.error('Email is undefined');
+      }
+    } catch (error) {
+      console.error('Error during email verification:', error);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const handleCodeVerification = () => {
+    if (apiResponseCode === Number(verificationCode)) {
+      setError('');
+      setIsCodeVerified(true);
+      setIsCodeVerificationFailed(false);
+    } else {
+      setError('Your code is incorrect, please try again');
+      setToasterOpen(true);
+      setIsCodeVerified(false);
+      setIsCodeVerificationFailed(true);
+      setVerificationCode('');
+    }
+  };
+
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
@@ -86,42 +123,77 @@ const VipSignupForm = () => {
             <Controller
               name={name}
               control={control}
-              render={({ field }) => (
-                <InputForm
-                  {...field}
-                  placeholder={placeholder}
-                  label={label}
-                  type={name === 'password' && showPassword ? 'text' : type}
-                  error={!!errors[name]}
-                  helperText={errors[name]?.message}
-                  autoComplete={autocomplete}
-                  InputProps={
-                    name === 'password'
-                      ? {
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Box
-                                sx={{
-                                  p: 0,
-                                  m: 0,
-                                  minWidth: 'auto',
-                                  width: 'auto',
-                                  height: 'auto',
-                                }}
-                                onClick={() => setShowPassword((prev) => !prev)}
-                              >
-                                {showPassword ? (
-                                  <VisibilityOffIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
-                                ) : (
-                                  <RemoveRedEyeIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
-                                )}
-                              </Box>
-                            </InputAdornment>
-                          ),
-                        }
-                      : undefined
-                  }
-                />
+              render={({ field, fieldState }) => (
+                <>
+                  <InputForm
+                    {...field}
+                    placeholder={placeholder}
+                    label={label}
+                    type={name === 'password' && showPassword ? 'text' : type}
+                    error={!!errors[name]}
+                    helperText={errors[name]?.message}
+                    autoComplete={autocomplete}
+                    InputProps={
+                      name === 'password'
+                        ? {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Box
+                                  sx={{
+                                    p: 0,
+                                    m: 0,
+                                    minWidth: 'auto',
+                                    width: 'auto',
+                                    height: 'auto',
+                                  }}
+                                  onClick={() => setShowPassword((prev) => !prev)}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOffIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
+                                  ) : (
+                                    <RemoveRedEyeIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
+                                  )}
+                                </Box>
+                              </InputAdornment>
+                            ),
+                          }
+                        : undefined
+                    }
+                  />
+                  {name === 'email' && !fieldState.error && field.value && (
+                    <Box>
+                      {!isCodeSent && (
+                        <Button
+                          onClick={() => handleEmailVerification(field.value)}
+                          disabled={isPending}
+                          className="button button--white"
+                        >
+                          Verify
+                        </Button>
+                      )}
+                      {isCodeSent && !isCodeVerified && (
+                        <>
+                          <InputForm
+                            placeholder="Enter code here"
+                            type="number"
+                            onChange={(e) => setVerificationCode(e.target.value)}
+                          />
+                          <Button onClick={handleCodeVerification} className="button button--white">
+                            Verify Code
+                          </Button>
+                        </>
+                      )}
+                      {isCodeVerified && (
+                        <Box className="input-text">
+                          <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+                            <Typography>Email Verified</Typography>
+                            <DoneIcon sx={{ color: 'green' }} />
+                          </Box>
+                        </Box>
+                      )}
+                    </Box>
+                  )}
+                </>
               )}
             />
             {name === 'secondary_email' && !errors[name] && (
@@ -138,8 +210,13 @@ const VipSignupForm = () => {
             )}
           </Box>
         ))}
-        <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
-          {isPending ? 'Loading...' : 'Continue'}
+        <Button
+          type="submit"
+          disabled={isPending || isCodeVerificationFailed}
+          className="button button--white"
+          fullWidth
+        >
+          Continue
         </Button>
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
           Already have an account?{' '}
