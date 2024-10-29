@@ -1,9 +1,10 @@
 import React from 'react';
-import { GetAgentProfile } from '@/libs/api-manager/manager';
+import { GetAgentProfile, GetToken } from '@/libs/api-manager/manager';
 import AgentEditProfileForm from '@/features/AgentProfile';
 
 const AgentEditProfilePage = async () => {
-  const profileDetails = await GetAgentProfile();
+  const token = await GetToken();
+  const profileDetails = await GetAgentProfile(token);
   return <AgentEditProfileForm profileDetails={profileDetails.acf} agentId={profileDetails.agent_profile_id} />;
 };
 
