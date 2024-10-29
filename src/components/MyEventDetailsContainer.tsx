@@ -30,9 +30,7 @@ const MyEventDetailsContainer: React.FC<MyEventDetailsContainerProps> = ({ event
           {eventDetails.acf?.event_quick_overview}
         </Typography>
       </Box>
-      {!eventDetails?.acf?.is_feedback_provided && (
-        <FeedbackForm type="event" orderId={eventId} />
-      )}
+      {!eventDetails?.acf?.is_feedback_provided && <FeedbackForm type="event" orderId={eventId} />}
     </Container>
   );
 };

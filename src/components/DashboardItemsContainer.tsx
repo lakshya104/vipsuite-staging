@@ -17,7 +17,7 @@ interface DashboardItemsContainerProps {
   dashboardContent: DashboardContent | null;
   vipId: number;
   token: string;
-  totalFollowerCount?: number;
+  totalFollowerCount: number;
   userRole: UserRole;
   userEmail: string;
 }
@@ -72,7 +72,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     }
     setHasSearched(true);
     try {
-      const results = await GetVipSearch(debouncedSearchQuery, token, vipId);
+      const results = await GetVipSearch(debouncedSearchQuery);
       setSearchResults(results);
     } catch (error) {
       console.error('Error fetching search results:', error);
@@ -80,7 +80,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     } finally {
       setIsPending(false);
     }
-  }, [debouncedSearchQuery, token, vipId]);
+  }, [debouncedSearchQuery]);
 
   useEffect(() => {
     fetchSearchResults();

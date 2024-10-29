@@ -19,13 +19,11 @@ import { useRequestOnlyStore } from '@/store/useStore';
 
 interface ItemRequestFormProps {
   product: Product;
-  token: string | null;
-  nonce: string | null;
+  nonce: string;
   isRequestOnly: boolean;
-  vipId: number;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce, isRequestOnly, vipId }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, nonce, isRequestOnly }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -56,7 +54,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createOrder = async (token: string | null, item: any, nonce: string | null) => {
+  const createOrder = async (item: any, nonce: string) => {
     setLoading(true);
     try {
       if (isRequestOnly) {
@@ -64,7 +62,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
         setRequestProductId(product.id);
         router.push(`/basket?step=1&isRequestOnly=true`);
       } else {
-        const addToCart = await AddItemToCart(token, item, nonce, vipId);
+        const addToCart = await AddItemToCart(item, nonce);
         await revalidateTag(TAGS.GET_VIP_CART);
         if (addToCart && addToCart.code === 'permission_denied') {
           openToaster('Error during adding product: ' + addToCart.message?.toString());
@@ -94,13 +92,13 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, token, nonce
   };
   const onSubmit = async () => {
     const prepareItem = getProductData();
-    await createOrder(token, prepareItem, nonce);
+    await createOrder(prepareItem, nonce);
     reset();
   };
 
   const handleAddToCart = async () => {
     const prepareItem = getProductData();
-    await createOrder(token, prepareItem, nonce);
+    await createOrder(prepareItem, nonce);
     reset();
   };
 

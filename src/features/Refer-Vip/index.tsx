@@ -13,7 +13,6 @@ import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { ReferaVIP } from '@/libs/api-manager/manager';
 import { DashboardContent } from '@/interfaces';
-import { useUserInfoStore } from '@/store/useStore';
 
 type FormValues = z.infer<typeof ReferVipSchema>;
 
@@ -23,7 +22,6 @@ interface ReferVIPFormProps {
 
 const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
   const router = useRouter();
-  const { vipIdStore, tokenStore } = useUserInfoStore();
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
@@ -44,7 +42,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
   const onSubmit = async (data: FormValues) => {
     try {
       setIsPending(true);
-      const res = await ReferaVIP(vipIdStore, tokenStore, data);
+      const res = await ReferaVIP(data);
       setToasterType('success');
       openToaster(res?.message);
       setTimeout(() => {

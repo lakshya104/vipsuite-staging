@@ -18,10 +18,9 @@ import TAGS from '@/libs/apiTags';
 interface AgentEditProfileFormProps {
   profileDetails: ACF;
   agentId: number;
-  token: string;
 }
 
-const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDetails, agentId, token }) => {
+const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDetails, agentId }) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
@@ -73,7 +72,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
         formDataObj.append('company_name', formData.company_name || '');
         formDataObj.append('examples_of_vip_managed', allVipExamples);
         try {
-          const response = await AgentProfileUpdate(agentId, token, formDataObj);
+          const response = await AgentProfileUpdate(agentId, formDataObj);
           await revalidateTag(TAGS.GET_AGENT_PROFILE);
           router.push('/agent-profile');
           if (response && response.error) {

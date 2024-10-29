@@ -1,6 +1,6 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { get, sum } from 'lodash';
+import { get, isEmpty, sum } from 'lodash';
 import { GetDashboard, GetDashboardContent, GetSession } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import DashboardItemsContainer from '@/components/DashboardItemsContainer';
@@ -16,10 +16,13 @@ const HomePage = async () => {
   const [dashboardContent, dashboardItems] = await Promise.all([GetDashboardContent(), GetDashboard()]);
   const totalFollowerCount =
     role === UserRole.Vip
-      ? sum([get(session, 'acf.tiktok_follower_count', 0), get(session, 'acf.instagram_follower_count', 0)])
-      : cookieStore.get(CookieName.FollowerCount)?.value || 0;
+      ? sum([
+          Number(get(session, 'acf.tiktok_follower_count', 0)),
+          Number(get(session, 'acf.instagram_follower_count', 0)),
+        ])
+      : Number(cookieStore.get(CookieName.FollowerCount)?.value) || 0;
 
-  if (!dashboardItems) {
+  if (!dashboardItems || isEmpty(dashboardItems)) {
     return <ErrorFallback errorMessage="Currently there is no dashboard item." hideSubtext={true} />;
   }
 
@@ -29,7 +32,7 @@ const HomePage = async () => {
       dashboardContent={dashboardContent}
       vipId={vipId}
       token={token}
-      totalFollowerCount={Number(totalFollowerCount)}
+      totalFollowerCount={totalFollowerCount}
       userRole={role}
       userEmail={email}
     />

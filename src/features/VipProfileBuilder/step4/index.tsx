@@ -37,7 +37,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   profileDetail,
   onNext,
   onPrev,
-  token,
   id,
   isAgent,
 }) => {
@@ -143,7 +142,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           look_feel_of_socials: data.socialLook === '' ? null : data.socialLook,
         },
       };
-      await UpdateProfile(id, token, profile);
+      await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);

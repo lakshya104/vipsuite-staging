@@ -34,7 +34,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
       if (isEditVip && editVipId) {
         const numericId = Number(editVipId);
         setId(numericId);
-        await fetchVipProfile(numericId);
+        await fetchVipProfile();
       } else {
         setId(0);
         setProfileDetail({ first_name: '', last_name: '' });
@@ -46,9 +46,9 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditVip, editVipId]);
 
-  const fetchVipProfile = async (profileId: number) => {
+  const fetchVipProfile = async () => {
     try {
-      const response = await GetVipProfile(token, profileId);
+      const response = await GetVipProfile();
       setProfileDetail(response.acf);
     } catch {
       setProfileDetail({ first_name: '', last_name: '' });

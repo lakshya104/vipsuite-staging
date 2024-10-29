@@ -27,7 +27,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   profileDetail,
   onNext,
   onPrev,
-  token,
   id,
   isAgent,
 }) => {
@@ -185,7 +184,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           child_info: childInfo,
         },
       };
-      await UpdateProfile(id, token, profile);
+      await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
       openToaster('Error during profile update. ' + error);

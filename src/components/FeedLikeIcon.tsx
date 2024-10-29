@@ -38,10 +38,8 @@ interface FeedLikeIconProps {
   isWishlisted?: boolean;
   postId: number;
   type: string;
-  token: string;
-  vipId: number | string | undefined;
 }
-const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type, token, vipId }) => {
+const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type }) => {
   const [isWislist, setIsWishlist] = useState(isWishlisted ?? isWishlisted);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
@@ -84,12 +82,12 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type,
         setToasterType('success');
         openToaster('Item is added in wishlist successfully.');
         setIsWishlist(true);
-        await AddToWishlist(token, vipId, postId);
+        await AddToWishlist(postId);
       } else {
         setToasterType('info');
         openToaster('Item is deleted from wishlist successfully.');
         setIsWishlist(false);
-        await DeleteFromWishlist(token, vipId, postId);
+        await DeleteFromWishlist(postId);
       }
     } catch (error) {
       setToasterType('error');

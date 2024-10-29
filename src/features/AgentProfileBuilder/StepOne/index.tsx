@@ -16,7 +16,6 @@ import UseToaster from '@/hooks/useToaster';
 export interface AgentProfileBuilderStepsProps {
   handleId?: (id: number) => void;
   profileBuilderOptions: ProfileBuilderOptions;
-  token: string;
   onNext: (profileDetail: ACF) => void;
   onPrev: () => void;
   profileDetail: ACF;
@@ -25,7 +24,6 @@ export interface AgentProfileBuilderStepsProps {
 const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
   handleId,
   profileBuilderOptions,
-  token,
   onNext,
   onPrev,
   profileDetail,
@@ -74,9 +72,9 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
         },
       };
       if (id) {
-        await UpdateProfile(id, token, profile);
+        await UpdateProfile(id, profile);
       } else {
-        const response = await CreateVipProfile(token, profile);
+        const response = await CreateVipProfile(profile);
         if (handleId) {
           handleId(response.id);
         }

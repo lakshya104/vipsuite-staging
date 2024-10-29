@@ -112,11 +112,10 @@ const agentMenuItems = [
 ];
 
 interface HomeHeaderProps {
-  token?: string;
   role?: string;
 }
 
-const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
+const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -127,20 +126,18 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ token, role }) => {
     setDrawerOpen(open);
   };
   const handleLogout = async () => {
-    if (token) {
-      try {
-        setDrawerOpen(false);
-        setIsLoading(true);
-        await LogOut(token);
-        signOut();
-        clearAll();
-      } catch (error) {
-        setIsLoading(false);
-        openToaster('Error during logging out. ' + error);
-      } finally {
-        await deleteVipCookies();
-        localStorage.clear();
-      }
+    try {
+      setDrawerOpen(false);
+      setIsLoading(true);
+      signOut();
+      await LogOut();
+      clearAll();
+    } catch (error) {
+      setIsLoading(false);
+      openToaster('Error during logging out. ' + error);
+    } finally {
+      await deleteVipCookies();
+      localStorage.clear();
     }
   };
 

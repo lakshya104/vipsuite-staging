@@ -3,6 +3,7 @@ import { getAuthData } from '../actions';
 
 const Instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -40,22 +41,22 @@ Instance.interceptors.response.use(
   },
 );
 
-const FetchInstance = async (url: string, options: RequestInit = {}) => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
-  const response = await fetch(`${baseURL}${url}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
-    cache: 'no-store',
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'An error occurred');
-  }
+// const FetchInstance = async (url: string, options: RequestInit = {}) => {
+//   const baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
+//   const response = await fetch(`${baseURL}${url}`, {
+//     ...options,
+//     headers: {
+//       'Content-Type': 'application/json',
+//       ...(options.headers || {}),
+//     },
+//     cache: 'no-store',
+//   });
+//   if (!response.ok) {
+//     const errorData = await response.json();
+//     throw new Error(errorData.message || 'An error occurred');
+//   }
 
-  return response.json();
-};
+//   return response.json();
+// };
 
-export { Instance, FetchInstance };
+export { Instance };

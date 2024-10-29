@@ -2,27 +2,24 @@
 import React from 'react';
 import { UserRole } from '@/helpers/enums';
 import { ProgressBarLink } from './ProgressBar';
-import { useEditVipIdStore } from '@/store/useStore';
+import { useEditVipIdStore, useUserInfoStore } from '@/store/useStore';
 
-interface EditProfileBtnProps {
-  role: UserRole;
-  vipId: string | number;
-}
-const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ role, vipId }) => {
+const EditProfileBtn = () => {
+  const { userRoleStore, vipIdStore } = useUserInfoStore();
   const { setVipId } = useEditVipIdStore();
   const handleClick = async (vipId: string | number) => {
-    if (role === UserRole.Agent) {
+    if (userRoleStore === UserRole.Agent) {
       setVipId(vipId.toString());
     }
   };
   const editProfileLink =
-    role === UserRole.Vip ? '/vip-profile-builder' : `/agent-profile-builder?edit=true&profile-route=true`;
+    userRoleStore === UserRole.Vip ? '/vip-profile-builder' : `/agent-profile-builder?edit=true&profile-route=true`;
   return (
     <ProgressBarLink href={editProfileLink} className="button button--link">
       <span
         style={{ textDecoration: 'underline', fontWeight: '400' }}
         onClick={() => {
-          handleClick(vipId);
+          handleClick(vipIdStore);
         }}
       >
         Edit Profile

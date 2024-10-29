@@ -8,12 +8,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import './HomeFooter.scss';
 import { useOrderStore } from '@/store/useStore';
 
-interface HomeFooterProps {
-  token: string;
-  id: number;
-}
-
-const HomeFooter: React.FC<HomeFooterProps> = () => {
+const HomeFooter = () => {
   const [showFooter, setShowFooter] = useState(true);
   const { orderCount } = useOrderStore();
   const lastScrollY = useRef(0);

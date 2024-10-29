@@ -10,14 +10,12 @@ export default async function AgentSectionLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  const token = (session?.user as unknown as Session)?.token;
   const role = (session?.user as unknown as Session)?.role;
-  const id = (session?.user as unknown as Session)?.id;
   return (
     <>
-      <HomeHeader token={token} role={role} />
+      <HomeHeader role={role} />
       {children}
-      <HomeFooter token={token} id={id} />
+      <HomeFooter />
     </>
   );
 }

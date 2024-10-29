@@ -6,15 +6,13 @@ import { formatDate, formatString } from '@/helpers/utils';
 import ErrorFallback from '@/components/ErrorFallback';
 import OrderItem from '@/components/OrderItem';
 import { Order } from '@/interfaces';
-import { getAuthData } from '@/libs/actions';
 
 interface MyOrderDetailPageProps {
   orderId: number;
 }
 
 const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) => {
-  const { token, vipId } = await getAuthData();
-  const orderDetail: Order = await GetOrderById(orderId, token, vipId);
+  const orderDetail: Order = await GetOrderById(orderId);
   if (!orderDetail) {
     return <ErrorFallback errorMessage="No order details found" />;
   }

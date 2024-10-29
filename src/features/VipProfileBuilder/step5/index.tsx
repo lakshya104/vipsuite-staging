@@ -16,6 +16,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import revalidatePathAction from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
+import { ProfileStatus } from '@/helpers/enums';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -41,7 +42,6 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
   profileDetail,
   onPrev,
-  token,
   id,
   isAgent,
 }) => {
@@ -56,7 +56,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   const { clearVipId } = useEditVipIdStore();
   const interestOptions = profileBuilderOptions?.interests_options;
   const interests = profileDetail?.interests;
-  const isApproved = profileDetail?.profile_status === 'approved' ? true : false;
+  const isApproved = profileDetail?.profile_status === ProfileStatus.Approved ? true : false;
   const {
     register,
     handleSubmit,
@@ -74,7 +74,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
     try {
       setIsDialogOpen(data);
       setIsLoading(true);
-      await LogOut(token);
+      await LogOut();
       signOut();
     } catch (error) {
       setIsLoading(false);
@@ -140,7 +140,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
           interests: data.interests,
         },
       };
-      await UpdateProfile(id, token, profile);
+      await UpdateProfile(id, profile);
       await revalidatePathAction('/profile');
       clearVipId();
       if (isApproved) {

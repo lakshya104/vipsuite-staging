@@ -6,11 +6,9 @@ import { GetVipRsvpEvents } from '@/libs/api-manager/manager';
 import { MyEvent } from '@/interfaces';
 import { formatDate } from '@/helpers/utils';
 import ErrorFallback from '@/components/ErrorFallback';
-import { getAuthData } from '@/libs/actions';
 
 const MyEventsPage = async () => {
-  const { token, vipId } = await getAuthData();
-  const vipRsvpEvents: MyEvent[] = await GetVipRsvpEvents(token, vipId);
+  const vipRsvpEvents: MyEvent[] = await GetVipRsvpEvents();
   if (!vipRsvpEvents || vipRsvpEvents.length === 0) {
     return <ErrorFallback errorMessage="No upcoming events found." hideSubtext={true} />;
   }

@@ -12,7 +12,6 @@ import Toaster from '@/components/Toaster';
 import { InputTextAreaFormField } from '@/components/InputTextFormField';
 import { MakeRequestSubmit } from '@/libs/api-manager/manager';
 import { DashboardContent } from '@/interfaces';
-import { useUserInfoStore } from '@/store/useStore';
 
 const formSchema = z.object({
   request_content: z
@@ -30,7 +29,6 @@ interface MakeRequestProps {
 
 const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   const router = useRouter();
-  const { vipIdStore, tokenStore } = useUserInfoStore();
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
@@ -48,7 +46,7 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   const onSubmit = async (data: FormValues) => {
     try {
       setIsPending(true);
-      const res = await MakeRequestSubmit(vipIdStore, tokenStore, data);
+      const res = await MakeRequestSubmit(data);
       setToasterType('success');
       openToaster(res?.message);
       setTimeout(() => {

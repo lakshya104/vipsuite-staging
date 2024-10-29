@@ -13,7 +13,7 @@ export default async function HomeSectionLayout({
   children: React.ReactNode;
 }>) {
   const session = await GetSession();
-  const { token, role, id } = session;
+  const { role } = session;
   const profile_status = get(session, 'acf.profile_status', {});
   if (profile_status === 'pending') redirect('/vip-profile-builder');
   const cookieStore = cookies();
@@ -23,9 +23,9 @@ export default async function HomeSectionLayout({
   }
   return (
     <>
-      <HomeHeader token={token} role={role} />
+      <HomeHeader role={role} />
       {children}
-      <HomeFooter token={token} id={id} />
+      <HomeFooter />
     </>
   );
 }

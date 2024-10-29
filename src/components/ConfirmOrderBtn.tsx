@@ -71,7 +71,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
       set_paid: true,
       billing: {
         ...address,
-        email: userEmailStore,
+        email: userEmailStore ?? '',
         phone: selectedAddress?.phone,
       },
       shipping: {

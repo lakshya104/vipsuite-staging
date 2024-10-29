@@ -9,10 +9,8 @@ import ProductList from '@/features/ProductList';
 
 interface BrandDetailsContainerProps {
   brandDetails: BrandDetails;
-  token: string;
-  vipId: number | string;
 }
-const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDetails, token, vipId }) => {
+const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDetails }) => {
   return (
     <Container>
       <Typography className="page-title" variant="h2" component="h1" align="center">
@@ -38,7 +36,7 @@ const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDeta
           Products
         </Typography>
         <Suspense fallback={<ProductCardLoading />}>
-          <ProductList brandId={brandDetails?.id} token={token} vipId={vipId} />
+          <ProductList brandId={brandDetails?.id} />
         </Suspense>
       </Box>
     </Container>

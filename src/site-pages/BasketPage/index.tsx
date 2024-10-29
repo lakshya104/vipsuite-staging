@@ -6,9 +6,6 @@ import OrderJourney from '@/features/OrderJourney';
 
 const BasketPage = async () => {
   const [fetchedAddresses, cartData] = await Promise.all([GetAddresses(), FetchCartItemsAndNonce()]);
-  if (!cartData || !fetchedAddresses) {
-    return <ErrorFallback errorMessage="Not able to process order currently." />;
-  }
   const addresses: Address[] = fetchedAddresses;
   const cartItems: Cart = cartData?.items;
   const nonce = cartData?.nonce;
