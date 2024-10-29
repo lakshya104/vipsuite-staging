@@ -13,7 +13,7 @@ import {
 import { Endpoints } from './constants';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
-import { Instance } from './instance';
+import { Instance, InstanceWithoutHeaders } from './instance';
 
 export const GetToken = async () => {
   const session = await auth();
@@ -145,6 +145,22 @@ export const GetProfile = async () => {
   }
 };
 
+export const GetAgentProfile = async (token: string) => {
+  try {
+    const response = await InstanceWithoutHeaders.get(Endpoints.getProfile, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch profile content');
+  }
+};
+
 export const GetVipProfile = async () => {
   try {
     const response = await Instance.get(Endpoints.getProfile);
@@ -154,18 +170,6 @@ export const GetVipProfile = async () => {
       throw new Error(error.message);
     }
     throw new Error('Failed to fetch vip profile');
-  }
-};
-
-export const GetAgentProfile = async () => {
-  try {
-    const response = await Instance.get(Endpoints.getProfile);
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch agent profile');
   }
 };
 

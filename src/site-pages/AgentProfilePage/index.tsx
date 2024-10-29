@@ -2,18 +2,18 @@ import React from 'react';
 import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import { UserProfile } from '@/interfaces';
-import { GetProfile } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import { ContactsComponent } from '@/components/ProfileComponents';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
+import { GetAgentProfile, GetToken } from '@/libs/api-manager/manager';
 
 const AgentProfilePage = async () => {
-  const profileDetails: UserProfile = await GetProfile();
+  const token = await GetToken();
+  const profileDetails: UserProfile = await GetAgentProfile(token);
   if (!profileDetails) {
     return <ErrorFallback errorMessage="Not able to show Profile currently." />;
   }
-
   return (
     <>
       <Box className="user-profile__info" textAlign={'center'} mb={3}>

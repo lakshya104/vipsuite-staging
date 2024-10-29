@@ -41,6 +41,14 @@ Instance.interceptors.response.use(
   },
 );
 
+const InstanceWithoutHeaders = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // const FetchInstance = async (url: string, options: RequestInit = {}) => {
 //   const baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
 //   const response = await fetch(`${baseURL}${url}`, {
@@ -59,4 +67,4 @@ Instance.interceptors.response.use(
 //   return response.json();
 // };
 
-export { Instance };
+export { Instance, InstanceWithoutHeaders };
