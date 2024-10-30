@@ -207,7 +207,7 @@ const AgentSignupForm = () => {
                       }
                     />
                     {name === 'email' && !fieldState.error && field.value && (
-                      <Box>
+                      <Box className="verify-button">
                         {!isCodeSent && (
                           <Button
                             onClick={() => handleEmailVerification(field.value?.toString())}
@@ -230,11 +230,9 @@ const AgentSignupForm = () => {
                           </>
                         )}
                         {isCodeVerified && (
-                          <Box className="input-text">
-                            <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
-                              <Typography>Email Verified</Typography>
-                              <DoneIcon sx={{ color: 'green' }} />
-                            </Box>
+                          <Box className="input-text" display="flex" alignItems="center" justifyContent="center" gap={1}>
+                            <Typography>Email Verified</Typography>
+                            <DoneIcon sx={{ color: 'green' }} />
                           </Box>
                         )}
                       </Box>
@@ -266,6 +264,7 @@ const AgentSignupForm = () => {
                 type={''}
                 {...field}
                 placeholder={`Example of VIP Managed`}
+                label={`Example of VIP Managed`}
                 error={!!errors.vip_examples?.[index]?.value}
                 helperText={errors.vip_examples?.[index]?.value?.message}
               />

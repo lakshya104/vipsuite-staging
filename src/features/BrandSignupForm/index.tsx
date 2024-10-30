@@ -204,7 +204,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                       }
                     />
                     {name === 'email' && !fieldState.error && field.value && (
-                      <Box>
+                      <Box className="verify-button">
                         {!isCodeSent && (
                           <Button
                             onClick={() => handleEmailVerification(field.value?.toString())}
@@ -227,11 +227,9 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                           </>
                         )}
                         {isCodeVerified && (
-                          <Box className="input-text">
-                            <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
-                              <Typography>Email Verified</Typography>
-                              <DoneIcon sx={{ color: 'green' }} />
-                            </Box>
+                          <Box className="input-text" display="flex" alignItems="center" justifyContent="center" gap={1}>
+                            <Typography>Email Verified</Typography>
+                            <DoneIcon sx={{ color: 'green' }} />
                           </Box>
                         )}
                       </Box>

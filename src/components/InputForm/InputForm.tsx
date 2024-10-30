@@ -7,7 +7,7 @@ interface InputFormProps extends Omit<TextFieldProps, 'variant'> {
 }
 
 const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
-  ({ placeholder, type, error, helperText, ...rest }, ref) => {
+  ({ placeholder, type, error, helperText, label, ...rest }, ref) => {
     return (
       <TextField
         {...rest}
@@ -29,6 +29,7 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
         type={type}
         error={error}
         helperText={helperText}
+        label={label}
       />
     );
   },

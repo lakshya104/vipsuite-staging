@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { orderId: number } }) 
   const orderId = params['orderId'];
 
   return (
-    <Box className="user-profile order-details-page">
+    <Box className="user-inbox order-details-page">
       <Container>
         <Typography className="page-title" variant="h2" align="center">
           <ProgressBarLink href={'/my-orders'} aria-label="Back to My Orders">

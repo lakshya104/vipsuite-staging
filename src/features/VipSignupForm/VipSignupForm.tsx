@@ -174,7 +174,7 @@ const VipSignupForm = () => {
                     }
                   />
                   {name === 'email' && !fieldState.error && field.value && (
-                    <Box>
+                    <Box className="verify-button">
                       {!isCodeSent && (
                         <Button
                           onClick={() => handleEmailVerification(field.value)}
@@ -197,11 +197,9 @@ const VipSignupForm = () => {
                         </>
                       )}
                       {isCodeVerified && (
-                        <Box className="input-text">
-                          <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
-                            <Typography>Email Verified</Typography>
-                            <DoneIcon sx={{ color: 'green' }} />
-                          </Box>
+                        <Box className="input-text" display="flex" alignItems="center" justifyContent="center" gap={1}>
+                          <Typography>Email Verified</Typography>
+                          <DoneIcon sx={{ color: 'green' }} />
                         </Box>
                       )}
                     </Box>

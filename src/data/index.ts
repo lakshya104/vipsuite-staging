@@ -62,13 +62,19 @@ type AgentSignUpFormField = {
 };
 
 export const AgentSignUpFormFields: AgentSignUpFormField[] = [
-  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
-  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
-  { name: 'email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
-  { name: 'password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
-  { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
-  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
-  { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
+  { name: 'first_name', placeholder: 'First Name', label: 'First Name', autocomplete: 'given-name', type: 'text' },
+  { name: 'last_name', placeholder: 'Last Name', label: 'Last Name', autocomplete: 'family-name', type: 'text' },
+  { name: 'email', placeholder: 'Email', label: 'Email', autocomplete: 'email', type: 'email' },
+  { name: 'password', placeholder: 'Password', label: 'Password', autocomplete: 'new-password', type: 'password' },
+  { name: 'company_name', placeholder: 'Company Name', label: 'Company Name', autocomplete: 'c-name', type: 'text' },
+  { name: 'phone', placeholder: 'Phone Number', label: 'Phone Number', autocomplete: 'tel', type: 'tel' },
+  {
+    name: 'examples_of_vip_managed',
+    placeholder: 'Example of VIP Managed',
+    label: 'Example of VIP Managed',
+    autocomplete: 'off',
+    type: 'text',
+  },
 ];
 
 type BrandSignUpFormField = {
@@ -118,8 +124,8 @@ export const BrandSignUpFormFields: BrandSignUpFormField[] = [
   },
   {
     name: 'type_of_business',
-    placeholder: 'Type of Business',
     label: 'Type of Business',
+    placeholder: 'Type of Business',
     type: 'select',
     options: [
       { value: 'retail', label: 'Retail' },
