@@ -1,10 +1,11 @@
 'use client';
-import React, { useState, useTransition } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import DoneIcon from '@mui/icons-material/Done';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
 import DialogBox from '@/components/Dialog';
@@ -14,7 +15,7 @@ import './BrandSignupForm.scss';
 import { BrandSignupSchema, BrandSignupValues, defaultValues } from './types';
 import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
-import { BrandSignUp } from '@/libs/api-manager/manager';
+import { BrandSignUp, VerifyEmail } from '@/libs/api-manager/manager';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -31,11 +32,16 @@ interface BrandSignupFormProps {
 
 const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions }) => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<string>('');
+  const [apiResponseCode, setApiResponseCode] = useState<number | null>(null);
+  const [isCodeSent, setCodeSent] = useState<boolean>(false);
+  const [isCodeVerified, setIsCodeVerified] = useState<boolean>(false);
+  const [isCodeVerificationFailed, setIsCodeVerificationFailed] = useState<boolean>(false);
   const brandOptions = brandSignupOptions.map((option) => ({
     value: option,
     label: option,
@@ -57,32 +63,29 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   });
 
   const onSubmit = async (formData: BrandSignupValues) => {
+    setIsPending(true);
     setError('');
     try {
-      startTransition(async () => {
-        try {
-          const data = {
-            brand_name: formData?.brand_name,
-            contact_name: formData?.contact_name,
-            email: formData?.email,
-            phone: formData?.phone,
-            password: formData?.password,
-            type_of_business: formData?.type_of_business,
-          };
-          const response = await BrandSignUp(data);
-          if (response && response.error) {
-            setError(`Error: ${response.error}`);
-            setToasterOpen(true);
-          } else {
-            reset();
-            setIsDialogOpen(true);
-          }
-        } catch (error) {
-          handleError(error);
-        }
-      });
+      const data = {
+        brand_name: formData?.brand_name,
+        contact_name: formData?.contact_name,
+        email: formData?.email,
+        phone: formData?.phone,
+        password: formData?.password,
+        type_of_business: formData?.type_of_business,
+      };
+      const response = await BrandSignUp(data);
+      setIsPending(false);
+      if (response && response.error) {
+        setError(`Error: ${response.error}`);
+        setToasterOpen(true);
+      } else {
+        reset();
+        setIsDialogOpen(true);
+      }
     } catch (error) {
       handleError(error);
+      setIsPending(false);
     }
   };
 
@@ -95,6 +98,50 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
       setError('Error: An unexpected error occurred during signup');
     }
     setToasterOpen(true);
+  };
+
+  const handleEmailVerification = async (email: string | undefined) => {
+    try {
+      setIsPending(true);
+      if (email) {
+        const response = await VerifyEmail(email);
+        setApiResponseCode(response.verification_code);
+        setCodeSent(true);
+      } else {
+        console.error('Email is undefined');
+      }
+    } catch (error) {
+      console.error('Error during email verification:', error);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const handleCodeVerification = () => {
+    if (apiResponseCode === Number(verificationCode)) {
+      setError('');
+      setIsCodeVerified(true);
+      setIsCodeVerificationFailed(false);
+    } else {
+      setError('Your code is incorrect, please try again');
+      setToasterOpen(true);
+      setIsCodeVerified(false);
+      setIsCodeVerificationFailed(true);
+      setVerificationCode('');
+    }
+  };
+
+  const handleVerificationCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVerificationCode(e.target.value);
+  };
+
+  const handleEmailChange = () => {
+    setVerificationCode('');
+    setCodeSent(false);
+    setIsCodeVerified(false);
+    setIsCodeVerificationFailed(false);
+    setApiResponseCode(null);
+    setError('');
   };
 
   return (
@@ -115,42 +162,81 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
               <Controller
                 name={name}
                 control={control}
-                render={({ field }) => (
-                  <InputForm
-                    {...field}
-                    placeholder={placeholder || ''}
-                    label={label}
-                    type={name === 'password' && showPassword ? 'text' : type || 'text'}
-                    error={!!errors[name]}
-                    helperText={errors[name]?.message}
-                    autoComplete={autocomplete}
-                    InputProps={
-                      name === 'password'
-                        ? {
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <Button
-                                  sx={{
-                                    p: 0,
-                                    m: 0,
-                                    minWidth: 'auto',
-                                    width: 'auto',
-                                    height: 'auto',
-                                  }}
-                                  onClick={() => setShowPassword((prev) => !prev)}
-                                >
-                                  {showPassword ? (
-                                    <VisibilityOffIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
-                                  ) : (
-                                    <RemoveRedEyeIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
-                                  )}
-                                </Button>
-                              </InputAdornment>
-                            ),
-                          }
-                        : undefined
-                    }
-                  />
+                render={({ field, fieldState }) => (
+                  <>
+                    <InputForm
+                      {...field}
+                      placeholder={placeholder || ''}
+                      label={label}
+                      type={name === 'password' && showPassword ? 'text' : type || 'text'}
+                      error={!!errors[name]}
+                      helperText={errors[name]?.message}
+                      autoComplete={autocomplete}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (name === 'email') handleEmailChange();
+                      }}
+                      InputProps={
+                        name === 'password'
+                          ? {
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <Button
+                                    sx={{
+                                      p: 0,
+                                      m: 0,
+                                      minWidth: 'auto',
+                                      width: 'auto',
+                                      height: 'auto',
+                                    }}
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                  >
+                                    {showPassword ? (
+                                      <VisibilityOffIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
+                                    ) : (
+                                      <RemoveRedEyeIcon sx={{ color: 'white', '&:hover': { cursor: 'pointer' } }} />
+                                    )}
+                                  </Button>
+                                </InputAdornment>
+                              ),
+                            }
+                          : undefined
+                      }
+                    />
+                    {name === 'email' && !fieldState.error && field.value && (
+                      <Box>
+                        {!isCodeSent && (
+                          <Button
+                            onClick={() => handleEmailVerification(field.value?.toString())}
+                            disabled={isPending}
+                            className="button button--white"
+                          >
+                            Verify
+                          </Button>
+                        )}
+                        {isCodeSent && !isCodeVerified && (
+                          <>
+                            <InputForm
+                              placeholder="Enter code here"
+                              type="number"
+                              onChange={handleVerificationCodeChange}
+                            />
+                            <Button onClick={handleCodeVerification} className="button button--white">
+                              Verify Code
+                            </Button>
+                          </>
+                        )}
+                        {isCodeVerified && (
+                          <Box className="input-text">
+                            <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+                              <Typography>Email Verified</Typography>
+                              <DoneIcon sx={{ color: 'green' }} />
+                            </Box>
+                          </Box>
+                        )}
+                      </Box>
+                    )}
+                  </>
                 )}
               />
             )}
@@ -161,8 +247,13 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
             )}
           </Box>
         ))}
-        <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
-          {isPending ? 'Loading...' : 'Continue'}
+        <Button
+          type="submit"
+          disabled={isPending || isCodeVerificationFailed}
+          className="button button--white"
+          fullWidth
+        >
+          Continue
         </Button>
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
           Already have an account?{' '}

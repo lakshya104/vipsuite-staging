@@ -150,15 +150,18 @@ export const AgentEditProfileFields: AgentEditProfileFormField[] = [
 export const contacts = [
   {
     section: 'Events',
+    name: 'events',
     description:
       "Should someone else in your team handle event invites and you'd rather opportunities went to them instead, please provide their contact email.",
   },
   {
     section: 'Stylist',
+    name: 'stylist',
     description: 'Please provide an alternate contact that would handle your clothing opportunities.',
   },
   {
     section: 'Commercial Opportunities',
+    name: 'commercialOpportunities',
     description: 'Please provide an alternate contact that would handle your gifting opportunities.',
   },
 ];

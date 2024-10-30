@@ -118,7 +118,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           Additional Contacts
         </Typography>
       </Box>
-      {contacts.map(({ section, description }) => (
+      {contacts.map(({ section, description, name }) => (
         <Box className="profile-builder__form-row" key={section}>
           <Typography variant="h3" gutterBottom>
             {section}
@@ -131,12 +131,12 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
             label="Email"
             variant="outlined"
             margin="normal"
-            {...register(`${section.toLowerCase()}Email` as keyof FormValues)}
-            error={!!errors[`${section.toLowerCase()}Email` as keyof FormValues]}
-            helperText={errors[`${section.toLowerCase()}Email` as keyof FormValues]?.message}
-            disabled={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
+            {...register(`${name}Email` as keyof FormValues)}
+            error={!!errors[`${name}Email` as keyof FormValues]}
+            helperText={errors[`${name}Email` as keyof FormValues]?.message}
+            disabled={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
             InputLabelProps={{
-              shrink: !checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues],
+              shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
             }}
           />
           <TextField
@@ -144,19 +144,19 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
             label="Secondary Email"
             variant="outlined"
             margin="normal"
-            {...register(`${section.toLowerCase()}SecondaryEmail` as keyof FormValues)}
-            error={!!errors[`${section.toLowerCase()}SecondaryEmail` as keyof FormValues]}
-            helperText={errors[`${section.toLowerCase()}SecondaryEmail` as keyof FormValues]?.message}
-            disabled={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
+            {...register(`${name}SecondaryEmail` as keyof FormValues)}
+            error={!!errors[`${name}SecondaryEmail` as keyof FormValues]}
+            helperText={errors[`${name}SecondaryEmail` as keyof FormValues]?.message}
+            disabled={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
             InputLabelProps={{
-              shrink: !checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues],
+              shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
             }}
           />
           <FormControlLabel
             control={
               <Checkbox
-                checked={checkboxStates[`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues]}
-                onChange={handleCheckboxChange(`${section.toLowerCase()}ContactMeDirectly` as keyof FormValues)}
+                checked={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
+                onChange={handleCheckboxChange(`${name}ContactMeDirectly` as keyof FormValues)}
                 color="primary"
               />
             }

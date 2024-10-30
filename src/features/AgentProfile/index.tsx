@@ -73,7 +73,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
         formDataObj.append('examples_of_vip_managed', allVipExamples);
         try {
           const response = await AgentProfileUpdate(agentId, formDataObj, token);
-          revalidatePathAction('/agent-profile')
+          revalidatePathAction('/agent-profile');
           router.push('/agent-profile');
           if (response && response.error) {
             setError(`Error: ${response.error}`);

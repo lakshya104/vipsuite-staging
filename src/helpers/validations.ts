@@ -45,12 +45,12 @@ export const lastNameValidation = z.string().min(1, { message: en.signup.errorMe
   message: en.signup.errorMessage.lastName,
 });
 
-export const instagramValidation = z.string().min(3, {
-  message: en.signup.errorMessage.instagramRequired,
+export const instagramValidation = z.string().min(1, { message: en.signup.errorMessage.instagramRequired }).min(3, {
+  message: en.signup.errorMessage.instagramInvalid,
 });
 
-export const tiktokValidation = z.string().min(3, {
-  message: en.signup.errorMessage.tiktokRequired,
+export const tiktokValidation = z.string().min(1, { message: en.signup.errorMessage.tiktokRequired }).min(3, {
+  message: en.signup.errorMessage.tiktokInvalid,
 });
 
 export const codeValidation = z.string().min(1, { message: en.signup.errorMessage.code });
@@ -77,15 +77,11 @@ export const vipManagedValidation = z.string().min(3, { message: en.signup.error
 
 export const vipExamplesValidation = z
   .array(
-    z
-      .object({
-        value: z.string(),
-      })
-      .optional()
-      .or(z.literal('')),
+    z.object({
+      value: z.string().min(1, { message: en.signup.errorMessage.exampleOfVip }),
+    }),
   )
-  .optional()
-  .or(z.literal(''));
+  .optional();
 
 export const typeOfRepresentationValidation = z
   .string()

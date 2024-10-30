@@ -115,6 +115,15 @@ const VipSignupForm = () => {
     }
   };
 
+  const handleEmailChange = () => {
+    setVerificationCode('');
+    setCodeSent(false);
+    setIsCodeVerified(false);
+    setIsCodeVerificationFailed(false);
+    setApiResponseCode(null);
+    setError('');
+  };
+
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
@@ -133,6 +142,10 @@ const VipSignupForm = () => {
                     error={!!errors[name]}
                     helperText={errors[name]?.message}
                     autoComplete={autocomplete}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      if (name === 'email') handleEmailChange();
+                    }}
                     InputProps={
                       name === 'password'
                         ? {
