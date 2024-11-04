@@ -9,7 +9,7 @@ interface ErrorPageProps {
   reset: () => void;
 }
 
-export default function Error({ error, reset }: ErrorPageProps) {
+export default function Error({ reset }: ErrorPageProps) {
   return (
     <Box
       display="flex"
@@ -20,7 +20,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
       mb={5}
       minHeight="50vh"
     >
-      <ErrorToaster message={'Unable to fetch signup content'} errorMessage={String(error)} />
+      <ErrorToaster message={'Unable to fetch signup content'} errorMessage={'Unable to fetch signup content'} />
       <Btn look="dark-filled" className="button" onClick={reset}>
         Try again
       </Btn>
