@@ -1,9 +1,13 @@
 import React from 'react';
-import { Box, Container, Skeleton } from '@mui/material';
+import { Box, Container, Skeleton, Tab, Tabs } from '@mui/material';
 
 const MyOrdersLoading = () => {
   return (
     <Container>
+      <Tabs value={0} aria-label="profile tabs" className="opportunity__tabs">
+        <Tab label={'Messages'} />
+        <Tab label={'Orders'} />
+      </Tabs>
       <Box sx={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {[...Array(8)].map((_, index) => (
           <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

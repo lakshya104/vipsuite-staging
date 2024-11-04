@@ -34,8 +34,8 @@ const vipNavLinks = [
   },
   {
     label: 'Messages',
-    href: '/my-orders',
-    paths: ['/my-orders'],
+    href: '/messages',
+    paths: ['/messages'],
   },
   {
     label: 'My Profile',

@@ -227,7 +227,13 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                           </>
                         )}
                         {isCodeVerified && (
-                          <Box className="input-text" display="flex" alignItems="center" justifyContent="center" gap={1}>
+                          <Box
+                            className="input-text"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            gap={1}
+                          >
                             <Typography>Email Verified</Typography>
                             <DoneIcon sx={{ color: 'green' }} />
                           </Box>

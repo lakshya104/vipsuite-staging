@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Box } from '@mui/material';
 import InboxPage from '@/site-pages/InboxPage';
 import MyOrdersLoading from '@/site-pages/InboxPage/loading';
-import './order.scss';
+import './messages.scss';
 
 export default async function Page() {
   return (
