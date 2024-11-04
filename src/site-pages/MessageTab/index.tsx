@@ -6,7 +6,7 @@ const MessageTab = () => {
   return (
     <Box component={'main'} className="landing-page">
       <Container>
-        <ComingSoonPage page="inbox" />
+        <ComingSoonPage page="messages" />
       </Container>
     </Box>
   );

@@ -33,9 +33,9 @@ const vipNavLinks = [
     paths: ['/events'],
   },
   {
-    label: 'Messages',
-    href: '/messages',
-    paths: ['/messages'],
+    label: 'Inbox',
+    href: '/inbox',
+    paths: ['/inbox'],
   },
   {
     label: 'My Profile',

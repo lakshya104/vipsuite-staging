@@ -58,11 +58,11 @@ const HomeFooter = () => {
       srcselected: '/img/events-selected.svg',
     },
     {
-      href: '/messages',
+      href: '/inbox',
       src: '/img/inbox.svg',
-      alt: 'Messages',
-      label: 'Messages',
-      paths: ['/messages'],
+      alt: 'Inbox',
+      label: 'Inbox',
+      paths: ['/inbox'],
       srcselected: '/img/inbox-selected.svg',
     },
     {
