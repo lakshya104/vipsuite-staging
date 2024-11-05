@@ -1,18 +1,26 @@
 'use client';
 import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Tabs, Tab, Box, Container } from '@mui/material';
 import OrderListing from '../OrderListing';
 import { Order } from '@/interfaces';
 import MessageTab from '@/site-pages/MessageTab';
 import './InboxTabs.scss';
 
-const TABS = [
+type Tabs = {
+  section: 'messages' | 'orders';
+  label: string;
+};
+
+const TABS: Tabs[] = [
   { section: 'messages', label: 'Messages' },
   { section: 'orders', label: 'Orders' },
 ];
 
 const InboxTabs = ({ order }: { order: Order[] }) => {
-  const [section, setSection] = useState<string>('messages');
+  const searchParams = useSearchParams();
+  const isOrderTab = searchParams.get('isOrderTab');
+  const [section, setSection] = useState<'messages' | 'orders'>(isOrderTab ? 'orders' : 'messages');
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSection(TABS[newValue]?.section);
   };

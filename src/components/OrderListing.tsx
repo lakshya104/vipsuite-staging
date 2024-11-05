@@ -4,12 +4,17 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Order } from '@/interfaces';
 import { ProgressBarLink } from './ProgressBar';
 import { formatDate, formatString } from '@/helpers/utils';
+import { isEmpty } from 'lodash';
+import ErrorFallback from './ErrorFallback';
 
 interface OrderListingProps {
   allOrders: Order[];
 }
 
 const OrderListing: React.FC<OrderListingProps> = ({ allOrders }) => {
+  if (!allOrders || isEmpty(allOrders)) {
+    return <ErrorFallback errorMessage="No orders found" hideSubtext={true} />;
+  }
   return (
     <Container>
       <Box className="order-product__items">

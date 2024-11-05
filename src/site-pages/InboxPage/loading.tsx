@@ -1,10 +1,14 @@
 import React from 'react';
 import { Box, Container, Skeleton, Tab, Tabs } from '@mui/material';
 
-const MyOrdersLoading = () => {
+interface MyOrdersLoadingProps {
+  isOrderTab?: string;
+}
+
+const MyOrdersLoading: React.FC<MyOrdersLoadingProps> = ({ isOrderTab }) => {
   return (
     <Container>
-      <Tabs value={0} aria-label="profile tabs" className="opportunity__tabs">
+      <Tabs value={isOrderTab ? 1 : 0} aria-label="profile tabs" className="opportunity__tabs">
         <Tab label={'Messages'} />
         <Tab label={'Orders'} />
       </Tabs>

@@ -25,7 +25,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const router = useRouter();
-  const initialVipExamples = profileDetails.examples_of_vip_managed
+  const initialVipExamples = profileDetails?.examples_of_vip_managed
   ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
   : [{ value: '' }];
 

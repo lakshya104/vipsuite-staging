@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { orderId: number } }) 
     <Box className="user-inbox order-details-page">
       <Container>
         <Typography className="page-title" variant="h2" align="center">
-          <ProgressBarLink href={'/inbox'} aria-label="Back to My Orders">
+          <ProgressBarLink href={'/inbox?isOrderTab=true'} aria-label="Back to My Orders">
             <ArrowBackIcon />
           </ProgressBarLink>
           Order #{orderId}
