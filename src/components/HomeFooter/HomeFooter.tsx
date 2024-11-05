@@ -68,8 +68,8 @@ const HomeFooter = () => {
     {
       href: '/profile',
       src: '/img/user.svg',
-      alt: 'My Profile',
-      label: 'My Profile',
+      alt: 'Profile',
+      label: 'Profile',
       paths: ['/profile'],
       srcselected: '/img/user-selected.svg',
     },
