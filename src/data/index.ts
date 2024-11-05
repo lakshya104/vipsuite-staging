@@ -150,7 +150,6 @@ export const AgentEditProfileFields: AgentEditProfileFormField[] = [
   { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
   { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
-  { name: 'examples_of_vip_managed', placeholder: 'Example of VIP Managed', autocomplete: 'off', type: 'text' },
 ];
 
 export const contacts = [

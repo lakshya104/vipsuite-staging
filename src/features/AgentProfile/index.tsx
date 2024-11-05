@@ -25,14 +25,17 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const router = useRouter();
-  const defaultValues = {
-    first_name: profileDetails.first_name || '',
-    last_name: profileDetails.last_name || '',
-    phone: profileDetails.phone || '',
-    company_name: profileDetails.company_name || '',
-    examples_of_vip_managed:
-      (profileDetails.examples_of_vip_managed && profileDetails.examples_of_vip_managed.join(', ')) || '',
-  };
+  const initialVipExamples = profileDetails.examples_of_vip_managed
+  ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
+  : [{ value: '' }];
+
+const defaultValues = {
+  first_name: profileDetails.first_name || '',
+  last_name: profileDetails.last_name || '',
+  phone: profileDetails.phone || '',
+  company_name: profileDetails.company_name || '',
+  vip_examples: initialVipExamples
+};
 
   const {
     control,
@@ -165,7 +168,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
             <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
           </Box>
         </Box>
-        <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
+        <Button type="submit" disabled={isPending} className="button button--black" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}
         </Button>
       </Box>

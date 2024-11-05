@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { Login } from './libs/api-manager/manager';
+import { ProfileStatus } from './helpers/enums';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
@@ -33,13 +34,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           password: credentials.password,
         });
         user = res;
-        if (res && res?.account_status !== 'approved') {
+        if (res && res?.account_status !== ProfileStatus.Approved) {
           throw new Error(res.message);
         }
-        if (res && res?.acf?.profile_status == 'rejected') {
+        if (res && res?.acf?.profile_status == ProfileStatus.Rejected) {
           throw new Error('Your account was rejected');
         }
-        if (res && user) {
+        if (user) {
           return user;
         }
         return null;

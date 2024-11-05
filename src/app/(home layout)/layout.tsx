@@ -2,10 +2,10 @@ import React from 'react';
 import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter/HomeFooter';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 import { get } from 'lodash';
 import { GetSession } from '@/libs/api-manager/manager';
-import { cookies } from 'next/headers';
-import { UserRole } from '@/helpers/enums';
+import { CookieName, ProfileStatus, UserRole } from '@/helpers/enums';
 
 export default async function HomeSectionLayout({
   children,
@@ -15,9 +15,9 @@ export default async function HomeSectionLayout({
   const session = await GetSession();
   const { role } = session;
   const profile_status = get(session, 'acf.profile_status', {});
-  if (profile_status === 'pending') redirect('/vip-profile-builder');
+  if (profile_status === ProfileStatus.Pending) redirect('/vip-profile-builder');
   const cookieStore = cookies();
-  const userId = cookieStore.get('vipId');
+  const userId = cookieStore.get(CookieName.VipId);
   if (role === UserRole.Agent && (!userId || userId?.value === undefined)) {
     return redirect('/my-vips');
   }
