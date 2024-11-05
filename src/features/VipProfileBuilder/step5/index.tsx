@@ -75,7 +75,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       setIsDialogOpen(data);
       setIsLoading(true);
       await LogOut();
-      signOut();
+      signOut({ callbackUrl: '/', redirect:true })
     } catch (error) {
       setIsLoading(false);
       openToaster('Error: ' + error);

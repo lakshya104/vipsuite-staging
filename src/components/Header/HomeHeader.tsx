@@ -132,7 +132,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       await deleteVipCookies();
       await LogOut();
       clearAll();
-      signOut();
+      signOut({ callbackUrl: '/', redirect:true })
       localStorage.clear();
     } catch (error) {
       setIsLoading(false);
