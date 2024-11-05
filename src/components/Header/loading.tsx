@@ -42,7 +42,7 @@ const vipNavLinks = [
   {
     label: 'Inbox',
     href: '/inbox',
-    paths: ['/inbox'],
+    paths: ['/inbox', '/my-orders'],
   },
   {
     label: 'My Profile',

@@ -35,7 +35,7 @@ const vipNavLinks = [
   {
     label: 'Inbox',
     href: '/inbox',
-    paths: ['/inbox'],
+    paths: ['/inbox', '/my-orders'],
   },
   {
     label: 'My Profile',
@@ -129,15 +129,14 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
     try {
       setDrawerOpen(false);
       setIsLoading(true);
-      signOut();
+      await deleteVipCookies();
       await LogOut();
       clearAll();
+      signOut();
+      localStorage.clear();
     } catch (error) {
       setIsLoading(false);
       openToaster('Error during logging out. ' + error);
-    } finally {
-      await deleteVipCookies();
-      localStorage.clear();
     }
   };
 

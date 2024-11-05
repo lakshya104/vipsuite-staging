@@ -7,6 +7,7 @@ import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
 import { cookies } from 'next/headers';
 import { GetSession } from './api-manager/manager';
 import { getVipId } from '@/helpers/utils';
+import { CookieName } from '@/helpers/enums';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -52,30 +53,30 @@ export default async function revalidatePathAction(path: string) {
 }
 
 export async function createVipIdCookie(id: string) {
-  cookies().set('vipId', id);
+  cookies().set(CookieName.VipId, id);
 }
 
 export async function deleteVipCookies() {
-  cookies().delete('vipId');
-  cookies().delete('followers');
+  cookies().delete(CookieName.VipId);
+  cookies().delete(CookieName.FollowerCount);
 }
 
 export async function createVipFollowersCookie(followers: string) {
-  cookies().set('followers', followers);
+  cookies().set(CookieName.FollowerCount, followers);
 }
 
 export async function deleteVipVipFollowersCookie() {
-  cookies().delete('followers');
+  cookies().delete(CookieName.FollowerCount);
 }
 
 export async function getVipIdCookie() {
-  return cookies().get('vipId');
+  return cookies().get(CookieName.VipId);
 }
 
 export async function getAuthData() {
   try {
     const cookieStore = cookies();
-    const userId = cookieStore.get('vipId');
+    const userId = cookieStore.get(CookieName.VipId);
     const session = await GetSession();
     const { token, role } = session;
     const vipId = getVipId(role, userId, session);

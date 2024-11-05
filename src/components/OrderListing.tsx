@@ -12,9 +12,6 @@ interface OrderListingProps {
 const OrderListing: React.FC<OrderListingProps> = ({ allOrders }) => {
   return (
     <Container>
-      <Typography className="page-title" variant="h2" align="center">
-        My Orders
-      </Typography>
       <Box className="order-product__items">
         {allOrders.map((order: Order) => {
           if (order.id) {

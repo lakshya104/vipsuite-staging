@@ -62,7 +62,7 @@ const HomeFooter = () => {
       src: '/img/inbox.svg',
       alt: 'Inbox',
       label: 'Inbox',
-      paths: ['/inbox'],
+      paths: ['/inbox', '/my-orders'],
       srcselected: '/img/inbox-selected.svg',
     },
     {

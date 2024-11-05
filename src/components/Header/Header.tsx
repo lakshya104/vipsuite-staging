@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation';
 import { GetMenuItems } from '@/libs/api-manager/manager';
 import HeaderSkeleton from './loading';
 import './Header.scss';
+import { getLastPathSegment } from '@/helpers/utils';
 
 interface MenuItemData {
   ID: number;
@@ -31,12 +32,8 @@ const Header = () => {
       try {
         const data: MenuItemData[] = await GetMenuItems();
         const updatedMenuItems = data.map((item) => {
-          const currentDomain = window.location.origin;
-          if (
-            (item?.object === 'page' || item?.object === 'post') &&
-            item?.url.startsWith('https://vip.anktech.in/wordpress')
-          ) {
-            item.url = item?.url.replace('https://vip.anktech.in/wordpress', currentDomain);
+          if (item?.object === 'page' || item?.object === 'post') {
+            item.url = getLastPathSegment(item.url);
           }
           return item;
         });
@@ -54,6 +51,7 @@ const Header = () => {
   const getChildItems = (parentId: number) => menuItems.filter((item) => item?.menu_item_parent === String(parentId));
 
   const handleOpenNavMenu = () => setIsMobileOpen(!isMobileOpen);
+  const handleCloseNavMenu = () => setIsMobileOpen(false);
 
   const handleMenuToggle = (event: React.MouseEvent<HTMLElement>, parentId: number) => {
     if (openMenuId === parentId) {
@@ -119,8 +117,10 @@ const Header = () => {
                               }}
                             >
                               {childItems.map((childItem) => (
-                                <MenuItem key={childItem.ID} onClick={handleMenuClose}>
-                                  <Link href={childItem.url}>{childItem.title}</Link>
+                                <MenuItem key={childItem.ID}>
+                                  <Link href={childItem.url} onClick={handleCloseNavMenu}>
+                                    {childItem.title}
+                                  </Link>
                                 </MenuItem>
                               ))}
                             </Menu>

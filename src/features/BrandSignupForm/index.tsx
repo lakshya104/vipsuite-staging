@@ -63,29 +63,34 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   });
 
   const onSubmit = async (formData: BrandSignupValues) => {
-    setIsPending(true);
-    setError('');
-    try {
-      const data = {
-        brand_name: formData?.brand_name,
-        contact_name: formData?.contact_name,
-        email: formData?.email,
-        phone: formData?.phone,
-        password: formData?.password,
-        type_of_business: formData?.type_of_business,
-      };
-      const response = await BrandSignUp(data);
-      setIsPending(false);
-      if (response && response.error) {
-        setError(`Error: ${response.error}`);
-        setToasterOpen(true);
-      } else {
-        reset();
-        setIsDialogOpen(true);
+    if (!isCodeVerified) {
+      setError('Please verify your email first');
+      setToasterOpen(true);
+    } else {
+      setIsPending(true);
+      setError('');
+      try {
+        const data = {
+          brand_name: formData?.brand_name,
+          contact_name: formData?.contact_name,
+          email: formData?.email,
+          phone: formData?.phone,
+          password: formData?.password,
+          type_of_business: formData?.type_of_business,
+        };
+        const response = await BrandSignUp(data);
+        setIsPending(false);
+        if (response && response.error) {
+          setError(`Error: ${response.error}`);
+          setToasterOpen(true);
+        } else {
+          reset();
+          setIsDialogOpen(true);
+        }
+      } catch (error) {
+        handleError(error);
+        setIsPending(false);
       }
-    } catch (error) {
-      handleError(error);
-      setIsPending(false);
     }
   };
 

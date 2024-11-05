@@ -55,21 +55,26 @@ const VipSignupForm = () => {
   });
 
   const onSubmit = async (formData: VipSignUpRequestBody) => {
-    setIsPending(true);
-    setError('');
-    try {
-      const response = await VipSignUp(formData);
-      setIsPending(false);
-      if (response?.error) {
-        setError(response.error);
-        setToasterOpen(true);
-      } else {
-        setIsDialogOpen(true);
-        reset();
+    if (!isCodeVerified) {
+      setError('Please verify your email first');
+      setToasterOpen(true);
+    } else {
+      setIsPending(true);
+      setError('');
+      try {
+        const response = await VipSignUp(formData);
+        setIsPending(false);
+        if (response?.error) {
+          setError(response.error);
+          setToasterOpen(true);
+        } else {
+          setIsDialogOpen(true);
+          reset();
+        }
+      } catch (error) {
+        handleError(error);
+        setIsPending(false);
       }
-    } catch (error) {
-      handleError(error);
-      setIsPending(false);
     }
   };
 

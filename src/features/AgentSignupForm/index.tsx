@@ -64,35 +64,40 @@ const AgentSignupForm = () => {
   };
 
   const onSubmit = async (formData: AgentSignupValues) => {
-    setIsPending(true);
-    setError('');
-    try {
-      const allVipExamples = [
-        formData.examples_of_vip_managed,
-        ...formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== ''),
-      ].filter(Boolean);
+    if (!isCodeVerified) {
+      setError('Please verify your email first');
+      setToasterOpen(true);
+    } else {
+      setIsPending(true);
+      setError('');
+      try {
+        const allVipExamples = [
+          formData.examples_of_vip_managed,
+          ...formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== ''),
+        ].filter(Boolean);
 
-      const data = {
-        first_name: formData?.first_name,
-        last_name: formData?.last_name,
-        email: formData?.email,
-        password: formData?.password,
-        phone: formData?.phone,
-        company_name: formData?.company_name,
-        examples_of_vip_managed: allVipExamples,
-      };
-      const response = await AgentSignUp(data);
-      setIsPending(false);
-      if (response && response.error) {
-        setError(`Error: ${response.error}`);
-        setToasterOpen(true);
-      } else {
-        reset();
-        setIsDialogOpen(true);
+        const data = {
+          first_name: formData?.first_name,
+          last_name: formData?.last_name,
+          email: formData?.email,
+          password: formData?.password,
+          phone: formData?.phone,
+          company_name: formData?.company_name,
+          examples_of_vip_managed: allVipExamples,
+        };
+        const response = await AgentSignUp(data);
+        setIsPending(false);
+        if (response && response.error) {
+          setError(`Error: ${response.error}`);
+          setToasterOpen(true);
+        } else {
+          reset();
+          setIsDialogOpen(true);
+        }
+      } catch (error) {
+        handleError(error);
+        setIsPending(false);
       }
-    } catch (error) {
-      handleError(error);
-      setIsPending(false);
     }
   };
 
