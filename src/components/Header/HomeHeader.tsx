@@ -129,10 +129,10 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
     try {
       setDrawerOpen(false);
       setIsLoading(true);
-      await deleteVipCookies();
       await LogOut();
       clearAll();
-      signOut({ callbackUrl: '/', redirect:true })
+      signOut({ callbackUrl: '/', redirect: true });
+      await deleteVipCookies();
       localStorage.clear();
     } catch (error) {
       setIsLoading(false);

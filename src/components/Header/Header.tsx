@@ -100,7 +100,9 @@ const Header = () => {
                           className={isActive ? 'active' : ''}
                           onClick={(event) => handleMenuToggle(event, parentItem.ID)}
                         >
-                          <Link href={parentItem.url}>{parentItem.title}</Link>
+                          <Link href={parentItem.url} onClick={() => childItems.length < 1 && handleCloseNavMenu()}>
+                            {parentItem.title}
+                          </Link>
                           {childItems.length > 0 && <ArrowDropDownIcon />}
                           {childItems.length > 0 && (
                             <Menu
