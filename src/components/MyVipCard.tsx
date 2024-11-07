@@ -13,8 +13,8 @@ import VipInfoBox from './VipInfoBox';
 interface MyVipCardProps {
   image: string;
   name: string;
-  instaFollowers: number;
-  tiktokFollowers: number;
+  instaFollowers: string;
+  tiktokFollowers: string;
   link: string;
   status: ProfileStatus;
   vipId: string;
@@ -26,7 +26,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isVipPendingDialogOpen, setIsVipPendingDialogOpen] = useState<boolean>(false);
   const [isVipRejectedDialogOpen, setIsVipRejectedDialogOpen] = useState<boolean>(false);
-  const totalFollowerCount = instaFollowers + tiktokFollowers;
+  const totalFollowerCount = Number(instaFollowers) + Number(tiktokFollowers);
 
   const handleClick = async () => {
     try {

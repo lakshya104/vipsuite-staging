@@ -22,8 +22,8 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
             name={name}
             image={item?.profile_image}
             link={link}
-            instaFollowers={Number(item?.instagram_follower_count)}
-            tiktokFollowers={Number(item?.tiktok_follower_count)}
+            instaFollowers={item?.instagram_follower_count}
+            tiktokFollowers={item?.tiktok_follower_count}
             status={item?.profile_status}
           />
         );

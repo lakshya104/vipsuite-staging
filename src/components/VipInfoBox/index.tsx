@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -9,8 +9,8 @@ import './VipInfoBox.scss';
 interface VipInfoBoxProps {
   image: string;
   name: string;
-  instaFollowers: number;
-  tiktokFollowers: number;
+  instaFollowers: string;
+  tiktokFollowers: string;
   status: ProfileStatus;
   handleClick: () => void;
   // eslint-disable-next-line no-unused-vars
@@ -26,6 +26,8 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   handleClick,
   handleEditProfile,
 }) => {
+  console.log({ instaFollowers, tiktokFollowers });
+
   const itemImage = image || DefaultImageFallback.PersonPlaceholder;
   const isDisabled = status === ProfileStatus.Rejected;
 
@@ -39,7 +41,9 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
               {name}
             </Typography>
             {status === ProfileStatus.Pending && (
-              <EditOutlinedIcon className="editProfile" onClick={handleEditProfile} />
+              <Tooltip title="Edit Profile" aria-label="Edit Profile">
+                <EditOutlinedIcon className="editProfile" onClick={handleEditProfile} />
+              </Tooltip>
             )}
           </Box>
           <Typography variant="body2" className="socialFollowers">
