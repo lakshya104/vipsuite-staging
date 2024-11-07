@@ -26,7 +26,6 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   handleClick,
   handleEditProfile,
 }) => {
-  console.log({ instaFollowers, tiktokFollowers });
 
   const itemImage = image || DefaultImageFallback.PersonPlaceholder;
   const isDisabled = status === ProfileStatus.Rejected;
