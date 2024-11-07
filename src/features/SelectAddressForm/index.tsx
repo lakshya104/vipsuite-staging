@@ -12,17 +12,10 @@ import { useUserInfoStore } from '@/store/useStore';
 interface SelectAddressFormProps {
   addresses: Address[];
   cartData: Cart;
-  nonce: string;
   onPrevious?: () => void;
   startTransition: typeof import('react').startTransition;
 }
-const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
-  addresses,
-  cartData,
-  nonce,
-  onPrevious,
-  startTransition,
-}) => {
+const SelectAddressForm: React.FC<SelectAddressFormProps> = ({ addresses, cartData, onPrevious, startTransition }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const { vipIdStore } = useUserInfoStore();
   const handleAddressChange = (address: Address) => {
@@ -62,7 +55,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
             <ConfirmOrderBtn
               selectedAddress={selectedAddress}
               cartData={cartData}
-              nonce={nonce}
               startTransition={startTransition}
               vipId={vipIdStore}
             />

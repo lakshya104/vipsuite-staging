@@ -26,16 +26,16 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const router = useRouter();
   const initialVipExamples = profileDetails?.examples_of_vip_managed
-  ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
-  : [{ value: '' }];
+    ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
+    : [{ value: '' }];
 
-const defaultValues = {
-  first_name: profileDetails.first_name || '',
-  last_name: profileDetails.last_name || '',
-  phone: profileDetails.phone || '',
-  company_name: profileDetails.company_name || '',
-  vip_examples: initialVipExamples
-};
+  const defaultValues = {
+    first_name: profileDetails.first_name || '',
+    last_name: profileDetails.last_name || '',
+    phone: profileDetails.phone || '',
+    company_name: profileDetails.company_name || '',
+    vip_examples: initialVipExamples,
+  };
 
   const {
     control,

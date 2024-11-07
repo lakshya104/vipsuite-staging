@@ -3,26 +3,23 @@ import { Button } from '@mui/material';
 import UseToaster from '@/hooks/useToaster';
 import DialogConfirmBox from './Dialog/DialogConfirm';
 import Toaster from './Toaster';
-import { revalidateTag } from '@/libs/actions';
 import { RemoveAllVipCartItems } from '@/libs/api-manager/manager';
 
 interface RemoveAllItemsBtnProps {
-  nonce: string;
   startTransition: typeof import('react').startTransition;
 }
 
-const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ nonce, startTransition }) => {
+const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const removeProduct = async (nonce: string) => {
+  const removeProduct = async () => {
     startTransition(async () => {
       try {
-        await RemoveAllVipCartItems(nonce);
-        await revalidateTag('getVipCart');
+        await RemoveAllVipCartItems();
       } catch (error) {
         openToaster('Error : ' + String(error));
       } finally {
@@ -38,7 +35,7 @@ const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ nonce, startTrans
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
-        onConfirm={() => removeProduct(nonce)}
+        onConfirm={() => removeProduct()}
         title="Remove all items From Cart"
         description="Are you sure you want to remove all items from the cart?"
       />

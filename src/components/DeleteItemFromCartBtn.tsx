@@ -4,27 +4,26 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { RemoveVipCartItem } from '@/libs/api-manager/manager';
 import Toaster from './Toaster';
 import UseToaster from '@/hooks/useToaster';
-import { revalidateTag } from '@/libs/actions';
 import DialogConfirmBox from './Dialog/DialogConfirm';
+import revalidatePathAction from '@/libs/actions';
 
 interface DeleteItemFromCartBtnProps {
-  itemKey: string;
-  nonce: string;
+  productId: number;
   startTransition: typeof import('react').startTransition;
 }
 
-const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, nonce, startTransition }) => {
+const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ productId, startTransition }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const toggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
-  const removeProduct = async (itemKey: string, nonce: string) => {
+  const removeProduct = async (productId: number) => {
     startTransition(async () => {
       try {
-        await RemoveVipCartItem(itemKey, nonce);
-        await revalidateTag('getVipCart');
+        await RemoveVipCartItem(productId);
+        await revalidatePathAction('/basket');
       } catch (error) {
         openToaster('Error : ' + String(error));
       } finally {
@@ -39,7 +38,7 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ itemKey, 
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
-        onConfirm={() => removeProduct(itemKey, nonce)}
+        onConfirm={() => removeProduct(productId)}
         title="Delete Product From Cart"
         description="Are you sure you want to delete this product from the cart?"
       />

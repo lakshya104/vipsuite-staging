@@ -9,7 +9,6 @@ const en = {
     noResult: 'No results found.',
     cancel: 'Cancel',
     yes: 'Yes',
-    nonceNotFound: 'Nonce not found.',
     ok: 'OK',
   },
   nav: {

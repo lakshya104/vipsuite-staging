@@ -2,7 +2,7 @@
 * Address page style.
 */
 
-@import '../../../styles/mixins';
+@import '../../styles/mixins';
 
 .user-inbox {
   margin: rem(30) 0 rem(120);
@@ -105,19 +105,39 @@
 //message
 .message {
   &__item {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     img {
       width: auto;
       max-width: unset;
       max-height: rem(32);
+      @media screen and (min-width: 900px) {
+        max-height: rem(54);
+      }
     }
     h6 {
+      line-height: rem(16);
+      @include fontSize(14);
+      @media screen and (min-width: 900px) {
+        line-height: 1;
+        @include fontSize(32);
+      }
+    }
+    h2 {
       margin-top: rem(10);
       margin-bottom: rem(6);
-      line-height: rem(15.08);
-      @include fontSize(13);
-      @media only screen and (min-width: 900px) {
-        line-height: rem(31);
-        @include fontSize(30);
+      @media screen and (max-width: 899px) {
+        @include fontSize(13);
+        line-height: rem(15.08);
+      }
+    }
+    p {
+      @media screen and (max-width: 899px) {
+        @include fontSize(12);
+        line-height: rem(16);
+      }
+      &:not(:last-child) {
+        margin-bottom: rem(6);
       }
     }
   }

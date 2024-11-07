@@ -1,16 +1,15 @@
 'use client';
 import React, { useState } from 'react';
+import { map } from 'lodash';
 import Btn from './Button/CommonBtn';
 import DialogBox from './Dialog';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
-import { CreateOrder, RemoveAllVipCartItems } from '@/libs/api-manager/manager';
+import { CreateOrder } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
-import { map } from 'lodash';
-import { revalidateTag } from '@/libs/actions';
-import TAGS from '@/libs/apiTags';
 import { useLookbookOrder, useOrderStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
+import revalidatePathAction from '@/libs/actions';
 
 const dialogBoxContent = {
   title: 'Order confirmed',
@@ -23,18 +22,18 @@ const dialogBoxContent = {
 interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
   cartData: Cart;
-  nonce: string;
   startTransition: typeof import('react').startTransition;
   vipId: number;
 }
 
-const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cartData, nonce, startTransition }) => {
+const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cartData, startTransition }) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const searchParams = useSearchParams();
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
+  const brandId = searchParams.get('brandId');
   const { increaseOrderCount } = useOrderStore();
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const { requestProductId, clearRequestProductId } = useRequestOnlyStore();
@@ -65,6 +64,10 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
           {
             key: 'lookbook_order_data',
             value: lookbookDescription,
+          },
+          {
+            key: 'brand_id',
+            value: brandId,
           },
         ],
       }),
@@ -100,7 +103,8 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
     };
     try {
       startTransition(async () => {
-        await CreateOrder(orderDetails, nonce);
+        await CreateOrder(orderDetails);
+        await revalidatePathAction('/basket');
         increaseOrderCount();
         setIsDialogOpen(true);
         clearLookbookDescription();
@@ -108,13 +112,12 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
       });
     } catch (error) {
       openToaster(error?.toString() ?? 'Error processing Order');
-    } finally {
-      if (!isRequestedProduct && !isLookbookOrder) {
-        await RemoveAllVipCartItems(nonce);
-      }
-      await revalidateTag(TAGS.GET_MYORDERS);
-      await revalidateTag(TAGS.GET_VIP_CART);
     }
+    // finally {
+    //   if (!isRequestedProduct && !isLookbookOrder) {
+    //     await RemoveAllVipCartItems();
+    //   }
+    // }
   };
 
   return (

@@ -1,0 +1,65 @@
+@import '../../styles/mixins';
+
+.inbox {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    width: 100%;
+    max-width: 100%;
+    background-color: #fffff7;
+    border-bottom: 1px solid #e0e0e0;
+    img {
+      width: auto;
+      max-width: unset;
+      max-height: rem(54);
+    }
+    h6 {
+      margin-bottom: 0;
+      @include fontSize(16);
+      line-height: rem(18.56);
+      @media screen and (min-width: 900px) {
+        @include fontSize(30);
+        line-height: 1;
+      }
+    }
+    svg {
+      fill: #1b1b1b;
+    }
+  }
+  &_content {
+    margin-top: rem(20);
+    padding-left: rem(20);
+    padding-right: rem(20);
+
+    h6 {
+      margin-bottom: rem(6);
+      @include fontSize(16);
+      line-height: rem(18.56);
+      @media screen and (min-width: 900px) {
+        @include fontSize(30);
+        line-height: 1;
+      }
+    }
+    p {
+      @media screen and (max-width: 899px) {
+        @include fontSize(14);
+        line-height: rem(20);
+      }
+      &:not(:last-child) {
+        margin-bottom: rem(20);
+      }
+    }
+  }
+  &__date {
+    body & {
+      margin-bottom: rem(16);
+      line-height: rem(16);
+      @include fontSize(10);
+      @media screen and (min-width: 900px) {
+        @include fontSize(14);
+      }
+    }
+  }
+}

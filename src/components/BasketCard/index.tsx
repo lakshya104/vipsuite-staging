@@ -7,19 +7,18 @@ import './Basket.scss';
 import { Cart } from '@/interfaces';
 import DeleteItemFromCartBtn from '../DeleteItemFromCartBtn';
 import he from 'he';
-import { get } from 'lodash';
+import { get, take } from 'lodash';
 import RemoveAllItemsBtn from '../RemoveAllItemsBtn';
 import ErrorFallback from '../ErrorFallback';
 import { DefaultImageFallback } from '@/helpers/enums';
 
 interface BasketCardProps {
   cartData: Cart;
-  nonce: string;
   onNext: () => void;
   startTransition: typeof import('react').startTransition;
 }
 
-const BasketCard: React.FC<BasketCardProps> = ({ cartData, nonce, startTransition, onNext }) => {
+const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNext }) => {
   const cartItems = get(cartData, 'items', []);
   return (
     <Fragment>
@@ -32,41 +31,26 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, nonce, startTransitio
         {cartItems?.length > 0 ? (
           <>
             {cartItems.map((product) => {
-              const productImage = product?.images[0]?.src || DefaultImageFallback.Placeholder;
+              const productImage = product.image_url || DefaultImageFallback.Placeholder;
               return (
                 <Box className="basket-product__item" key={product.id}>
                   <Image src={productImage} alt={product?.name} height={110} width={110} />
                   <Box className="product-info">
                     <Typography gutterBottom variant="h2">
-                      {he.decode(product?.brand_name)}
+                      {/* {he.decode(product?.brand_name)} */} Brand Name
                     </Typography>
-                    <Typography variant="body1">{he.decode(product?.name)}</Typography>
-                    {product.type === 'variation' && (
-                      <>
-                        {product?.variation[0] && (
-                          <Typography variant="body1">
-                            {product?.variation[0]?.attribute}: {product?.variation[0].value}
-                          </Typography>
-                        )}
-                        {product?.variation[1] && (
-                          <Typography variant="body1">
-                            {product?.variation[1]?.attribute}: {product?.variation[1]?.value}
-                          </Typography>
-                        )}
-                        {product?.variation[2] && (
-                          <Typography variant="body1">
-                            {product?.variation[2]?.attribute}: {product?.variation[2]?.value}
-                          </Typography>
-                        )}
-                        {product?.variation[3] && (
-                          <Typography variant="body1">
-                            {product?.variation[3]?.attribute}: {product?.variation[3]?.value}
-                          </Typography>
-                        )}
-                      </>
-                    )}
+                    <Typography variant="body1"> {he.decode(product?.name)}</Typography>
+                    {product.type === 'variation' &&
+                      take(product.variation, 5).map(
+                        (variation, index) =>
+                          variation && (
+                            <Typography key={index} variant="body1">
+                              {variation?.attribute}: {variation?.value}
+                            </Typography>
+                          ),
+                      )}
                   </Box>
-                  <DeleteItemFromCartBtn itemKey={product.key} nonce={nonce} startTransition={startTransition} />
+                  <DeleteItemFromCartBtn productId={product.id} startTransition={startTransition} />
                 </Box>
               );
             })}
@@ -79,7 +63,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, nonce, startTransitio
                 flexDirection: { xs: 'column-reverse', md: 'row' },
               }}
             >
-              <RemoveAllItemsBtn nonce={nonce} startTransition={startTransition} />
+              <RemoveAllItemsBtn startTransition={startTransition} />
               <ContinueToCartBtn onNext={onNext} />
             </Box>
           </>

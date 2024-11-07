@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { Tabs, Tab, Box, Container } from '@mui/material';
 import OrderListing from '../OrderListing';
 import { Order } from '@/interfaces';
-import MessageTab from '@/site-pages/MessageTab';
+import MessageTab from '@/components/MessageTab';
 import './InboxTabs.scss';
 
 type Tabs = {

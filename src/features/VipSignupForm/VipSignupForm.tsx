@@ -16,6 +16,7 @@ import './VipSignupForm.scss';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
 import { VerifyEmail, VipSignUp } from '@/libs/api-manager/manager';
+import { isValidEmail } from '@/helpers/utils';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -178,15 +179,15 @@ const VipSignupForm = () => {
                         : undefined
                     }
                   />
-                  {name === 'email' && !fieldState.error && field.value && (
+                  {name === 'email' && !fieldState.error && (
                     <Box className="verify-button">
                       {!isCodeSent && (
                         <Button
                           onClick={() => handleEmailVerification(field.value)}
-                          disabled={isPending}
+                          disabled={isPending || !field.value || !isValidEmail(field.value)}
                           className="button button--white"
                         >
-                          Verify
+                          Verify Email
                         </Button>
                       )}
                       {isCodeSent && !isCodeVerified && (
@@ -196,8 +197,19 @@ const VipSignupForm = () => {
                             type="number"
                             onChange={(e) => setVerificationCode(e.target.value)}
                           />
-                          <Button onClick={handleCodeVerification} className="button button--white">
-                            Verify Code
+                          <Button
+                            onClick={() => handleEmailVerification(field.value)}
+                            disabled={isPending}
+                            className="button button--white"
+                          >
+                            Resend Code
+                          </Button>
+                          <Button
+                            onClick={handleCodeVerification}
+                            disabled={isPending}
+                            className="button button--white"
+                          >
+                            Submit
                           </Button>
                         </>
                       )}

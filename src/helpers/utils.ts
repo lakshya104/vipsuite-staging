@@ -153,3 +153,8 @@ export const getLastPathSegment = (url: string) => {
     return '';
   }
 };
+
+export const isValidEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};

@@ -11,7 +11,7 @@ export type EventFeedbackData = {
 
 export type MetaData = {
   key: string;
-  value: string;
+  value?: string | null;
 };
 
 export type OrderLineItem = {

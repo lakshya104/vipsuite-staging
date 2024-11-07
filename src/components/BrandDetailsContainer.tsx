@@ -28,7 +28,7 @@ const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDeta
               isPdf={true}
             />
           </Box>
-          <RequestItemFormButton />
+          <RequestItemFormButton brandId={brandDetails?.id} />
         </>
       )}
       <Box className="product-list__page">

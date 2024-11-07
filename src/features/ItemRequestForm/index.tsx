@@ -13,17 +13,15 @@ import { AddItemToCart } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useProductFilters } from '@/hooks/useProductFilters';
-import { revalidateTag } from '@/libs/actions';
-import TAGS from '@/libs/apiTags';
+import revalidatePathAction from '@/libs/actions';
 import { useRequestOnlyStore } from '@/store/useStore';
 
 interface ItemRequestFormProps {
   product: Product;
-  nonce: string;
   isRequestOnly: boolean;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, nonce, isRequestOnly }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnly }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -54,7 +52,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, nonce, isReq
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createOrder = async (item: any, nonce: string) => {
+  const createOrder = async (item: any) => {
     setLoading(true);
     try {
       if (isRequestOnly) {
@@ -62,8 +60,8 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, nonce, isReq
         setRequestProductId(product.id);
         router.push(`/basket?step=1&isRequestOnly=true`);
       } else {
-        const addToCart = await AddItemToCart(item, nonce);
-        await revalidateTag(TAGS.GET_VIP_CART);
+        const addToCart = await AddItemToCart(item.id);
+        await revalidatePathAction('/basket');
         if (addToCart && addToCart.code === 'permission_denied') {
           openToaster('Error during adding product: ' + addToCart.message?.toString());
         } else {
@@ -92,13 +90,13 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, nonce, isReq
   };
   const onSubmit = async () => {
     const prepareItem = getProductData();
-    await createOrder(prepareItem, nonce);
+    await createOrder(prepareItem);
     reset();
   };
 
   const handleAddToCart = async () => {
     const prepareItem = getProductData();
-    await createOrder(prepareItem, nonce);
+    await createOrder(prepareItem);
     reset();
   };
 

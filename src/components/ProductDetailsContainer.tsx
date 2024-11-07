@@ -9,10 +9,9 @@ import { Product } from '@/interfaces/brand';
 
 interface ProductDetailsContainerProps {
   product: Product;
-  nonce: string;
 }
 
-const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ product, nonce }) => {
+const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ product }) => {
   const isRequestOnly = product?.meta_data.find((item) => item.key === 'is_request_only')?.value === '1' || false;
   const productImage = get(product, 'images[0].src', DefaultImageFallback.Placeholder);
   const productDescription = wrapInParagraph(product?.description);
@@ -34,7 +33,7 @@ const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ produ
               {product?.name}
             </Typography>
             <Box dangerouslySetInnerHTML={{ __html: productDescription || '' }} />
-            <ItemRequestForm product={product} nonce={nonce} isRequestOnly={isRequestOnly} />
+            <ItemRequestForm product={product} isRequestOnly={isRequestOnly} />
           </Grid>
         </Grid>
       </Container>

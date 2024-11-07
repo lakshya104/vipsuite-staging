@@ -326,14 +326,10 @@ export const ResetPassword = async ({ email, code, password }: { email: string; 
   }
 };
 
-export const GetAllOrders = async (nonce: string) => {
+export const GetAllOrders = async () => {
   const id = await GetCustomerId();
   try {
-    const response = await Instance.get(Endpoints.getAllOrders(id), {
-      headers: {
-        'X-WC-Store-API-Nonce': nonce,
-      },
-    });
+    const response = await Instance.get(Endpoints.getAllOrders(id));
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -379,17 +375,9 @@ export const GetVipCart = async () => {
   }
 };
 
-export const RemoveVipCartItem = async (key: string, nonce: string) => {
+export const RemoveVipCartItem = async (id: number) => {
   try {
-    const response = await Instance.post(
-      Endpoints.removeVipCartItem(key),
-      {},
-      {
-        headers: {
-          'X-WC-Store-API-Nonce': nonce,
-        },
-      },
-    );
+    const response = await Instance.delete(Endpoints.removeVipCartItem(id));
     return response.data;
   } catch (error) {
     console.error(error);
@@ -399,13 +387,9 @@ export const RemoveVipCartItem = async (key: string, nonce: string) => {
   }
 };
 
-export const RemoveAllVipCartItems = async (nonce: string) => {
+export const RemoveAllVipCartItems = async () => {
   try {
-    const response = await Instance.delete(Endpoints.removeAllCartItems, {
-      headers: {
-        'X-WC-Store-API-Nonce': nonce,
-      },
-    });
+    const response = await Instance.delete(Endpoints.removeAllCartItems);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -415,13 +399,9 @@ export const RemoveAllVipCartItems = async (nonce: string) => {
   }
 };
 
-export const CreateOrder = async (data: CreateOrderData, nonce: string) => {
+export const CreateOrder = async (data: CreateOrderData) => {
   try {
-    const response = await Instance.post(Endpoints.createOrder, data, {
-      headers: {
-        'X-WC-Store-API-Nonce': nonce,
-      },
-    });
+    const response = await Instance.post(Endpoints.createOrder, data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -551,14 +531,9 @@ export const OrderFeedback = async (orderNumber: number, data: OrderFeedbackData
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AddItemToCart = async (data: any, nonce: string) => {
+export const AddItemToCart = async (id: number) => {
   try {
-    const addItemResponse = await Instance.post(Endpoints.addItemToCart, data, {
-      headers: {
-        'X-WC-Store-API-Nonce': nonce,
-      },
-    });
+    const addItemResponse = await Instance.post(Endpoints.addItemToCart(id));
     return addItemResponse.data;
   } catch (error) {
     console.error(error);
@@ -567,18 +542,10 @@ export const AddItemToCart = async (data: any, nonce: string) => {
   }
 };
 
-export const GetNonce = async () => {
-  const response = await Instance.get(Endpoints.getVipCart);
-  const nonce = response.headers['nonce'];
-  return nonce;
-};
-
-export const FetchCartItemsAndNonce = async () => {
+export const FetchCartItems = async () => {
   try {
     const response = await Instance.get(Endpoints.getVipCart);
-    const nonce = response.headers['nonce'];
-    const items = response.data;
-    return { items, nonce };
+    return response.data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);

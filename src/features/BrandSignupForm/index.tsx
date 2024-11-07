@@ -16,6 +16,7 @@ import { BrandSignupSchema, BrandSignupValues, defaultValues } from './types';
 import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { BrandSignUp, VerifyEmail } from '@/libs/api-manager/manager';
+import { isValidEmail } from '@/helpers/utils';
 
 const dialogBoxContent = {
   title: 'Thank You!',
@@ -136,10 +137,6 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
     }
   };
 
-  const handleVerificationCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVerificationCode(e.target.value);
-  };
-
   const handleEmailChange = () => {
     setVerificationCode('');
     setCodeSent(false);
@@ -208,15 +205,15 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                           : undefined
                       }
                     />
-                    {name === 'email' && !fieldState.error && field.value && (
+                    {name === 'email' && !fieldState.error && (
                       <Box className="verify-button">
                         {!isCodeSent && (
                           <Button
-                            onClick={() => handleEmailVerification(field.value?.toString())}
-                            disabled={isPending}
+                            onClick={() => handleEmailVerification(field.value)}
+                            disabled={isPending || !field.value || !isValidEmail(field.value)}
                             className="button button--white"
                           >
-                            Verify
+                            Verify Email
                           </Button>
                         )}
                         {isCodeSent && !isCodeVerified && (
@@ -224,10 +221,17 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                             <InputForm
                               placeholder="Enter code here"
                               type="number"
-                              onChange={handleVerificationCodeChange}
+                              onChange={(e) => setVerificationCode(e.target.value)}
                             />
+                            <Button
+                              onClick={() => handleEmailVerification(field.value)}
+                              disabled={isPending}
+                              className="button button--white"
+                            >
+                              Resend Code
+                            </Button>
                             <Button onClick={handleCodeVerification} className="button button--white">
-                              Verify Code
+                              Submit
                             </Button>
                           </>
                         )}
