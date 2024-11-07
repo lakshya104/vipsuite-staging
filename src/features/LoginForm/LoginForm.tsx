@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useTransition } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,12 +8,13 @@ import { useRouter } from 'next/navigation';
 import { isUndefined } from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { login } from '@/libs/actions';
+import { deleteVipCookies, login } from '@/libs/actions';
 import InputForm from '@/components/InputForm/InputForm';
-import { LoginFormValues, LoginSchema } from './loginTypes';
+import { LoginFormValues, LoginSchema, rejectDialogBoxContent, reviewDialogBoxContent } from './loginTypes';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
 import DialogBox from '@/components/Dialog';
+import en from '@/helpers/lang';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -24,22 +25,13 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 
-  const reviewDialogBoxContent = {
-    title: 'Thank You!',
-    subTitle: 'Application in Review',
-    description:
-      'Thank you for your application. The concierge team will review your submission and will be in touch in due course with their decision.',
-    buttonText: 'Done',
-    isCrossIcon: true,
-  };
-  const rejectDialogBoxContent = {
-    title: 'Sorry!',
-    subTitle: 'Your Application was Rejected',
-    description:
-      'lorem ipsum dolor sit am lorem, sed diam lorem, sed diam lorem, sed diam lorem, sed diam lorem, sed diam lore lorem, sed diam lorem.',
-    buttonText: 'Done',
-    isCrossIcon: true,
-  };
+  useEffect(() => {
+    const deleteCookies = async () => {
+      await deleteVipCookies();
+    };
+    deleteCookies();
+  }, []);
+
   const handleReviewDialogBoxDataChange = (open: boolean) => {
     setIsReviewDialogOpen(open);
     router.push('/');
@@ -137,10 +129,10 @@ const LoginForm = () => {
         </Typography>
       </Box>
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
-        {isPending ? 'Loading...' : 'Continue'}
+        {isPending ? en.helperText.loading : en.helperText.continue}
       </Button>
       <Typography className="signup-text">
-        Don&apos;t have an account?{' '}
+        {en.helperText.noAccount}
         <Link
           href={'/on-boarding'}
           style={{
@@ -150,7 +142,7 @@ const LoginForm = () => {
             color: 'white',
           }}
         >
-          Apply here
+          {en.helperText.applyHere}
         </Link>
       </Typography>
       <DialogBox

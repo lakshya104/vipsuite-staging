@@ -11,6 +11,12 @@ const en = {
     yes: 'Yes',
     ok: 'OK',
   },
+  helperText: {
+    noAccount: "Don't have an account?",
+    continue: 'continue',
+    loading: 'loading...',
+    applyHere: 'Apply here',
+  },
   nav: {
     home: 'Home',
     opportunities: 'Opportunities',
@@ -70,6 +76,8 @@ const en = {
   customReviewScreen: {
     thankyou: 'Thank you!',
     inReview: 'Your application is in review.',
+    description:
+      'Thank you for your application. The concierge team will review your submission and will be in touch in due course with their decision.',
     thankyouPara: 'We appreciate your patience.',
     done: 'Done',
   },

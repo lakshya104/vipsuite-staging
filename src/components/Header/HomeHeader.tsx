@@ -2,7 +2,17 @@
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import { AppBar, Toolbar, Box, MenuItem, MenuList, Drawer, Typography, Backdrop } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  MenuItem,
+  MenuList,
+  Drawer,
+  Typography,
+  Backdrop,
+  CircularProgress,
+} from '@mui/material';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,10 +21,8 @@ import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
-import { deleteVipCookies } from '@/libs/actions';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
-import { SignOutLoading } from './loading';
 
 const vipNavLinks = [
   {
@@ -132,7 +140,6 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       await LogOut();
       clearAll();
       signOut({ callbackUrl: '/', redirect: true });
-      await deleteVipCookies();
       localStorage.clear();
     } catch (error) {
       setIsLoading(false);
@@ -221,30 +228,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
           </Drawer>
         </Toolbar>
       </AppBar>
-      <Backdrop
-        sx={{
-          zIndex: 10000,
-          backgroundColor: '#fffff7',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'column',
-          width: '100vw',
-        }}
-        open={isLoading}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'column',
-            width: '100%',
-            height: '50vh',
-          }}
-        >
-          <SignOutLoading />
-        </Box>
+      <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isLoading}>
+        <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
