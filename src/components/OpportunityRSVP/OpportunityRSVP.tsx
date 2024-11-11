@@ -4,8 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import { formatDateWithOrdinalAndTime } from '@/helpers/utils';
 import { SendRsvp } from '@/libs/api-manager/manager';
-import { revalidateTag } from '@/libs/actions';
-import TAGS from '@/libs/apiTags';
+import revalidatePathAction from '@/libs/actions';
 
 interface RSVPProps {
   onClose: () => void;
@@ -46,7 +45,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       });
       try {
         const res = await SendRsvp(formData);
-        revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
+        await revalidatePathAction(`/opportunities/${opportunity.id}`);
         handleToasterMessage('success', res?.message);
       } catch (error) {
         handleToasterMessage('error', String(error));
@@ -70,7 +69,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       });
       try {
         const res = await SendRsvp(formData);
-        revalidateTag(TAGS.GET_OPPORTUNITY_DETAILS);
+        await revalidatePathAction(`/opportunities/${opportunity.id}`);
         handleToasterMessage('success', res?.message);
       } catch (error) {
         handleToasterMessage('error', String(error));
