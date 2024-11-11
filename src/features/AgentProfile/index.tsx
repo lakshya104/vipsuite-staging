@@ -125,6 +125,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
                 render={({ field }) => (
                   <InputForm
                     {...field}
+                    value={field.value}
                     placeholder={placeholder || ''}
                     type={'text'}
                     error={!!errors[name]}

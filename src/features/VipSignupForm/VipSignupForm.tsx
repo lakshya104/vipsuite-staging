@@ -144,6 +144,7 @@ const VipSignupForm = () => {
                     {...field}
                     placeholder={placeholder}
                     value={field.value}
+                    autoFill={true}
                     label={label}
                     type={name === 'password' && showPassword ? 'text' : type}
                     error={!!errors[name]}

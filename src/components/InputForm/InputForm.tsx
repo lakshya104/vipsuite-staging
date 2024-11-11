@@ -1,23 +1,24 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 
 interface InputFormProps extends Omit<TextFieldProps, 'variant'> {
   placeholder: string;
   type: string;
+  autoFill?: boolean;
 }
 
 const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
-  ({ placeholder, type, error, helperText, label, onChange, ...rest }, ref) => {
-    // const [fieldHasValue, setFieldHasValue] = useState<boolean>(value ? !!value : false);
-    // const makeAnimationStartHandler =
-    //   (stateSetter: (autofilled: boolean) => void) =>
-    //   (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    //     const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
-    //     if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
-    //       stateSetter(autofilled);
-    //     }
-    //   };
+  ({ placeholder, autoFill = false, value, type, error, helperText, label, onChange, ...rest }, ref) => {
+    const [fieldHasValue, setFieldHasValue] = useState<boolean>(value ? !!value : false);
+    const makeAnimationStartHandler =
+      (stateSetter: (autofilled: boolean) => void) =>
+      (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
+        if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
+          stateSetter(autofilled);
+        }
+      };
 
     return (
       <TextField
@@ -34,14 +35,20 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
             color: 'error.main',
           },
         }}
-        // inputProps={{
-        //   onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
-        // }}
-        // InputLabelProps={{
-        //   shrink: fieldHasValue,
-        // }}
-        // onFocus={() => setFieldHasValue(true)}
-        // onBlurCapture={() => value && !value && setFieldHasValue(false)}
+        inputProps={{
+          ...(autoFill && {
+            onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
+          }),
+        }}
+        InputLabelProps={{
+          ...(autoFill && {
+            shrink: fieldHasValue,
+          }),
+        }}
+        {...(autoFill && {
+          onFocus: () => setFieldHasValue(true),
+          onBlurCapture: () => !value && setFieldHasValue(false),
+        })}
         onChange={onChange}
         placeholder={placeholder}
         variant="outlined"
@@ -50,6 +57,7 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
         error={error}
         helperText={helperText}
         label={label}
+        value={value}
       />
     );
   },

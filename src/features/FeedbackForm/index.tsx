@@ -13,6 +13,7 @@ import InputTextFormField from '@/components/InputTextFormField';
 import { EventFeedback, OrderFeedback } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
+import revalidatePathAction from '@/libs/actions';
 
 const orderFeedbackSchema = z.object({
   socialPostUrl: z.string().url('Valid URL is required'),
@@ -104,6 +105,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           screenshot: screenshotBase64,
         };
         await OrderFeedback(orderId, feedback);
+        await revalidatePathAction(`/my-orders/${orderId}`);
         setIsSubmitted(true);
         setToasterType('success');
         openToaster('Your feedback has been successfully submitted!');
@@ -127,6 +129,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           rating: data.rating,
         };
         await EventFeedback(orderId, feedback);
+        await revalidatePathAction(`/my-events/${orderId}`);
         setIsSubmitted(true);
         setToasterType('success');
         openToaster('Your feedback has been successfully submitted!');

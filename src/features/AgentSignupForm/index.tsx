@@ -64,7 +64,8 @@ const AgentSignupForm = () => {
     append({ value: '' });
   };
 
-  const onSubmit = async (formData: AgentSignupValues) => {
+  // eslint-disable-next-line no-unused-vars
+  const onSubmit: (formData: AgentSignupValues) => Promise<void> = async (formData) => {
     if (!isCodeVerified) {
       setError('Please verify your email first');
       setToasterOpen(true);
@@ -175,6 +176,7 @@ const AgentSignupForm = () => {
                   <>
                     <InputForm
                       {...field}
+                      autoFill={true}
                       value={field.value}
                       placeholder={placeholder || ''}
                       label={placeholder}

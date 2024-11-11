@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { FormControl, FormHelperText, Input, TextField } from '@mui/material';
 
@@ -9,6 +9,7 @@ interface InputTextFormFieldProps<T extends FieldValues> {
   placeholder: string | undefined;
   errors: FieldErrors<T>;
   noLabel?: boolean;
+  autoFill?: boolean;
 }
 
 const InputTextFormField = <T extends FieldValues>({
@@ -17,46 +18,53 @@ const InputTextFormField = <T extends FieldValues>({
   placeholder,
   errors,
   noLabel,
+  autoFill = false,
 }: InputTextFormFieldProps<T>) => {
-  // const [fieldHasValue, setFieldHasValue] = useState(true);
-  // const makeAnimationStartHandler =
-  //   (stateSetter: (autofilled: boolean) => void) =>
-  //   (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //     const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
-  //     if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
-  //       stateSetter(autofilled);
-  //     }
-  //   };
+  const [fieldHasValue, setFieldHasValue] = useState(autoFill ? false : true);
+  const makeAnimationStartHandler =
+    (stateSetter: (autofilled: boolean) => void) =>
+    (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
+      if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
+        stateSetter(autofilled);
+      }
+    };
 
   return (
     <Controller
       name={name}
       control={control}
       render={({ field: { onChange, onBlur, value } }) => {
-        // const _onChange = (e: { target: { value: string } }) => {
-        //   onChange(e.target.value);
-        //   setFieldHasValue(e.target.value !== '');
-        // };
+        const _onChange = (e: { target: { value: string } }) => {
+          onChange(e.target.value);
+          setFieldHasValue(e.target.value !== '');
+        };
         return (
           <TextField
             fullWidth
             type="text"
             label={!noLabel ? placeholder : undefined}
             placeholder={noLabel ? placeholder : undefined}
-            onChange={onChange}
+            onChange={_onChange}
             onBlur={onBlur}
             value={value}
             error={!!errors[name]}
-            // onFocus={() => setFieldHasValue(true)}
-            // onBlurCapture={() => !value && setFieldHasValue(false)}
             helperText={typeof errors[name]?.message === 'string' ? errors[name]?.message : ''}
             sx={{ borderRadius: '50px', '& .MuiOutlinedInput-root': { borderRadius: '50px' } }}
-            // inputProps={{
-            //   onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
-            // }}
-            // InputLabelProps={{
-            //   shrink: fieldHasValue,
-            // }}
+            inputProps={{
+              ...(autoFill && {
+                onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
+              }),
+            }}
+            InputLabelProps={{
+              ...(autoFill && {
+                shrink: fieldHasValue,
+              }),
+            }}
+            {...(autoFill && {
+              onFocus: () => setFieldHasValue(true),
+              onBlurCapture: () => !value && setFieldHasValue(false),
+            })}
           />
         );
       }}

@@ -80,6 +80,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
                 placeholder={placeholder}
                 control={control}
                 errors={errors}
+                autoFill={addressId ? false : true}
               />
             </Box>
           ))}
