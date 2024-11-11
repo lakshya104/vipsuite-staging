@@ -108,8 +108,10 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
 
   const handleEmailVerification = async (email: string | undefined) => {
     try {
+      setError('');
       setIsPending(true);
       if (email) {
+        setVerificationCode('');
         const response = await VerifyEmail(email);
         setApiResponseCode(response.verification_code);
         setCodeSent(true);
@@ -129,11 +131,9 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
       setIsCodeVerified(true);
       setIsCodeVerificationFailed(false);
     } else {
-      setError('Your code is incorrect, please try again');
-      setToasterOpen(true);
+      setError('Your OTP is incorrect, please try again');
       setIsCodeVerified(false);
       setIsCodeVerificationFailed(true);
-      setVerificationCode('');
     }
   };
 
@@ -150,7 +150,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
         {BrandSignUpFormFields.map(({ name, placeholder, autocomplete, type, label }) => (
-          <Box key={name}>
+          <Box key={name} className="signup__item">
             {type === 'select' ? (
               <SelectBox
                 name={name}
@@ -164,11 +164,12 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
               <Controller
                 name={name}
                 control={control}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <>
                     <InputForm
                       {...field}
                       placeholder={placeholder || ''}
+                      value={field.value}
                       label={label}
                       type={name === 'password' && showPassword ? 'text' : type || 'text'}
                       error={!!errors[name]}
@@ -205,32 +206,35 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                           : undefined
                       }
                     />
-                    {name === 'email' && !fieldState.error && (
+                    {name === 'email' && (
                       <Box className="verify-button">
                         {!isCodeSent && (
                           <Button
-                            onClick={() => handleEmailVerification(field.value)}
-                            disabled={isPending || !field.value || !isValidEmail(field.value)}
-                            className="button button--white"
+                            onClick={() => handleEmailVerification(field.value.toString())}
+                            disabled={isPending || !field.value || !isValidEmail(field.value.toString())}
+                            className="button verify-btn"
                           >
                             Verify Email
                           </Button>
                         )}
                         {isCodeSent && !isCodeVerified && (
                           <>
+                            <Button
+                              onClick={() => handleEmailVerification(field.value.toString())}
+                              disabled={isPending}
+                              className="button resend-btn"
+                            >
+                              Resend OTP
+                            </Button>
                             <InputForm
-                              placeholder="Enter code here"
+                              placeholder="Enter OTP"
                               type="number"
+                              value={verificationCode}
+                              error={!!error}
+                              helperText={error}
                               onChange={(e) => setVerificationCode(e.target.value)}
                             />
-                            <Button
-                              onClick={() => handleEmailVerification(field.value)}
-                              disabled={isPending}
-                              className="button button--white"
-                            >
-                              Resend Code
-                            </Button>
-                            <Button onClick={handleCodeVerification} className="button button--white">
+                            <Button onClick={handleCodeVerification} disabled={isPending} className="button submit-btn">
                               Submit
                             </Button>
                           </>

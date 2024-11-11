@@ -18,7 +18,6 @@ const InboxHeader = () => {
           width={60}
           height={60}
           style={{
-            borderRadius: 4,
             marginRight: 12,
           }}
         />

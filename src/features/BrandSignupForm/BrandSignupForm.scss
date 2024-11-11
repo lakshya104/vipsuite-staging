@@ -5,6 +5,13 @@
 @import '../../styles/mixins';
 
 .signup {
+  &__item {
+    &:has(.verify-btn) {
+      .MuiFormControl-root {
+        margin-bottom: 0;
+      }
+    }
+  }
   &__page {
     min-height: 100vh;
     padding: rem(16);
@@ -34,17 +41,69 @@
         @include fontSize(14);
       }
       .verify-button {
-        text-align: center;
-        margin-bottom: rem(32);
-        margin-top: 8px;
-        button {
+        position: relative;
+        text-align: right;
+        margin-bottom: rem(16);
+        margin-top: 4px;
+        &:has(.submit-btn) {
+          flex-wrap: wrap;
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: 0;
+        }
+        .MuiFormControl-root {
+          max-width: 100%;
+          &:has(.Mui-error) {
+            margin-bottom: rem(16);
+          }
+        }
+        .submit-btn {
+          background-color: transparent;
+          padding: 0;
           margin: 0;
+          color: var(--color-white);
+          border: none;
+          font-weight: 400;
+          line-height: 1.27;
+          font-size: 0.6875rem;
+          position: absolute;
+          top: 60px;
+          &:hover {
+            border: none;
+          }
+        }
+        .resend-btn {
+          background-color: transparent;
+          padding: 0;
+          margin: 0;
+          color: var(--color-white);
+          border: none;
+          font-weight: 400;
+          line-height: 1.27;
+          font-size: 0.6875rem;
+          margin-top: -44px;
+          &:hover {
+            border: none;
+          }
+        }
+        .verify-btn {
+          background-color: transparent;
+          padding: 0;
+          margin: 0;
+          color: var(--color-white);
+          border: none;
+          font-weight: 400;
+          line-height: 1.27;
+          font-size: 0.6875rem;
+          &:hover {
+            border: none;
+          }
         }
         &:has(.input-text) {
           margin-bottom: 0rem;
         }
         .input-text {
-          justify-content: flex-start;
+          justify-content: flex-end;
         }
       }
     }

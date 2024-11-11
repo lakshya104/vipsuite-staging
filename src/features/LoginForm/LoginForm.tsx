@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState, useTransition } from 'react';
-import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -9,7 +9,6 @@ import { isUndefined } from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { deleteVipCookies, login } from '@/libs/actions';
-import InputForm from '@/components/InputForm/InputForm';
 import { LoginFormValues, LoginSchema, rejectDialogBoxContent, reviewDialogBoxContent } from './loginTypes';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
@@ -81,7 +80,7 @@ const LoginForm = () => {
   };
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="login-form">
-      <InputForm
+      <TextField
         {...register('email')}
         placeholder="Email"
         label="Email"
@@ -89,8 +88,10 @@ const LoginForm = () => {
         error={!!errors.email}
         helperText={errors.email?.message}
         autoComplete="email"
+        fullWidth
       />
-      <InputForm
+
+      <TextField
         {...register('password')}
         placeholder="Password"
         label="Password"
@@ -98,6 +99,7 @@ const LoginForm = () => {
         error={!!errors.password}
         helperText={errors.password?.message}
         autoComplete="current-password"
+        fullWidth
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">

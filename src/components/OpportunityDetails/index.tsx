@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Box, Button, CardContent, Typography, Dialog, DialogContent } from '@mui/material';
+import he from 'he';
 import OpportunityTabs from '@/components/OpportunityTabs';
 import './OpportunityDetails.scss';
 import './OpportunityTab.scss';
@@ -44,7 +45,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   return (
     <Box className="opportunity-detail-page" component="main">
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        {opportunity.title.rendered}
+        {he.decode(opportunity?.title?.rendered)}
       </Typography>
       <Box>
         <ImageSlider images={images} withLikeIcon={true} item={opportunity} />

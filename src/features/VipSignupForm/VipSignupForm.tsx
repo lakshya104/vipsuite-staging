@@ -92,8 +92,10 @@ const VipSignupForm = () => {
 
   const handleEmailVerification = async (email: string | undefined) => {
     try {
+      setError('');
       setIsPending(true);
       if (email) {
+        setVerificationCode('');
         const response = await VerifyEmail(email);
         setApiResponseCode(response.verification_code);
         setCodeSent(true);
@@ -113,11 +115,9 @@ const VipSignupForm = () => {
       setIsCodeVerified(true);
       setIsCodeVerificationFailed(false);
     } else {
-      setError('Your code is incorrect, please try again');
-      setToasterOpen(true);
+      setError('Your OTP is incorrect, please try again');
       setIsCodeVerified(false);
       setIsCodeVerificationFailed(true);
-      setVerificationCode('');
     }
   };
 
@@ -134,15 +134,16 @@ const VipSignupForm = () => {
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
         {VIPSignUpFormFields.map(({ name, label, placeholder, autocomplete, type }) => (
-          <Box key={name}>
+          <Box key={name} className="signup__item">
             <Controller
               name={name}
               control={control}
-              render={({ field, fieldState }) => (
+              render={({ field }) => (
                 <>
                   <InputForm
                     {...field}
                     placeholder={placeholder}
+                    value={field.value}
                     label={label}
                     type={name === 'password' && showPassword ? 'text' : type}
                     error={!!errors[name]}
@@ -179,36 +180,35 @@ const VipSignupForm = () => {
                         : undefined
                     }
                   />
-                  {name === 'email' && !fieldState.error && (
+                  {name === 'email' && (
                     <Box className="verify-button">
                       {!isCodeSent && (
                         <Button
                           onClick={() => handleEmailVerification(field.value)}
                           disabled={isPending || !field.value || !isValidEmail(field.value)}
-                          className="button button--white"
+                          className="button verify-btn"
                         >
                           Verify Email
                         </Button>
                       )}
                       {isCodeSent && !isCodeVerified && (
                         <>
-                          <InputForm
-                            placeholder="Enter code here"
-                            type="number"
-                            onChange={(e) => setVerificationCode(e.target.value)}
-                          />
                           <Button
                             onClick={() => handleEmailVerification(field.value)}
                             disabled={isPending}
-                            className="button button--white"
+                            className="button resend-btn"
                           >
-                            Resend Code
+                            Resend OTP
                           </Button>
-                          <Button
-                            onClick={handleCodeVerification}
-                            disabled={isPending}
-                            className="button button--white"
-                          >
+                          <InputForm
+                            placeholder="Enter OTP"
+                            type="number"
+                            value={verificationCode}
+                            error={!!error}
+                            helperText={error}
+                            onChange={(e) => setVerificationCode(e.target.value)}
+                          />
+                          <Button onClick={handleCodeVerification} disabled={isPending} className="button submit-btn">
                             Submit
                           </Button>
                         </>
@@ -246,6 +246,7 @@ const VipSignupForm = () => {
         >
           Continue
         </Button>
+
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
           Already have an account?{' '}
           <Link

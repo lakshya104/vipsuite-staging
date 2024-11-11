@@ -4,15 +4,31 @@ import { Box } from '@mui/material';
 import MyVipCard from './MyVipCard';
 import { ProfileStatus } from '@/helpers/enums';
 import { MyVips } from '@/interfaces';
+import { orderBy } from 'lodash';
 
 interface MyVipsListingProps {
   myVips: MyVips[];
 }
 
 const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
+  const sortVipProfiles = (vips: MyVips[]) => {
+    return orderBy(
+      vips,
+      [
+        (vip) => {
+          if (vip.profile_status === ProfileStatus.Approved) return 1;
+          if (vip.profile_status === ProfileStatus.Pending) return 2;
+          return 3;
+        },
+        'first_name',
+      ],
+      ['asc', 'asc'],
+    );
+  };
+  const sortedVips = sortVipProfiles(myVips);
   return (
     <Box>
-      {myVips.map((item) => {
+      {sortedVips.map((item) => {
         const link = item.profile_status === ProfileStatus.Pending ? `/agent-profile-builder?edit=true` : `/home`;
         const name = `${item?.first_name} ${item?.last_name}`;
         return (

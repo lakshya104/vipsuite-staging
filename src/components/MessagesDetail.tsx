@@ -7,7 +7,9 @@ export default async function MessagesDetail() {
     <Box className="order-details-page">
       <InboxHeader />
       <Box className="inbox_content">
-        <Typography className="inbox__date">1hr ago . 03/10/2024</Typography>
+        <Typography className="inbox__date">
+          1hr ago <span></span> 03/10/2024
+        </Typography>
         <Typography variant="h6"> Title of the message goes here</Typography>
         <Typography variant="body1">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus quaerat enim voluptatem porro, fugit

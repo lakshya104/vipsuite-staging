@@ -4,6 +4,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import MyOrderDetailLoading from '@/site-pages/MyOrderDetailPage/loading';
 import MessagesDetail from '@/components/MessagesDetail';
+import '../Messages.scss';
 
 export default async function Page() {
   return (

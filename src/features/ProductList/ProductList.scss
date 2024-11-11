@@ -45,6 +45,7 @@
       }
     }
     button {
+      box-shadow: none;
       margin-top: auto;
       @media only screen and (max-width: 767px) {
         padding: rem(6);

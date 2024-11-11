@@ -125,4 +125,16 @@
       }
     }
   }
+  .slick-dots {
+    @media only screen and (max-width: 767px) {
+      position: static;
+      li {
+        button {
+          &:before {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
 }

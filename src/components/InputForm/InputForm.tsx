@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 
@@ -7,7 +8,17 @@ interface InputFormProps extends Omit<TextFieldProps, 'variant'> {
 }
 
 const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
-  ({ placeholder, type, error, helperText, label, ...rest }, ref) => {
+  ({ placeholder, type, error, helperText, label, onChange, ...rest }, ref) => {
+    // const [fieldHasValue, setFieldHasValue] = useState<boolean>(value ? !!value : false);
+    // const makeAnimationStartHandler =
+    //   (stateSetter: (autofilled: boolean) => void) =>
+    //   (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
+    //     if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
+    //       stateSetter(autofilled);
+    //     }
+    //   };
+
     return (
       <TextField
         {...rest}
@@ -23,6 +34,15 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
             color: 'error.main',
           },
         }}
+        // inputProps={{
+        //   onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
+        // }}
+        // InputLabelProps={{
+        //   shrink: fieldHasValue,
+        // }}
+        // onFocus={() => setFieldHasValue(true)}
+        // onBlurCapture={() => value && !value && setFieldHasValue(false)}
+        onChange={onChange}
         placeholder={placeholder}
         variant="outlined"
         fullWidth

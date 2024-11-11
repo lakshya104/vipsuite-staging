@@ -72,7 +72,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
           </Box>
         )}
         <Box className="dashboard-card__item-featured">
-          {isEvent && item?.is_featured && (
+          {isEvent && item?.acf?.is_featured && (
             <Box className="dashboard-card__item-featuredBox">
               <Typography className="dashboard-card__item-featuredText" variant="overline">
                 Featured Event

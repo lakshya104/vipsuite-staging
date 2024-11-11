@@ -67,13 +67,9 @@ export const stateValidation = z.string().min(1, { message: en.address.errorMess
 
 export const countryValidation = z.string().min(1, { message: en.address.errorMessage.countryRequired });
 
-export const companyValidation = z
-  .string()
-  .min(4, { message: en.signup.errorMessage.companyName })
-  .optional()
-  .or(z.literal(''));
+export const companyValidation = z.string().optional().or(z.literal(''));
 
-export const vipManagedValidation = z.string().min(3, { message: en.signup.errorMessage.exampleOfVip });
+export const vipManagedValidation = z.string().min(1, { message: en.signup.errorMessage.exampleOfVip });
 
 export const vipExamplesValidation = z
   .array(

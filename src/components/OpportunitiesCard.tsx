@@ -1,5 +1,6 @@
 import React from 'react';
-import { isUndefined, map } from 'lodash';
+import { first, isUndefined, map } from 'lodash';
+import he from 'he';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { ProgressBarLink } from './ProgressBar';
 import { Opportunity } from '@/interfaces/opportunities';
@@ -21,14 +22,14 @@ const OpportunitiesCard: React.FC<OpportunitiesCardProps> = ({ opportunities }) 
                   backgroundImage: `url(${opportunity?.acf.featured_image?.link})`,
                 }}
               >
-                {!isUndefined(opportunity['opportunity-category'][0]) && (
+                {!isUndefined(first(opportunity['opportunity-category'])) && (
                   <Typography className="opportunities-card__item-overline" variant="overline" gutterBottom>
-                    {opportunity?.['opportunity-category']}
+                    {first(opportunity['opportunity-category'])}
                   </Typography>
                 )}
 
                 <CardContent className="opportunities-card__item-content">
-                  <Typography variant="h2">{opportunity?.title?.rendered}</Typography>
+                  <Typography variant="h2"> {he.decode(opportunity?.title?.rendered)}</Typography>
                 </CardContent>
               </Card>
             </ProgressBarLink>

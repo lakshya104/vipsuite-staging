@@ -8,7 +8,6 @@ import { Cart } from '@/interfaces';
 import DeleteItemFromCartBtn from '../DeleteItemFromCartBtn';
 import he from 'he';
 import { get, take } from 'lodash';
-import RemoveAllItemsBtn from '../RemoveAllItemsBtn';
 import ErrorFallback from '../ErrorFallback';
 import { DefaultImageFallback } from '@/helpers/enums';
 
@@ -63,7 +62,6 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
                 flexDirection: { xs: 'column-reverse', md: 'row' },
               }}
             >
-              <RemoveAllItemsBtn startTransition={startTransition} />
               <ContinueToCartBtn onNext={onNext} />
             </Box>
           </>
