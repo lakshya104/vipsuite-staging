@@ -103,7 +103,8 @@ const VipSignupForm = () => {
         console.error('Email is undefined');
       }
     } catch (error) {
-      console.error('Error during email verification:', error);
+      if (typeof error === 'string') setError(error);
+      setToasterOpen(true);
     } finally {
       setIsPending(false);
     }
