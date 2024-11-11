@@ -169,6 +169,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                     <InputForm
                       {...field}
                       placeholder={placeholder || ''}
+                      autoFill={true}
                       value={field.value}
                       label={label}
                       type={name === 'password' && showPassword ? 'text' : type || 'text'}
