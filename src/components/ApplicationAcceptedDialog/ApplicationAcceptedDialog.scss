@@ -5,35 +5,35 @@
 @import '../../styles/mixins';
 
 .application__status {
-    color: #fff;
-    .onboarding__logo {
-        margin-bottom: 0;
+  color: #fff;
+  .onboarding__logo {
+    margin-bottom: 0;
+  }
+  .onboarding__link {
+    border-color: var(--color-marble);
+  }
+  h1 {
+    margin-bottom: rem(16);
+    text-align: center;
+    @media only screen and (max-width: 767px) {
+      line-height: rem(45);
+      @include fontSize(41);
     }
-    .onboarding__link {
-        border-color: var(--color-marble);
+  }
+  &-content {
+    margin: auto;
+    text-align: center;
+    img {
+      margin-bottom: rem(59);
     }
-    h1 {
-        margin-bottom: rem(16);
-        text-align: center;
-        @media only screen and (max-width: 767px) {
-            line-height: rem(45);
-            @include fontSize(41);
-        }
+    h3 {
+      line-height: rem(29.96);
+      margin-bottom: rem(16);
+      @include fontSize(28);
     }
-    &-content {
-        margin: auto;
-        text-align: center;
-        img {
-            margin-bottom: rem(59);
-        }
-        h3 {
-            line-height: rem(29.96);
-            margin-bottom: rem(16);
-            @include fontSize(28);
-        }
-        p {
-            margin-bottom: rem(16);
-            color: #A4A49F;
-        }
+    p {
+      margin-bottom: rem(16);
+      color: #a4a49f;
     }
+  }
 }
