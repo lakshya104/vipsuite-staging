@@ -38,10 +38,10 @@ export interface Acf {
   associated_brand_profile: number;
   featured_image: FeaturedImage;
   gallery: FeaturedImage[];
-  the_offer: string;
-  the_ask: string;
-  date: string;
-  location: string;
+  short_description: string;
+  description: string;
+  // date: string;
+  // location: string;
   is_rsvp: boolean;
 }
 

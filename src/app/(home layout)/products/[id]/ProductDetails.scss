@@ -62,5 +62,14 @@
     p {
       text-align: right;
     }
+    label {
+      &.MuiFormLabel-root {
+        line-height: rem(16);
+      }
+    }
   }
+}
+
+.MuiMenu-list .MuiMenuItem-root[data-value=''] {
+  display: none;
 }

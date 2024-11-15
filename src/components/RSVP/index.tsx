@@ -78,7 +78,7 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToast
         rsvp_post: event.id,
         is_pleases: 'interested',
         number_of_attendees: data.adultsChildren,
-        would_you_like: true,
+        would_you_like: data.eventTitle === 'no' ? false : true,
         message: data.message,
       };
       const formData = new FormData();

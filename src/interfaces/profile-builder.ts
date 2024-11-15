@@ -22,7 +22,6 @@ export interface ProfileBuilderStepsProps {
   // eslint-disable-next-line no-unused-vars
   onNext: (profileDetail: ACF) => void;
   onPrev: () => void;
-  token: string;
   id: number;
   isAgent?: boolean;
 }

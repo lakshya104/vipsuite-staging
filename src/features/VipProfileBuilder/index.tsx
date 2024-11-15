@@ -1,23 +1,40 @@
 'use client';
-import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import Step1Form from '@/features/VipProfileBuilder/step1';
 import Step2Form from '@/features/VipProfileBuilder/step2';
 import Step3Form from '@/features/VipProfileBuilder/step3';
 import Step4Form from '@/features/VipProfileBuilder/step4';
 import Step5Form from '@/features/VipProfileBuilder/step5';
 import { ProfileBuilderOptions, ACF } from '@/interfaces';
+import { isEmpty, size } from 'lodash';
+import CustomLoader from '@/components/CustomLoader';
+import { useSearchParams } from 'next/navigation';
 
 interface ProfileBuilderInterFace {
   profileBuilderOptions: ProfileBuilderOptions;
   profileDetails: ACF;
-  token: string;
   id: number;
 }
 
-const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, profileDetails, token, id }) => {
+const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, profileDetails, id }) => {
   const [step, setStep] = useState(1);
   const [profileDetail, setProfileDetail] = useState(profileDetails);
+  const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const isProfileEdit = searchParams.get('profile-route');
+
+  useEffect(() => {
+    if (isProfileEdit) {
+      setStep(1);
+    } else if (size(profileDetails.look_feel_of_socials) > 0) {
+      setStep(5);
+    } else if (size(profileDetails.home_post_code) > 0) {
+      setStep(4);
+    } else if (!isEmpty(profileDetails.known_for)) {
+      setStep(2);
+    }
+    setLoading(false);
+  }, [profileDetails, isProfileEdit]);
 
   const handleNext = async (profileDetail: ACF) => {
     setProfileDetail(profileDetail);
@@ -28,9 +45,10 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
     setStep((prevStep) => Math.max(prevStep - 1, 1));
   };
 
-  if (!profileBuilderOptions) {
-    return <Box>Loading....</Box>;
+  if (!profileBuilderOptions || loading) {
+    return <CustomLoader />;
   }
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -40,7 +58,6 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             profileDetail={profileDetail}
             onNext={handleNext}
             onPrev={handlePrev}
-            token={token}
             id={id}
           />
         );
@@ -51,7 +68,6 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             profileDetail={profileDetail}
             onNext={handleNext}
             onPrev={handlePrev}
-            token={token}
             id={id}
           />
         );
@@ -62,7 +78,6 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             profileDetail={profileDetail}
             onNext={handleNext}
             onPrev={handlePrev}
-            token={token}
             id={id}
           />
         );
@@ -73,7 +88,6 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             profileDetail={profileDetail}
             onNext={handleNext}
             onPrev={handlePrev}
-            token={token}
             id={id}
           />
         );
@@ -84,7 +98,6 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             profileDetail={profileDetail}
             onNext={handleNext}
             onPrev={handlePrev}
-            token={token}
             id={id}
           />
         );
@@ -95,7 +108,6 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             profileDetail={profileDetail}
             onNext={handleNext}
             onPrev={handlePrev}
-            token={token}
             id={id}
           />
         );

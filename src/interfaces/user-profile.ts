@@ -61,7 +61,7 @@ export interface UserProfile {
   acf: ACF;
   vip_profile_id?: number;
   account_status?: string;
-  role?: string;
+  role: UserRole;
 }
 
 export interface AuthToken {

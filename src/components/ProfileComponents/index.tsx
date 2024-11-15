@@ -87,7 +87,7 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
     ...(isAgent
       ? [
           {
-            type: 'Company',
+            type: 'Company Name',
             primary: get(profileDetails, 'acf.company_name', ''),
           },
         ]

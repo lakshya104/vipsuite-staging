@@ -60,7 +60,7 @@ const LoginForm = () => {
         .then((data) => {
           if (data && data.error) {
             const errorMessage = data.error;
-            if (errorMessage.includes('Your account was rejected')) {
+            if (errorMessage.includes('rejected')) {
               setIsRejectDialogOpen(true);
               reset();
             } else if (errorMessage.includes('Your account is not approved')) {

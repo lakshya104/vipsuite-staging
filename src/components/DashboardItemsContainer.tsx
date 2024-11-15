@@ -128,6 +128,9 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
       <>
         {!isEmpty(featuredItems) && renderItems(featuredItems)}
         {dashboardContent && renderDashboard()}
+        {(!dashboardItems || isEmpty(dashboardItems)) && (
+          <ErrorFallback errorMessage="Currently there is no dashboard item." hideSubtext={true} />
+        )}
         {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems)}
       </>
     );
@@ -155,7 +158,6 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
       </Typography>
     </Container>
   );
-
   return (
     <>
       <Box my={2.5}>

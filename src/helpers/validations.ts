@@ -37,21 +37,25 @@ export const requiredEmailValidation = z
   .min(1, { message: en.signup.errorMessage.email })
   .email({ message: en.signup.errorMessage.requiredEmail });
 
-export const firstNameValidation = z.string().min(1, { message: en.signup.errorMessage.firstNameRequired }).min(3, {
-  message: en.signup.errorMessage.firstName,
-});
+export const firstNameValidation = z
+  .string()
+  .trim()
+  .min(1, { message: en.signup.errorMessage.firstNameRequired })
+  .refine((value) => value.length > 0, {
+    message: en.signup.errorMessage.firstNameRequired,
+  });
 
-export const lastNameValidation = z.string().min(1, { message: en.signup.errorMessage.lastNameRequired }).min(3, {
-  message: en.signup.errorMessage.lastName,
-});
+export const lastNameValidation = z
+  .string()
+  .trim()
+  .min(1, { message: en.signup.errorMessage.lastNameRequired })
+  .refine((value) => value.length > 0, {
+    message: en.signup.errorMessage.lastNameRequired,
+  });
 
-export const instagramValidation = z.string().min(1, { message: en.signup.errorMessage.instagramRequired }).min(3, {
-  message: en.signup.errorMessage.instagramInvalid,
-});
+export const instagramValidation = z.string().min(1, { message: en.signup.errorMessage.instagramRequired });
 
-export const tiktokValidation = z.string().min(1, { message: en.signup.errorMessage.tiktokRequired }).min(3, {
-  message: en.signup.errorMessage.tiktokInvalid,
-});
+export const tiktokValidation = z.string().min(1, { message: en.signup.errorMessage.tiktokRequired });
 
 export const codeValidation = z.string().min(1, { message: en.signup.errorMessage.code });
 
@@ -162,6 +166,4 @@ export const socialLookValidation = z
   .string()
   .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.lookFeelOfSocials });
 
-export const habitsValidation = z.array(
-  z.string().min(1, { message: en.profileBuilder.typeOfContent.errorMessage.contentType }),
-);
+export const habitsValidation = z.array(z.string()).min(1, { message: 'Please select at least one habit.' });

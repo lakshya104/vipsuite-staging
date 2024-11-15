@@ -29,6 +29,11 @@
         color: var(--color-black);
         @include fontSize(14);
       }
+      .input-text {
+        &.company-name {
+          justify-content: flex-end;
+        }
+      }
     }
     h2,
     p {

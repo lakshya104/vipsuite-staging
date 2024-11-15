@@ -87,6 +87,7 @@ export interface LineItem {
   sku: string;
   price: number;
   image: Image;
+  brand_name: string;
   parent_name: string | null;
 }
 

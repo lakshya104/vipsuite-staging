@@ -36,7 +36,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
                   <Image src={productImage} alt={product?.name} height={110} width={110} />
                   <Box className="product-info">
                     <Typography gutterBottom variant="h2">
-                      {/* {he.decode(product?.brand_name)} */} Brand Name
+                      {he.decode(product?.brand_name)}
                     </Typography>
                     <Typography variant="body1"> {he.decode(product?.name)}</Typography>
                     {product.type === 'variation' &&

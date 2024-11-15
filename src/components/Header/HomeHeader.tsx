@@ -28,7 +28,7 @@ const vipNavLinks = [
   {
     label: 'Home',
     href: '/home',
-    paths: ['/home', '/brands/', '/product'],
+    paths: ['/home', '/brands/'],
   },
   {
     label: 'Opportunities',
@@ -58,17 +58,17 @@ const vipMenuItems = [
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
     href: '/basket',
   },
-  { label: 'My Events', icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />, href: '/my-events' },
+  // { label: 'My Events', icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />, href: '/my-events' },
   {
     label: 'My Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: '/my-addresses',
   },
-  // {
-  //   label: 'My Interests',
-  //   icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
-  //   href: '/my-interests',
-  // },
+  {
+    label: 'My Products',
+    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
+    href: '/products',
+  },
   {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
@@ -94,12 +94,17 @@ const agentMenuItems = [
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
     href: '/basket',
   },
-  // { label: 'VIP Orders', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/my-orders' },
   {
-    label: 'VIP Events',
-    icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-events',
+    label: 'My Products',
+    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
+    href: '/products',
   },
+  // { label: 'VIP Orders', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/my-orders' },
+  // {
+  //   label: 'VIP Events',
+  //   icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />,
+  //   href: '/my-events',
+  // },
   {
     label: 'VIP Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,

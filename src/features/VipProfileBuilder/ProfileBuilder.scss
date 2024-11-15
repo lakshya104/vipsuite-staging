@@ -130,19 +130,19 @@
     button {
       min-width: auto;
       line-height: 0;
-      background-color: var(--color-textBlack);
+      // background-color: var(--color-textBlack);
       padding: rem(2);
       width: rem(30);
       height: rem(30);
       @include border-radius(50%);
       @include flex(center, center);
       @include absolute(top 10px right 15px);
-      &:hover {
-        background-color: var(--color-textBlack);
-      }
-      svg {
-        color: var(--color-marble);
-      }
+      // &:hover {
+      //   background-color: var(--color-textBlack);
+      // }
+      // svg {
+      //   color: var(--color-marble);
+      // }
       .MuiTouchRipple-root {
         display: none;
       }

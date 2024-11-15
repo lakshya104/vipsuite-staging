@@ -21,14 +21,6 @@ const InputTextFormField = <T extends FieldValues>({
   autoFill = false,
 }: InputTextFormFieldProps<T>) => {
   const [fieldHasValue, setFieldHasValue] = useState(autoFill ? false : true);
-  const makeAnimationStartHandler =
-    (stateSetter: (autofilled: boolean) => void) =>
-    (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
-      if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
-        stateSetter(autofilled);
-      }
-    };
 
   return (
     <Controller
@@ -39,6 +31,14 @@ const InputTextFormField = <T extends FieldValues>({
           onChange(e.target.value);
           setFieldHasValue(e.target.value !== '');
         };
+        const makeAnimationStartHandler =
+          (stateSetter: (autofilled: boolean) => void) =>
+          (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
+            if (e.animationName === 'mui-auto-fill' || (e.animationName === 'mui-auto-fill-cancel' && !value)) {
+              stateSetter(autofilled);
+            }
+          };
         return (
           <TextField
             fullWidth

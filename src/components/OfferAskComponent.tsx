@@ -4,19 +4,16 @@ import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 
 interface RSVPProps {
   opportunity: OpportunityDetails;
-  show: 'offer' | 'ask';
+  show: 'overview' | 'details';
 }
 
 const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
   return (
     <>
-      {/* <Typography variant="h6" component="div" sx={{ marginBottom: 2 }}>
-        {opportunity.title.rendered}
-      </Typography> */}
-      {show === 'offer' ? (
-        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.the_offer }} />
+      {show === 'overview' ? (
+        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.short_description }} />
       ) : (
-        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.the_ask }} />
+        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.description }} />
       )}
     </>
   );

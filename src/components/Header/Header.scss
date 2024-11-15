@@ -39,6 +39,8 @@ header.site-header {
     display: none;
     @media only screen and (min-width: 992px) {
       display: block;
+    }
+    @media only screen and (min-width: 1200px) {
       @include align(false, true, absolute);
     }
     @media only screen and (max-width: 991px) {
@@ -54,6 +56,9 @@ header.site-header {
   &__navigation {
     @media only screen and (min-width: 992px) {
       @include flex;
+    }
+    @media only screen and (min-width: 992px) and (max-width: 1199px) {
+      flex-wrap: wrap;
     }
     a {
       font-weight: 500;
@@ -103,6 +108,9 @@ header.site-header {
     }
   }
   &__brand {
+    @media only screen and (min-width: 992px) {
+      min-width: rem(166);
+    }
     img {
       height: auto;
       width: auto;
@@ -168,6 +176,11 @@ header.site-header {
             width: rem(20);
           }
         }
+      }
+    }
+    .site-header__navbar {
+      @media only screen and (min-width: 992px) {
+        @include align(false, true, absolute);
       }
     }
   }

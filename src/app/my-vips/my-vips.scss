@@ -8,7 +8,12 @@
     }
     &__head {
       margin-bottom: rem(28);
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: rem(12);
       @include relative;
+      @media only screen and (min-width: 768px) {
+        padding-bottom: rem(24);
+      }
       h1 {
         margin: 0;
         padding: rem(7.5) 0;
@@ -16,14 +21,24 @@
           padding: rem(5) 0;
         }
       }
+      .button--sign-out {
+        left: 0;
+        right: auto;
+        border: none;
+        &:hover {
+          border: none;
+          background-color: transparent;
+        }
+      }
       a {
         line-height: 1.33;
         letter-spacing: -0.01em;
         padding: rem(7) rem(14);
         @include fontSize(16);
-        @include absolute(right 0 top 4px);
+        @include absolute(right 0 top -2px);
         @media only screen and (max-width: 767px) {
           @include fontSize(12);
+          top: rem(-4);
         }
         svg {
           display: inline-block;
@@ -37,10 +52,14 @@
         }
       }
       button {
-        @include absolute(right 0 top 0);
+        line-height: 1.33;
+        letter-spacing: -0.01em;
+        padding: rem(7) rem(14);
+        @include fontSize(16);
+        @include absolute(right 0 top -2px);
         @media only screen and (max-width: 767px) {
-          padding: rem(1.1) rem(12.2);
           line-height: 1.66;
+          top: rem(-4);
           @include fontSize(12);
           svg {
             width: rem(16);
@@ -54,7 +73,7 @@
         margin-bottom: rem(6);
         line-height: 1.38;
         letter-spacing: -0.02em;
-        @include fontSize(13);
+        @include fontSize(14);
       }
     }
     p {

@@ -13,6 +13,7 @@ import Toaster from '@/components/Toaster';
 import { AgentProfileUpdate } from '@/libs/api-manager/manager';
 import { ACF } from '@/interfaces';
 import revalidatePathAction from '@/libs/actions';
+import { isEmpty } from 'lodash';
 
 interface AgentEditProfileFormProps {
   profileDetails: ACF;
@@ -136,8 +137,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
               />
             )}
             {name === 'company_name' && !errors[name] && (
-              <Box className="input-text">
-                <Typography>Add a PA or Staff Email</Typography>
+              <Box className="input-text company-name">
                 <Typography>Optional</Typography>
               </Box>
             )}
@@ -164,7 +164,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
             )}
           />
         ))}
-        <Box sx={{ cursor: 'pointer' }} onClick={addAnotherVip}>
+        <Box sx={{ cursor: 'pointer', mt: isEmpty(fields) ? 3 : 0 }} onClick={addAnotherVip}>
           <Box className="input-text">
             <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
           </Box>

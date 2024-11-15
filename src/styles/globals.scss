@@ -65,7 +65,12 @@ button {
 img {
   max-width: 100%;
 }
-
+button.MuiButton-root {
+  box-shadow: none;
+  &:hover {
+    box-shadow: none;
+  }
+}
 a.button,
 button.button {
   display: inline-block;

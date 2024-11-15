@@ -17,14 +17,14 @@ import Toaster from '@/components/Toaster';
 import revalidatePathAction from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import { ProfileStatus } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 const dialogBoxContent = {
-  title: 'Thank You!',
-  subTitle: 'Profile in Review',
-  description:
-    'Thanks for completing your profile. Your profile will be moderated and we will contact you once your profile has been verified.',
-  description2: 'You can update your profile at any time.',
-  buttonText: 'Done',
+  title: en.customProfileInReviewScreen.thankyou,
+  subTitle: en.customProfileInReviewScreen.inReview,
+  description: en.customProfileInReviewScreen.inReviewPara,
+  description2: en.customProfileInReviewScreen.inReviewSubPara,
+  buttonText: en.customProfileInReviewScreen.done,
   isCrossIcon: true,
 };
 

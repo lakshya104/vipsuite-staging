@@ -7,6 +7,7 @@
 .address {
   &-form {
     margin: rem(23) 0;
+    margin-bottom: rem(100);
     @media only screen and (min-width: 768px) {
       margin: rem(50) 0;
     }

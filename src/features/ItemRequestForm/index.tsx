@@ -63,13 +63,13 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
         const addToCart = await AddItemToCart(item.id);
         await revalidatePathAction('/basket');
         if (addToCart && addToCart.code === 'permission_denied') {
-          openToaster('Error during adding product: ' + addToCart.message?.toString());
+          openToaster(addToCart.message?.toString());
         } else {
           setOpen(true);
         }
       }
     } catch (error) {
-      openToaster('Error during adding product: ' + error?.toString());
+      openToaster(error?.toString() ?? 'An error occurred while adding the item to the cart.');
     } finally {
       setLoading(false);
       router.refresh();

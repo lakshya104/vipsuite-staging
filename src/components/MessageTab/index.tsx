@@ -1,12 +1,14 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import Messages from '@/components/Messages';
+// import Messages from '@/components/Messages';
+import ComingSoonPage from '../ComingSoon';
 
 const MessageTab = () => {
   return (
     <Box component={'main'} className="landing-page">
       <Container>
-        <Messages />
+        {/* <Messages /> */}
+        <ComingSoonPage page="Messages" />
       </Container>
     </Box>
   );

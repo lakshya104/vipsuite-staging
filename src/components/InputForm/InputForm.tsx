@@ -15,7 +15,7 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
       (stateSetter: (autofilled: boolean) => void) =>
       (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
-        if (e.animationName === 'mui-auto-fill' || e.animationName === 'mui-auto-fill-cancel') {
+        if (e.animationName === 'mui-auto-fill' || (e.animationName === 'mui-auto-fill-cancel' && !value)) {
           stateSetter(autofilled);
         }
       };
@@ -33,6 +33,17 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
           },
           '& .MuiInputLabel-root.Mui-error': {
             color: 'error.main',
+          },
+          '& input[type=number]': {
+            MozAppearance: 'textfield',
+            '&::-webkit-outer-spin-button': {
+              '-webkit-appearance': 'none',
+              margin: 0,
+            },
+            '&::-webkit-inner-spin-button': {
+              '-webkit-appearance': 'none',
+              margin: 0,
+            },
           },
         }}
         inputProps={{

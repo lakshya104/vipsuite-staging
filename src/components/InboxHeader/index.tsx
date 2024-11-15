@@ -3,17 +3,14 @@ import { Box, Typography, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Image from 'next/image';
 import './InboxHeader.scss';
-import { DefaultImageFallback } from '@/helpers/enums';
+// import { DefaultImageFallback } from '@/helpers/enums';
 
-// interface InboxHeaderProps{
-
-// }
 const InboxHeader = () => {
   return (
     <Box className="inbox__header">
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Image
-          src={DefaultImageFallback.Placeholder}
+          src="/img/aiavatar.png"
           alt="Boda Skins Logo"
           width={60}
           height={60}

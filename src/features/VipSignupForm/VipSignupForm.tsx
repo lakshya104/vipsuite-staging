@@ -211,7 +211,7 @@ const VipSignupForm = () => {
                             onChange={(e) => setVerificationCode(e.target.value)}
                           />
                           <Button onClick={handleCodeVerification} disabled={isPending} className="button submit-btn">
-                            Submit
+                            Verify OTP
                           </Button>
                         </>
                       )}

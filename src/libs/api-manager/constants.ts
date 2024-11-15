@@ -11,6 +11,7 @@ const Endpoints = {
   getBrandDetails: (brandId: number) => `/wp/v2/brand-profiles/${brandId}`,
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,
   getBrandProductDetails: (productId: number) => `/wc/v3/products/${productId}`,
+  getProducts: `/wc/v3/products`,
   getSignupContent: '/wp/v2/signup-content',
   getVipEvents: '/wp/v2/events',
   getVipEventDetails: (id: number) => `/wp/v2/events/${id}`,

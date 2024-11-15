@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import StepOne from './StepOne';
-import { ProfileBuilderOptions, ACF } from '@/interfaces';
+import { ProfileBuilderOptions, ACF, UserProfile } from '@/interfaces';
 import Step2Form from '../VipProfileBuilder/step2';
 import Step1Form from '../VipProfileBuilder/step1';
 import Step3Form from '../VipProfileBuilder/step3';
@@ -9,9 +9,9 @@ import Step4Form from '../VipProfileBuilder/step4';
 import Step5Form from '../VipProfileBuilder/step5';
 import { useSearchParams } from 'next/navigation';
 import { useEditVipIdStore } from '@/store/useStore';
-import { GetVipProfile } from '@/libs/api-manager/manager';
+import { GetEditVipProfile } from '@/libs/api-manager/manager';
 import CustomLoader from '@/components/CustomLoader';
-import BackToHome from '@/components/BackToHome';
+import { isEmpty, size } from 'lodash';
 
 interface ProfileBuilderInterFace {
   profileBuilderOptions: ProfileBuilderOptions;
@@ -23,10 +23,10 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
   const [profileDetail, setProfileDetail] = useState<ACF>({ first_name: '', last_name: '' });
   const searchParams = useSearchParams();
   const isEditVip = searchParams.get('edit');
-  const isProfileEdit = searchParams.get('profile-route');
   const { editVipId } = useEditVipIdStore();
   const [id, setId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
+  const isProfileEdit = searchParams.get('profile-route');
 
   useEffect(() => {
     const initializeProfile = async () => {
@@ -34,7 +34,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
       if (isEditVip && editVipId) {
         const numericId = Number(editVipId);
         setId(numericId);
-        await fetchVipProfile();
+        await fetchVipProfile(numericId);
       } else {
         setId(0);
         setProfileDetail({ first_name: '', last_name: '' });
@@ -46,9 +46,20 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditVip, editVipId]);
 
-  const fetchVipProfile = async () => {
+  const fetchVipProfile = async (profileId: number) => {
     try {
-      const response = await GetVipProfile();
+      const response: UserProfile = await GetEditVipProfile(token, profileId);
+      setIsLoading(true);
+      if (isProfileEdit) {
+        setStep(1);
+      } else if (size(response.acf.look_feel_of_socials) > 0) {
+        setStep(6);
+      } else if (size(response.acf.home_post_code) > 0) {
+        setStep(5);
+      } else if (!isEmpty(response.acf.known_for)) {
+        setStep(3);
+      }
+      setIsLoading(false);
       setProfileDetail(response.acf);
     } catch {
       setProfileDetail({ first_name: '', last_name: '' });
@@ -100,12 +111,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
     }
   };
 
-  return (
-    <>
-      <BackToHome path={isProfileEdit ? '/profile' : '/my-vips'} />
-      {renderStep()}
-    </>
-  );
+  return <>{renderStep()}</>;
 };
 
 export default AgentProfileBuilder;

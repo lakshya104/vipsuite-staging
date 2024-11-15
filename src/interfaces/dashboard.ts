@@ -1,4 +1,4 @@
-import { Brand } from './brand';
+import { BrandLogo } from './brand';
 import { Event } from './events';
 import { Opportunity } from './opportunities';
 
@@ -11,4 +11,26 @@ export interface DashboardContent {
   make_request_description: string;
 }
 
-export type DashboardItem = Brand | Event | Opportunity;
+export interface Dashboardproduct {
+  id: number;
+  type: 'product';
+  title: {
+    rendered: string;
+  };
+  is_featured?: boolean;
+  images: productImage[];
+  short_description: string;
+  acf?: {
+    is_request_only?: boolean;
+    brand_logo?: BrandLogo;
+  };
+  is_wishlisted?: boolean;
+}
+
+interface productImage {
+  id: string;
+  src: string;
+  name: string;
+}
+
+export type DashboardItem = Dashboardproduct | Event | Opportunity;

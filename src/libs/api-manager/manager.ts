@@ -174,6 +174,23 @@ export const GetVipProfile = async () => {
   }
 };
 
+export const GetEditVipProfile = async (token: string, vipId: number) => {
+  try {
+    const response = await InstanceWithoutHeaders.get(Endpoints.getProfile, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'vip-profile-id': vipId?.toString(),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch vip profile');
+  }
+};
+
 export const GetDashboardContent = async () => {
   try {
     const response = await Instance.get(Endpoints.getDashboardContent);
@@ -243,6 +260,17 @@ export const GetBrandProductDetail = async (id: number) => {
       throw new Error(error.message);
     }
     throw new Error('Failed to fetch Product Details');
+  }
+};
+export const GetProducts = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getProducts);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Products');
   }
 };
 

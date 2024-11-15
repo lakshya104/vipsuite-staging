@@ -245,7 +245,7 @@ const AgentSignupForm = () => {
                               onChange={(e) => setVerificationCode(e.target.value)}
                             />
                             <Button onClick={handleCodeVerification} disabled={isPending} className="button submit-btn">
-                              Submit
+                              Verify OTP
                             </Button>
                           </>
                         )}
@@ -268,8 +268,7 @@ const AgentSignupForm = () => {
               />
             )}
             {name === 'company_name' && !errors[name] && (
-              <Box className="input-text">
-                <Typography>Add a PA or Staff Email</Typography>
+              <Box className="input-text company-name">
                 <Typography>Optional</Typography>
               </Box>
             )}

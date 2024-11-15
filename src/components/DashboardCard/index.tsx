@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DashboardItem } from '@/interfaces';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import { formatEventDates, truncateDescription } from '@/helpers/utils';
+import { formatEventDates, truncateDescription, wrapInParagraph } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
-import { isUndefined } from 'lodash';
+import { first, isUndefined } from 'lodash';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -14,8 +14,8 @@ interface DashboardCardProps {
 
 const getImage = (item: DashboardItem) => {
   switch (item.type) {
-    case 'brand-profile':
-      return item.acf?.brand_image?.sizes?.medium_large;
+    case 'product':
+      return first(item.images)?.src;
     case 'event':
       return item.acf?.event_image?.sizes?.medium_large;
     case 'opportunity':
@@ -26,15 +26,22 @@ const getImage = (item: DashboardItem) => {
 };
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const itemType = item.type;
-  const isBrand = itemType === 'brand-profile';
+  const isProduct = itemType === 'product';
   const isEvent = itemType === 'event';
   const isOpportunity = itemType === 'opportunity';
   const brandLogo = item?.acf?.brand_logo?.url;
   const postTitle = item?.title?.rendered;
   const postId = item?.id;
-  const postPath = isBrand ? 'brands' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
+  const postPath = isProduct ? 'products' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
   const image = getImage(item);
+
   return (
     <ProgressBarLink href={`${postPath}/${postId}`}>
       <Box className="dashboard-card">
@@ -51,14 +58,14 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             e.currentTarget.src = DefaultImageFallback.Placeholder;
           }}
         />
-        {isOpportunity && !isUndefined(item['opportunity-category'][0]) && (
+        {isOpportunity && !isUndefined(first(item?.['opportunity-category'])) && (
           <Box>
             <Typography className="dashboard-card__item-overline" variant="overline" gutterBottom>
-              {item?.['opportunity-category']?.[0]}
+              {first(item?.['opportunity-category'])}
             </Typography>
           </Box>
         )}
-        {(isBrand || isEvent) && brandLogo && (
+        {(isEvent || isProduct) && brandLogo && (
           <Box className="dashboard-card__item-brandImage">
             <Image
               src={brandLogo}
@@ -79,9 +86,25 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
               </Typography>
             </Box>
           )}
-          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: postTitle || '' }} />
-          {isBrand && item?.acf?.short_description && (
-            <Typography variant="body2">{truncateDescription(item?.acf?.short_description, 30)}</Typography>
+          {isProduct && item.acf?.is_request_only && (
+            <Box className="dashboard-card__item-featuredBox">
+              <Typography className="dashboard-card__item-featuredText" variant="overline">
+                By Request Only
+              </Typography>
+            </Box>
+          )}
+          {isClient && (
+            <>
+              <Typography variant="h2" dangerouslySetInnerHTML={{ __html: postTitle || '' }} />
+              {isProduct && item?.short_description && (
+                <Typography
+                  variant="body2"
+                  dangerouslySetInnerHTML={{
+                    __html: truncateDescription(wrapInParagraph(item?.short_description), 30) || '',
+                  }}
+                />
+              )}
+            </>
           )}
           {isEvent && (
             <>

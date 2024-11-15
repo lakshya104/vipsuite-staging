@@ -82,9 +82,9 @@ const en = {
     done: 'Done',
   },
   customAcceptedScreen: {
-    acceptedTxt: 'Congratulations!',
-    welcomeTxt: 'Welcome onboard.',
-    welcomePara: 'We are excited to have you.',
+    acceptedTxt: 'Application Accepted!',
+    welcomeTxt: 'Welcome.',
+    welcomePara: 'You are now welcome to create an account. Please continue to complete your profile.',
     continue: 'Continue',
     agentWelcomePara: 'As an agent, explore new opportunities.',
   },
@@ -98,8 +98,9 @@ const en = {
   customProfileInReviewScreen: {
     thankyou: 'Thank you!',
     inReview: 'Profile in review.',
-    inReviewPara: 'We are processing your information.',
-    inReviewSubPara: 'You will hear from us soon.',
+    inReviewPara:
+      'Thanks for completing your profile. Your profile will be moderated and we will contact you once your profile has been verified.',
+    inReviewSubPara: 'You can update your profile at any time.',
     done: 'Done',
   },
   addedVipStatusScreen: {

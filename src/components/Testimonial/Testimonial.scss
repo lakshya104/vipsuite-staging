@@ -25,6 +25,14 @@
     &__logo {
       padding: rem(7) rem(6);
     }
+    &__body {
+      min-height: rem(89);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    }
     &__user {
       @include flex(flex-start, center);
       &-info {

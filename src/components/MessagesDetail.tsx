@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import InboxHeader from '@/components/InboxHeader/InboxHeader';
+import InboxHeader from '@/components/InboxHeader';
 import './InboxHeader/InboxHeader.scss';
 export default async function MessagesDetail() {
   return (
