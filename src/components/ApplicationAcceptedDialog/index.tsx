@@ -7,7 +7,10 @@ import './ApplicationAcceptedDialog.scss';
 import Image from 'next/image';
 import '../../app/(auth)/on-boarding/style.scss';
 
-const ApplicationAcceptedDialog = () => {
+interface ApplicationAcceptedDialogProps {
+  name: string;
+}
+const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ name }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const handleAcceptDialogChange = async () => {
@@ -36,7 +39,9 @@ const ApplicationAcceptedDialog = () => {
               style={{ objectFit: 'contain' }}
               priority
             />
-            <Typography variant="h3">{en.customAcceptedScreen.welcomeTxt}</Typography>
+            <Typography variant="h3">
+              {en.customAcceptedScreen.welcomeTxt} {name}.
+            </Typography>
             <Typography variant="body1">{en.customAcceptedScreen.welcomePara}</Typography>
           </Box>
           <Box className="onboarding__page-links">

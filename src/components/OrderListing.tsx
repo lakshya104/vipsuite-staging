@@ -27,8 +27,14 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders }) => {
                     <Typography gutterBottom variant="h2">
                       Order #{order?.id}
                     </Typography>
-                    <Typography variant="body1">{formatDate(order?.date_created)}</Typography>
-                    <Typography variant="body1">Status: {formatString(order?.status)}</Typography>
+                    {order.status === 'rsvp-request' ? (
+                      <Typography variant="body1">RSVP Date: {formatDate(order?.date_created)}</Typography>
+                    ) : (
+                      <>
+                        <Typography variant="body1">{formatDate(order?.date_created)}</Typography>
+                        <Typography variant="body1">Status: {formatString(order?.status)}</Typography>
+                      </>
+                    )}
                   </Box>
                   <ArrowForwardIcon />
                 </Box>

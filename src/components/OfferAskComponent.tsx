@@ -8,14 +8,26 @@ interface RSVPProps {
 }
 
 const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
+  const content = show === 'overview' ? opportunity?.acf?.short_description : opportunity?.acf?.description;
+
   return (
-    <>
-      {show === 'overview' ? (
-        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.short_description }} />
-      ) : (
-        <Box dangerouslySetInnerHTML={{ __html: opportunity?.acf?.description }} />
-      )}
-    </>
+    <Box
+      sx={{
+        iframe: {
+          width: '100%',
+          aspectRatio: '16/9',
+          border: 0,
+        },
+        video: {
+          maxWidth: '100%',
+          height: 'auto',
+        },
+        p: {
+          marginBottom: 2,
+        },
+      }}
+      dangerouslySetInnerHTML={{ __html: content || '' }}
+    />
   );
 };
 

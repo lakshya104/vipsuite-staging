@@ -76,4 +76,5 @@ export type Session = {
   role: UserRole;
   email: string;
   token: string;
+  first_name: string;
 };

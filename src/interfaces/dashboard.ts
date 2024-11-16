@@ -18,7 +18,7 @@ export interface Dashboardproduct {
     rendered: string;
   };
   is_featured?: boolean;
-  images: productImage[];
+  image: productImage;
   short_description: string;
   acf?: {
     is_request_only?: boolean;

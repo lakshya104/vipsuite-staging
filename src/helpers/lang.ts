@@ -83,7 +83,7 @@ const en = {
   },
   customAcceptedScreen: {
     acceptedTxt: 'Application Accepted!',
-    welcomeTxt: 'Welcome.',
+    welcomeTxt: 'Welcome',
     welcomePara: 'You are now welcome to create an account. Please continue to complete your profile.',
     continue: 'Continue',
     agentWelcomePara: 'As an agent, explore new opportunities.',

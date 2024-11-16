@@ -49,6 +49,10 @@ export const addNewAddressField = [
     placeholder: 'City',
   },
   {
+    name: 'postcode',
+    placeholder: 'Postcode',
+  },
+  {
     name: 'state',
     placeholder: 'State',
   },
@@ -57,15 +61,7 @@ export const addNewAddressField = [
     placeholder: 'Country',
   },
   {
-    name: 'postcode',
-    placeholder: 'Postcode',
-  },
-  {
     name: 'phone',
     placeholder: 'Phone',
-  },
-  {
-    name: 'company',
-    placeholder: 'Company',
   },
 ];

@@ -25,9 +25,7 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses }) => {
                 </Typography>
                 <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}, ${add?.state},`}</Typography>
                 <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
-                <Typography variant="body2">
-                  {add?.company ? `${add.company} , (${add?.phone})` : `(${add?.phone})`}
-                </Typography>
+                <Typography variant="body2">{`(${add?.phone})`}</Typography>
               </Box>
               <Box className="address__list-action">
                 <ProgressBarLink href={`/my-addresses/edit/${add.unique_id}`}>

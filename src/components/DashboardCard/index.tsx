@@ -15,7 +15,7 @@ interface DashboardCardProps {
 const getImage = (item: DashboardItem) => {
   switch (item.type) {
     case 'product':
-      return first(item.images)?.src;
+      return item.image?.src;
     case 'event':
       return item.acf?.event_image?.sizes?.medium_large;
     case 'opportunity':

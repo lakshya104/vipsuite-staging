@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, CardContent, Backdrop, CircularProgress } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import he from 'he';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
@@ -95,7 +96,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
     <Box>
       <CardContent className="site-dialog__content">
         <Typography variant="h2" gutterBottom>
-          {opportunity?.title?.rendered}
+          {he.decode(opportunity?.title?.rendered)}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box mb={2.5}>

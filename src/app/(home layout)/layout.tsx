@@ -16,12 +16,12 @@ export default async function HomeSectionLayout({
   children: React.ReactNode;
 }>) {
   const session = await GetSession();
-  const { role, acf } = session;
+  const { role, acf, first_name } = session;
   if (role === UserRole.Vip) {
     const { known_for, habits, profile_status } = acf;
     if (profile_status === ProfileStatus.Pending) {
       if (isEmpty(known_for)) {
-        return <ApplicationAcceptedDialog />;
+        return <ApplicationAcceptedDialog name={first_name} />;
       }
       if (!isEmpty(habits)) {
         return <ApplicationReviewDialog />;
