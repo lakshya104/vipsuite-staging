@@ -25,6 +25,9 @@ const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
         p: {
           marginBottom: 2,
         },
+        a: {
+          color: 'blue',
+        },
       }}
       dangerouslySetInnerHTML={{ __html: content || '' }}
     />

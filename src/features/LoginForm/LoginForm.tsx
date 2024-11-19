@@ -1,19 +1,19 @@
 'use client';
 import React, { useEffect, useState, useTransition } from 'react';
-import { Backdrop, Box, Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { isUndefined } from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { deleteVipCookies, login } from '@/libs/actions';
-import { LoginFormValues, LoginSchema, rejectDialogBoxContent, reviewDialogBoxContent } from './loginTypes';
+import { LoginFormValues, LoginSchema } from './loginTypes';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
-import DialogBox from '@/components/Dialog';
 import en from '@/helpers/lang';
+import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
+import ApplicationRejectedDialog from '@/components/ApplicationRejectedDialog';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -22,7 +22,6 @@ const LoginForm = () => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const router = useRouter();
 
   useEffect(() => {
     const deleteCookies = async () => {
@@ -30,16 +29,6 @@ const LoginForm = () => {
     };
     deleteCookies();
   }, []);
-
-  const handleReviewDialogBoxDataChange = (open: boolean) => {
-    setIsReviewDialogOpen(open);
-    router.push('/');
-  };
-  const handleRejectDialogBoxDataChange = (open: boolean): void => {
-    setIsRejectDialogOpen(open);
-    router.push('/');
-  };
-
   const {
     register,
     handleSubmit,
@@ -78,6 +67,7 @@ const LoginForm = () => {
         });
     });
   };
+
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="login-form">
       <TextField
@@ -147,20 +137,16 @@ const LoginForm = () => {
           {en.helperText.applyHere}
         </Link>
       </Typography>
-      <DialogBox
-        isDialogOpen={isReviewDialogOpen}
-        onDataChange={handleReviewDialogBoxDataChange}
-        content={reviewDialogBoxContent}
-      />
-      <DialogBox
-        isDialogOpen={isRejectDialogOpen}
-        onDataChange={handleRejectDialogBoxDataChange}
-        content={rejectDialogBoxContent}
-      />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Dialog open={isReviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
+        <ApplicationReviewDialog />
+      </Dialog>
+      <Dialog open={isRejectDialogOpen} fullScreen aria-labelledby="form-dialog-title">
+        <ApplicationRejectedDialog />
+      </Dialog>
     </Box>
   );
 };

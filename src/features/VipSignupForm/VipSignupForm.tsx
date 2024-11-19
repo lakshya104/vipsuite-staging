@@ -1,37 +1,26 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DoneIcon from '@mui/icons-material/Done';
-import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, Typography } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputForm from '../../components/InputForm/InputForm';
 import { VipSignupSchema, defaultValues } from '@/features/VipSignupForm/vipSignupTypes';
-import DialogBox from '@/components/Dialog';
 import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
 import { VerifyEmail, VipSignUp } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
-
-const dialogBoxContent = {
-  title: 'Thank You!',
-  subTitle: 'Application in Review',
-  description:
-    'Thank you for your application. The concierge team will review your submission and will be in touch in due course with their decision.',
-  buttonText: 'Done',
-  isCrossIcon: true,
-};
+import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 
 const VipSignupForm = () => {
-  const router = useRouter();
   const [error, setError] = useState<string>('');
+  const [applicationReviewDialogOpen, setApplicationReviewDialogOpen] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>('');
@@ -39,11 +28,6 @@ const VipSignupForm = () => {
   const [isCodeSent, setCodeSent] = useState<boolean>(false);
   const [isCodeVerified, setIsCodeVerified] = useState<boolean>(false);
   const [isCodeVerificationFailed, setIsCodeVerificationFailed] = useState<boolean>(false);
-
-  const handleDialogBoxDataChange = (open: boolean) => {
-    setIsDialogOpen(open);
-    router.push('/');
-  };
 
   const {
     control,
@@ -64,12 +48,12 @@ const VipSignupForm = () => {
       setError('');
       try {
         const response = await VipSignUp(formData);
-        setIsPending(false);
+        setIsPending(true);
         if (response?.error) {
           setError(response.error);
           setToasterOpen(true);
         } else {
-          setIsDialogOpen(true);
+          setApplicationReviewDialogOpen(true);
           reset();
         }
       } catch (error) {
@@ -218,7 +202,7 @@ const VipSignupForm = () => {
                       {isCodeVerified && (
                         <Box className="input-text" display="flex" alignItems="center" justifyContent="center" gap={1}>
                           <Typography>Email Verified</Typography>
-                          <DoneIcon sx={{ color: 'green' }} />
+                          <DoneIcon sx={{ color: 'white' }} />
                         </Box>
                       )}
                     </Box>
@@ -264,11 +248,13 @@ const VipSignupForm = () => {
           </Link>
         </Typography>
       </Box>
-      <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
+      <Dialog open={applicationReviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
+        <ApplicationReviewDialog />
+      </Dialog>
     </>
   );
 };

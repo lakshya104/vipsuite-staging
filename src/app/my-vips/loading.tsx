@@ -1,8 +1,6 @@
 import React from 'react';
 import MyInterestsPageLoading from '@/site-pages/MyInterestsPage/loading';
-import { Box, Container, Typography } from '@mui/material';
-import { ProgressBarLink } from '@/components/ProgressBar';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Container, Skeleton } from '@mui/material';
 import './my-vips.scss';
 
 export default function Loading() {
@@ -10,12 +8,11 @@ export default function Loading() {
     <Box className="my-vips-page">
       <Container>
         <Box className="my-vips-page__head">
-          <Typography className="page-title" variant="h2" align="center">
-            My VIPs
-            <ProgressBarLink className="button button--black" href="/agent-profile-builder">
-              Add <AddIcon />
-            </ProgressBarLink>
-          </Typography>
+          <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+            <Skeleton className="page-title" variant="text" width="10%" height={45} />
+            <Skeleton className="page-title" variant="text" width="10%" height={60} />
+            <Skeleton className="page-title" variant="text" width="10%" height={45} />
+          </Box>
         </Box>
         <MyInterestsPageLoading />
       </Container>

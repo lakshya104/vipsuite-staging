@@ -6,17 +6,23 @@ import en from '@/helpers/lang';
 import './ApplicationAcceptedDialog.scss';
 import Image from 'next/image';
 import '../../app/(auth)/on-boarding/style.scss';
+import { UserRole } from '@/helpers/enums';
 
 interface ApplicationAcceptedDialogProps {
   name: string;
+  role: UserRole;
 }
-const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ name }) => {
+const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ name, role }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const handleAcceptDialogChange = async () => {
     setLoading(true);
     try {
-      await router.push('/vip-profile-builder');
+      if (role === UserRole.Vip) {
+        await router.push('/vip-profile-builder');
+      } else {
+        await router.push('/agent-profile-builder');
+      }
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -40,7 +46,7 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
               priority
             />
             <Typography variant="h3">
-              {en.customAcceptedScreen.welcomeTxt} {name}.
+              {en.customAcceptedScreen.welcomeTxt}, {name}
             </Typography>
             <Typography variant="body1">{en.customAcceptedScreen.welcomePara}</Typography>
           </Box>

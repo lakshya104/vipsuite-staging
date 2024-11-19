@@ -86,7 +86,7 @@ button.button {
   &:hover {
     box-shadow: none;
     color: var(--color-textBlack);
-    background-color: var(--color-white);
+    background-color: var(--color-marble);
   }
   + .button {
     margin-top: rem(15);
@@ -96,7 +96,7 @@ button.button {
     color: var(--color-white);
     &:hover {
       @media only screen and (min-width: 768px) {
-        background-color: var(--color-white);
+        background-color: var(--color-marble);
         color: var(--color-textBlack);
       }
     }

@@ -13,8 +13,8 @@ const en = {
   },
   helperText: {
     noAccount: "Don't have an account?",
-    continue: 'continue',
-    loading: 'loading...',
+    continue: 'Continue',
+    loading: 'Loading...',
     applyHere: 'Apply here',
   },
   nav: {
@@ -75,10 +75,9 @@ const en = {
   },
   customReviewScreen: {
     thankyou: 'Thank you!',
-    inReview: 'Your application is in review.',
+    inReview: 'Application in review.',
     description:
       'Thank you for your application. The concierge team will review your submission and will be in touch in due course with their decision.',
-    thankyouPara: 'We appreciate your patience.',
     done: 'Done',
   },
   customAcceptedScreen: {
@@ -89,11 +88,12 @@ const en = {
     agentWelcomePara: 'As an agent, explore new opportunities.',
   },
   customRejectedScreen: {
-    rejectedTxt: 'Application Rejected',
-    subTitle: 'We appreciate your interest.',
-    rejectedPara: 'Feel free to reapply later.',
+    rejectedTxt: 'Application Rejected!',
+    subTitle: 'Unfortunately!',
+    rejectedPara:
+      'Your profile did not meet the approval criteria. Please review and update your information before resubmitting.',
     continue: 'Continue',
-    logoutText: 'Logout',
+    logoutText: 'Press OK to log out and exit the app.',
   },
   customProfileInReviewScreen: {
     thankyou: 'Thank you!',
@@ -104,15 +104,12 @@ const en = {
     done: 'Done',
   },
   addedVipStatusScreen: {
-    title: 'VIP Added',
     thankyou: 'Thank you!',
-    vipAddedTitle: 'VIP status successfully added.',
-    thanksForAddingPara: 'Thank you for adding a VIP.',
+    title: 'VIP Added',
+    vipAddedTitle: 'Thanks for adding a VIP. You can update your VIP’s profile at any time.',
+    addAnotherTitle: 'Would you like to add another VIP?',
     addAnotherVIP: 'Add Another VIP',
     continue: 'Continue',
-    pendingMessage: 'Pending approval.',
-    rejectedMessage: 'Application rejected.',
-    accountStatusLabel: 'Account Status',
   },
   profileBuilder: {
     knownForScreen: {
@@ -169,8 +166,8 @@ const en = {
         child: 'Enter child details.',
         ageOfChild: "Enter child's age.",
         genderOfChild: "Select child's gender.",
-        pets: 'Invalid pet details.',
-        homePostcode: 'Invalid postcode.',
+        pets: 'Please enter pet(s) name.',
+        homePostcode: 'Please enter your home postcode.',
       },
     },
     typeOfContent: {

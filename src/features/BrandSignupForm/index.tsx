@@ -1,14 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Backdrop, Box, Button, CircularProgress, InputAdornment, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DoneIcon from '@mui/icons-material/Done';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useRouter } from 'next/navigation';
-import DialogBox from '@/components/Dialog';
 import { BrandSignUpFormFields } from '@/data';
 import InputForm from '../../components/InputForm/InputForm';
 import './BrandSignupForm.scss';
@@ -17,25 +15,16 @@ import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { BrandSignUp, VerifyEmail } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
-
-const dialogBoxContent = {
-  title: 'Thank You!',
-  subTitle: 'We’ll be in touch',
-  description:
-    'Thank you for your application. The concierge team will review your submission and will be in touch in due course.',
-  buttonText: 'Done',
-  isCrossIcon: true,
-};
+import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 
 interface BrandSignupFormProps {
   brandSignupOptions: string[];
 }
 
 const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions }) => {
-  const router = useRouter();
   const [error, setError] = useState<string>('');
+  const [applicationReviewDialogOpen, setApplicationReviewDialogOpen] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>('');
@@ -47,11 +36,6 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
     value: option,
     label: option,
   }));
-
-  const handleDialogBoxDataChange = (data: boolean) => {
-    setIsDialogOpen(data);
-    router.push('/');
-  };
 
   const {
     control,
@@ -80,13 +64,13 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
           type_of_business: formData?.type_of_business,
         };
         const response = await BrandSignUp(data);
-        setIsPending(false);
         if (response && response.error) {
           setError(`Error: ${response.error}`);
+          setIsPending(false);
           setToasterOpen(true);
         } else {
           reset();
-          setIsDialogOpen(true);
+          setApplicationReviewDialogOpen(true);
         }
       } catch (error) {
         handleError(error);
@@ -250,7 +234,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                             gap={1}
                           >
                             <Typography>Email Verified</Typography>
-                            <DoneIcon sx={{ color: 'green' }} />
+                            <DoneIcon sx={{ color: 'white' }} />
                           </Box>
                         )}
                       </Box>
@@ -289,11 +273,13 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
           </Link>
         </Typography>
       </Box>
-      <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Dialog open={applicationReviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
+        <ApplicationReviewDialog />
+      </Dialog>
     </>
   );
 };

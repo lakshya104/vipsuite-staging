@@ -1,7 +1,5 @@
 import React from 'react';
 import { Typography, Container, Box } from '@mui/material';
-import { ProgressBarLink } from './ProgressBar';
-import Btn from './Button/CommonBtn';
 
 interface ComingSoonPageProps {
   page: string;
@@ -46,9 +44,6 @@ const ComingSoonPage: React.FC<ComingSoonPageProps> = ({ page }) => {
         >
           <span style={{ textTransform: 'capitalize' }}>{page}</span> page is on its way. Stay tuned!
         </Typography>
-        <ProgressBarLink href="/home">
-          <Btn look="dark-filled">Back to Home</Btn>
-        </ProgressBarLink>
       </Container>
     </Box>
   );

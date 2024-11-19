@@ -147,7 +147,14 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
       )}
       {product.type === 'simple' && (
         <Box className="product-size">
-          <Btn look="dark-filled" width="100%" fullWidth disabled={isProductOrdered} onClick={handleAddToCart}>
+          <Btn
+            look="dark-filled"
+            className="button button--black"
+            width="100%"
+            fullWidth
+            disabled={isProductOrdered}
+            onClick={handleAddToCart}
+          >
             {!isProductOrdered ? 'Request' : 'Requested'}
           </Btn>
         </Box>

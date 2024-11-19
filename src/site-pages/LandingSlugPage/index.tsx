@@ -5,20 +5,24 @@ import { GetPageContent } from '@/libs/api-manager/manager';
 import LandingPage from '../LandingPage';
 import './LandingSlugPage.scss';
 import LandingSlugContainer from '@/components/LandingSlugContainer';
+import ErrorHandler from '@/components/ErrorHandler';
 
 interface LandingSlugPageProps {
   slug: string;
 }
 
 const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
-  const pageData: PageData[] = await GetPageContent(slug);
-  const data = first(pageData);
-  const isDefaultHeroPanel = get(data, 'acf.use_default_hero_panel', false) === true;
-
-  if (isEmpty(pageData)) {
-    return <LandingPage />;
+  try {
+    const pageData: PageData[] = await GetPageContent(slug);
+    const data = first(pageData);
+    const isDefaultHeroPanel = get(data, 'acf.use_default_hero_panel', false) === true;
+    if (isEmpty(pageData)) {
+      return <LandingPage />;
+    }
+    return <LandingSlugContainer isDefaultHeroPanel={isDefaultHeroPanel} data={data} />;
+  } catch (error) {
+    return <ErrorHandler error={error} errMessage="Not able to show page content currently." />;
   }
-  return <LandingSlugContainer isDefaultHeroPanel={isDefaultHeroPanel} data={data} />;
 };
 
 export default LandingSlugPage;

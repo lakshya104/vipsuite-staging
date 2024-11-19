@@ -152,9 +152,7 @@ export const sportsPlayValidation = z
   .string()
   .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.sportsPlay });
 
-export const sportsValidation = z
-  .string()
-  .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.otherSports });
+export const sportsValidation = z.string();
 
 export const sportsFollowValidation = z
   .string()
