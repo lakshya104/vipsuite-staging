@@ -56,6 +56,9 @@
       line-height: rem(11.2);
       @include fontSize(8);
       @include border-radius(3px);
+      &:not(.dashboard-card__item-featuredProduct) {
+        margin-right: rem(16);
+      }
     }
     &-featuredText.MuiTypography-root {
       background-color: var(--color-marble);
@@ -64,7 +67,6 @@
       letter-spacing: 0.09em;
       display: inline-block;
       line-height: 1.4;
-      @include absolute(top 12px left 18px);
       @include border-radius(3px);
       @media only screen and (max-width: 767px) {
         line-height: 1.4;

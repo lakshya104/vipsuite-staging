@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Dialog, DialogContent, DialogActions, Typography } from '@mui/material';
 import RSVP from './RSVP';
 import { EventDetails } from '@/interfaces/events';
@@ -11,35 +11,34 @@ interface EventsDialogProps {
   event: EventDetails;
 }
 const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [confirmationOpen, setConfirmationOpen] = useState<boolean>(false);
   const router = useRouter();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [toasterMessage, setToasterMessage] = useState<string>('');
   const [toasterType, setToasterType] = useState<string>('');
 
   const handleDialogOpen = () => setDialogOpen(true);
-  const handleDialogClose = () => setDialogOpen(false);
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   const handleConfirmationOpen = () => {
     setDialogOpen(false);
     setConfirmationOpen(true);
   };
+
   const handleConfirmationClose = () => {
     setConfirmationOpen(false);
     router.push('/events');
   };
+
   const handleToasterMessage = (type: 'error' | 'success', message: string) => {
     setToasterType(type);
     if (type === 'success') {
-      setToasterMessage(message ?? 'Response submitted successfully');
-    } else {
-      setToasterMessage(message ?? 'Error submitting response');
+      handleDialogClose();
     }
+    openToaster(message);
   };
-
-  useEffect(() => {
-    if (toasterMessage) openToaster(toasterMessage);
-  }, [openToaster, toasterMessage]);
 
   return (
     <>

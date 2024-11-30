@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { DashboardItem } from '@/interfaces';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
+import { first, isUndefined } from 'lodash';
+import he from 'he';
 import { formatEventDates, truncateDescription, wrapInParagraph } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
-import { first, isUndefined } from 'lodash';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -26,7 +27,7 @@ const getImage = (item: DashboardItem) => {
 };
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -37,10 +38,20 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const isEvent = itemType === 'event';
   const isOpportunity = itemType === 'opportunity';
   const brandLogo = item?.acf?.brand_logo?.url;
-  const postTitle = item?.title?.rendered;
+  const postTitle = he.decode(item?.title?.rendered);
   const postId = item?.id;
   const postPath = isProduct ? 'products' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
   const image = getImage(item);
+  const featuredLabels = [
+    { condition: isEvent && item?.acf?.is_featured, text: 'Featured Event' },
+    { condition: isOpportunity && item?.acf?.is_featured, text: 'Featured Opportunity' },
+    { condition: isProduct && item?.acf?.is_request_only, text: 'By Request Only' },
+    {
+      condition: isProduct && item?.acf?.is_featured,
+      text: 'Featured Product',
+      extraClass: 'dashboard-card__item-featuredProduct',
+    },
+  ];
 
   return (
     <ProgressBarLink href={`${postPath}/${postId}`}>
@@ -79,19 +90,15 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
           </Box>
         )}
         <Box className="dashboard-card__item-featured">
-          {isEvent && item?.acf?.is_featured && (
-            <Box className="dashboard-card__item-featuredBox">
-              <Typography className="dashboard-card__item-featuredText" variant="overline">
-                Featured Event
-              </Typography>
-            </Box>
-          )}
-          {isProduct && item.acf?.is_request_only && (
-            <Box className="dashboard-card__item-featuredBox">
-              <Typography className="dashboard-card__item-featuredText" variant="overline">
-                By Request Only
-              </Typography>
-            </Box>
+          {featuredLabels.map(
+            ({ condition, text, extraClass = '' }, index) =>
+              condition && (
+                <Box key={index} className={`dashboard-card__item-featuredBox ${extraClass}`}>
+                  <Typography className="dashboard-card__item-featuredText" variant="overline">
+                    {text}
+                  </Typography>
+                </Box>
+              ),
           )}
           {isClient && (
             <>

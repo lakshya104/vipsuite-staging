@@ -2,11 +2,13 @@ import React from 'react';
 import { Box, Card, Typography } from '@mui/material';
 import Image from 'next/image';
 import he from 'he';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
 import { DefaultImageFallback } from '@/helpers/enums';
+import { ProgressBarLink } from '../ProgressBar';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -16,8 +18,11 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
   const eventDetail = wrapInParagraph(event?.acf?.event_details);
 
   return (
-    <Box className="product-detail">
+    <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
+        <ProgressBarLink href={'/events'} aria-label="Back to Events">
+          <ArrowBackIcon />
+        </ProgressBarLink>
         {he.decode(event?.title?.rendered)}
       </Typography>
       <EventContainer event={event} />
@@ -52,7 +57,27 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
         <Typography variant="h6" component="h3" gutterBottom>
           Details
         </Typography>
-        <Box dangerouslySetInnerHTML={{ __html: eventDetail || '' }} />
+        <Box
+          sx={{
+            iframe: {
+              width: '100%',
+              aspectRatio: '16/9',
+              border: 0,
+            },
+            video: {
+              maxWidth: '100%',
+              height: 'auto',
+            },
+            p: {
+              marginBottom: 2,
+            },
+            a: {
+              color: 'blue',
+              textDecoration: 'underline',
+            },
+          }}
+          dangerouslySetInnerHTML={{ __html: eventDetail || '' }}
+        />
       </Box>
       <EventsDialog event={event} />
     </Box>

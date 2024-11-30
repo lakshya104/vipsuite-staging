@@ -6,6 +6,7 @@ import ItemRequestForm from '@/features/ItemRequestForm';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { wrapInParagraph } from '@/helpers/utils';
 import { Product } from '@/interfaces/brand';
+import ArrowBackBtn from './ArrowBackBtn';
 
 interface ProductDetailsContainerProps {
   product: Product;
@@ -18,7 +19,8 @@ const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ produ
   return (
     <Box className="product-details__page">
       <Container>
-        <Typography variant="h2" component="h1" gutterBottom>
+        <Typography className="page-title" variant="h2" component="h1" gutterBottom>
+          <ArrowBackBtn />
           {product?.name}
         </Typography>
         <Grid container spacing={2}>
@@ -32,7 +34,27 @@ const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ produ
             <Typography variant="h2" component="h2" gutterBottom>
               {product?.name}
             </Typography>
-            <Box dangerouslySetInnerHTML={{ __html: productDescription || '' }} />
+            <Box
+              sx={{
+                iframe: {
+                  width: '100%',
+                  aspectRatio: '16/9',
+                  border: 0,
+                },
+                video: {
+                  maxWidth: '100%',
+                  height: 'auto',
+                },
+                p: {
+                  marginBottom: 2,
+                },
+                a: {
+                  color: 'blue',
+                  textDecoration: 'underline',
+                },
+              }}
+              dangerouslySetInnerHTML={{ __html: productDescription || '' }}
+            />
             <ItemRequestForm product={product} isRequestOnly={isRequestOnly} />
           </Grid>
         </Grid>

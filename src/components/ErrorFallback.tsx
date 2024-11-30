@@ -1,17 +1,19 @@
+'use client';
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 interface ErrorFallbackProps {
   errorMessage: string;
+  subtext?: string;
   hideSubtext?: boolean;
+  halfHeight?: boolean;
 }
 
-const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext }) => {
+const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext, subtext, halfHeight }) => {
   return (
     <Box
-      component="main"
       sx={{
-        height: '20vh',
+        height: halfHeight ? '30vh' : '60vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -30,7 +32,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext
       >
         {errorMessage}
       </Typography>
-      {!hideSubtext && (
+      {subtext && (
         <Typography
           variant="body1"
           align="center"
@@ -40,8 +42,26 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext
             letterSpacing: '1px',
           }}
         >
-          Please try refreshing the page or come back later.
+          {subtext}
         </Typography>
+      )}
+      {!hideSubtext && (
+        <>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{
+              color: 'gray',
+              fontSize: '1.2rem',
+              letterSpacing: '1px',
+            }}
+          >
+            Please try refreshing the page or come back later.
+          </Typography>
+          <Button className="button button--black" sx={{ marginTop: 3 }} onClick={() => window.location.reload()}>
+            Refresh
+          </Button>
+        </>
       )}
     </Box>
   );

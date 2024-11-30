@@ -115,9 +115,13 @@ export const AgentProfileUpdate = async (agentId: number, formData: FormData, to
     });
     return response.data;
   } catch (error) {
-    console.error('Error during profile update:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during profile update';
-    throw new Error(errorMessage);
+    if (axios.isAxiosError(error) && error.response) {
+      console.error('Error during profile update:', error.response.data?.message || 'No error message available');
+      throw new Error(error.response.data?.message || 'Failed to update agent profile.');
+    } else {
+      console.error('Error during profile update:', error);
+      throw new Error(error instanceof Error ? error.message : 'An unknown error occurred during the profile update.');
+    }
   }
 };
 
@@ -354,11 +358,17 @@ export const ResetPassword = async ({ email, code, password }: { email: string; 
   }
 };
 
-export const GetAllOrders = async () => {
+export const GetAllOrders = async (page = 1) => {
   const id = await GetCustomerId();
   try {
-    const response = await Instance.get(Endpoints.getAllOrders(id));
-    return response.data;
+    const response = await Instance.get(Endpoints.getAllOrders(id, page));
+    const totalOrders = response.headers['x-wp-total'];
+    const totalPages = response.headers['x-wp-totalpages'];
+    return {
+      orders: response.data,
+      totalOrders,
+      totalPages,
+    };
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -438,9 +448,9 @@ export const CreateOrder = async (data: CreateOrderData) => {
   }
 };
 
-export const GetVipOpportunities = async () => {
+export const GetVipOpportunities = async (opportunityCategory?: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipOpportunities);
+    const response = await Instance.get(Endpoints.getVipOpportunities(opportunityCategory));
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -450,12 +460,13 @@ export const GetVipOpportunities = async () => {
   }
 };
 
-export const SendRsvp = async (data: FormData) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const SendRsvp = async (data: any) => {
   try {
     const response = await Instance.post(Endpoints.sendRsvp, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      // headers: {
+      //   'Content-Type': 'multipart/form-data',
+      // },
     });
     return response.data;
   } catch (error) {
@@ -681,5 +692,17 @@ export const VerifyEmail = async (email: string) => {
     console.error('Error during signing out:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error during signing out';
     throw new Error(errorMessage);
+  }
+};
+
+export const GetOpportunityCategory = async () => {
+  try {
+    const response = await Instance.get(Endpoints.GetOpportunityCategory);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch Vips');
   }
 };

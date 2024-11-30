@@ -4,12 +4,13 @@ import './opportunities.scss';
 import OpportunitiesPage from '@/site-pages/OpportunitiesPage';
 import OpportunitiesPageLoading from '@/site-pages/OpportunitiesPage/loading';
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams?: { opportunityCategory?: string } }) {
+  const opportunityCategory = searchParams?.opportunityCategory;
   return (
     <Box className="opportunities">
       <Container>
         <Suspense fallback={<OpportunitiesPageLoading />}>
-          <OpportunitiesPage />
+          <OpportunitiesPage opportunityCategory={opportunityCategory} />
         </Suspense>
       </Container>
     </Box>

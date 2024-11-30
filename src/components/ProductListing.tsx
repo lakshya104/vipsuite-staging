@@ -4,6 +4,9 @@ import SearchBar from './SearchBar';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { BrandProduct } from '@/interfaces/brand';
 import MyProductsCard from './DashboardCard/MyProductCard';
+import { isEmpty } from 'lodash';
+import ErrorFallback from './ErrorFallback';
+import en from '@/helpers/lang';
 
 interface ProductListingContainerProps {
   products: BrandProduct[];
@@ -29,6 +32,27 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
   const handleClear = useCallback(() => {
     setSearchQuery('');
   }, []);
+
+  if (isEmpty(products)) {
+    return (
+      <>
+        <Box my={2.5}>
+          <SearchBar
+            searchTerm={searchQuery}
+            placeholder="Search for products..."
+            handleChange={handleChange}
+            handleClear={handleClear}
+            aria-label="Search products"
+          />
+        </Box>
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noProductData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
+      </>
+    );
+  }
 
   return (
     <>

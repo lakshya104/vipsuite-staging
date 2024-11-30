@@ -17,9 +17,9 @@ interface ProfileBuilderInterFace {
 }
 
 const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, profileDetails, id }) => {
-  const [step, setStep] = useState(1);
-  const [profileDetail, setProfileDetail] = useState(profileDetails);
-  const [loading, setLoading] = useState(true);
+  const [step, setStep] = useState<number>(1);
+  const [profileDetail, setProfileDetail] = useState<ACF>(profileDetails);
+  const [loading, setLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const isProfileEdit = searchParams.get('profile-route');
 
@@ -30,6 +30,12 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
       setStep(5);
     } else if (size(profileDetails.home_post_code) > 0) {
       setStep(4);
+    } else if (
+      !isEmpty(profileDetails.known_for) &&
+      (profileDetails.commercial_opportunities_contacts?.contact_me_directly === true ||
+        profileDetails.commercial_opportunities_contacts?.email !== undefined)
+    ) {
+      setStep(3);
     } else if (!isEmpty(profileDetails.known_for)) {
       setStep(2);
     }

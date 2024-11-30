@@ -6,6 +6,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
 import { BrandProduct } from '@/interfaces/brand';
+import { first, some } from 'lodash';
 
 interface MyProductsCardProps {
   data: BrandProduct;
@@ -19,8 +20,10 @@ const MyProductsCard: React.FC<MyProductsCardProps> = ({ data }) => {
   }, []);
 
   const { id, name, short_description, meta_data, images } = data;
-  const image = images[0]?.src || DefaultImageFallback.Placeholder;
-  const isRequestOnlyValue = meta_data.find((item) => item.key === 'is_request_only')?.value ?? false;
+  const image = first(images)?.src || DefaultImageFallback.Placeholder;
+  const isRequestOnlyValue = some(meta_data, { key: 'is_request_only', value: '1' });
+  const isFeatured = some(meta_data, { key: 'is_featured', value: '1' });
+
   return (
     <ProgressBarLink href={`products/${id}`}>
       <Box className="dashboard-card">
@@ -55,6 +58,13 @@ const MyProductsCard: React.FC<MyProductsCardProps> = ({ data }) => {
             <Box className="dashboard-card__item-featuredBox">
               <Typography className="dashboard-card__item-featuredText" variant="overline">
                 By Request Only
+              </Typography>
+            </Box>
+          )}
+          {isFeatured && (
+            <Box className="dashboard-card__item-featuredBox dashboard-card__item-featuredProduct">
+              <Typography className="dashboard-card__item-featuredText" variant="overline">
+                Featured Product
               </Typography>
             </Box>
           )}

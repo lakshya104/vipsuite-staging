@@ -1,11 +1,22 @@
 import React from 'react';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid, IconButton, Skeleton } from '@mui/material';
 import SearchBar from '@/components/SearchBar';
+import Image from 'next/image';
 
 const OpportunitiesPageLoading = () => {
   return (
     <>
-      <Box my={2.5}>
+      <Box my={2.5} display="flex" justifyContent="space-between" alignItems="center">
+        <IconButton
+          aria-label="Filter opportunities"
+          className="filter-button"
+          sx={{
+            mr: 1,
+            bgcolor: 'transparent',
+          }}
+        >
+          <Image src="/img/Filter.png" alt="Filter" width={30} height={30} />
+        </IconButton>
         <SearchBar searchTerm={''} placeholder="Search for opportunities..." aria-label="Search opportunities" />
       </Box>
       <Box padding={2}>

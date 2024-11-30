@@ -10,6 +10,7 @@ import OppotunityRSVP from '../OpportunityRSVP/OpportunityRSVP';
 import ImageSlider from '../Slider';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
+import ArrowBackBtn from '../ArrowBackBtn';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
@@ -45,6 +46,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   return (
     <Box className="opportunity-detail-page" component="main">
       <Typography className="page-title" variant="h2" component="h1" align="center">
+        <ArrowBackBtn />
         {he.decode(opportunity?.title?.rendered)}
       </Typography>
       <Box>

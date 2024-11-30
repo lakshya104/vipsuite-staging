@@ -30,4 +30,10 @@
   p {
     font-weight: 500;
   }
+  > div {
+    &:has(button) {
+      flex: 1;
+      justify-content: space-between;
+    }
+  }
 }

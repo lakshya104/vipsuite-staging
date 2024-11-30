@@ -20,14 +20,20 @@ const Endpoints = {
   createProfile: '/wp/v2/vip-profile',
   forgotPassword: '/wp/v2/forgot-password',
   resetPassword: '/wp/v2/reset-password',
-  getAllOrders: (customerId: number) => `/wc/v3/orders?customer=${customerId}`,
+  getAllOrders: (customerId: number, page: number) => `/wc/v3/orders?customer=${customerId}&page=${page}`,
   getOrderById: (id: number) => `/wc/v3/orders/${id}`,
   getVipCart: '/wp/v2/vip-profiles/cart',
   addItemToCart: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
   removeVipCartItem: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
   removeAllCartItems: `/wc/store/v1/cart/items`,
   createOrder: `/wc/v3/orders`,
-  getVipOpportunities: '/wp/v2/opportunities?_fields=id,title,acf.featured_image,is_wishlisted,opportunity-category',
+  getVipOpportunities: (oppId?: string) => {
+    if (oppId) {
+      return `/wp/v2/opportunities?opportunity-category=${oppId}`;
+    } else {
+      return '/wp/v2/opportunities';
+    }
+  },
   sendRsvp: '/wp/v2/rsvp-request',
   logOut: '/wp/v2/logout',
   getVipRsvpEvents: `/wp/v2/vip-profiles/rsvp-events`,
@@ -45,6 +51,7 @@ const Endpoints = {
   getAllVip: `/wp/v2/agent/vip-profiles`,
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,
   verifyEmail: '/wp/v2/email-verification-code',
+  GetOpportunityCategory: 'wp/v2/opportunity-category',
 };
 
 export { Endpoints };

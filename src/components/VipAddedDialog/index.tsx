@@ -15,8 +15,7 @@ const VipAddedDialog = () => {
   const handleAddAnotherVip = async () => {
     setLoading(true);
     try {
-      router.push('/agent-profile-builder');
-      router.refresh();
+      window.location.reload();
     } catch (error) {
       console.error(error);
       setLoading(false);

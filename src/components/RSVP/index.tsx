@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, CardContent } from '@mui/material';
+import { Box, Typography, CardContent, Button, Backdrop, CircularProgress } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
-import { revalidateTag } from '@/libs/actions';
 import { formatDateWithOrdinal } from '@/helpers/utils';
-import SelectBoxWithoutLabel from '../SelectBoxWithOutLabel';
-import { InputTextAreaFormField } from '../InputTextFormField';
+import DynamicForm from '@/features/DynamicForm';
+import revalidatePathAction from '@/libs/actions';
 
 interface RSVPProps {
   onClose: () => void;
@@ -19,28 +18,9 @@ interface RSVPProps {
   handleToasterMessage: (type: 'error' | 'success', message: string) => void;
 }
 
-const adultsChildrenOptions = [
-  { value: '1', label: '1' },
-  { value: '2', label: '2' },
-  { value: '3', label: '3' },
-  { value: '4', label: '4' },
-  { value: '5', label: '5' },
-];
-
-const adventureGolfOptions = [
-  { value: 'yes', label: 'Yes' },
-  { value: 'no', label: 'No' },
-];
-
-const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToasterMessage }) => {
+const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage }) => {
   const [isePending, setIsPending] = useState<boolean>(false);
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<RsvpFormValues>({
+  const { handleSubmit, setValue } = useForm<RsvpFormValues>({
     defaultValues: defaultValues,
     resolver: zodResolver(RsvpFormSchema),
   });
@@ -52,75 +32,17 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToast
         post_type: 'event',
         rsvp_post: event.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
-        number_of_attendees: 0,
-        would_you_like: false,
-        message: data.message,
       };
-      const formData = new FormData();
-      Object.entries(rsvp).forEach(([key, value]) => {
-        const valueToAppend = value === null ? '' : String(value);
-        formData.append(key, valueToAppend);
-      });
       try {
-        const res = await SendRsvp(formData);
-        revalidateTag('getEventDetails');
+        const res = await SendRsvp(rsvp);
         handleToasterMessage('success', res?.message);
+        await revalidatePathAction(`/events/${event.id}`);
       } catch (error) {
         handleToasterMessage('error', String(error));
-      } finally {
-        onClose();
-        reset();
-      }
-    } else {
-      setIsPending(true);
-      const rsvp = {
-        post_type: 'event',
-        rsvp_post: event.id,
-        is_pleases: 'interested',
-        number_of_attendees: data.adultsChildren,
-        would_you_like: data.eventTitle === 'no' ? false : true,
-        message: data.message,
-      };
-      const formData = new FormData();
-      Object.entries(rsvp).forEach(([key, value]) => {
-        const valueToAppend = value === null ? '' : String(value);
-        formData.append(key, valueToAppend);
-      });
-      try {
-        const res = await SendRsvp(formData);
-        revalidateTag('getEventDetails');
-        handleToasterMessage('success', res?.message);
-        onConfirmation();
-      } catch (error) {
-        handleToasterMessage('error', String(error));
-        onClose();
-      } finally {
-        reset();
+        setIsPending(false);
       }
     }
   };
-  const rsvpFields = [
-    {
-      name: 'adultsChildren',
-      label: 'How many adults and children?',
-      options: adultsChildrenOptions,
-      placeholder: 'Select option...',
-      type: 'select',
-    },
-    {
-      name: 'eventTitle',
-      label: `Would you like ${he.decode(event?.title?.rendered)}?`,
-      options: adventureGolfOptions,
-      placeholder: 'Select option...',
-      type: 'select',
-    },
-    {
-      name: 'message',
-      label: `Would you like to add anything?`,
-      placeholder: `Would you like to add anything?`,
-      type: 'textarea',
-    },
-  ];
 
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
@@ -128,6 +50,54 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToast
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
+  };
+
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64String = result.replace(/^data:[^;]+;base64,/, '');
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmitDynamic = async (data: any) => {
+    setIsPending(true);
+    const updatedPayload = await Promise.all(
+      event.acf.questions.map(async (field) => {
+        const key = field.title.replace(/\s+/g, '').toLowerCase();
+        let answer;
+        if (field.input_type === 'file_upload') {
+          answer = await convertToBase64(data[key]);
+        } else {
+          answer = data[key];
+        }
+        return {
+          ...field,
+          answer,
+        };
+      }),
+    );
+    const payload = {
+      post_type: 'event',
+      rsvp_post: event.id,
+      is_pleases: 'interested',
+      questions: updatedPayload,
+    };
+    try {
+      const res = await SendRsvp(payload);
+      handleToasterMessage('success', res?.message);
+      await revalidatePathAction(`/events/${event.id}`);
+      onConfirmation();
+    } catch (error) {
+      handleToasterMessage('error', String(error));
+      setIsPending(false);
+    }
   };
 
   return (
@@ -145,51 +115,15 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToast
           <Typography variant="body1" paragraph>
             <Box component="strong">Location:</Box> {event.acf.event_location}
           </Typography>
+          {event.acf.questions && <DynamicForm questions={event.acf.questions} onSubmit={onSubmitDynamic} />}
           <form onSubmit={handleSubmit(onSubmit)}>
-            {rsvpFields.map(({ name, options, label, type, placeholder }) => (
-              <Box key={name}>
-                {type === 'select' ? (
-                  <Box>
-                    <Typography variant="body1" className="form-label">
-                      {label}
-                    </Typography>
-                    <SelectBoxWithoutLabel
-                      placeholder={placeholder}
-                      name={name as 'adultsChildren' | 'eventTitle' | 'notAvailable' | 'notInterested'}
-                      control={control}
-                      options={options}
-                      errors={errors}
-                    />
-                  </Box>
-                ) : (
-                  <Box>
-                    <InputTextAreaFormField
-                      name={'message'}
-                      control={control}
-                      placeholder={placeholder}
-                      errors={errors}
-                    />
-                  </Box>
-                )}
-              </Box>
-            ))}
-            <Box mb={2.5}>
-              <Button
-                type="submit"
-                variant="contained"
-                className="button button--black"
-                disabled={isePending || event?.acf?.is_rsvp}
-              >
-                {event?.acf?.is_rsvp ? 'Already Responded' : 'RSVP'}
-              </Button>
-            </Box>
-            <Box className="site-dialog__action">
+            <Box className="site-dialog__action" marginTop={3}>
               <Button
                 onClick={handleNotAvailable}
                 variant="contained"
                 type="submit"
                 className="button button--white"
-                disabled={isePending || event?.acf?.is_rsvp}
+                disabled={event?.acf?.is_rsvp}
               >
                 Not Available
               </Button>
@@ -198,13 +132,16 @@ const RSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, event, handleToast
                 variant="contained"
                 type="submit"
                 className="button button--white"
-                disabled={isePending || event?.acf?.is_rsvp}
+                disabled={event?.acf?.is_rsvp}
               >
                 Not Interested
               </Button>
             </Box>
           </form>
         </CardContent>
+        <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isePending}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Box>
     </>
   );

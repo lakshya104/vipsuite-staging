@@ -11,6 +11,7 @@ import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface DashboardItemsContainerProps {
   dashboardItems: DashboardItem[];
@@ -115,11 +116,15 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     if (searchQuery) {
       return hasSearched && !isEmpty(searchResults) ? renderSearchResults() : renderNoResults();
     }
-    if (isEmpty(featuredItems) && isEmpty(nonFeaturedItems)) {
+    if (!dashboardItems || isEmpty(dashboardItems)) {
       return (
         <>
           {dashboardContent && renderDashboard()}
-          <ErrorFallback errorMessage="No dashboard items available currently" hideSubtext />
+          <ErrorFallback
+            errorMessage={en.listEmptyMessage.noItems}
+            hideSubtext={true}
+            subtext={en.listEmptyMessage.noData}
+          />
         </>
       );
     }
@@ -128,9 +133,6 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
       <>
         {!isEmpty(featuredItems) && renderItems(featuredItems)}
         {dashboardContent && renderDashboard()}
-        {(!dashboardItems || isEmpty(dashboardItems)) && (
-          <ErrorFallback errorMessage="Currently there is no dashboard item." hideSubtext={true} />
-        )}
         {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems)}
       </>
     );

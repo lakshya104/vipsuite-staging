@@ -102,14 +102,14 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       const updatedProfileDetail: ACF = {
         ...profileDetail,
         known_for: data.interests,
-        type_of_content_create: data.type_of_content_create,
+        type_of_content_create: watchInterests?.includes('Content Creator') ? data.type_of_content_create : [],
       };
       const profile = {
         acf: {
           first_name: profileDetail.first_name,
           last_name: profileDetail.last_name,
           known_for: data.interests,
-          type_of_content_create: data.type_of_content_create,
+          type_of_content_create: watchInterests?.includes('Content Creator') ? data.type_of_content_create : [],
         },
       };
       await UpdateProfile(id, profile);

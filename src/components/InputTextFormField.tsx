@@ -103,7 +103,8 @@ export const InputTextAreaFormField = <T extends FieldValues>({
             placeholder={placeholder}
             sx={{
               borderRadius: '10px',
-              padding: '8px',
+              border: '1px solid',
+              borderColor: errors[name] ? 'red' : 'black',
             }}
           />
           <FormHelperText>{typeof errors[name]?.message === 'string' ? errors[name]?.message : ''}</FormHelperText>

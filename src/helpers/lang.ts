@@ -286,6 +286,26 @@ const en = {
       code: 'Reset code is required',
     },
   },
+  listEmptyMessage: {
+    emptyBasket: 'This space is empty, Fill it with something amazing!',
+    noData: 'Check Back Soon',
+    noItems: 'No Items Available',
+    addItemMessage: 'Start Adding And Come Back',
+    noHomeData: 'Items',
+    noVipListData: 'VIPs',
+    noVipDataMessage: 'Start adding and Come Back',
+    noCartData: 'Items',
+    noCartDataMessage: 'Start adding and Come Back',
+    noEventData: 'No Events Available',
+    noOrderData: 'No Orders Available',
+    noProductData: 'No Products Available',
+    noOpportunityData: 'No Opportunities Available',
+    noBioData: 'Bio',
+    noContactData: 'No Contacts Available',
+    noContactDataMessage: 'Update Profile And Come Back',
+    noSocialData: 'Social Handles',
+    noAddressData: 'No Address Available',
+  },
 };
 
 export default en;

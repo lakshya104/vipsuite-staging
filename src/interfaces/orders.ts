@@ -47,6 +47,17 @@ export interface Order {
   currency_symbol: string;
   _links: Links;
   is_feedback_provided: boolean;
+  opportunity?: {
+    id: number;
+    title: string;
+  };
+  event?: {
+    id: number;
+    title: string;
+    start_date: string;
+    end_date: string;
+    location: string;
+  };
 }
 
 interface Address {

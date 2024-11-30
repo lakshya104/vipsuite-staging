@@ -4,6 +4,9 @@ import SearchBar from './SearchBar';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import EventsListing from './EventListing';
 import { Event } from '@/interfaces/events';
+import ErrorFallback from './ErrorFallback';
+import en from '@/helpers/lang';
+import { isEmpty } from 'lodash';
 
 interface EventCardsProps {
   eventsData: Event[];
@@ -29,6 +32,26 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
     setSearchQuery('');
   }, []);
 
+  if (isEmpty(eventsData)) {
+    return (
+      <>
+        <Box my={2.5}>
+          <SearchBar
+            searchTerm={searchQuery}
+            placeholder="Search for events..."
+            handleChange={handleChange}
+            handleClear={handleClear}
+            aria-label="Search events"
+          />
+        </Box>
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noEventData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
+      </>
+    );
+  }
   return (
     <>
       <Box my={2.5}>

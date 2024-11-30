@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useTransition } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
@@ -22,7 +22,7 @@ interface AgentEditProfileFormProps {
 }
 
 const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDetails, agentId, token }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIspending] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const router = useRouter();
@@ -58,51 +58,35 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
 
   const onSubmit = async (formData: AgentEditProfileValues) => {
     setError('');
+    setIspending(true);
     try {
-      startTransition(async () => {
-        const allVipExamples = [
-          formData.examples_of_vip_managed,
-          ...(formData.vip_examples
-            ? formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== '')
-            : []),
-        ]
-          .filter(Boolean)
-          .join(', ');
+      const allVipExamples = [
+        formData.examples_of_vip_managed,
+        ...(formData.vip_examples
+          ? formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== '')
+          : []),
+      ]
+        .filter(Boolean)
+        .join(', ');
 
-        const formDataObj = new FormData();
-        formDataObj.append('first_name', formData.first_name || '');
-        formDataObj.append('last_name', formData.last_name || '');
-        formDataObj.append('phone', formData.phone || '');
-        formDataObj.append('company_name', formData.company_name || '');
-        formDataObj.append('examples_of_vip_managed', allVipExamples);
-        try {
-          const response = await AgentProfileUpdate(agentId, formDataObj, token);
-          revalidatePathAction('/agent-profile');
-          router.push('/agent-profile');
-          if (response && response.error) {
-            setError(`Error: ${response.error}`);
-            setToasterOpen(true);
-          }
-        } catch (error) {
-          console.error('Error in AgentProfileUpdate:', error);
-          handleError(error);
-        }
-      });
+      const formDataObj = new FormData();
+      formDataObj.append('first_name', formData.first_name || '');
+      formDataObj.append('last_name', formData.last_name || '');
+      formDataObj.append('phone', formData.phone || '');
+      formDataObj.append('company_name', formData.company_name || '');
+      formDataObj.append('examples_of_vip_managed', allVipExamples);
+      const response = await AgentProfileUpdate(agentId, formDataObj, token);
+      revalidatePathAction('/my-profile');
+      router.push('/my-profile');
+      if (response && response.error) {
+        setError(`Error: ${response.error}`);
+        setToasterOpen(true);
+      }
     } catch (error) {
-      console.error('Error in onSubmit:', error);
-      handleError(error);
+      setError(error?.toString() || 'An unexpected error occurred'); //
+      setToasterOpen(true);
+      setIspending(false);
     }
-  };
-
-  const handleError = (error: unknown) => {
-    if (error instanceof Error) {
-      setError(`Error: ${error.message}`);
-    } else if (typeof error === 'string') {
-      setError(`Error: ${error}`);
-    } else {
-      setError('Error: An unexpected error occurred during signup');
-    }
-    setToasterOpen(true);
   };
 
   return (

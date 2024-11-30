@@ -15,7 +15,6 @@ const MyOrderDetailPage: React.FC<MyOrderDetailPageProps> = async ({ orderId }) 
     if (!orderDetail) {
       return <ErrorFallback errorMessage="No order details found" />;
     }
-
     return <OrderDetailsContainer orderDetail={orderDetail} />;
   } catch (error) {
     return <ErrorHandler error={error} errMessage="Not able to show order details currently." />;

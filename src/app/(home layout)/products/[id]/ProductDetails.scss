@@ -68,6 +68,18 @@
       }
     }
   }
+  .page-title {
+    padding-left: rem(30);
+    @include relative();
+    svg,
+    a {
+      transform: translateY(-50%);
+      @include absolute(left 0 top 50%);
+    }
+    @media only screen and (max-width: 767px) {
+      text-align: center;
+    }
+  }
 }
 
 .MuiMenu-list .MuiMenuItem-root[data-value=''] {

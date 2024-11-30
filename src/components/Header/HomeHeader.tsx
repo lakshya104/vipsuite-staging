@@ -80,9 +80,9 @@ const vipMenuItems = [
 
 const agentMenuItems = [
   {
-    label: 'Agent Profile',
+    label: 'My Profile',
     icon: <Image src={'/img/user.svg'} alt="Logo" width={20} height={20} priority />,
-    href: '/agent-profile',
+    href: '/my-profile',
   },
   {
     label: 'My VIPs',
@@ -95,7 +95,7 @@ const agentMenuItems = [
     href: '/basket',
   },
   {
-    label: 'My Products',
+    label: 'VIP Products',
     icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
     href: '/products',
   },

@@ -1,8 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import Btn from './Button/CommonBtn';
-import DialogBox from './Dialog';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Address, Cart } from '@/interfaces';
 import { CreateOrder } from '@/libs/api-manager/manager';
@@ -10,23 +9,22 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { useLookbookOrder, useOrderStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
 import revalidatePathAction from '@/libs/actions';
+import FullScreenDialog from './FullScreenDialog';
 
-const dialogBoxContent = {
-  title: 'Order confirmed',
-  subTitle: 'Thanks for your order!',
-  description:
-    'Please check your email for your order confirmation. We will send you a confirmation by email once your items have shipped.',
-  buttonText: 'Home',
-  isCrossIcon: true,
-};
 interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
   cartData: Cart;
   startTransition: typeof import('react').startTransition;
   vipId: number;
+  productImage: string;
 }
 
-const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cartData, startTransition }) => {
+const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
+  selectedAddress,
+  cartData,
+  startTransition,
+  productImage,
+}) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -39,9 +37,15 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
   const { requestProductId, clearRequestProductId } = useRequestOnlyStore();
   const { userEmailStore } = useUserInfoStore();
 
-  const handleDialogBoxDataChange = (data: boolean) => {
-    setIsDialogOpen(data);
-    router.push('/home');
+  const dialogBoxContent = {
+    title: isRequestedProduct || isLookbookOrder ? 'Request Confirmed' : 'Order confirmed',
+    subTitle: isRequestedProduct || isLookbookOrder ? 'Items Requested!' : 'Thanks for your order!',
+    description:
+      isRequestedProduct || isLookbookOrder
+        ? 'Please check your email for your order confirmation. We will send you a confirmation once your request has been approved.'
+        : 'Please check your email for your order confirmation. We will send you a confirmation by email once your items have shipped.',
+    image: isRequestedProduct || isLookbookOrder ? undefined : productImage,
+    buttonText: 'View My Orders',
   };
 
   const handleCreateOrder = async () => {
@@ -103,21 +107,23 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
     };
     try {
       startTransition(async () => {
-        await CreateOrder(orderDetails);
-        await revalidatePathAction('/basket');
-        increaseOrderCount();
-        setIsDialogOpen(true);
-        clearLookbookDescription();
-        clearRequestProductId();
+        if (!isLookbookOrder && isEmpty(orderDetails.line_items)) {
+          openToaster('Please select at least one product to order');
+          setTimeout(() => {
+            router.push('/home');
+          }, 2000);
+        } else {
+          await CreateOrder(orderDetails);
+          await revalidatePathAction('/basket');
+          increaseOrderCount();
+          setIsDialogOpen(true);
+          clearLookbookDescription();
+          clearRequestProductId();
+        }
       });
     } catch (error) {
       openToaster(error?.toString() ?? 'Error processing Order');
     }
-    // finally {
-    //   if (!isRequestedProduct && !isLookbookOrder) {
-    //     await RemoveAllVipCartItems();
-    //   }
-    // }
   };
 
   return (
@@ -132,7 +138,16 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({ selectedAddress, cart
       >
         Confirm Order
       </Btn>
-      <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
+      <FullScreenDialog
+        isOpen={isDialogOpen}
+        onClose={() => {
+          startTransition(async () => {
+            router.push('/inbox?isOrderTab=true');
+            setIsDialogOpen(false);
+          });
+        }}
+        content={dialogBoxContent}
+      />
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>
   );

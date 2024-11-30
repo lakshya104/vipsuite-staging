@@ -10,6 +10,7 @@ import he from 'he';
 import { get, take } from 'lodash';
 import ErrorFallback from '../ErrorFallback';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface BasketCardProps {
   cartData: Cart;
@@ -66,7 +67,11 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
             </Box>
           </>
         ) : (
-          <ErrorFallback errorMessage="Your cart is empty" hideSubtext={true} />
+          <ErrorFallback
+            errorMessage={en.listEmptyMessage.noItems}
+            hideSubtext={true}
+            subtext={en.listEmptyMessage.addItemMessage}
+          />
         )}
       </Box>
     </Fragment>

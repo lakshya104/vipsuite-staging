@@ -2,6 +2,8 @@ import moment from 'moment';
 import { UserRole } from './enums';
 import { Session } from '@/interfaces';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { z } from 'zod';
+import { Question } from '@/interfaces/events';
 
 export function calculateAge(dateOfBirth: string | undefined): number {
   if (!dateOfBirth) return 0;
@@ -157,4 +159,45 @@ export const getLastPathSegment = (url: string) => {
 export const isValidEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+};
+
+export const mapQuestionsToSchema = (questions: Question[]) => {
+  const schema = questions.reduce(
+    (acc, question) => {
+      const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+      switch (question.input_type) {
+        case 'text':
+        case 'textarea':
+        case 'dropdown':
+        case 'radio':
+        case 'date':
+        case 'datetime':
+        case 'time':
+          acc[fieldName] = question.is_required
+            ? z.string().min(1, { message: 'This field is required' })
+            : z.string().optional().or(z.literal(''));
+          break;
+
+        case 'checkboxes':
+          acc[fieldName] = question.is_required
+            ? z.array(z.string()).min(1, { message: 'This field is required' })
+            : z.array(z.string().optional().or(z.literal('')));
+          break;
+
+        case 'file_upload':
+          acc[fieldName] = question.is_required
+            ? z.instanceof(File).refine((val) => val, { message: 'This field is required' })
+            : z.instanceof(File).optional();
+          break;
+
+        default:
+          acc[fieldName] = z.string().optional().or(z.literal(''));
+      }
+
+      return acc;
+    },
+    {} as Record<string, z.ZodType<unknown>>,
+  );
+
+  return z.object(schema);
 };

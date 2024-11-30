@@ -38,7 +38,6 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
   const router = useRouter();
   const { setVipId } = useEditVipIdStore();
   const [isLoading, setLoading] = useState<boolean>(false);
-  // const [isVipPendingDialogOpen, setIsVipPendingDialogOpen] = useState<boolean>(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState<boolean>(false);
   const [isVipRejectedDialogOpen, setIsVipRejectedDialogOpen] = useState<boolean>(false);
   const totalFollowerCount = Number(instaFollowers) + Number(tiktokFollowers);
@@ -123,11 +122,6 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
       <Backdrop sx={{ color: 'black', zIndex: 100 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      {/* <MessageDialogBox
-        isDialogOpen={isVipPendingDialogOpen}
-        onClose={setIsVipPendingDialogOpen}
-        content={vipPendingBoxContent}
-      /> */}
       <MessageDialogBox
         isDialogOpen={isVipRejectedDialogOpen}
         onClose={setIsVipRejectedDialogOpen}

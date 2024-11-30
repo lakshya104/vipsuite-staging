@@ -23,12 +23,18 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token }) => {
       };
       const statusA = statusPriority[a.profile_status];
       const statusB = statusPriority[b.profile_status];
+
       if (statusA !== statusB) {
         return statusA - statusB;
       }
-      const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
-      const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
-      return nameA.localeCompare(nameB);
+      const firstNameA = a.first_name.toLowerCase();
+      const firstNameB = b.first_name.toLowerCase();
+      if (firstNameA !== firstNameB) {
+        return firstNameA.localeCompare(firstNameB);
+      }
+      const lastNameA = a.last_name.toLowerCase();
+      const lastNameB = b.last_name.toLowerCase();
+      return lastNameA.localeCompare(lastNameB);
     });
   }, [myVips]);
 

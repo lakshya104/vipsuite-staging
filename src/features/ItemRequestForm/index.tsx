@@ -57,7 +57,11 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
     try {
       if (isRequestOnly) {
         clearRequestProductId();
-        setRequestProductId(product.id);
+        if (product.type === 'variable') {
+          setRequestProductId(item.id);
+        } else {
+          setRequestProductId(product.id);
+        }
         router.push(`/basket?step=1&isRequestOnly=true`);
       } else {
         const addToCart = await AddItemToCart(item.id);

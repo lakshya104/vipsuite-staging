@@ -31,7 +31,7 @@ export const protectedRoutes = [
   /^\/my-vips$/,
   /^\/agent-profile-builder$/,
   /^\/vip-profile-builder$/,
-  /^\/agent-profile$/,
+  /^\/my-profile$/,
   /^\/edit-profile$/,
 ];
 

@@ -56,8 +56,16 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
         setStep(6);
       } else if (size(response.acf.home_post_code) > 0) {
         setStep(5);
+      } else if (
+        !isEmpty(response.acf.known_for) &&
+        (response.acf.commercial_opportunities_contacts?.contact_me_directly === true ||
+          response.acf.commercial_opportunities_contacts?.email !== undefined)
+      ) {
+        setStep(4);
       } else if (!isEmpty(response.acf.known_for)) {
         setStep(3);
+      } else if (response.acf.avg_engagement) {
+        setStep(2);
       }
       setIsLoading(false);
       setProfileDetail(response.acf);

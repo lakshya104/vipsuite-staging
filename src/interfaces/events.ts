@@ -77,6 +77,7 @@ export interface EventDetails {
   template: string;
   class_list: string[];
   acf: {
+    questions: Question[];
     event_status: string;
     is_featured: boolean;
     associated_brand: number;
@@ -95,6 +96,27 @@ export interface EventDetails {
   };
   _links: Links;
   is_wishlisted?: boolean;
+}
+type QuestionInputType =
+  | 'text'
+  | 'checkboxes'
+  | 'textarea'
+  | 'dropdown'
+  | 'radio'
+  | 'date'
+  | 'datetime'
+  | 'file_upload'
+  | 'time';
+
+interface Choice {
+  text: string;
+}
+
+export interface Question {
+  title: string;
+  input_type: QuestionInputType;
+  is_required: boolean;
+  choices: Choice[] | null;
 }
 
 export interface EventImage {

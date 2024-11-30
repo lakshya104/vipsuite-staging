@@ -35,6 +35,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const search = searchParams.get('route');
+  const isRequestedProduct = searchParams.get('isRequestOnly');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const {
@@ -51,8 +52,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
     try {
       await addUpdateAddress(data, addressId);
       if (search === 'order-journey') {
+        if (isRequestedProduct) {
+          router.push('/basket?step=1&isRequestOnly=true');
+        } else {
+          router.push('/basket?step=1');
+        }
         await revalidatePathAction('/basket?step=1');
-        router.push('/basket?step=1');
       } else {
         await revalidatePathAction('/my-addresses');
         router.push('/my-addresses');

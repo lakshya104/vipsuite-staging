@@ -8,19 +8,32 @@ import { Address, Cart } from '@/interfaces';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import ErrorFallback from '@/components/ErrorFallback';
 import { useUserInfoStore } from '@/store/useStore';
+import { useSearchParams } from 'next/navigation';
 
 interface SelectAddressFormProps {
   addresses: Address[];
   cartData: Cart;
   onPrevious?: () => void;
   startTransition: typeof import('react').startTransition;
+  productImage: string;
 }
-const SelectAddressForm: React.FC<SelectAddressFormProps> = ({ addresses, cartData, onPrevious, startTransition }) => {
+const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
+  addresses,
+  cartData,
+  onPrevious,
+  startTransition,
+  productImage,
+}) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const { vipIdStore } = useUserInfoStore();
+  const searchParams = useSearchParams();
+  const isRequestedProduct = searchParams.get('isRequestOnly');
   const handleAddressChange = (address: Address) => {
     setSelectedAddress((prevAdd) => (prevAdd === address ? null : address));
   };
+  const href = isRequestedProduct
+    ? `/my-addresses/add?route=order-journey&isRequestOnly=true`
+    : `/my-addresses/add?route=order-journey`;
   return (
     <Fragment>
       <Box className="address-page__head">
@@ -30,7 +43,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({ addresses, cartDa
         <Typography className="page-title" variant="h2" align="center" component="h1">
           Select Address
         </Typography>
-        <ProgressBarLink className="button button--black" href={'/my-addresses/add?route=order-journey'}>
+        <ProgressBarLink className="button button--black" href={href}>
           Add <AddIcon />
         </ProgressBarLink>
       </Box>
@@ -57,6 +70,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({ addresses, cartDa
               cartData={cartData}
               startTransition={startTransition}
               vipId={vipIdStore}
+              productImage={productImage}
             />
           </Box>
         </>

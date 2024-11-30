@@ -4,6 +4,8 @@ import { get } from 'lodash';
 import { formatDateWithMonth } from '@/helpers/utils';
 import { UserProfile } from '@/interfaces';
 import { Grid, Paper, Typography } from '@mui/material';
+import ErrorFallback from '../ErrorFallback';
+import en from '@/helpers/lang';
 
 interface ProfileComponentProps {
   profileDetails: UserProfile;
@@ -81,7 +83,7 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
       primary: get(profileDetails, 'email', ''),
     },
     {
-      type: 'Phone',
+      type: isAgent ? 'Phone Number' : 'Phone',
       primary: get(profileDetails, 'acf.phone', ''),
     },
     ...(isAgent
@@ -95,6 +97,16 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
   ];
 
   const filteredContactData = contactData.filter((contact) => contact.primary);
+  if (filteredContactData.length === 0) {
+    return (
+      <ErrorFallback
+        halfHeight={true}
+        errorMessage={en.listEmptyMessage.noContactData}
+        hideSubtext={true}
+        subtext={en.listEmptyMessage.noContactDataMessage}
+      />
+    );
+  }
 
   return (
     <Grid container>

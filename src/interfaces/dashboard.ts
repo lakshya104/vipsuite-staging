@@ -23,6 +23,7 @@ export interface Dashboardproduct {
   acf?: {
     is_request_only?: boolean;
     brand_logo?: BrandLogo;
+    is_featured: boolean | null;
   };
   is_wishlisted?: boolean;
 }

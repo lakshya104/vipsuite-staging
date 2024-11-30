@@ -1,3 +1,5 @@
+import { Question } from './events';
+
 export interface ImageSizes {
   thumbnail: string;
   medium: string;
@@ -43,6 +45,7 @@ export interface Acf {
   // date: string;
   // location: string;
   is_rsvp: boolean;
+  questions: Question[];
 }
 
 export interface FeaturedImage {

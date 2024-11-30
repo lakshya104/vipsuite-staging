@@ -9,7 +9,7 @@ export default async function Page() {
     <Box className="user-profile">
       <Container>
         <Typography className="page-title" variant="h2" align="center">
-          Agent Profile
+          My Profile
         </Typography>
         <Suspense fallback={<ProfilePageLoading />}>
           <AgentProfilePage />

@@ -6,7 +6,7 @@ import './inbox.scss';
 
 interface SearchParams {
   isOrderTab?: string;
-  [key: string]: string | string[] | undefined;
+  page?: string;
 }
 
 interface PageProps {
@@ -15,11 +15,11 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   const isOrderTab = searchParams.isOrderTab;
-
+  const currentPage = parseInt(searchParams.page || '1', 10);
   return (
     <Box className="user-inbox">
       <Suspense fallback={<MyOrdersLoading isOrderTab={isOrderTab} />}>
-        <InboxPage />
+        <InboxPage currentPage={currentPage} />
       </Suspense>
     </Box>
   );

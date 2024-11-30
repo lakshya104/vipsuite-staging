@@ -418,9 +418,17 @@ div.site-dialog {
     p {
       line-height: 1.54;
       letter-spacing: -0.01em;
+      margin-bottom: 0.5625rem;
+      font-weight: 500;
       @include fontSize(13);
       strong {
         font-weight: 500;
+      }
+    }
+    label {
+      margin-left: 0;
+      input {
+        margin-right: rem(9);
       }
     }
   }

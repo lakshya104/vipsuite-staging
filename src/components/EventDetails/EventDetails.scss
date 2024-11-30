@@ -56,6 +56,12 @@ div.product-detail {
       }
     }
   }
+  .page-title {
+    @include relative();
+    a {
+      @include absolute(left 0);
+    }
+  }
   &__item {
     position: relative;
     height: 485px;
@@ -89,8 +95,6 @@ div.product-detail {
   }
   textarea {
     padding: rem(16);
-    color: var(--color-black);
-    border: 1px solid black;
     height: rem(188) !important;
     font-weight: 400;
     line-height: 1.142;

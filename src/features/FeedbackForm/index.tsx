@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useForm, Controller, Control } from 'react-hook-form';
+import { useForm, Controller, Control, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Backdrop, Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import * as z from 'zod';
@@ -10,7 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Btn from '@/components/Button/CommonBtn';
 import InputTextFormField from '@/components/InputTextFormField';
-import { EventFeedback, OrderFeedback } from '@/libs/api-manager/manager';
+import { OrderFeedback } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import revalidatePathAction from '@/libs/actions';
@@ -104,16 +104,16 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           social_media_post_url: data.socialPostUrl,
           screenshot: screenshotBase64,
         };
-        await OrderFeedback(orderId, feedback);
+        const res = await OrderFeedback(orderId, feedback);
         await revalidatePathAction(`/my-orders/${orderId}`);
         setIsSubmitted(true);
         setToasterType('success');
-        openToaster('Your feedback has been successfully submitted!');
+        openToaster(res.message ?? 'Your feedback has been successfully submitted!');
         setFileName(null);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster('Error submitting feedback:' + error);
+        openToaster(String(error) ?? 'Error submitting feedback');
       } finally {
         setBtnDisable(false);
       }
@@ -128,16 +128,16 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           screenshot: screenshotBase64,
           rating: data.rating,
         };
-        await EventFeedback(orderId, feedback);
-        await revalidatePathAction(`/my-events/${orderId}`);
+        const res = await OrderFeedback(orderId, feedback);
+        await revalidatePathAction(`/my-orders/${orderId}`);
         setIsSubmitted(true);
         setToasterType('success');
-        openToaster('Your feedback has been successfully submitted!');
+        openToaster(res.message ?? 'Your feedback has been successfully submitted!');
         setFileName(null);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster('Error submitting feedback:' + error);
+        openToaster(String(error) ?? 'Error submitting feedback');
       } finally {
         setBtnDisable(false);
       }
@@ -153,16 +153,38 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           </Typography>
 
           {type === 'event' && (
-            <>
+            <Box mb={2}>
               <Typography mb={1} variant="body1">
-                Rating
+                Rate the Event
               </Typography>
-              <Controller
-                name="rating"
-                control={control as Control<EventFeedbackFormValues>}
-                render={({ field: { onChange, value } }) => <StarRating value={value} onChange={onChange} />}
-              />
-            </>
+              <Box mb={2}>
+                <Controller
+                  name="rating"
+                  control={control as Control<EventFeedbackFormValues>}
+                  render={({ field: { onChange, value } }) => (
+                    <Box>
+                      <StarRating
+                        value={value}
+                        onChange={onChange}
+                        error={(errors as FieldErrors<EventFeedbackFormValues>).rating ? true : false}
+                      />
+                      {(errors as FieldErrors<EventFeedbackFormValues>).rating && (
+                        <Typography
+                          sx={{
+                            color: '#d32f2f !important',
+                            marginLeft: 1.5,
+                            fontWeight: '400 !important',
+                            fontSize: '0.75rem !important',
+                          }}
+                        >
+                          {(errors as FieldErrors<EventFeedbackFormValues>).rating?.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  )}
+                />
+              </Box>
+            </Box>
           )}
 
           <Typography mb={1} variant="body1">
@@ -209,7 +231,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                   ) : errors.screenshot ? (
                     <span style={{ color: '#d32f2f' }}>Screenshot is required</span>
                   ) : (
-                    'Upload a screenshot'
+                    <span style={{ textTransform: 'capitalize' }}>Upload a file</span>
                   )}
                   <input
                     type="file"
@@ -270,9 +292,10 @@ interface StarRatingProps {
   value: number;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: number) => void;
+  error: boolean;
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ value, onChange }) => {
+const StarRating: React.FC<StarRatingProps> = ({ value, onChange, error }) => {
   const handleClick = (index: number) => {
     onChange(index + 1);
   };
@@ -286,7 +309,7 @@ const StarRating: React.FC<StarRatingProps> = ({ value, onChange }) => {
           color={index < value ? 'primary' : 'default'}
           aria-label={`rate ${index + 1} stars`}
         >
-          {index < value ? <StarIcon /> : <StarBorderIcon />}
+          {index < value ? <StarIcon /> : <StarBorderIcon color={error ? 'error' : 'inherit'} />}
         </IconButton>
       ))}
     </Box>
