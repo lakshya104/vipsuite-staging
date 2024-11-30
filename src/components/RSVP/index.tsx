@@ -70,7 +70,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
     setIsPending(true);
     const updatedPayload = await Promise.all(
       event.acf.questions.map(async (field) => {
-        const key = field.title.replace(/\s+/g, '').toLowerCase();
+        const key = field.title.toLowerCase().replace(/[^a-z0-9]/g, '');
         let answer;
         if (field.input_type === 'file_upload') {
           answer = await convertToBase64(data[key]);
