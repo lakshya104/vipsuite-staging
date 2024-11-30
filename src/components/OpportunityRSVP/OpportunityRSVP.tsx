@@ -30,7 +30,6 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
   const { handleSubmit, setValue, reset } = useForm<RsvpFormValues>({
     defaultValues,
   });
-  console.log(opportunity.acf.questions);
 
   const onSubmit: SubmitHandler<RsvpFormValues> = async (data) => {
     if (data.notAvailable === 'yes' || data.notInterested === 'yes') {
@@ -82,7 +81,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
     setIsPending(true);
     const updatedPayload = await Promise.all(
       opportunity.acf.questions.map(async (field) => {
-        const key = field.title.replace(/\s+/g, '').toLowerCase();
+        const key = field.title.toLowerCase().replace(/[^a-z0-9]/g, '');
         let answer;
         if (field.input_type === 'file_upload') {
           answer = await convertToBase64(data[key]);
