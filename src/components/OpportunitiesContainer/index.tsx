@@ -60,17 +60,22 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   }, [opportunitiesData, searchQuery]);
 
   const handleFilter = (categoryId: number) => {
-    const newCategoryId = selectedCategoryId === categoryId ? null : categoryId;
-    setSelectedCategoryId(newCategoryId);
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (newCategoryId) {
-        params.set('opportunityCategory', newCategoryId.toString());
-      } else {
-        params.delete('opportunityCategory');
-      }
-      router.push(`?${params.toString()}`);
-    });
+    const sameId = selectedCategoryId === categoryId;
+    const newCategoryId = sameId ? null : categoryId;
+    if (newCategoryId === null) {
+      clearFilter();
+    } else {
+      setSelectedCategoryId(newCategoryId);
+      startTransition(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (newCategoryId) {
+          params.set('opportunityCategory', newCategoryId.toString());
+        } else {
+          params.delete('opportunityCategory');
+        }
+        router.push(`?${params.toString()}`);
+      });
+    }
     setIsFilterOpen(false);
   };
 
@@ -112,6 +117,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
       </>
     );
   }
+  console.log({ categories, selectedCategoryId });
 
   return (
     <>
