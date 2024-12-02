@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import { calculateAge } from '@/helpers/utils';
 import { UserProfile } from '@/interfaces';
-import { GetProfile, GetSession } from '@/libs/api-manager/manager';
+import { GetProfile } from '@/libs/api-manager/manager';
 import ErrorFallback from '@/components/ErrorFallback';
 import EditProfileBtn from '@/components/EditProfileBtn';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -13,7 +13,6 @@ import ErrorHandler from '@/components/ErrorHandler';
 const ProfilePage = async () => {
   try {
     const profileDetails: UserProfile = await GetProfile();
-    const session = await GetSession();
     if (!profileDetails) {
       return <ErrorFallback errorMessage="Not able to show Profile currently." />;
     }
@@ -34,7 +33,7 @@ const ProfilePage = async () => {
           <Typography variant="body2" mb={1}>
             Age {age}
           </Typography>
-          <EditProfileBtn vipId={profileDetails.vip_profile_id} role={session.role} />
+          <EditProfileBtn vipId={profileDetails.vip_profile_id} role={profileDetails?.role} />
         </Box>
         <Box>
           <ProfileTabs profileData={profileDetails} />

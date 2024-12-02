@@ -45,7 +45,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         ? 'Please check your email for your order confirmation. We will send you a confirmation once your request has been approved.'
         : 'Please check your email for your order confirmation. We will send you a confirmation by email once your items have shipped.',
     image: isRequestedProduct || isLookbookOrder ? undefined : productImage,
-    buttonText: 'View My Orders',
+    buttonText: isRequestedProduct ? 'Home' : 'View My Orders',
   };
 
   const handleCreateOrder = async () => {
@@ -141,10 +141,17 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       <FullScreenDialog
         isOpen={isDialogOpen}
         onClose={() => {
-          startTransition(async () => {
-            router.push('/inbox?isOrderTab=true');
-            setIsDialogOpen(false);
-          });
+          if (isRequestedProduct) {
+            startTransition(async () => {
+              router.push('/home');
+              setIsDialogOpen(false);
+            });
+          } else {
+            startTransition(async () => {
+              router.push('/inbox?isOrderTab=true');
+              setIsDialogOpen(false);
+            });
+          }
         }}
         content={dialogBoxContent}
       />
