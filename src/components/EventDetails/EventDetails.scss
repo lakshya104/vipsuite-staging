@@ -58,7 +58,7 @@ div.product-detail {
   }
   .page-title {
     @include relative();
-    a {
+    svg {
       @include absolute(left 0);
     }
   }

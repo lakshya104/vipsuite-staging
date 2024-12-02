@@ -17,6 +17,7 @@ const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
           width: '100%',
           aspectRatio: '16/9',
           border: 0,
+          my: 2,
         },
         video: {
           maxWidth: '100%',

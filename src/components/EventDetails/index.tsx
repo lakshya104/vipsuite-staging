@@ -2,13 +2,12 @@ import React from 'react';
 import { Box, Card, Typography } from '@mui/material';
 import Image from 'next/image';
 import he from 'he';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
 import { DefaultImageFallback } from '@/helpers/enums';
-import { ProgressBarLink } from '../ProgressBar';
+import ArrowBackBtn from '../ArrowBackBtn';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -20,9 +19,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
   return (
     <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        <ProgressBarLink href={'/events'} aria-label="Back to Events">
-          <ArrowBackIcon />
-        </ProgressBarLink>
+        <ArrowBackBtn />
         {he.decode(event?.title?.rendered)}
       </Typography>
       <EventContainer event={event} />
