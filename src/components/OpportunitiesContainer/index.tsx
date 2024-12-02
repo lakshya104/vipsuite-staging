@@ -117,7 +117,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
       </>
     );
   }
-  console.log({ categories, selectedCategoryId });
 
   return (
     <>
