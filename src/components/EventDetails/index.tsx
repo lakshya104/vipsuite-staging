@@ -14,6 +14,7 @@ interface EventDetailsCardProps {
 }
 
 const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
+  const eventOverview = wrapInParagraph(event?.acf?.event_quick_overview);
   const eventDetail = wrapInParagraph(event?.acf?.event_details);
 
   return (
@@ -48,9 +49,27 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
         <Typography variant="h6" component="h3" gutterBottom>
           Quick Overview
         </Typography>
-        <Typography variant="body1" paragraph>
-          {event?.acf?.event_quick_overview}
-        </Typography>
+        <Box
+          sx={{
+            iframe: {
+              width: '100%',
+              aspectRatio: '16/9',
+              border: 0,
+            },
+            video: {
+              maxWidth: '100%',
+              height: 'auto',
+            },
+            p: {
+              marginBottom: 2,
+            },
+            a: {
+              color: 'blue',
+              textDecoration: 'underline',
+            },
+          }}
+          dangerouslySetInnerHTML={{ __html: eventOverview || '' }}
+        />
         <Typography variant="h6" component="h3" gutterBottom>
           Details
         </Typography>

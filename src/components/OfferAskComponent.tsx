@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
+import { preprocessContent } from '@/helpers/utils';
 
 interface RSVPProps {
   opportunity: OpportunityDetails;
@@ -8,8 +9,8 @@ interface RSVPProps {
 }
 
 const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
-  const content = show === 'overview' ? opportunity?.acf?.short_description : opportunity?.acf?.description;
-
+  const rawContent = show === 'overview' ? opportunity?.acf?.short_description : opportunity?.acf?.description;
+  const content = preprocessContent(rawContent);
   return (
     <Box
       sx={{

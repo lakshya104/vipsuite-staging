@@ -96,6 +96,11 @@ export const wrapInParagraph = (content: string): string => {
   }
 };
 
+export const preprocessContent = (html: string | undefined) => {
+  if (!html) return '';
+  return html.replace(/\n/g, '<br />');
+};
+
 export const formatDateWithMonth = (date: string | Date): string => {
   const momentDate = moment(date);
   if (!momentDate.isValid()) {
