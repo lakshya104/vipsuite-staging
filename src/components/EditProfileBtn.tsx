@@ -6,7 +6,7 @@ import { useEditVipIdStore } from '@/store/useStore';
 
 interface EditProfileBtnProps {
   vipId: number | undefined;
-  role: UserRole;
+  role?: UserRole;
 }
 const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ vipId, role }) => {
   const { setVipId } = useEditVipIdStore();
