@@ -8,7 +8,7 @@ import { CreateOrder } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { useLookbookOrder, useOrderStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
-import revalidatePathAction from '@/libs/actions';
+import { revalidateAllData } from '@/libs/actions';
 import FullScreenDialog from './FullScreenDialog';
 
 interface ConfirmOrderBtnProps {
@@ -114,7 +114,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
           }, 2000);
         } else {
           await CreateOrder(orderDetails);
-          await revalidatePathAction('/basket');
+          await revalidateAllData();
           increaseOrderCount();
           setIsDialogOpen(true);
           clearLookbookDescription();

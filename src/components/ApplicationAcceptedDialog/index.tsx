@@ -21,7 +21,7 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
       if (role === UserRole.Vip) {
         await router.push('/vip-profile-builder');
       } else {
-        await router.push('/agent-profile-builder');
+        await router.push('/agent-profile-builder?accepted=true');
       }
     } catch (error) {
       console.error(error);

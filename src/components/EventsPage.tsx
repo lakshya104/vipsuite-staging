@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import EventsListing from './EventListing';
 import { Event } from '@/interfaces/events';
 import ErrorFallback from './ErrorFallback';
@@ -79,11 +79,11 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
           <EventsListing events={filteredEvents} />
         </>
       ) : (
-        <Container>
-          <Typography marginTop={5} variant="h2" textAlign="center">
-            No results found
-          </Typography>
-        </Container>
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noEventData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
       )}
     </>
   );

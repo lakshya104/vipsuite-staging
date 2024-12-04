@@ -7,6 +7,9 @@ import { ProfileStatus } from '@/helpers/enums';
 import { MyVips } from '@/interfaces';
 import SignoutBtn from './SignoutBtn';
 import { ProgressBarLink } from './ProgressBar';
+import { isEmpty } from 'lodash';
+import ErrorFallback from './ErrorFallback';
+import en from '@/helpers/lang';
 
 interface MyVipsListingProps {
   myVips: MyVips[];
@@ -51,6 +54,13 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token }) => {
           </Typography>
         </Box>
         <Box>
+          {isEmpty(sortedVips) && (
+            <ErrorFallback
+              errorMessage={en.listEmptyMessage.noVipListData}
+              hideSubtext={true}
+              subtext={en.listEmptyMessage.addItemMessage}
+            />
+          )}
           {sortedVips.map((item) => {
             const link = item.profile_status === ProfileStatus.Pending ? `/agent-profile-builder?edit=true` : `/home`;
             const name = `${item.first_name} ${item.last_name}`;

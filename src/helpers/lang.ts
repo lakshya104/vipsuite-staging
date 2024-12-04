@@ -292,7 +292,7 @@ const en = {
     noItems: 'No Items Available',
     addItemMessage: 'Start Adding And Come Back',
     noHomeData: 'Items',
-    noVipListData: 'VIPs',
+    noVipListData: 'No VIPs Available',
     noVipDataMessage: 'Start adding and Come Back',
     noCartData: 'Items',
     noCartDataMessage: 'Start adding and Come Back',

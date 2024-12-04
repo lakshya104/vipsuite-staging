@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { BrandProduct } from '@/interfaces/brand';
 import MyProductsCard from './DashboardCard/MyProductCard';
 import { isEmpty } from 'lodash';
@@ -93,11 +93,11 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
           </Grid>
         </>
       ) : (
-        <Container>
-          <Typography marginTop={5} variant="h2" textAlign="center">
-            No results found
-          </Typography>
-        </Container>
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noProductData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
       )}
     </>
   );

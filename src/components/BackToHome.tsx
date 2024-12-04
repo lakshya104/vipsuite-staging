@@ -13,10 +13,18 @@ interface BackToHomeProps {
 const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
   const [isPending, startTransition] = useTransition();
   const { clearVipId } = useEditVipIdStore();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isProfileEdit = searchParams.get('profile-route');
-  const redirectPath = isProfileEdit || role === UserRole.Vip ? '/profile' : '/my-vips';
-  const router = useRouter();
+  const isApplicationAcceptedShown = searchParams.get('accepted');
+  
+  const redirectPath =
+    isProfileEdit || role === UserRole.Vip
+      ? '/profile'
+      : isApplicationAcceptedShown
+        ? '/my-vips?accepted=true'
+        : '/my-vips';
+
   const handleBack = () => {
     startTransition(() => {
       revalidatePathAction('/profile');
@@ -24,6 +32,7 @@ const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
       clearVipId();
     });
   };
+
   return (
     <Box className="profile-builder__close">
       <Button onClick={handleBack}>

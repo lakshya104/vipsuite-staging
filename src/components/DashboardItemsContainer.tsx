@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Box, Container, Grid, Skeleton, Typography } from '@mui/material';
+import { Box, Grid, Skeleton, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import { isEmpty, partition } from 'lodash';
 import { DashboardContent, DashboardItem } from '@/interfaces';
@@ -154,11 +154,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
   );
 
   const renderNoResults = () => (
-    <Container>
-      <Typography marginTop={5} variant="h2" textAlign="center">
-        No results found
-      </Typography>
-    </Container>
+    <ErrorFallback errorMessage={en.listEmptyMessage.noItems} hideSubtext={true} subtext={en.listEmptyMessage.noData} />
   );
   return (
     <>

@@ -52,6 +52,10 @@ export default async function revalidatePathAction(path: string) {
   revalidatePath(path);
 }
 
+export async function revalidateAllData() {
+  revalidatePath('/', 'layout');
+}
+
 export async function createVipIdCookie(id: string) {
   cookies().set(CookieName.VipId, id);
 }

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, useCallback, useTransition } from 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { isEmpty } from 'lodash';
 import Image from 'next/image';
-import { Box, Typography, IconButton, CircularProgress, Container, Backdrop, Grid } from '@mui/material';
+import { Box, Typography, IconButton, CircularProgress, Backdrop, Grid } from '@mui/material';
 import SearchBar from '../SearchBar';
 import { Opportunity } from '@/interfaces/opportunities';
 import { GetOpportunityCategory } from '@/libs/api-manager/manager';
@@ -149,11 +149,11 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
         selectedCategoryId={selectedCategoryId}
       />
       {isEmpty(opportunitiesData) && isFilterApplied && (
-        <Container>
-          <Typography marginTop={10} variant="h2" textAlign="center">
-            No results found for selected filter
-          </Typography>
-        </Container>
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noOpportunityData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
       )}
       {!searchQuery ? (
         <OpportunitiesListing opportunities={opportunitiesData} />
@@ -172,11 +172,11 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           <OpportunitiesListing opportunities={filteredBySearch} />
         </>
       ) : (
-        <Container>
-          <Typography marginTop={10} variant="h2" textAlign="center">
-            No results found
-          </Typography>
-        </Container>
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noOpportunityData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
       )}
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />

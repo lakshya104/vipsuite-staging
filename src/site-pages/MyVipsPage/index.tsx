@@ -7,11 +7,11 @@ import { isEmpty } from 'lodash';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
 import { UserRole } from '@/helpers/enums';
 
-const MyVipPage = async () => {
+const MyVipPage = async ({ isApplicationAcceptedShown }: { isApplicationAcceptedShown?: boolean }) => {
   try {
     const session = await GetSession();
     const myVips: MyVips[] = await GetAllVips();
-    if (!myVips || isEmpty(myVips)) {
+    if (isEmpty(myVips) && !isApplicationAcceptedShown) {
       return <ApplicationAcceptedDialog name={session.first_name} role={UserRole.Agent} />;
     }
     return <MyVipsListing myVips={myVips} token={session.token} />;
