@@ -2,8 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { isEmpty } from 'lodash';
-import Image from 'next/image';
-import { Box, Typography, IconButton, CircularProgress, Backdrop, Grid } from '@mui/material';
+import { Box, Typography, CircularProgress, Backdrop, Grid } from '@mui/material';
 import SearchBar from '../SearchBar';
 import { Opportunity } from '@/interfaces/opportunities';
 import { GetOpportunityCategory } from '@/libs/api-manager/manager';
@@ -11,7 +10,7 @@ import OpportunitiesListing from '../OpportunitiesListing';
 import './OpportunitiesContainer.scss';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
-import OpportunitiesFilterModal from '../OpportunitiesFilterModal';
+import FilterButton from '../FilterButton';
 
 interface OpportunitiesContainerProps {
   opportunitiesData: Opportunity[];
@@ -24,7 +23,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const router = useRouter();
   const searchParams = useSearchParams();
   const isFilterApplied = searchParams.get('opportunityCategory');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -121,17 +120,16 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   return (
     <>
       <Box my={2.5} display="flex" justifyContent="space-between" alignItems="center">
-        <IconButton
-          className="filter-button"
-          onClick={() => setIsFilterOpen(true)}
-          aria-label="Filter opportunities"
-          sx={{
-            mr: 1,
-            bgcolor: selectedCategoryId || isFilterApplied ? 'lightgray' : 'transparent',
-          }}
-        >
-          <Image src="/img/Filter.png" alt="Filter" width={30} height={30} />
-        </IconButton>
+        <FilterButton
+          categories={categories}
+          clearFilter={clearFilter}
+          closeFilter={() => setIsFilterOpen(false)}
+          handleFilter={handleFilter}
+          isFilterOpen={isFilterOpen}
+          selectedCategoryId={selectedCategoryId}
+          isFilterApplied={isFilterApplied}
+          openFilter={() => setIsFilterOpen(true)}
+        />
         <SearchBar
           searchTerm={searchQuery}
           placeholder="Search for opportunities..."
@@ -140,14 +138,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           aria-label="Search opportunities"
         />
       </Box>
-      <OpportunitiesFilterModal
-        categories={categories}
-        clearFilter={clearFilter}
-        closeFilter={() => setIsFilterOpen(false)}
-        handleFilter={handleFilter}
-        isFilterOpen={isFilterOpen}
-        selectedCategoryId={selectedCategoryId}
-      />
       {isEmpty(opportunitiesData) && isFilterApplied && (
         <ErrorFallback
           errorMessage={en.listEmptyMessage.noOpportunityData}
