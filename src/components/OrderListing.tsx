@@ -75,7 +75,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                     />
                     <Box sx={{ ml: { xs: 2, md: 3 } }}>
                       <Typography gutterBottom variant="h2">
-                        {truncateDescription(orderTitle, 4)}
+                        {orderType === 'lookbookOrder' ? truncateDescription(orderTitle, 4) : orderTitle}
                       </Typography>
                       {orderType === 'event' || orderType === 'opportunity' ? (
                         <>
