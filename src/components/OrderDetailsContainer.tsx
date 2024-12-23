@@ -12,6 +12,12 @@ interface OrderDetailsContainerProps {
 }
 const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDetail }) => {
   const orderType = orderDetail.status === 'rsvp-request' ? 'event' : 'order';
+  const isInterested =
+    orderDetail.status === 'rsvp-request'
+      ? orderDetail?.meta_data.find((item) => item.key === 'response')?.value === 'interested'
+      : true;
+
+  const response = orderDetail?.meta_data.find((item) => item.key === 'response')?.value;
   return (
     <>
       {/* <InboxHeader />  */}
@@ -37,6 +43,9 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               </>
             )}
             <Typography variant="body1">RSVP Date: {formatDate(orderDetail?.date_created)}</Typography>
+            <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
+              {response}
+            </Typography>
           </>
         ) : (
           <>
@@ -51,9 +60,12 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
             Description: {first(filter(orderDetail?.meta_data, (item) => item.key === 'lookbook_order_data'))?.value}
           </Typography>
         )}
-        {orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
+        {orderDetail?.status !== 'lookbook-order' &&
+          orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
       </Box>
-      {!orderDetail?.is_feedback_provided && <FeedbackForm type={orderType} orderId={orderDetail?.id} />}
+      {!orderDetail?.is_feedback_provided && isInterested && (
+        <FeedbackForm type={orderType} orderId={orderDetail?.id} />
+      )}
     </>
   );
 };

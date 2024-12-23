@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, CardContent, Button, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Typography, CardContent, Button, Backdrop, CircularProgress, Input } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import he from 'he';
@@ -9,6 +9,7 @@ import { SendRsvp } from '@/libs/api-manager/manager';
 import { formatDateWithOrdinal } from '@/helpers/utils';
 import DynamicForm from '@/features/DynamicForm';
 import revalidatePathAction from '@/libs/actions';
+import { isEmpty } from 'lodash';
 
 interface RSVPProps {
   onClose: () => void;
@@ -19,7 +20,12 @@ interface RSVPProps {
 }
 
 const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage }) => {
-  const [isePending, setIsPending] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [formState, setFormState] = useState({
+    showForm: false,
+    showReasonField: false,
+  });
+  const [reasonText, setReasonText] = useState<string>('');
   const { handleSubmit, setValue } = useForm<RsvpFormValues>({
     defaultValues: defaultValues,
     resolver: zodResolver(RsvpFormSchema),
@@ -32,6 +38,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
         post_type: 'event',
         rsvp_post: event.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
+        reason: reasonText,
       };
       try {
         const res = await SendRsvp(rsvp);
@@ -44,12 +51,32 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
     }
   };
 
+  const onSubmitRSVP = async () => {
+    setIsPending(true);
+    const rsvp = {
+      post_type: 'event',
+      rsvp_post: event.id,
+      is_pleases: 'interested',
+    };
+    try {
+      const res = await SendRsvp(rsvp);
+      handleToasterMessage('success', res?.message);
+      await revalidatePathAction(`/events/${event.id}`);
+      onConfirmation();
+    } catch (error) {
+      handleToasterMessage('error', String(error));
+      setIsPending(false);
+    }
+  };
+
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
+    setFormState({ showForm: false, showReasonField: true });
   };
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
+    setFormState({ showForm: false, showReasonField: true });
   };
 
   const convertToBase64 = (file: File): Promise<string> => {
@@ -100,6 +127,75 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
     }
   };
 
+  const renderContent = () => {
+    switch (true) {
+      case formState.showForm:
+        return <DynamicForm questions={event.acf.questions} onSubmit={onSubmitDynamic} />;
+      case formState.showReasonField:
+        return (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              placeholder="Reason"
+              fullWidth
+              multiline
+              rows={4}
+              value={reasonText}
+              onChange={(e) => {
+                setReasonText(e.target.value);
+              }}
+              sx={{ border: '1px solid black', borderRadius: '15px' }}
+            />
+            <Box className="site-dialog__action" marginTop={3}>
+              <Button variant="contained" type="submit" className="button button--black" disabled={event?.acf?.is_rsvp}>
+                Submit
+              </Button>
+            </Box>
+          </form>
+        );
+      default:
+        return (
+          <>
+            {!isEmpty(event.acf.questions) ? (
+              <Box mt={2}>
+                <Button
+                  onClick={() => setFormState({ showForm: true, showReasonField: false })}
+                  className="button button--black"
+                  type="submit"
+                  fullWidth
+                >
+                  RSVP
+                </Button>
+              </Box>
+            ) : (
+              <Box mt={2}>
+                <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
+                  RSVP
+                </Button>
+              </Box>
+            )}
+            <Box className="site-dialog__action" marginTop={3}>
+              <Button
+                onClick={handleNotAvailable}
+                variant="contained"
+                className="button button--white"
+                disabled={event?.acf?.is_rsvp}
+              >
+                Not Available
+              </Button>
+              <Button
+                onClick={handleNotInterested}
+                variant="contained"
+                className="button button--white"
+                disabled={event?.acf?.is_rsvp}
+              >
+                Not Interested
+              </Button>
+            </Box>
+          </>
+        );
+    }
+  };
+
   return (
     <>
       <Box>
@@ -115,31 +211,9 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
           <Typography variant="body1" paragraph>
             <Box component="strong">Location:</Box> {event.acf.event_location}
           </Typography>
-          {event.acf.questions && <DynamicForm questions={event.acf.questions} onSubmit={onSubmitDynamic} />}
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box className="site-dialog__action" marginTop={3}>
-              <Button
-                onClick={handleNotAvailable}
-                variant="contained"
-                type="submit"
-                className="button button--white"
-                disabled={event?.acf?.is_rsvp}
-              >
-                Not Available
-              </Button>
-              <Button
-                onClick={handleNotInterested}
-                variant="contained"
-                type="submit"
-                className="button button--white"
-                disabled={event?.acf?.is_rsvp}
-              >
-                Not Interested
-              </Button>
-            </Box>
-          </form>
+          {renderContent()}
         </CardContent>
-        <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isePending}>
+        <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
           <CircularProgress color="inherit" />
         </Backdrop>
       </Box>

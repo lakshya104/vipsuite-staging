@@ -9,7 +9,11 @@ interface ErrorHandlerProps {
 
 const ErrorHandler: React.FC<ErrorHandlerProps> = ({ error, errMessage }) => {
   const message = get(error, 'message', '');
-  if (message.toLowerCase().includes('expired') || message.toLowerCase().includes('token')) {
+  if (
+    message.toLowerCase().includes('expired') ||
+    message.toLowerCase().includes('token') ||
+    message.toLowerCase().includes('logged')
+  ) {
     return <ErrorToaster message={errMessage} login={true} errorMessage={String(error)} />;
   } else {
     return <ErrorToaster message={errMessage} errorMessage={String(error)} />;

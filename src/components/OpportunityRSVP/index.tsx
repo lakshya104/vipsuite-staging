@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, CardContent, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Typography, Button, CardContent, Backdrop, CircularProgress, Input } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import he from 'he';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
 import DynamicForm from '@/features/DynamicForm';
+import { isEmpty } from 'lodash';
 
 interface RSVPProps {
   onClose: () => void;
@@ -27,6 +28,11 @@ const defaultValues: RsvpFormValues = {
 
 const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, handleToasterMessage }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [formState, setFormState] = useState({
+    showForm: false,
+    showReasonField: false,
+  });
+  const [reasonText, setReasonText] = useState<string>('');
   const { handleSubmit, setValue, reset } = useForm<RsvpFormValues>({
     defaultValues,
   });
@@ -38,10 +44,11 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         post_type: 'opportunity',
         rsvp_post: opportunity.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
+        reason: reasonText,
       };
       try {
         const res = await SendRsvp(rsvp);
-        await revalidatePathAction(`/opportunities/${opportunity.id}`);
+        await revalidatePathAction(`/opportunities/${opportunity?.id}`);
         handleToasterMessage('success', res?.message);
       } catch (error) {
         handleToasterMessage('error', String(error));
@@ -56,13 +63,14 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
 
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
-    reset({ notAvailable: 'yes', notInterested: null });
+    setFormState({ showForm: false, showReasonField: true });
   };
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
-    reset({ notAvailable: null, notInterested: 'yes' });
+    setFormState({ showForm: false, showReasonField: true });
   };
+
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -103,11 +111,103 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
     try {
       const res = await SendRsvp(payload);
       handleToasterMessage('success', res?.message);
-      await revalidatePathAction(`/events/${opportunity.id}`);
+      await revalidatePathAction(`/events/${opportunity?.id}`);
       onConfirmation();
     } catch (error) {
       handleToasterMessage('error', String(error));
       setIsPending(false);
+    }
+  };
+
+  const onSubmitRSVP = async () => {
+    setIsPending(true);
+    const rsvp = {
+      post_type: 'opportunity',
+      rsvp_post: opportunity.id,
+      is_pleases: 'interested',
+    };
+    try {
+      const res = await SendRsvp(rsvp);
+      handleToasterMessage('success', res?.message);
+      await revalidatePathAction(`/events/${opportunity?.id}`);
+      onConfirmation();
+    } catch (error) {
+      handleToasterMessage('error', String(error));
+      setIsPending(false);
+    }
+  };
+
+  const renderContent = () => {
+    switch (true) {
+      case formState.showForm:
+        return <DynamicForm questions={opportunity.acf.questions} onSubmit={onSubmitDynamic} />;
+      case formState.showReasonField:
+        return (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              placeholder="Reason"
+              fullWidth
+              multiline
+              rows={4}
+              value={reasonText}
+              onChange={(e) => {
+                setReasonText(e.target.value);
+              }}
+              sx={{ border: '1px solid black', borderRadius: '15px' }}
+            />
+            <Box className="site-dialog__action" marginTop={3}>
+              <Button
+                variant="contained"
+                type="submit"
+                className="button button--black"
+                disabled={opportunity?.acf?.is_rsvp}
+              >
+                Submit
+              </Button>
+            </Box>
+          </form>
+        );
+      default:
+        return (
+          <>
+            {!isEmpty(opportunity.acf.questions) ? (
+              <Box mt={2}>
+                <Button
+                  onClick={() => setFormState({ showForm: true, showReasonField: false })}
+                  className="button button--black"
+                  type="submit"
+                  fullWidth
+                >
+                  RSVP
+                </Button>
+              </Box>
+            ) : (
+              <Box mt={2}>
+                <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
+                  RSVP
+                </Button>
+              </Box>
+            )}
+            <Box className="site-dialog__action" marginTop={3}>
+              <Button
+                onClick={handleNotAvailable}
+                variant="contained"
+                className="button button--white"
+                disabled={opportunity?.acf?.is_rsvp}
+              >
+                Not Available
+              </Button>
+              <Button
+                onClick={handleNotInterested}
+                variant="contained"
+                className="button button--white"
+                disabled={opportunity?.acf?.is_rsvp}
+              >
+                Not Interested
+              </Button>
+            </Box>
+          </>
+        );
     }
   };
 
@@ -117,29 +217,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         <Typography variant="h2" gutterBottom>
           {he.decode(opportunity?.title?.rendered)}
         </Typography>
-        {opportunity.acf.questions && <DynamicForm questions={opportunity.acf.questions} onSubmit={onSubmitDynamic} />}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box className="site-dialog__action" marginTop={3}>
-            <Button
-              type="submit"
-              onClick={handleNotAvailable}
-              variant="contained"
-              className="button button--white"
-              disabled={opportunity.acf.is_rsvp}
-            >
-              Not Available
-            </Button>
-            <Button
-              onClick={handleNotInterested}
-              type="submit"
-              variant="contained"
-              className="button button--white"
-              disabled={opportunity.acf.is_rsvp}
-            >
-              Not Interested
-            </Button>
-          </Box>
-        </form>
+        {renderContent()}
       </CardContent>
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />

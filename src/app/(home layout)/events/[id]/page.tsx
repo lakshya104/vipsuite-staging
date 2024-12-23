@@ -6,7 +6,7 @@ import EventDetailsLoading from '@/site-pages/EventDetailsPage/loading';
 
 export default async function Page({ params }: { params: { id: number } }) {
   return (
-    <Box component={'main'} className="product-detail">
+    <Box component={'main'} className="product-detail product-slides">
       <Container>
         <Suspense fallback={<EventDetailsLoading />}>
           <EventDetailsPage id={params?.id} />

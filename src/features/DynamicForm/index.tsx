@@ -14,11 +14,12 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 interface DynamicFormProps {
   questions: Question[];
+  type?: 'product' | 'event' | 'opportunity';
   // eslint-disable-next-line no-unused-vars
   onSubmit: (data: Record<string, unknown>) => void;
 }
 
-const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit }) => {
+const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const formSchema = mapQuestionsToSchema(questions);
   const {
@@ -232,7 +233,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit }) => {
       {questions.map((question) => renderField(question))}
       <Box mt={2}>
         <Button className="button button--black" type="submit" fullWidth>
-          RSVP
+          {type === 'product' ? 'Submit' : 'Submit'}
         </Button>
       </Box>
     </form>

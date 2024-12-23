@@ -33,6 +33,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   onPrev,
   id,
   isAgent,
+  token,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState<boolean>(false);
@@ -175,7 +176,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
       <Dialog open={reviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ProfileReviewDialog role={UserRole.Vip} />
+        <ProfileReviewDialog role={UserRole.Vip} token={token} />
       </Dialog>
       <Dialog open={vipAddedDialogOpen} fullScreen aria-labelledby="form-dialog-title">
         <VipAddedDialog />

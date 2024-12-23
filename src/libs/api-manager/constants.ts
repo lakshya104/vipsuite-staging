@@ -51,7 +51,10 @@ const Endpoints = {
   getAllVip: `/wp/v2/agent/vip-profiles`,
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,
   verifyEmail: '/wp/v2/email-verification-code',
-  GetOpportunityCategory: 'wp/v2/opportunity-category',
+  getOpportunityCategory: 'wp/v2/opportunity-category',
+  getFormId: `/wp/v2/coming-soon/form`,
+  submitComingSoonForm: `/contact-form-7/v1/contact-forms/3067/feedback`,
+  getOffers: `/wp/v2/offers`,
 };
 
 export { Endpoints };

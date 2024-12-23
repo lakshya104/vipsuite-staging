@@ -8,7 +8,7 @@ import {
   firstNameValidation,
   lastNameValidation,
   phoneRequiredValidation,
-  postcodeValidation,
+  homePostcodeValidation,
   stateValidation,
 } from '@/helpers/validations';
 
@@ -18,7 +18,7 @@ export const formSchema = z.object({
   address_line_1: addressValidationOne,
   address_line_2: addressValidationTwo,
   city: cityValidation,
-  postcode: postcodeValidation,
+  postcode: homePostcodeValidation,
   state: stateValidation,
   country: countryValidation,
   phone: phoneRequiredValidation,

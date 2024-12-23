@@ -1,23 +1,34 @@
 import React from 'react';
-import { GetProfileBuilderContent, GetProfile, GetLoginUserId } from '@/libs/api-manager/manager';
+import { GetProfileBuilderContent, GetProfile, GetSession } from '@/libs/api-manager/manager';
 import ProfileBuilder from '@/features/VipProfileBuilder';
-import { UserProfile } from '@/interfaces';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 
 const VipProfileBuilderPage = async () => {
-  try {
-    const [id, profileBuilderOptions] = await Promise.all([GetLoginUserId(), GetProfileBuilderContent()]);
-    const profileDetails: UserProfile = await GetProfile();
-    if (!id || !profileBuilderOptions) {
-      return <ErrorFallback errorMessage="Not able to edit Profile currently." />;
-    }
+  const [
+    session,
+    { data: profileBuilderOptions, error: profileContentError },
+    { data: profileDetails, error: profileDetailsError },
+  ] = await Promise.all([GetSession(), GetProfileBuilderContent(), GetProfile()]);
+  if (profileContentError || profileDetailsError) {
     return (
-      <ProfileBuilder id={id} profileBuilderOptions={profileBuilderOptions} profileDetails={profileDetails?.acf} />
+      <ErrorHandler
+        error={profileContentError || profileDetailsError}
+        errMessage="Not able to edit Profile currently."
+      />
     );
-  } catch (error) {
-    return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
   }
+  if (!session.vip_profile_id || !profileBuilderOptions) {
+    return <ErrorFallback errorMessage="Not able to edit Profile currently." />;
+  }
+  return (
+    <ProfileBuilder
+      id={session.vip_profile_id}
+      profileBuilderOptions={profileBuilderOptions}
+      profileDetails={profileDetails?.acf}
+      token={session.token}
+    />
+  );
 };
 
 export default VipProfileBuilderPage;

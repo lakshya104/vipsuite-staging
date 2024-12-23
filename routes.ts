@@ -1,4 +1,4 @@
-export const publicRoutes = ['/'];
+export const publicRoutes = ['/', '/comingsoon'];
 
 export const authRoutes = [
   '/login',
@@ -12,6 +12,9 @@ export const authRoutes = [
 
 export const protectedRoutes = [
   /^\/home$/,
+  /^\/opportunities$/,
+  /^\/events$/,
+  /^\/products$/,
   /^\/brands(\/\d+)?$/,
   /^\/events(\/\d+)$/,
   /^\/basket$/,

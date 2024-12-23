@@ -1,4 +1,4 @@
-import { EventImage, EventImageSizes } from './events';
+import { EventImage, EventImageSizes, Question } from './events';
 
 export interface BrandDetails {
   id: number;
@@ -142,21 +142,17 @@ export interface ProductMetaData {
   value: string;
 }
 
-// Interface for dimensions
 interface Dimensions {
   length: string;
   width: string;
   height: string;
 }
-
-// Interface for categories
 interface Category {
   id: number;
   name: string;
   slug: string;
 }
 
-// Interface for product images
 interface Image {
   id: number;
   date_created: string;
@@ -168,7 +164,6 @@ interface Image {
   alt: string;
 }
 
-// Interface for attribute options
 export interface AttributeOption {
   id: number;
   name: string;
@@ -179,7 +174,6 @@ export interface AttributeOption {
   options: string[];
 }
 
-// Interface for variation attributes
 export interface FilterDropdown {
   name: string;
   slug: string;
@@ -187,14 +181,12 @@ export interface FilterDropdown {
   label: string;
 }
 
-// Interface for product variations
 export interface ProductVariation {
   quantity?: number;
   id: number;
   attributes: FilterDropdown[];
 }
 
-// Interface for meta data
 interface MetaData {
   id: number;
   key: string;
@@ -205,6 +197,14 @@ interface MetaData {
 export interface Product {
   id: number;
   name: string;
+  acf: {
+    is_lookbook_available: boolean;
+    lookbook_heading: string;
+    lookbook_description: string;
+    lookbook_pdf: string;
+    show_offers: boolean;
+  };
+  is_high_end_item: boolean;
   slug: string;
   permalink: string;
   date_created: string;
@@ -230,7 +230,7 @@ export interface Product {
   total_sales: number;
   virtual: boolean;
   downloadable: boolean;
-  downloads: string[]; // Assuming downloads are an empty array or other types
+  downloads: string[];
   download_limit: number;
   download_expiry: number;
   external_url: string;
@@ -258,12 +258,12 @@ export interface Product {
   parent_id: number;
   purchase_note: string;
   categories: Category[];
-  tags: string[]; // Assuming tags are an empty array or other types
+  tags: string[];
   images: Image[];
   attributes: AttributeOption[];
-  default_attributes: string[]; // Assuming default_attributes are an empty array or other types
+  default_attributes: string[];
   variations: number[];
-  grouped_products: string[]; // Assuming grouped_products are an empty array or other types
+  grouped_products: string[];
   menu_order: number;
   price_html: string;
   related_ids: number[];
@@ -278,6 +278,7 @@ export interface Product {
     self: { href: string }[];
     collection: { href: string }[];
   };
+  questions: Question[];
 }
 
 export interface Brand {

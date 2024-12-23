@@ -16,7 +16,7 @@ export default async function HomeSectionLayout({
   children: React.ReactNode;
 }>) {
   const session = await GetSession();
-  const { role, acf, first_name } = session;
+  const { role, acf, first_name, token } = session;
   if (role === UserRole.Vip) {
     const { known_for, habits, profile_status } = acf;
     if (profile_status === ProfileStatus.Pending) {
@@ -24,7 +24,7 @@ export default async function HomeSectionLayout({
         return <ApplicationAcceptedDialog name={first_name} role={UserRole.Vip} />;
       }
       if (!isEmpty(habits)) {
-        return <ProfileReviewDialog role={role} />;
+        return <ProfileReviewDialog role={role} token={token} />;
       }
       redirect('/vip-profile-builder');
     }
@@ -37,7 +37,7 @@ export default async function HomeSectionLayout({
   }
   return (
     <>
-      <HomeHeader role={role} />
+      <HomeHeader role={role} token={token} />
       {children}
       <HomeFooter />
     </>

@@ -9,6 +9,7 @@ import { ProgressBarLink } from '@/components/ProgressBar';
 import ErrorFallback from '@/components/ErrorFallback';
 import { useUserInfoStore } from '@/store/useStore';
 import { useSearchParams } from 'next/navigation';
+import en from '@/helpers/lang';
 
 interface SelectAddressFormProps {
   addresses: Address[];
@@ -16,6 +17,7 @@ interface SelectAddressFormProps {
   onPrevious?: () => void;
   startTransition: typeof import('react').startTransition;
   productImage: string;
+  signatureData: string;
 }
 const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   addresses,
@@ -23,6 +25,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   onPrevious,
   startTransition,
   productImage,
+  signatureData,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const { vipIdStore } = useUserInfoStore();
@@ -71,11 +74,16 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
               startTransition={startTransition}
               vipId={vipIdStore}
               productImage={productImage}
+              signatureData={signatureData}
             />
           </Box>
         </>
       ) : (
-        <ErrorFallback errorMessage="No address available, please add one to continue" hideSubtext={true} />
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noAddressData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.addItemMessage}
+        />
       )}
     </Fragment>
   );

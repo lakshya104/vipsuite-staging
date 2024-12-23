@@ -11,6 +11,9 @@
   }
   img {
     object-fit: cover;
+    @media only screen and (max-width: 767px) {
+      height: auto;
+    }
   }
   h2 {
     @media only screen and (max-width: 767px) {
@@ -57,11 +60,11 @@
     @media only screen and (min-width: 768px) {
       grid-template-columns: 120px auto 60px;
     }
-    svg {
-      align-self: center;
-      justify-self: flex-end;
-      width: rem(28);
-      height: rem(28);
-    }
+  }
+  &__delete {
+    align-self: center;
+    justify-self: flex-end;
+    width: rem(28);
+    height: rem(28);
   }
 }

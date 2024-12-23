@@ -9,18 +9,17 @@ interface EventDetailsPageProps {
 }
 
 const EventDetailsPage: React.FC<EventDetailsPageProps> = async ({ id }) => {
-  try {
-    if (!id) {
-      return <ErrorFallback errorMessage="Invalid Event ID provided." />;
-    }
-    const eventDetails = await GetVipEventDetails(Number(id));
-    if (!eventDetails) {
-      return <ErrorFallback errorMessage="Event Details not found." />;
-    }
-    return <EventDetailsCard event={eventDetails} />;
-  } catch (error) {
+  if (!id) {
+    return <ErrorFallback errorMessage="Invalid Event ID provided." />;
+  }
+  const { data: eventDetails, error } = await GetVipEventDetails(Number(id));
+  if (error) {
     return <ErrorHandler error={error} errMessage="Not able to show event details currently." />;
   }
+  if (!eventDetails) {
+    return <ErrorFallback errorMessage="Event Details not found." />;
+  }
+  return <EventDetailsCard event={eventDetails} />;
 };
 
 export default EventDetailsPage;

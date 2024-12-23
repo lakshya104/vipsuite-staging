@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
 import { UserRole } from '@/helpers/enums';
+import { Question } from '@/interfaces/events';
 import { create } from 'zustand';
 import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
 
@@ -22,23 +23,51 @@ interface LookbookOrderState {
   clearLookbookDescription: () => void;
 }
 
-export const useLookbookOrder = create<LookbookOrderState>((set) => ({
-  lookbookDescription: '',
-  setLookbookDescription: (description) => set({ lookbookDescription: description }),
-  clearLookbookDescription: () => set({ lookbookDescription: '' }),
-}));
+export const useLookbookOrder = create<LookbookOrderState>()(
+  persist(
+    (set) => ({
+      lookbookDescription: '',
+      setLookbookDescription: (description) => set({ lookbookDescription: description }),
+      clearLookbookDescription: () => set({ lookbookDescription: '' }),
+    }),
+    {
+      name: 'look-book-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    } as PersistOptions<LookbookOrderState>,
+  ),
+);
 
 interface RequestOnlyState {
   requestProductId: number | null;
-  clearRequestProductId: () => void;
+  questions: Question[];
+  requestESign: string | null;
+  setRequestESign: (sign: string) => void;
+  clearRequestESign: () => void;
   setRequestProductId: (count: number) => void;
+  clearRequestProductId: () => void;
+  setQuestions: (questions: Question[]) => void;
+  clearQuestions: () => void;
 }
 
-export const useRequestOnlyStore = create<RequestOnlyState>((set) => ({
-  requestProductId: 0,
-  clearRequestProductId: () => set({ requestProductId: null }),
-  setRequestProductId: (count) => set({ requestProductId: count }),
-}));
+export const useRequestOnlyStore = create<RequestOnlyState>()(
+  persist(
+    (set) => ({
+      requestProductId: 0,
+      questions: [],
+      requestESign: '',
+      setRequestESign: (sign) => set({ requestESign: sign }),
+      clearRequestESign: () => set({ requestESign: null }),
+      setRequestProductId: (count) => set({ requestProductId: count }),
+      clearRequestProductId: () => set({ requestProductId: null }),
+      setQuestions: (questions) => set({ questions }),
+      clearQuestions: () => set({ questions: [] }),
+    }),
+    {
+      name: 'request-only-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    } as PersistOptions<RequestOnlyState>,
+  ),
+);
 
 interface UserInfoState {
   vipIdStore: any;

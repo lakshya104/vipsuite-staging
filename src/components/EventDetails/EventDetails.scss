@@ -21,11 +21,11 @@ main.product-detail {
     margin-bottom: rem(26);
     text-align: center;
   }
-  button {
-    @media only screen and (max-width: 767px) {
-      width: 100%;
-    }
-  }
+  // button {
+  //   @media only screen and (max-width: 767px) {
+  //     width: 100%;
+  //   }
+  // }
 }
 div.product-detail {
   &__content {

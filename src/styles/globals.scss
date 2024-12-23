@@ -470,3 +470,11 @@ div.site-dialog {
 .light-separator {
   opacity: 20%;
 }
+
+main.product-detail {
+  &.product-slides {
+    .MuiContainer-root {
+      max-width: 1318px;
+    }
+  }
+}

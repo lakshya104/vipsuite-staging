@@ -10,7 +10,7 @@ export const passwordValidation = z
 
 export const phoneValidation = z
   .string()
-  .regex(/^\+?([1-9]\d?)\d{10}$/, {
+  .regex(/^\+[1-9]\d{1,14}$/, {
     message: en.signup.errorMessage.phoneValidation,
   })
   .min(11, { message: en.signup.errorMessage.phoneValidation })
@@ -20,7 +20,7 @@ export const phoneValidation = z
 
 export const phoneRequiredValidation = z
   .string()
-  .regex(/^\+?([1-9]\d?)\d{10}$/, {
+  .regex(/^\+[1-9]\d{1,14}$/, {
     message: en.signup.errorMessage.phoneValidation,
   })
   .min(11, { message: en.signup.errorMessage.phoneValidation })
@@ -146,7 +146,7 @@ export const petsValidation = z.string().min(1, { message: en.profileBuilder.you
 
 export const homePostcodeValidation = z
   .string()
-  .min(1, { message: en.profileBuilder.yourDetails.errorMessage.homePostcode });
+  .regex(/^[A-Za-z0-9\s-]{3,10}$/, { message: en.profileBuilder.yourDetails.errorMessage.homePostcode });
 
 export const sportsPlayValidation = z
   .string()

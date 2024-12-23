@@ -6,7 +6,7 @@ import OpportunityDetailsLoading from '@/site-pages/OpportunitiesDetailsPage/loa
 
 export default async function Page({ params }: { params: { id: number } }) {
   return (
-    <Box component={'main'} className="product-detail">
+    <Box component={'main'} className="product-detail product-slides">
       <Container>
         <Suspense fallback={<OpportunityDetailsLoading />}>
           <OpportunityDetailsPage id={params?.id} />

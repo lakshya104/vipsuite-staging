@@ -50,6 +50,9 @@ export interface Order {
   opportunity?: {
     id: number;
     title: string;
+    image: {
+      url: string;
+    };
   };
   event?: {
     id: number;
@@ -57,6 +60,9 @@ export interface Order {
     start_date: string;
     end_date: string;
     location: string;
+    image: {
+      url: string;
+    };
   };
 }
 

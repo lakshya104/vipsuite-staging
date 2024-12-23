@@ -32,9 +32,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface RequestItemFormButtonProps {
-  brandId: number;
+  postId: number;
 }
-const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ brandId }) => {
+const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ postId }) => {
   const [open, setOpen] = useState(false);
   const { setLookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const [isPending, startTransition] = useTransition();
@@ -64,7 +64,7 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ brandId }
     try {
       startTransition(() => {
         setLookbookDescription(data.itemName);
-        router.push(`/basket?step=1&isLookbook=true&brandId=${brandId}`);
+        router.push(`/basket?step=1&isLookbook=true&postId=${postId}`);
       });
       handleClose();
     } catch (error) {

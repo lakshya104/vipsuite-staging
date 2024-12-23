@@ -1,21 +1,33 @@
 import React from 'react';
 import Image from 'next/image';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { get } from 'lodash';
+import { find, get } from 'lodash';
 import ItemRequestForm from '@/features/ItemRequestForm';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { wrapInParagraph } from '@/helpers/utils';
 import { Product } from '@/interfaces/brand';
 import ArrowBackBtn from './ArrowBackBtn';
+import ReferCard from './ReferCard';
+import RequestItemFormButton from './RequestItemFormButton';
+import RedeemBox from './RedeemBox';
+import HighEndItemMessage from './HighEndItemMessage';
 
-interface ProductDetailsContainerProps {
+interface productsContainerProps {
   product: Product;
 }
 
-const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ product }) => {
-  const isRequestOnly = product?.meta_data.find((item) => item.key === 'is_request_only')?.value === '1' || false;
+const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
   const productImage = get(product, 'images[0].src', DefaultImageFallback.Placeholder);
   const productDescription = wrapInParagraph(product?.description);
+  const isRequestOnly = get(find(product?.meta_data, { key: 'is_request_only' }), 'value') === '1' || false;
+  const showOffers =
+    get(find(product?.meta_data, { key: 'show_offers' }), 'value') === '1' || product?.acf?.show_offers || false;
+  const isLookbookAvailable = product?.acf?.is_lookbook_available;
+  const lookBookHeading = product?.acf?.lookbook_heading;
+  const lookBookDescription = product?.acf.lookbook_description;
+  const lookbookPdf = product?.acf?.lookbook_pdf;
+  const isHighEndItem = product?.is_high_end_item;
+
   return (
     <Box className="product-details__page">
       <Container>
@@ -34,6 +46,7 @@ const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ produ
             <Typography variant="h2" component="h2" gutterBottom>
               {product?.name}
             </Typography>
+            {isHighEndItem && <HighEndItemMessage />}
             <Box
               sx={{
                 iframe: {
@@ -56,6 +69,15 @@ const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ produ
               dangerouslySetInnerHTML={{ __html: productDescription || '' }}
             />
             <ItemRequestForm product={product} isRequestOnly={isRequestOnly} />
+            {isLookbookAvailable && (
+              <>
+                <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
+                  <ReferCard heading={lookBookHeading} text={lookBookDescription} href={lookbookPdf} isPdf={true} />
+                </Box>
+                <RequestItemFormButton postId={product?.id} />
+              </>
+            )}
+            {showOffers && <RedeemBox />}
           </Grid>
         </Grid>
       </Container>
@@ -63,4 +85,4 @@ const ProductDetailsContainer: React.FC<ProductDetailsContainerProps> = ({ produ
   );
 };
 
-export default ProductDetailsContainer;
+export default productsContainer;

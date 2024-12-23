@@ -19,7 +19,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   borderRadius: theme.shape.borderRadius,
   [theme.breakpoints.up('md')]: {
-    height: 384,
+    height: 426,
   },
 }));
 

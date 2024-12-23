@@ -8,6 +8,9 @@ import './EventDetails.scss';
 import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
 import { DefaultImageFallback } from '@/helpers/enums';
 import ArrowBackBtn from '../ArrowBackBtn';
+import ReferCard from '../ReferCard';
+import RequestItemFormButton from '../RequestItemFormButton';
+import RedeemBox from '../RedeemBox';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -25,17 +28,19 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
       </Typography>
       <EventContainer event={event} />
       <Box className="product-detail__content">
-        <Typography
-          sx={{
-            fontSize: { xs: '13px', md: '16px' },
-            fontWeight: 400,
-            lineHeight: '15.08px',
-            letterSpacing: '-0.01em',
-            marginBottom: { xs: '5px', md: '10px' },
-          }}
-        >
-          {event?.acf?.brand_name}
-        </Typography>
+        {event?.acf?.brand_name && (
+          <Typography
+            sx={{
+              fontSize: { xs: '13px', md: '16px' },
+              fontWeight: 400,
+              lineHeight: '15.08px',
+              letterSpacing: '-0.01em',
+              marginBottom: { xs: '5px', md: '10px' },
+            }}
+          >
+            {he.decode(event?.acf?.brand_name)}
+          </Typography>
+        )}
         <Typography variant="h2" gutterBottom>
           {he.decode(event?.title?.rendered)}
         </Typography>
@@ -95,6 +100,20 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
           dangerouslySetInnerHTML={{ __html: eventDetail || '' }}
         />
       </Box>
+      {event?.acf?.is_lookbook_available && (
+        <>
+          <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
+            <ReferCard
+              heading={event?.acf?.lookbook_heading}
+              text={event?.acf?.lookbook_description}
+              href={event?.acf?.lookbook_pdf}
+              isPdf={true}
+            />
+          </Box>
+          <RequestItemFormButton postId={event?.id} />
+        </>
+      )}
+      {event?.acf?.show_offers && <RedeemBox />}
       <EventsDialog event={event} />
     </Box>
   );

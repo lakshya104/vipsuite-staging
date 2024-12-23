@@ -128,7 +128,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
         content={vipRejectedBoxContent}
       />
       <Dialog open={reviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ProfileReviewDialog role={UserRole.Agent} onClose={() => setReviewDialogOpen(false)} />
+        <ProfileReviewDialog role={UserRole.Agent} onClose={() => setReviewDialogOpen(false)} token={token} />
       </Dialog>
     </>
   );

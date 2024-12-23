@@ -9,11 +9,13 @@ import {
   OrderFeedbackData,
   EventFeedbackData,
   CreateOrderData,
+  RsvpFormValues,
 } from '@/interfaces';
 import { Endpoints } from './constants';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 import { Instance, InstanceWithoutHeaders } from './instance';
+import { Question } from '@/interfaces/events';
 
 export const GetToken = async () => {
   const session = await auth();
@@ -27,9 +29,16 @@ export const GetSession = async () => {
 };
 
 export const GetLoginUserId = async () => {
-  const session = await auth();
-  const id = (session?.user as unknown as Session)?.vip_profile_id;
-  return id;
+  try {
+    const session = await auth();
+    const id = (session?.user as unknown as Session)?.vip_profile_id || null;
+    if (!id) {
+      throw new Error('User ID not found in session');
+    }
+    return { data: id, error: null };
+  } catch (error) {
+    return { data: null, error: error instanceof Error ? error.message : 'Failed to fetch User ID' };
+  }
 };
 
 export const GetTokenAndEmail = async () => {
@@ -141,12 +150,9 @@ export const Login = async (data: LoginFormValues) => {
 export const GetProfile = async () => {
   try {
     const response = await Instance.get(Endpoints.getProfile);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch profile content');
+    return { data: null, error };
   }
 };
 
@@ -157,12 +163,9 @@ export const GetAgentProfile = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch profile content');
+    return { data: null, error };
   }
 };
 
@@ -198,24 +201,18 @@ export const GetEditVipProfile = async (token: string, vipId: number) => {
 export const GetDashboardContent = async () => {
   try {
     const response = await Instance.get(Endpoints.getDashboardContent);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch dashboard content');
+    return { data: null, error };
   }
 };
 
 export const GetDashboard = async () => {
   try {
     const response = await Instance.get(Endpoints.getDashboard);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch dashboard');
+    return { data: null, error };
   }
 };
 
@@ -258,23 +255,18 @@ export const GetBrandProducts = async (id: number) => {
 export const GetBrandProductDetail = async (id: number) => {
   try {
     const response = await Instance.get(Endpoints.getBrandProductDetails(id));
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Product Details');
+    return { data: null, error };
   }
 };
+
 export const GetProducts = async () => {
   try {
     const response = await Instance.get(Endpoints.getProducts);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Products');
+    return { data: null, error };
   }
 };
 
@@ -293,24 +285,18 @@ export const GetSignupContent = async () => {
 export const GetVipEvents = async () => {
   try {
     const response = await Instance.get(Endpoints.getVipEvents);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Events');
+    return { data: null, error };
   }
 };
 
 export const GetProfileBuilderContent = async () => {
   try {
     const response = await Instance.get(Endpoints.getProfileBuilderContent);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch profile builder content');
+    return { data: null, error };
   }
 };
 
@@ -368,36 +354,28 @@ export const GetAllOrders = async (page = 1) => {
       orders: response.data,
       totalOrders,
       totalPages,
+      error: null,
     };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Orders');
+    return { data: null, error };
   }
 };
 
 export const GetOrderById = async (id: number) => {
   try {
     const response = await Instance.get(Endpoints.getOrderById(id));
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Order Details');
+    return { data: null, error };
   }
 };
 
 export const GetVipEventDetails = async (id: number) => {
   try {
     const response = await Instance.get(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to Event Details');
+    return { data: null, error };
   }
 };
 
@@ -451,23 +429,15 @@ export const CreateOrder = async (data: CreateOrderData) => {
 export const GetVipOpportunities = async (opportunityCategory?: string) => {
   try {
     const response = await Instance.get(Endpoints.getVipOpportunities(opportunityCategory));
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Opportunities');
+    return { data: null, error };
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const SendRsvp = async (data: any) => {
+export const SendRsvp = async (data: RsvpFormValues) => {
   try {
-    const response = await Instance.post(Endpoints.sendRsvp, data, {
-      // headers: {
-      //   'Content-Type': 'multipart/form-data',
-      // },
-    });
+    const response = await Instance.post(Endpoints.sendRsvp, data);
     return response.data;
   } catch (error) {
     console.error('Error during sending Rsvp:', error);
@@ -476,9 +446,17 @@ export const SendRsvp = async (data: any) => {
   }
 };
 
-export const LogOut = async () => {
+export const LogOut = async (token: string) => {
   try {
-    const response = await Instance.post(Endpoints.logOut);
+    const response = await InstanceWithoutHeaders.post(
+      Endpoints.logOut,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
     return response.data;
   } catch (error) {
     console.error('Error during signing out:', error);
@@ -514,12 +492,9 @@ export const GetVipWishlistItems = async () => {
 export const GetAddresses = async () => {
   try {
     const response = await Instance.get(Endpoints.getAddresses);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Opportunities');
+    return { data: null, error };
   }
 };
 
@@ -550,12 +525,9 @@ export const DeleteAddress = async (addressId: string) => {
 export const GetVipOpportunityDetails = async (id: number) => {
   try {
     const response = await Instance.get(Endpoints.getVipOpportunityDetails(id));
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Opportunity Details');
+    return { data: null, error };
   }
 };
 
@@ -570,9 +542,9 @@ export const OrderFeedback = async (orderNumber: number, data: OrderFeedbackData
   }
 };
 
-export const AddItemToCart = async (id: number) => {
+export const AddItemToCart = async (id: number, payload?: { product_id: number; questions: Question[] }) => {
   try {
-    const addItemResponse = await Instance.post(Endpoints.addItemToCart(id));
+    const addItemResponse = await Instance.post(Endpoints.addItemToCart(id), payload);
     return addItemResponse.data;
   } catch (error) {
     console.error(error);
@@ -584,12 +556,9 @@ export const AddItemToCart = async (id: number) => {
 export const FetchCartItems = async () => {
   try {
     const response = await Instance.get(Endpoints.getVipCart);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Cart Content');
+    return { data: null, error };
   }
 };
 
@@ -663,12 +632,9 @@ export const GetPageContent = async (slug: string) => {
 export const GetAllVips = async () => {
   try {
     const response = await Instance.get(Endpoints.getAllVip);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Vips');
+    return { data: null, error };
   }
 };
 
@@ -697,12 +663,50 @@ export const VerifyEmail = async (email: string) => {
 
 export const GetOpportunityCategory = async () => {
   try {
-    const response = await Instance.get(Endpoints.GetOpportunityCategory);
+    const response = await Instance.get(Endpoints.getOpportunityCategory);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
     throw new Error('Failed to fetch Vips');
+  }
+};
+
+export const GetFormId = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getFormId);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetching Form Id');
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const SubmitComingSoonForm = async (formData: any) => {
+  try {
+    const response = await Instance.post(Endpoints.submitComingSoonForm, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error during form submission:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during form submission';
+    throw new Error(errorMessage);
+  }
+};
+
+export const GetOffers = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getOffers);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetching Form Id');
   }
 };

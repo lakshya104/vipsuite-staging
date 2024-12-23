@@ -155,9 +155,11 @@ export const MessageDialogBox: React.FC<MessageDialogBoxProps> = ({ isDialogOpen
           )}
         </DialogContent>
         <DialogActions>
-          <Btn onClick={handleDialogClose} look="dark-filled" width="100%">
-            {content?.buttonText || 'Close'}
-          </Btn>
+          {content?.buttonText && (
+            <Btn onClick={handleDialogClose} look="dark-filled" width="100%">
+              {content?.buttonText || 'Close'}
+            </Btn>
+          )}
         </DialogActions>
       </Box>
     </Dialog>

@@ -1,7 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import { usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
 import {
   AppBar,
   Toolbar,
@@ -23,6 +22,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
+import { signOutAction } from '@/libs/actions';
 
 const vipNavLinks = [
   {
@@ -126,11 +126,12 @@ const agentMenuItems = [
 
 interface HomeHeaderProps {
   role?: string;
+  token: string;
 }
 
-const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
+const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
   const menuItems = role === UserRole.Vip ? vipMenuItems : agentMenuItems;
@@ -139,17 +140,16 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
     setDrawerOpen(open);
   };
   const handleLogout = async () => {
-    try {
-      setDrawerOpen(false);
-      setIsLoading(true);
-      await LogOut();
-      clearAll();
-      signOut({ callbackUrl: '/', redirect: true });
-      localStorage.clear();
-    } catch (error) {
-      setIsLoading(false);
-      openToaster('Error during logging out. ' + error);
-    }
+    setDrawerOpen(false);
+    startTransition(async () => {
+      try {
+        await Promise.all([LogOut(token), clearAll(), signOutAction()]);
+      } catch (error) {
+        openToaster('Error during logging out. ' + error);
+      } finally {
+        window.location.href = '/';
+      }
+    });
   };
 
   return (
@@ -233,7 +233,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
           </Drawer>
         </Toolbar>
       </AppBar>
-      <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isLoading}>
+      <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />

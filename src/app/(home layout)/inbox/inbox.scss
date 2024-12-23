@@ -65,6 +65,8 @@
       @media only screen and (max-width: 767px) {
         flex: 1 0 rem(54);
         max-width: rem(54);
+        object-fit: cover;
+        height: rem(54);
       }
     }
   }

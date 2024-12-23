@@ -41,7 +41,11 @@ const Toaster: React.FC<ToasterProps> = ({
         onClose={handleClose}
         severity={severity}
         variant="filled"
-        sx={{ width: '100%', backgroundColor: severity === 'error' ? 'red' : 'black' }}
+        sx={{
+          width: '100%',
+          backgroundColor: severity === 'error' ? 'red' : severity === 'info' ? 'white' : 'black',
+          color: severity === 'info' ? 'black' : 'white',
+        }}
       >
         {message}
       </Alert>

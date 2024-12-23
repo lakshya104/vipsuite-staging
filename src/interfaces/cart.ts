@@ -1,3 +1,5 @@
+import { Question } from './events';
+
 export interface Cart {
   items: CartItem[];
   totals: CartTotals;
@@ -21,7 +23,9 @@ interface CartItem {
   image_url?: string;
   name: string;
   brand_name: string;
+  is_high_end_item: boolean;
   variation: Variation[];
+  questions?: Question[];
 }
 interface Variation {
   attribute: string;

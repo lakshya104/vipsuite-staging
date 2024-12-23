@@ -37,13 +37,16 @@ export interface RenderedString {
 }
 
 export interface Acf {
+  show_offers: boolean;
   associated_brand_profile: number;
   featured_image: FeaturedImage;
   gallery: FeaturedImage[];
   short_description: string;
   description: string;
-  // date: string;
-  // location: string;
+  is_lookbook_available: boolean;
+  lookbook_heading: string;
+  lookbook_description: string;
+  lookbook_pdf: string;
   is_rsvp: boolean;
   questions: Question[];
 }
@@ -97,4 +100,23 @@ export interface Curies {
   name: string;
   href: string;
   templated: boolean;
+}
+
+export interface Offer {
+  id: number;
+  date: string;
+  slug: string;
+  status: string;
+  link: string;
+  title: {
+    rendered: string;
+  };
+  acf: {
+    description: string;
+    start_date: string;
+    end_date: string;
+    type: 'qr' | 'coupon';
+    coupon_code: string;
+    qr_code_image: FeaturedImage;
+  };
 }

@@ -6,12 +6,14 @@ import OpportunityTabs from '@/components/OpportunityTabs';
 import './OpportunityDetails.scss';
 import './OpportunityTab.scss';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
-import OppotunityRSVP from '../OpportunityRSVP/OpportunityRSVP';
+import OppotunityRSVP from '../OpportunityRSVP';
 import ImageSlider from '../Slider';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import ArrowBackBtn from '../ArrowBackBtn';
-
+import ReferCard from '../ReferCard';
+import RequestItemFormButton from '../RequestItemFormButton';
+import RedeemBox from '../RedeemBox';
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
 }
@@ -55,6 +57,20 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       <CardContent>
         <OpportunityTabs opportunity={opportunity} />
       </CardContent>
+      {opportunity?.acf?.is_lookbook_available && (
+        <>
+          <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
+            <ReferCard
+              heading={opportunity?.acf?.lookbook_heading}
+              text={opportunity?.acf?.lookbook_description}
+              href={opportunity?.acf?.lookbook_pdf}
+              isPdf={true}
+            />
+          </Box>
+          <RequestItemFormButton postId={opportunity?.id} />
+        </>
+      )}
+      {opportunity?.acf?.show_offers && <RedeemBox />}
       <Box>
         <Button
           variant="contained"

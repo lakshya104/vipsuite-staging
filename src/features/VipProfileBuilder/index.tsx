@@ -14,9 +14,10 @@ interface ProfileBuilderInterFace {
   profileBuilderOptions: ProfileBuilderOptions;
   profileDetails: ACF;
   id: number;
+  token: string;
 }
 
-const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, profileDetails, id }) => {
+const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptions, profileDetails, id, token }) => {
   const [step, setStep] = useState<number>(1);
   const [profileDetail, setProfileDetail] = useState<ACF>(profileDetails);
   const [loading, setLoading] = useState<boolean>(true);
@@ -105,6 +106,7 @@ const ProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilderOptio
             onNext={handleNext}
             onPrev={handlePrev}
             id={id}
+            token={token}
           />
         );
       default:

@@ -17,7 +17,7 @@ const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
   const searchParams = useSearchParams();
   const isProfileEdit = searchParams.get('profile-route');
   const isApplicationAcceptedShown = searchParams.get('accepted');
-  
+
   const redirectPath =
     isProfileEdit || role === UserRole.Vip
       ? '/profile'

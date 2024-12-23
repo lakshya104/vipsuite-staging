@@ -31,10 +31,10 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
     : [{ value: '' }];
 
   const defaultValues = {
-    first_name: profileDetails.first_name || '',
-    last_name: profileDetails.last_name || '',
-    phone: profileDetails.phone || '',
-    company_name: profileDetails.company_name || '',
+    first_name: profileDetails?.first_name || '',
+    last_name: profileDetails?.last_name || '',
+    phone: profileDetails?.phone || '',
+    company_name: profileDetails?.company_name || '',
     vip_examples: initialVipExamples,
   };
 

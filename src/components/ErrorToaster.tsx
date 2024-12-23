@@ -11,7 +11,11 @@ interface ErrorToasterProps {
   login?: boolean;
 }
 
-const ErrorToaster: React.FC<ErrorToasterProps> = ({ errorMessage, message, login }) => {
+const ErrorToaster: React.FC<ErrorToasterProps> = ({
+  errorMessage = 'Something unecpected occured',
+  message,
+  login = false,
+}) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const handleLogin = () => {
@@ -28,7 +32,7 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({ errorMessage, message, logi
     if (login) {
       const timeoutId = setTimeout(() => {
         handleLogin();
-      }, 2000);
+      }, 1250);
       return () => {
         clearTimeout(timeoutId);
       };

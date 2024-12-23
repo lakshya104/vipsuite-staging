@@ -34,7 +34,7 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ productId
 
   return (
     <>
-      <DeleteOutlinedIcon sx={{ cursor: 'pointer' }} onClick={toggleDialog} />
+      <DeleteOutlinedIcon sx={{ cursor: 'pointer' }} className="basket-product__delete" onClick={toggleDialog} />
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}

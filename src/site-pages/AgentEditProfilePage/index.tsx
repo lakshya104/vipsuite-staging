@@ -4,19 +4,18 @@ import AgentEditProfileForm from '@/features/AgentProfile';
 import ErrorHandler from '@/components/ErrorHandler';
 
 const AgentEditProfilePage = async () => {
-  try {
-    const token = await GetToken();
-    const profileDetails = await GetAgentProfile(token);
-    return (
-      <AgentEditProfileForm
-        profileDetails={profileDetails.acf}
-        agentId={profileDetails.agent_profile_id}
-        token={token}
-      />
-    );
-  } catch (error) {
+  const token = await GetToken();
+  const { data: profileDetails, error } = await GetAgentProfile(token);
+  if (error) {
     return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
   }
+  return (
+    <AgentEditProfileForm
+      profileDetails={profileDetails?.acf}
+      agentId={profileDetails?.agent_profile_id}
+      token={token}
+    />
+  );
 };
 
 export default AgentEditProfilePage;

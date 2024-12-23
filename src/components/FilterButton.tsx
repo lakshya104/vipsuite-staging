@@ -33,9 +33,9 @@ const FilterButton: React.FC<FilterButtonProps> = ({
         aria-label="Filter opportunities"
         sx={{
           mr: 1,
-          bgcolor: selectedCategoryId || isFilterApplied ? '#adadad' : 'transparent',
+          bgcolor: selectedCategoryId || isFilterApplied ? '#d4d5d6' : 'transparent',
           '&:hover': {
-            bgcolor: selectedCategoryId || isFilterApplied ? '#adadad' : 'transparent',
+            bgcolor: selectedCategoryId || isFilterApplied ? '#d4d5d6' : 'transparent',
           },
         }}
       >

@@ -1,3 +1,5 @@
+import { Question } from './events';
+
 export type VipSignUpRequestBody = {
   first_name: string;
   last_name: string;
@@ -35,4 +37,11 @@ export type AgentSignUpRequestBody = {
   phone: string;
   company_name: string;
   examples_of_vip_managed: string[];
+};
+
+export type RsvpFormValues = {
+  post_type: string;
+  rsvp_post: number;
+  is_pleases: string;
+  questions?: Question[];
 };

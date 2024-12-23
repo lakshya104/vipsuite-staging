@@ -93,11 +93,16 @@ export interface EventDetails {
     is_feedback_provided: boolean;
     brand_logo: BrandLogo;
     brand_name?: string;
+    is_lookbook_available: boolean;
+    lookbook_heading: string;
+    lookbook_description: string;
+    lookbook_pdf: string;
+    show_offers: boolean;
   };
-  _links: Links;
   is_wishlisted?: boolean;
 }
-type QuestionInputType =
+
+export type QuestionInputType =
   | 'text'
   | 'checkboxes'
   | 'textarea'
@@ -108,7 +113,7 @@ type QuestionInputType =
   | 'file_upload'
   | 'time';
 
-interface Choice {
+export interface Choice {
   text: string;
 }
 
@@ -117,6 +122,7 @@ export interface Question {
   input_type: QuestionInputType;
   is_required: boolean;
   choices: Choice[] | null;
+  answer?: string;
 }
 
 export interface EventImage {
@@ -144,29 +150,4 @@ export interface EventImage {
   width: number;
   height: number;
   sizes: EventImageSizes;
-}
-
-interface Links {
-  self: {
-    href: string;
-  }[];
-  collection: {
-    href: string;
-  }[];
-  about: {
-    href: string;
-  }[];
-  wp_attachment: {
-    href: string;
-  }[];
-  wp_term: {
-    taxonomy: string;
-    embeddable: boolean;
-    href: string;
-  }[];
-  curies: {
-    name: string;
-    href: string;
-    templated: boolean;
-  }[];
 }

@@ -1,19 +1,18 @@
 import React from 'react';
 import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter/HomeFooter';
-import { auth } from '@/auth';
-import { Session } from '@/interfaces';
+import { GetSession } from '@/libs/api-manager/manager';
 
 export default async function AgentSectionLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  const role = (session?.user as unknown as Session)?.role;
+  const session = await GetSession();
+  const role = session?.role;
   return (
     <>
-      <HomeHeader role={role} />
+      <HomeHeader role={role} token={session.token} />
       {children}
       <HomeFooter />
     </>

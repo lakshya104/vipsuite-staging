@@ -1,20 +1,15 @@
 import React from 'react';
 import { isUndefined } from 'lodash';
 import { GetProducts } from '@/libs/api-manager/manager';
-import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
 import ProductListingContainer from '@/components/ProductListing';
 
 const ProductsPage = async () => {
-  try {
-    const allProducts = await GetProducts();
-    if (isUndefined(allProducts)) {
-      return <ErrorFallback errorMessage="Currently there are no products." hideSubtext={true} />;
-    }
-    return <ProductListingContainer products={allProducts} />;
-  } catch (error) {
-    return <ErrorHandler error={error} errMessage="Not able to show opportunities currently." />;
+  const { data: allProducts, error } = await GetProducts();
+  if (error || isUndefined(allProducts)) {
+    return <ErrorHandler error={error} errMessage="Not able to show products currently." />;
   }
+  return <ProductListingContainer products={allProducts} />;
 };
 
 export default ProductsPage;

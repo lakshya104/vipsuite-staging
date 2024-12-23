@@ -3,7 +3,7 @@ import { getAuthData } from '../actions';
 
 const Instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
-  timeout: 10000,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -28,6 +28,7 @@ Instance.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.error('Unexpected server error', error.message, error);
     if (error.response) {
       const message = error.response.data.message || 'An error occurred';
       return Promise.reject(new Error(message));
@@ -43,7 +44,7 @@ Instance.interceptors.response.use(
 
 const InstanceWithoutHeaders = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
-  timeout: 10000,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },

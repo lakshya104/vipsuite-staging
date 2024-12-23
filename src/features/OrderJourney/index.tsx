@@ -23,6 +23,7 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
   const isLookbookOrder = searchParams.get('isLookbook');
   const router = useRouter();
   const [productImage, setProductImage] = useState<string>(DefaultImageFallback.Placeholder);
+  const [signatureData, setSignatureData] = useState<string>('');
 
   useEffect(() => {
     const firstItemImageUrl = first(get(cartData, 'items', []))?.image_url;
@@ -42,10 +43,20 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
       setActiveStep((prev) => prev - 1);
     }
   };
+  const handleSignature = (signature: string) => {
+    setSignatureData(signature);
+  };
 
   return (
     <Fragment>
-      {activeStep === 0 && <BasketCard cartData={cartData} onNext={handleNext} startTransition={startTransition} />}
+      {activeStep === 0 && (
+        <BasketCard
+          cartData={cartData}
+          onNext={handleNext}
+          startTransition={startTransition}
+          handleSignature={handleSignature}
+        />
+      )}
       {activeStep === 1 && (
         <SelectAddressForm
           addresses={addresses}
@@ -53,6 +64,7 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
           onPrevious={handleBack}
           startTransition={startTransition}
           productImage={productImage}
+          signatureData={signatureData}
         />
       )}
       <Backdrop

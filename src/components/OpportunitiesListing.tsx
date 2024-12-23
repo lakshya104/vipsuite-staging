@@ -18,17 +18,17 @@ const OpportunitiesListing: React.FC<OpportunitiesListingProps> = ({ opportuniti
   return (
     <Grid container spacing={2} sx={{ mb: 5 }}>
       {map(featuredOpportunities, (opportunity) => {
-        const image = opportunity?.acf.featured_image?.link || DefaultImageFallback.Placeholder;
+        const image = opportunity?.acf?.featured_image?.link || DefaultImageFallback.Placeholder;
         return (
-          <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
+          <Grid item xs={12} sm={6} md={4} key={opportunity?.id}>
             <OpportunityCard image={image} opportunity={opportunity} isFeatured={true} />
           </Grid>
         );
       })}
       {map(nonFeaturedOpportunities, (opportunity) => {
-        const image = opportunity?.acf.featured_image?.link || DefaultImageFallback.Placeholder;
+        const image = opportunity?.acf?.featured_image?.link || DefaultImageFallback.Placeholder;
         return (
-          <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
+          <Grid item xs={12} sm={6} md={4} key={opportunity?.id}>
             <OpportunityCard image={image} opportunity={opportunity} isFeatured={false} />
           </Grid>
         );

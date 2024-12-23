@@ -24,4 +24,5 @@ export interface ProfileBuilderStepsProps {
   onPrev: () => void;
   id: number;
   isAgent?: boolean;
+  token?: string;
 }
