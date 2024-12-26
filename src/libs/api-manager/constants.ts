@@ -53,7 +53,7 @@ const Endpoints = {
   verifyEmail: '/wp/v2/email-verification-code',
   getOpportunityCategory: 'wp/v2/opportunity-category',
   getFormId: `/wp/v2/coming-soon/form`,
-  submitComingSoonForm: `/contact-form-7/v1/contact-forms/3067/feedback`,
+  submitComingSoonForm: (id: string) => `/contact-form-7/v1/contact-forms/${id}/feedback`,
   getOffers: `/wp/v2/offers`,
 };
 

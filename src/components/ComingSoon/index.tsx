@@ -44,7 +44,7 @@ const ComingSoon = () => {
         const payload = new FormData();
         payload.append('email', data.email);
         payload.append('_wpcf7_unit_tag', unitTag);
-        const res = await SubmitComingSoonForm(payload);
+        const res = await SubmitComingSoonForm(unitTag, payload);
         setToasterType('info');
         openToaster(res.message ?? 'You have successfully submitted your email');
         reset();
