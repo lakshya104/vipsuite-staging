@@ -117,6 +117,25 @@
       }
     }
   }
+  &.gray-card {
+    &--home {
+      .gray-card {
+        &__item {
+          h2,
+          p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+          }
+          p {
+            -webkit-line-clamp: 3;
+          }
+        }
+      }
+    }
+  }
 }
 
 .landing-product {

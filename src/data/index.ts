@@ -3,30 +3,6 @@ import { AgentSignupValues } from '@/features/AgentSignupForm/types';
 import { BrandSignupValues } from '@/features/BrandSignupForm/types';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 
-export const nationalityOptions = [
-  { value: 'american', label: 'American' },
-  { value: 'canadian', label: 'Canadian' },
-  { value: 'british', label: 'British' },
-];
-
-export const ethnicityOptions = [
-  { value: 'asian', label: 'Asian' },
-  { value: 'african', label: 'African' },
-  { value: 'hispanic', label: 'Hispanic' },
-];
-
-export const numberOfChildrenOptions = [
-  { value: '1', label: '1 Child' },
-  { value: '2', label: '2 Children' },
-  { value: '3', label: '3 Children' },
-];
-
-export const ageOfChildOptions = [
-  { value: 'infant', label: 'Infant' },
-  { value: 'toddler', label: 'Toddler' },
-  { value: 'child', label: 'Child' },
-];
-
 type VipSignUpFormField = {
   name: keyof VipSignUpRequestBody;
   placeholder: string;
@@ -195,15 +171,6 @@ export const ReferVipFormFields = [
   },
 ];
 
-export const vipPendingBoxContent = {
-  title: 'VIP Application Pending',
-  subTitle: 'We are Reviewing Your VIP Application',
-  description:
-    'Thanks for submitting your VIP application, Our concierge team is carefully reviewing your submission and will get back to you shortly with an update.',
-  buttonText: 'Got It',
-  isCrossIcon: false,
-};
-
 export const vipRejectedBoxContent = {
   title: 'VIP Application Rejected',
   subTitle: 'Unfortunately, Your VIP Application Was Not Approved',
@@ -212,3 +179,145 @@ export const vipRejectedBoxContent = {
   buttonText: 'Understood',
   isCrossIcon: false,
 };
+
+export const vipNavLinks = [
+  {
+    label: 'Home',
+    href: '/home',
+    paths: ['/home', '/brands/'],
+  },
+  {
+    label: 'Opportunities',
+    href: '/opportunities',
+    paths: ['/opportunities'],
+  },
+  {
+    label: 'Events',
+    href: '/events',
+    paths: ['/events'],
+  },
+  {
+    label: 'Inbox',
+    href: '/inbox',
+    paths: ['/inbox', '/my-orders', '/messages'],
+  },
+  {
+    label: 'Profile',
+    href: '/profile',
+    paths: ['/profile'],
+  },
+];
+
+export const brandNavLinks = [
+  {
+    label: 'Home',
+    href: '/home',
+    paths: ['/home'],
+  },
+  {
+    label: 'Services',
+    href: '/services',
+    paths: ['/services'],
+  },
+  {
+    label: 'Profiling',
+    href: '/profiling',
+    paths: ['/profiling'],
+  },
+  {
+    label: 'Opportunities',
+    href: '/brand-opportunities',
+    paths: ['/opportunities'],
+  },
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
+    paths: ['/dashboard'],
+  },
+];
+
+export const vipFooterItems = [
+  {
+    href: '/home',
+    src: '/img/home.svg',
+    alt: 'Home',
+    label: 'Home',
+    paths: ['/home', '/brands/', '/product'],
+    srcselected: '/img/home-selected.svg',
+  },
+  {
+    href: '/opportunities',
+    src: '/img/opportunity.svg',
+    alt: 'Opportunities',
+    label: 'Opportunities',
+    paths: ['/opportunities'],
+    srcselected: '/img/opportunities-selected.svg',
+  },
+  {
+    href: '/events',
+    src: '/img/event.svg',
+    alt: 'Events',
+    label: 'Events',
+    paths: ['/events'],
+    srcselected: '/img/events-selected.svg',
+  },
+  {
+    href: '/inbox',
+    src: '/img/inbox.svg',
+    alt: 'Inbox',
+    label: 'Inbox',
+    paths: ['/inbox', '/my-orders'],
+    srcselected: '/img/inbox-selected.svg',
+  },
+  {
+    href: '/profile',
+    src: '/img/user.svg',
+    alt: 'Profile',
+    label: 'Profile',
+    paths: ['/profile'],
+    srcselected: '/img/user-selected.svg',
+  },
+];
+
+export const brandFooterItems = [
+  {
+    href: '/home',
+    src: '/img/home.svg',
+    alt: 'Home',
+    label: 'Home',
+    paths: ['/home', '/brands/', '/product'],
+    srcselected: '/img/home-selected.svg',
+  },
+  {
+    href: '/services',
+    src: '/img/event.svg',
+    alt: 'Services',
+    label: 'Services',
+    paths: ['/services'],
+    srcselected: '/img/events-selected.svg',
+  },
+  {
+    href: '/profiling',
+    src: '/img/user.svg',
+    alt: 'Profiling',
+    label: 'Profiling',
+    paths: ['/profiling'],
+    srcselected: '/img/user-selected.svg',
+  },
+  {
+    href: '/brand-opportunities',
+    src: '/img/opportunity.svg',
+    alt: 'Opportunities',
+    label: 'Opportunities',
+    paths: ['/brand-opportunities'],
+    srcselected: '/img/opportunities-selected.svg',
+  },
+  {
+    href: '/dashboard',
+    src: '/img/inbox.svg',
+    alt: 'Dashboard',
+    label: 'Dashboard',
+    paths: ['/dashboard'],
+    srcselected: '/img/inbox-selected.svg',
+  },
+];

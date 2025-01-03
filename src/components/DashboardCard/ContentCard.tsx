@@ -27,7 +27,7 @@ const ContentCardBox: React.FC<ContentCardBoxProps> = ({ data }) => {
             e.currentTarget.src = DefaultImageFallback.Placeholder;
           }}
         />
-        <Box className="dashboard-card__item-featured">
+        <Box className="dashboard-card__item-featured dashboard-card--landing-page">
           <Typography variant="h2">{title}</Typography>
           <Typography variant="body2">{description} </Typography>
         </Box>

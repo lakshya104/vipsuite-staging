@@ -16,7 +16,7 @@ const DashboardContentComponent: React.FC<DashboardContentProps> = ({
   formRequests,
 }) => {
   return (
-    <Box className="gray-card" display="flex" justifyContent="space-between" gap={2.5}>
+    <Box className="gray-card gray-card--home" display="flex" justifyContent="space-between" gap={2.5}>
       {dashboardContent && (
         <>
           <ReferCard

@@ -43,7 +43,7 @@ export default async function HomeSectionLayout({
       <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={vipId} />
       <HomeHeader role={role} token={token} />
       {children}
-      <HomeFooter />
+      <HomeFooter role={role}  />
     </>
   );
 }

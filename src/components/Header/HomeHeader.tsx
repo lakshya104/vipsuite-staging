@@ -23,34 +23,7 @@ import Toaster from '../Toaster';
 import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
 import { signOutAction } from '@/libs/actions';
-
-const vipNavLinks = [
-  {
-    label: 'Home',
-    href: '/home',
-    paths: ['/home', '/brands/'],
-  },
-  {
-    label: 'Opportunities',
-    href: '/opportunities',
-    paths: ['/opportunities'],
-  },
-  {
-    label: 'Events',
-    href: '/events',
-    paths: ['/events'],
-  },
-  {
-    label: 'Inbox',
-    href: '/inbox',
-    paths: ['/inbox', '/my-orders'],
-  },
-  {
-    label: 'Profile',
-    href: '/profile',
-    paths: ['/profile'],
-  },
-];
+import { brandNavLinks, vipNavLinks } from '@/data';
 
 const vipMenuItems = [
   {
@@ -58,7 +31,6 @@ const vipMenuItems = [
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
     href: '/basket',
   },
-  // { label: 'My Events', icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />, href: '/my-events' },
   {
     label: 'My Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
@@ -99,22 +71,21 @@ const agentMenuItems = [
     icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
     href: '/products',
   },
-  // { label: 'VIP Orders', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/my-orders' },
-  // {
-  //   label: 'VIP Events',
-  //   icon: <Image src="/img/calendar.svg" alt="Logo" width={20} height={20} />,
-  //   href: '/my-events',
-  // },
   {
     label: 'VIP Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: '/my-addresses',
   },
-  // {
-  //   label: 'VIP Interests',
-  //   icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
-  //   href: '/my-interests',
-  // },
+  {
+    label: 'Login & Security',
+    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
+    href: '/login-security',
+  },
+  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
+  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
+];
+
+const brandMenuItems = [
   {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
@@ -125,7 +96,7 @@ const agentMenuItems = [
 ];
 
 interface HomeHeaderProps {
-  role?: string;
+  role?: UserRole;
   token: string;
 }
 
@@ -134,7 +105,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
-  const menuItems = role === UserRole.Vip ? vipMenuItems : agentMenuItems;
+  const menuItems = role === UserRole.Vip ? vipMenuItems : UserRole.Brand ? brandMenuItems : agentMenuItems;
+  const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const { clearAll } = useUserInfoStore();
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -164,7 +136,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
 
           <Box className="site-header__navbar">
             <MenuList className="site-header__navigation">
-              {vipNavLinks.map((link) => {
+              {navLinks.map((link) => {
                 const isActive = link.paths.some((path) => pathname.startsWith(path));
                 return (
                   <MenuItem

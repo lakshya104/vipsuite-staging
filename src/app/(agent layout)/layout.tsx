@@ -14,7 +14,7 @@ export default async function AgentSectionLayout({
     <>
       <HomeHeader role={role} token={session.token} />
       {children}
-      <HomeFooter />
+      <HomeFooter role={role} />
     </>
   );
 }

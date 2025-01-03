@@ -30,6 +30,15 @@
       @include fontSize(12);
     }
   }
+  .message__item {
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
 }
 
 .order-product {
