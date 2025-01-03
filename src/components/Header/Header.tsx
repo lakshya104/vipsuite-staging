@@ -16,7 +16,7 @@ interface MenuItemData {
   title: string;
   url: string;
   menu_item_parent: string;
-  object: string; // added to track type of object
+  object: string;
 }
 
 const Header = () => {

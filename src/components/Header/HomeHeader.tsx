@@ -105,7 +105,15 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
-  const menuItems = role === UserRole.Vip ? vipMenuItems : UserRole.Brand ? brandMenuItems : agentMenuItems;
+  const menuItems =
+    role === UserRole.Vip
+      ? vipMenuItems
+      : role === UserRole.Brand
+        ? brandMenuItems
+        : role === UserRole.Agent
+          ? agentMenuItems
+          : [];
+
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const { clearAll } = useUserInfoStore();
   const toggleDrawer = (open: boolean) => () => {

@@ -29,11 +29,11 @@ Instance.interceptors.response.use(
   },
   (error) => {
     console.error(
-      'Unexpected server error :' ,
+      'Unexpected server error :',
       error.message,
-      'error message :' ,
+      'error message :',
       error.response.data.message,
-      'error status code : ' ,
+      'error status code : ',
       error.response.data.code,
     );
     if (error.response) {
