@@ -162,8 +162,13 @@ export const getLastPathSegment = (url: string) => {
 };
 
 export const isValidEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  const emailSchema = z.string().email();
+  try {
+    emailSchema.parse(email);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export const mapQuestionsToSchema = (questions: Question[]) => {

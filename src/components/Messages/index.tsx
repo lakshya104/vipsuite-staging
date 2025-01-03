@@ -24,6 +24,7 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
       />
     );
   }
+  console.log({ messageData });
 
   return (
     <Box className="message__items">

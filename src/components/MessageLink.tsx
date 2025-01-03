@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
+import { Box, Typography } from '@mui/material';
+import he from 'he';
 import { DefaultImageFallback } from '@/helpers/enums';
 
 interface MessageLinkProps {
@@ -20,7 +21,7 @@ const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title }) => {
           marginRight: 12,
         }}
       />
-      <Typography variant="h6">{title}</Typography>
+      <Typography variant="h6">{he.decode(title)}</Typography>
     </Box>
   );
 };

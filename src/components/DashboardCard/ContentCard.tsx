@@ -1,11 +1,9 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
 import { ContentCard } from '@/interfaces';
-import { truncateDescription } from '@/helpers/utils';
 
 interface ContentCardBoxProps {
   data: ContentCard;
@@ -14,7 +12,7 @@ interface ContentCardBoxProps {
 const ContentCardBox: React.FC<ContentCardBoxProps> = ({ data }) => {
   const { title, description, image, url } = data;
   return (
-    <ProgressBarLink href={url}>
+    <a href={url} target="_blank" rel="noreferrer">
       <Box className="dashboard-card">
         <Image
           src={image?.url || DefaultImageFallback.Placeholder}
@@ -31,10 +29,10 @@ const ContentCardBox: React.FC<ContentCardBoxProps> = ({ data }) => {
         />
         <Box className="dashboard-card__item-featured">
           <Typography variant="h2">{title}</Typography>
-          <Typography variant="body2">{truncateDescription(description, 30)} </Typography>
+          <Typography variant="body2">{description} </Typography>
         </Box>
       </Box>
-    </ProgressBarLink>
+    </a>
   );
 };
 

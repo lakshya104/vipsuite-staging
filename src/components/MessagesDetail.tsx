@@ -2,6 +2,7 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import he from 'he';
 import './InboxHeader/InboxHeader.scss';
 import { MessageDetails } from '@/interfaces';
 import { calculateRelativeTime, extractDate } from '@/helpers/utils';
@@ -28,7 +29,7 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
           <ProgressBarLink href={'/inbox'} aria-label="Back to All Messages">
             <ArrowBackIcon />
           </ProgressBarLink>
-          {messageDetail?.product_name}
+          {he.decode(messageDetail?.product_name)}
         </Typography>
       </Container>
       <Box className="user-inbox order-details-page">

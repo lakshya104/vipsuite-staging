@@ -28,7 +28,14 @@ Instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('Unexpected server error', error.message, error);
+    console.error(
+      'Unexpected server error :' ,
+      error.message,
+      'error message :' ,
+      error.response.data.message,
+      'error status code : ' ,
+      error.response.data.code,
+    );
     if (error.response) {
       const message = error.response.data.message || 'An error occurred';
       return Promise.reject(new Error(message));

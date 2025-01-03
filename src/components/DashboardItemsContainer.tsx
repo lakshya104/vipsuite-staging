@@ -125,10 +125,34 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
     }
 
     return (
+      // <>
+      //   {!isEmpty(featuredItems) && renderItems(featuredItems)}
+      //   {renderDashboard()}
+      //   {!isEmpty(nonFeaturedItems) ? (
+      //     renderItems(nonFeaturedItems, true)
+      //   ) : (
+      //     <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+      //       {!isEmpty(dashboardData.dashboard_content_cards) &&
+      //         dashboardData.dashboard_content_cards.map((item, index) => (
+      //           <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+      //             <ContentCardBox data={item} />
+      //           </Grid>
+      //         ))}
+      //     </Grid>
+      //   )}
+      // </>
       <>
         {!isEmpty(featuredItems) && renderItems(featuredItems)}
         {renderDashboard()}
-        {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems, true)}
+        <Grid className="landing-product" container spacing={2}>
+          {!isEmpty(dashboardData.dashboard_content_cards) &&
+            dashboardData.dashboard_content_cards.map((item, index) => (
+              <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+                <ContentCardBox data={item} />
+              </Grid>
+            ))}
+        </Grid>
+        {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems)}
       </>
     );
   };
