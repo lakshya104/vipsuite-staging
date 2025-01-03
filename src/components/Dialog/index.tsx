@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from '@mui/material';
+import { Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Image from 'next/image';
 import { RefCallBack } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
@@ -117,16 +117,27 @@ export const MessageDialogBox: React.FC<MessageDialogBoxProps> = ({ isDialogOpen
       maxWidth="sm"
       fullWidth
     >
-      <Box mb={2}>
+      <Box mb={2} position={'relative'}>
         <DialogTitle
           id="customized-dialog-title"
-          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingRight: '16px',
+          }}
         >
           {content?.title}
           {content?.isCrossIcon && (
-            <IconButton aria-label="close" onClick={handleDialogClose}>
-              <CloseIcon />
-            </IconButton>
+            <CloseIcon
+              sx={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                cursor: 'pointer',
+              }}
+              onClick={handleDialogClose}
+            />
           )}
         </DialogTitle>
         <DialogContent>

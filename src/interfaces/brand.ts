@@ -1,4 +1,5 @@
 import { EventImage, EventImageSizes, Question } from './events';
+import { ImageSizes } from './opportunitiesDetails';
 
 export interface BrandDetails {
   id: number;
@@ -203,6 +204,9 @@ export interface Product {
     lookbook_description: string;
     lookbook_pdf: string;
     show_offers: boolean;
+    web_detail_image: {
+      sizes: ImageSizes;
+    };
   };
   is_high_end_item: boolean;
   slug: string;

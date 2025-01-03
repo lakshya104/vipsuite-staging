@@ -100,17 +100,12 @@ export const brandNameValidation = z.string().min(2, {
 });
 
 export const contactNameValidation = z.string().min(2, {
-  message: en.signup.errorMessage.companyName,
+  message: en.signup.errorMessage.contactName,
 });
 
-export const loginPasswordValidation = z
-  .string()
-  .min(1, {
-    message: 'Password is required',
-  })
-  .min(6, {
-    message: 'Password must be at least 6 characters',
-  });
+export const loginPasswordValidation = z.string().min(1, {
+  message: 'Password is required',
+});
 
 export const interestValidation = z.array(z.string()).min(1, { message: 'Please select one option' });
 

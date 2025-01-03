@@ -1,20 +1,18 @@
 'use client';
-import Btn from '@/components/Button/CommonBtn';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import Btn from '@/components/Button/CommonBtn';
 import './MakeRequest.scss';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { InputTextAreaFormField } from '@/components/InputTextFormField';
 import { MakeRequestSubmit } from '@/libs/api-manager/manager';
-import { DashboardContent } from '@/interfaces';
 
 const formSchema = z.object({
-  request_content: z
+  request_user_response: z
     .string()
     .min(1, 'This field is required')
     .min(15, 'Describe the item in at least 15 characters')
@@ -23,12 +21,20 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+interface MakeRequestPayload {
+  request_type: 'make-request' | 'others';
+  request_title?: string;
+  request_description?: string;
+  request_user_response: string;
+}
 interface MakeRequestProps {
-  dashboardContent: DashboardContent;
+  title: string;
+  description: string;
+  type: 'make-request' | 'others';
+  closeDialog: () => void;
 }
 
-const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
-  const router = useRouter();
+const MakeRequest: React.FC<MakeRequestProps> = ({ title, description, type, closeDialog }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
@@ -39,22 +45,35 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      request_content: '',
+      request_user_response: '',
     },
   });
 
   const onSubmit = async (data: FormValues) => {
     try {
       setIsPending(true);
-      const res = await MakeRequestSubmit(data);
+      const payload: MakeRequestPayload = {
+        request_type: type,
+        ...(title && { request_title: title }),
+        ...(description && { request_description: description }),
+        request_user_response: data.request_user_response,
+      };
+      const formData = new FormData();
+      Object.keys(payload).forEach((key) => {
+        const value = payload[key as keyof MakeRequestPayload];
+        if (value !== undefined) {
+          formData.append(key, value);
+        }
+      });
+      const res = await MakeRequestSubmit(formData);
       setToasterType('success');
       openToaster(res?.message);
       setTimeout(() => {
-        router.push('/home');
+        closeDialog();
       }, 1500);
     } catch (error) {
       setToasterType('error');
-      openToaster('Error during submit the form. ' + error);
+      openToaster('Error during submitting the form. ' + error);
     } finally {
       setIsPending(false);
     }
@@ -62,18 +81,18 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ dashboardContent }) => {
 
   return (
     <Fragment>
-      <Box className="bg-textBlack gray-card__details">
+      <Box className="bg-textBlack gray-card__details" pb={5}>
         <Box className="gray-card__details-inner">
           <Typography variant="h2" align="center">
-            Make a Request
+            {title || ' Make a Request'}
           </Typography>
           <Typography component="p" align="center">
-            {dashboardContent.make_request_description}
+            {description}
           </Typography>
           <form className="gray-card__form" onSubmit={handleSubmit(onSubmit)}>
             <Box>
               <InputTextAreaFormField
-                name="request_content"
+                name="request_user_response"
                 control={control}
                 placeholder="Enter your request ..."
                 errors={errors}

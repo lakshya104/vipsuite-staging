@@ -43,7 +43,10 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
     <>
       <Dialog open={ESignOpen} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ m: 0, p: 2 }}>
-          E Signature
+          <Typography variant="h2" ml={1}>
+            {' '}
+            E Signature
+          </Typography>
           <IconButton
             aria-label="close"
             onClick={handleClose}

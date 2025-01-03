@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, Tab, Box, Container } from '@mui/material';
 import OrderListing from '../OrderListing';
-import { Order } from '@/interfaces';
-import MessageTab from '@/components/MessageTab';
+import { MessageDetails, Order } from '@/interfaces';
 import './InboxTabs.scss';
+import Messages from '../Messages';
 
 type Tabs = {
   section: 'messages' | 'orders';
@@ -22,9 +22,10 @@ interface InboxTabsProps {
   totalPages: number;
   currentPage: number;
   order: Order[];
+  messageData: MessageDetails[];
 }
 
-const InboxTabs: React.FC<InboxTabsProps> = ({ order, totalPages, currentPage }) => {
+const InboxTabs: React.FC<InboxTabsProps> = ({ order, totalPages, currentPage, messageData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isOrderTab = searchParams.get('isOrderTab');
@@ -46,7 +47,13 @@ const InboxTabs: React.FC<InboxTabsProps> = ({ order, totalPages, currentPage })
     if (section === 'orders') {
       return <OrderListing allOrders={order} totalPages={totalPages} currentPage={currentPage} />;
     }
-    return <MessageTab />;
+    return (
+      <Box component={'main'} className="landing-page">
+        <Container>
+          <Messages messageData={messageData} />
+        </Container>
+      </Box>
+    );
   };
 
   return (

@@ -1,3 +1,5 @@
+import { ImageSizes } from './opportunitiesDetails';
+
 export interface Order {
   id: number;
   parent_id: number;
@@ -50,8 +52,11 @@ export interface Order {
   opportunity?: {
     id: number;
     title: string;
+    start_date: string;
+    end_date: string;
+    location: string;
     image: {
-      url: string;
+      sizes: ImageSizes;
     };
   };
   event?: {
@@ -61,7 +66,7 @@ export interface Order {
     end_date: string;
     location: string;
     image: {
-      url: string;
+      sizes: ImageSizes;
     };
   };
 }

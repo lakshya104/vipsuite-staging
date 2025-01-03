@@ -1,12 +1,18 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
+import { DefaultImageFallback } from '@/helpers/enums';
 
-const MessageLink = () => {
+interface MessageLinkProps {
+  title: string;
+  imageLink: string;
+}
+
+const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title }) => {
   return (
     <Box display="flex" alignItems="center">
       <Image
-        src="/img/aiavatar.png"
+        src={imageLink || DefaultImageFallback.Placeholder}
         alt="Boda Skins Logo"
         width={60}
         height={60}
@@ -14,7 +20,7 @@ const MessageLink = () => {
           marginRight: 12,
         }}
       />
-      <Typography variant="h6">Boda Skins</Typography>
+      <Typography variant="h6">{title}</Typography>
     </Box>
   );
 };

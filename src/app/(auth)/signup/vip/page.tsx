@@ -1,21 +1,19 @@
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import { Box, Typography } from '@mui/material';
-import VipSignupForm from '@/features/VipSignupForm/VipSignupForm';
-import { GetSignupContent } from '@/libs/api-manager/manager';
-import { SignupContent } from '@/interfaces/signup';
+import VipSignupPage from '@/site-pages/VipSignupPage';
+import SignupLoading from '@/site-pages/VipSignupPage/loading';
 
-const VipSignupPage = async () => {
-  const signupContent: SignupContent = await GetSignupContent();
-  const vipSignupContent = signupContent?.vip_intro_copy;
+const VipSignup = async () => {
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">
         <Typography variant="h2">Apply as a VIP</Typography>
-        <Typography component="p">{vipSignupContent}</Typography>
-        <VipSignupForm />
+        <Suspense fallback={<SignupLoading />}>
+          <VipSignupPage />
+        </Suspense>
       </Box>
     </Box>
   );
 };
 
-export default VipSignupPage;
+export default VipSignup;

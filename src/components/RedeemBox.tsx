@@ -8,7 +8,11 @@ import { Offer } from '@/interfaces/opportunitiesDetails';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 
-const RedeemBox = () => {
+interface RedeemBoxProps {
+  fetchOffers: boolean;
+}
+
+const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
   const [visibleItems, setVisibleItems] = useState<{ [key: string]: boolean }>({});
   const [copySuccess, setCopySuccess] = useState<{ [key: string]: boolean }>({});
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -16,20 +20,21 @@ const RedeemBox = () => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   useEffect(() => {
-    const fetchOffers = async () => {
+    const fetchRedeemOffers = async () => {
       try {
         setOffersLoading(true);
         const response: Offer[] = await GetOffers();
         setOffers(response);
       } catch (err) {
         console.error('Error fetching offers:', err);
-        openToaster('An error occurred while fetching offers. Please try again later.');
+        openToaster(err?.toString() ?? 'An error occurred while fetching offers. Please try again later.');
       } finally {
         setOffersLoading(false);
       }
     };
-    fetchOffers();
-  }, [openToaster]);
+    if (fetchOffers) fetchRedeemOffers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleVisibility = (id: number) => {
     setVisibleItems((prevState) => ({

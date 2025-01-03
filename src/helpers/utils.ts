@@ -136,8 +136,8 @@ export const formatString = (str: string) => {
   }
 };
 
-export const getVipId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number => {
-  return role === UserRole.Vip ? Number(session?.vip_profile_id) : Number(userId?.value);
+export const getVipId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number | null => {
+  return role === UserRole.Vip ? Number(session?.vip_profile_id) : userId?.value ? Number(userId?.value) : null;
 };
 
 export const getRelativePath = (url: string) => {
@@ -205,4 +205,16 @@ export const mapQuestionsToSchema = (questions: Question[]) => {
   );
 
   return z.object(schema);
+};
+
+export const timeAgo = (date: string) => {
+  return moment(date).fromNow();
+};
+
+export const extractDate = (timestamp: string) => {
+  return moment(timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS').format('DD/MM/YYYY');
+};
+
+export const calculateRelativeTime = (date: string): string => {
+  return moment.utc(date).local().startOf('seconds').fromNow();
 };

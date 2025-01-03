@@ -38,7 +38,7 @@ type VipSignUpFormField = {
 export const VIPSignUpFormFields: VipSignUpFormField[] = [
   { name: 'first_name', label: 'First Name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
   { name: 'last_name', label: 'Last Name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
-  { name: 'email', label: 'Email', placeholder: 'Email', autocomplete: 'email', type: 'email' },
+  { name: 'email', label: 'Email', placeholder: 'Email', autocomplete: 'email', type: 'text' },
   { name: 'password', label: 'Password', placeholder: 'Password', autocomplete: 'new-password', type: 'password' },
   {
     name: 'secondary_email',
@@ -64,7 +64,7 @@ type AgentSignUpFormField = {
 export const AgentSignUpFormFields: AgentSignUpFormField[] = [
   { name: 'first_name', placeholder: 'First Name', label: 'First Name', autocomplete: 'given-name', type: 'text' },
   { name: 'last_name', placeholder: 'Last Name', label: 'Last Name', autocomplete: 'family-name', type: 'text' },
-  { name: 'email', placeholder: 'Email', label: 'Email', autocomplete: 'email', type: 'email' },
+  { name: 'email', placeholder: 'Email', label: 'Email', autocomplete: 'email', type: 'text' },
   { name: 'password', placeholder: 'Password', label: 'Password', autocomplete: 'new-password', type: 'password' },
   { name: 'company_name', placeholder: 'Company Name', label: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', label: 'Phone Number', autocomplete: 'tel', type: 'tel' },
@@ -106,7 +106,7 @@ export const BrandSignUpFormFields: BrandSignUpFormField[] = [
     label: 'Email',
     placeholder: 'Email',
     autocomplete: 'email',
-    type: 'email',
+    type: 'text',
   },
   {
     name: 'phone',

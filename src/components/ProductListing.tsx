@@ -14,8 +14,6 @@ interface ProductListingContainerProps {
 
 const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ products }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-
-  // Filter products based on search query
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return products;
     const lowerCaseQuery = searchQuery.toLowerCase().trim();

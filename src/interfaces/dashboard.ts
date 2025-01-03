@@ -35,3 +35,26 @@ interface productImage {
 }
 
 export type DashboardItem = Dashboardproduct | Event | Opportunity;
+
+export interface DashboardData {
+  dashboard_content: DashboardItem[];
+  show_make_request_form: boolean;
+  dynamic_form_requests: DynamicFormRequests[];
+  dashboard_content_cards: ContentCard[];
+  static_form_requests: DashboardContent;
+}
+
+export interface DynamicFormRequests {
+  title: string;
+  description: string;
+}
+
+export interface ContentCard {
+  title: string;
+  description: string;
+  url: string;
+  image: {
+    url: string;
+    alt: string;
+  };
+}

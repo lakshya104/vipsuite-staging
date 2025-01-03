@@ -1,7 +1,17 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Typography, TextField, Backdrop, CircularProgress, Checkbox, FormControlLabel } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  Backdrop,
+  CircularProgress,
+  Checkbox,
+  FormControlLabel,
+  FormControl,
+  FormHelperText,
+} from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormValues, vipStep2Schema } from './schema';
 import { contacts } from '@/data';
@@ -16,7 +26,6 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
-  // Default values for the form
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
     eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
@@ -62,12 +71,12 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     }));
     setValue(section, checked);
     if (checked) {
-      setValue(section.replace('ContactMeDirectly', 'Email') as keyof FormValues, '');
-      setValue(section.replace('ContactMeDirectly', 'SecondaryEmail') as keyof FormValues, '');
-      clearErrors([
-        section.replace('ContactMeDirectly', 'Email') as keyof FormValues,
-        section.replace('ContactMeDirectly', 'SecondaryEmail') as keyof FormValues,
-      ]);
+      clearErrors(section);
+      const emailKey = section.replace('ContactMeDirectly', 'Email') as keyof FormValues;
+      const secondaryEmailKey = section.replace('ContactMeDirectly', 'SecondaryEmail') as keyof FormValues;
+      clearErrors([emailKey, secondaryEmailKey]);
+      setValue(emailKey, '');
+      setValue(secondaryEmailKey, '');
     }
   };
 
@@ -152,16 +161,21 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
               shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
             }}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
-                onChange={handleCheckboxChange(`${name}ContactMeDirectly` as keyof FormValues)}
-                color="primary"
-              />
-            }
-            label="Contact me directly"
-          />
+          <FormControl error={!!errors[`${name}ContactMeDirectly` as keyof FormValues]}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
+                  onChange={handleCheckboxChange(`${name}ContactMeDirectly` as keyof FormValues)}
+                  color="primary"
+                />
+              }
+              label="Contact me directly"
+            />
+            {errors[`${name}ContactMeDirectly` as keyof FormValues] && (
+              <FormHelperText>{errors[`${name}ContactMeDirectly` as keyof FormValues]?.message}</FormHelperText>
+            )}
+          </FormControl>
         </Box>
       ))}
       <CustomStepper currentStep={isAgent ? 3 : 2} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />

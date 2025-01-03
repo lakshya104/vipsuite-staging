@@ -1,7 +1,6 @@
 'use client';
 import React, { Fragment, useState } from 'react';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -12,16 +11,15 @@ import './ReferVip.scss';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { ReferaVIP } from '@/libs/api-manager/manager';
-import { DashboardContent } from '@/interfaces';
 
 type FormValues = z.infer<typeof ReferVipSchema>;
 
 interface ReferVIPFormProps {
-  dashboardContent: DashboardContent;
+  description: string;
+  closeDialog: () => void;
 }
 
-const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
-  const router = useRouter();
+const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ description, closeDialog }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
@@ -46,7 +44,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
       setToasterType('success');
       openToaster(res?.message);
       setTimeout(() => {
-        router.push('/home');
+        closeDialog();
       }, 1500);
     } catch (error) {
       setToasterType('error');
@@ -64,7 +62,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ dashboardContent }) => {
             Refer a VIP
           </Typography>
           <Typography component="p" align="center">
-            {dashboardContent.rafer_vip_description}
+            {description}
           </Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} className="gray-card__form">
             {ReferVipFormFields.map((field) => (

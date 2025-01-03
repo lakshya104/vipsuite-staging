@@ -4,6 +4,7 @@ import Image from 'next/image';
 import he from 'he';
 import { get, some, take } from 'lodash';
 import { Box, Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import ContinueToCartBtn from '@/components/ContinueToCartBtn';
 import './Basket.scss';
 import { Cart } from '@/interfaces';
@@ -11,7 +12,6 @@ import DeleteItemFromCartBtn from '../DeleteItemFromCartBtn';
 import ErrorFallback from '../ErrorFallback';
 import { DefaultImageFallback } from '@/helpers/enums';
 import en from '@/helpers/lang';
-import HighEndItemMessage from '../HighEndItemMessage';
 import EsignModal from '../EsignModal';
 import Toaster from '../Toaster';
 import UseToaster from '@/hooks/useToaster';
@@ -36,11 +36,12 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
     startTransition(async () => {
       try {
         handleSignature(signature);
-        onNext();
+        if (signature !== '') {
+          onNext();
+          setOpenESignModel(false);
+        }
       } catch (error) {
         openToaster(error?.toString() ?? 'Error processing E Sign');
-      } finally {
-        setOpenESignModel(false);
       }
     });
   };
@@ -58,22 +59,34 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
               const productImage = product.image_url || DefaultImageFallback.Placeholder;
               return (
                 <Box className="basket-product__item" key={product.id}>
-                  <Image src={productImage} alt={product?.name} height={110} width={110} />
+                  <Image src={productImage} alt={product?.name} height={110} width={110} style={{ borderRadius: 6 }} />
                   <Box className="product-info">
                     <Typography gutterBottom variant="h2">
                       {he.decode(product?.brand_name)}
                     </Typography>
                     <Typography variant="body1"> {he.decode(product?.name)}</Typography>
-                    {product.is_high_end_item && <HighEndItemMessage />}
-                    {product.type === 'variation' &&
-                      take(product.variation, 5).map(
-                        (variation, index) =>
-                          variation && (
-                            <Typography key={index} variant="body1">
-                              {variation?.attribute}: {variation?.value}
-                            </Typography>
-                          ),
-                      )}
+                    <Box mb={0.5}>
+                      {product.type === 'variation' &&
+                        take(product.variation, 5).map(
+                          (variation, index) =>
+                            variation && (
+                              <Typography key={index} variant="body1">
+                                {variation?.attribute}: {variation?.value}
+                              </Typography>
+                            ),
+                        )}
+                    </Box>
+                    {product?.is_high_end_item && (
+                      <Typography
+                        fontSize={14}
+                        display="inline"
+                        variant="body1"
+                        fontWeight={500}
+                        sx={{ bgcolor: '#F0F0E5', p: 0.6, borderRadius: 2 }}
+                      >
+                        High End Product
+                      </Typography>
+                    )}
                   </Box>
                   <DeleteItemFromCartBtn productId={product.id} startTransition={startTransition} />
                 </Box>
@@ -83,11 +96,27 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
               sx={{
                 display: 'flex',
                 justifyContent: 'flex-end',
-                alignItems: 'center',
+                alignItems: 'flex-end',
                 gap: 2,
-                flexDirection: { xs: 'column-reverse', md: 'row' },
+                flexDirection: 'column',
               }}
             >
+              {some(cartItems, 'is_high_end_item') && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <InfoIcon
+                    sx={{
+                      fontSize: 18,
+                      cursor: 'pointer',
+                      borderRadius: 2,
+                      mr: 0.75,
+                    }}
+                  />
+                  <Typography fontSize={14} variant="body1" fontWeight={400}>
+                    Acceptance of the terms and conditions is required for high-end items, with e-signature available on
+                    a later page.
+                  </Typography>
+                </Box>
+              )}
               <ContinueToCartBtn
                 onNext={() => {
                   if (some(cartItems, 'is_high_end_item')) {

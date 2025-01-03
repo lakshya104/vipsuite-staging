@@ -39,6 +39,7 @@ interface FeaturedImage {
     large_width: number;
     large_height: number;
     [key: string]: string | number;
+    ['vs-container-half']: string;
   };
 }
 

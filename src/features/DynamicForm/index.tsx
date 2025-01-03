@@ -50,7 +50,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
   const renderField = (question: Question) => {
     const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-    switch (question.input_type) {
+    switch (question?.input_type) {
       case 'text':
         return (
           <Box key={fieldName} mb={2}>
@@ -89,7 +89,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
                         <input
                           type="checkbox"
                           value={choice.text}
-                          style={{ color: 'red' }}
+                          style={{ color: 'red', cursor: 'pointer' }}
                           checked={(field.value as string[]).includes(choice.text)}
                           onChange={() => handleCheckboxChange(field, choice.text)}
                         />
@@ -128,7 +128,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
               name={fieldName}
               control={control}
               render={({ field }) => (
-                <RadioGroup {...field}>
+                <RadioGroup {...field} sx={{ flexDirection: 'row' }}>
                   {question.choices?.map((choice) => (
                     <FormControlLabel key={choice.text} value={choice.text} control={<Radio />} label={choice.text} />
                   ))}
@@ -231,6 +231,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h6" gutterBottom>
+        Answer the following questions.
+      </Typography>
       {questions.map((question) => renderField(question))}
       <Box mt={2}>
         <Button className="button button--black" type="submit" fullWidth>
@@ -247,6 +250,7 @@ interface DynamicTitleProps {
   title: string;
   isRequired: boolean;
 }
+
 const DynamicTitle: React.FC<DynamicTitleProps> = ({ title, isRequired }) => {
   return (
     <Box sx={{ position: 'relative', display: 'inline-block' }}>

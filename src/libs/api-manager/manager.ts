@@ -372,7 +372,7 @@ export const GetOrderById = async (id: number) => {
 
 export const GetVipEventDetails = async (id: number) => {
   try {
-    const response = await Instance.get(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf,is_wishlisted`);
+    const response = await Instance.get(`${Endpoints.getVipEventDetails(id)}?_fields=id,title,acf`);
     return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };
@@ -606,9 +606,11 @@ export const ReferaVIP = async (data: { email: string; instagram_handle: string;
   }
 };
 
-export const MakeRequestSubmit = async (data: { request_content: string }) => {
+export const MakeRequestSubmit = async (data: FormData) => {
   try {
-    const response = await Instance.post(Endpoints.makeRequest, data);
+    const response = await Instance.post(Endpoints.makeRequest, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -685,8 +687,7 @@ export const GetFormId = async () => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const SubmitComingSoonForm = async (id: string, formData: any) => {
+export const SubmitComingSoonForm = async (id: string, formData: FormData) => {
   try {
     const response = await Instance.post(Endpoints.submitComingSoonForm(id), formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -708,5 +709,34 @@ export const GetOffers = async () => {
       throw new Error(error.message);
     }
     throw new Error('Failed to fetching Form Id');
+  }
+};
+
+export const GetAllMessages = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getMessages);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const GetMessageDetails = async (id: number) => {
+  try {
+    const response = await Instance.get(Endpoints.getMessageDetails(id));
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const SendMessage = async (id: number, payload: { message: string; order_id: number }) => {
+  try {
+    const response = await Instance.post(Endpoints.sendMessage(id), payload);
+    return response.data;
+  } catch (error) {
+    console.error('Error during sending message:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending message';
+    throw new Error(errorMessage);
   }
 };

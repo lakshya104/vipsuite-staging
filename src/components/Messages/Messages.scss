@@ -131,6 +131,12 @@
         line-height: rem(15.08);
       }
     }
+    svg {
+      align-self: center;
+      justify-self: flex-end;
+      width: 1.75rem;
+      height: 1.75rem;
+    }
     p {
       @media screen and (max-width: 899px) {
         @include fontSize(12);

@@ -12,7 +12,7 @@ interface OpportunityCardProps {
 }
 const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image, isFeatured }) => {
   return (
-    <ProgressBarLink href={`/opportunities/${opportunity.id}`}>
+    <ProgressBarLink href={`/opportunities/${opportunity?.id}`}>
       <Card
         className="opportunities-card__item-inner"
         sx={{

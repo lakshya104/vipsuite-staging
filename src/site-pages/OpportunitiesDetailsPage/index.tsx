@@ -16,7 +16,6 @@ const OpportunityDetailsPage: React.FC<OpportunityDetailsPageProps> = async ({ i
   if (!opportunityDetails) {
     return <ErrorFallback errorMessage="No opportunity details available currently." />;
   }
-
   return <OpportunityDetailsCard opportunity={opportunityDetails} />;
 };
 

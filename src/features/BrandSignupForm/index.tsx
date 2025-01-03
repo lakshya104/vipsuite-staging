@@ -16,6 +16,7 @@ import Toaster from '@/components/Toaster';
 import { BrandSignUp, VerifyEmail } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
+import { isEqual } from 'lodash';
 
 interface BrandSignupFormProps {
   brandSignupOptions: string[];
@@ -32,6 +33,9 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   const [isCodeSent, setCodeSent] = useState<boolean>(false);
   const [isCodeVerified, setIsCodeVerified] = useState<boolean>(false);
   const [isCodeVerificationFailed, setIsCodeVerificationFailed] = useState<boolean>(false);
+  const [previousEmail, setPreviousEmail] = useState<string>('');
+  const [verifiedEmail, setVerifiedEmail] = useState<string>('');
+  const [isVerificationLoading, setVerificationLoading] = useState<boolean>(false);
   const brandOptions = brandSignupOptions.map((option) => ({
     value: option,
     label: option,
@@ -93,12 +97,13 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   const handleEmailVerification = async (email: string | undefined) => {
     try {
       setError('');
-      setIsPending(true);
+      setVerificationLoading(true);
       if (email) {
         setVerificationCode('');
         const response = await VerifyEmail(email);
         setApiResponseCode(response.verification_code);
         setCodeSent(true);
+        setPreviousEmail(email);
       } else {
         console.error('Email is undefined');
       }
@@ -106,15 +111,16 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
       if (typeof error === 'string') setError(error);
       setToasterOpen(true);
     } finally {
-      setIsPending(false);
+      setVerificationLoading(false);
     }
   };
 
-  const handleCodeVerification = () => {
+  const handleCodeVerification = (email: string | undefined) => {
     if (apiResponseCode === Number(verificationCode)) {
       setError('');
       setIsCodeVerified(true);
       setIsCodeVerificationFailed(false);
+      if (email) setVerifiedEmail(email);
     } else {
       setError('Your OTP is incorrect, please try again');
       setIsCodeVerified(false);
@@ -122,13 +128,18 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
     }
   };
 
-  const handleEmailChange = () => {
-    setVerificationCode('');
-    setCodeSent(false);
-    setIsCodeVerified(false);
-    setIsCodeVerificationFailed(false);
-    setApiResponseCode(null);
-    setError('');
+  const handleEmailChange = (email: string) => {
+    if (isEqual(email, verifiedEmail) && email.length > 1) {
+      setCodeSent(true);
+      setIsCodeVerified(true);
+    } else if (isEqual(email, previousEmail) && email.length > 1) {
+      setCodeSent(true);
+    } else {
+      setCodeSent(false);
+      setIsCodeVerified(false);
+      setIsCodeVerificationFailed(false);
+      setError('');
+    }
   };
 
   return (
@@ -163,7 +174,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                       autoComplete={autocomplete}
                       onChange={(e) => {
                         field.onChange(e);
-                        if (name === 'email') handleEmailChange();
+                        if (name === 'email') handleEmailChange(e.target.value);
                       }}
                       InputProps={
                         name === 'password'
@@ -189,29 +200,40 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                                 </InputAdornment>
                               ),
                             }
-                          : undefined
+                          : name === 'email'
+                            ? {
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <Box
+                                      sx={{
+                                        p: 0,
+                                        m: 0,
+                                        minWidth: 'auto',
+                                        width: 'auto',
+                                        height: 'auto',
+                                      }}
+                                    >
+                                      {isCodeVerified && <DoneIcon sx={{ color: 'white' }} />}
+                                    </Box>
+                                  </InputAdornment>
+                                ),
+                              }
+                            : undefined
                       }
                     />
                     {name === 'email' && (
                       <Box className="verify-button">
-                        {!isCodeSent && (
+                        {!isCodeSent && field.value && isValidEmail(field.value.toString()) && (
                           <Button
                             onClick={() => handleEmailVerification(field.value.toString())}
-                            disabled={isPending || !field.value || !isValidEmail(field.value.toString())}
-                            className="button verify-btn"
+                            disabled={isVerificationLoading || !field.value || !isValidEmail(field.value.toString())}
+                            className="button button--white"
                           >
-                            Verify Email
+                            {isVerificationLoading ? 'Sending...' : 'Verify Email'}
                           </Button>
                         )}
                         {isCodeSent && !isCodeVerified && (
                           <>
-                            <Button
-                              onClick={() => handleEmailVerification(field.value.toString())}
-                              disabled={isPending}
-                              className="button resend-btn"
-                            >
-                              Resend OTP
-                            </Button>
                             <InputForm
                               placeholder="Enter OTP"
                               type="number"
@@ -220,22 +242,21 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                               helperText={error}
                               onChange={(e) => setVerificationCode(e.target.value)}
                             />
-                            <Button onClick={handleCodeVerification} disabled={isPending} className="button submit-btn">
+                            <Button
+                              onClick={() => handleCodeVerification(field.value.toString())}
+                              disabled={isVerificationLoading}
+                              className="button button--white"
+                            >
                               Verify OTP
                             </Button>
+                            <Button
+                              onClick={() => handleEmailVerification(field.value.toString())}
+                              disabled={isVerificationLoading}
+                              className="button button--white"
+                            >
+                              {isVerificationLoading ? 'Sending...' : 'Resend OTP'}
+                            </Button>
                           </>
-                        )}
-                        {isCodeVerified && (
-                          <Box
-                            className="input-text"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            gap={1}
-                          >
-                            <Typography>Email Verified</Typography>
-                            <DoneIcon sx={{ color: 'white' }} />
-                          </Box>
                         )}
                       </Box>
                     )}
@@ -246,6 +267,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
             {name === 'phone' && !errors[name] && (
               <Box className="input-text">
                 <Typography>Including Country Code</Typography>
+                <Typography>Optional</Typography>
               </Box>
             )}
           </Box>
@@ -278,7 +300,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
         <CircularProgress color="inherit" />
       </Backdrop>
       <Dialog open={applicationReviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ApplicationReviewDialog />
+        <ApplicationReviewDialog isBrand={true} />
       </Dialog>
     </>
   );

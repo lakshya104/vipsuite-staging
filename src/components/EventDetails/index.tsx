@@ -107,13 +107,13 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
               heading={event?.acf?.lookbook_heading}
               text={event?.acf?.lookbook_description}
               href={event?.acf?.lookbook_pdf}
-              isPdf={true}
+              type="lookbook"
             />
           </Box>
           <RequestItemFormButton postId={event?.id} />
         </>
       )}
-      {event?.acf?.show_offers && <RedeemBox />}
+      {event?.acf?.show_offers && <RedeemBox fetchOffers={event?.acf?.show_offers} />}
       <EventsDialog event={event} />
     </Box>
   );
@@ -124,7 +124,7 @@ interface EventContainerProps {
 }
 
 const EventContainer = ({ event }: EventContainerProps) => {
-  const eventImageUrl = event?.acf?.event_image?.sizes?.['large-2x'] || DefaultImageFallback.Placeholder;
+  const eventImageUrl = event?.acf?.event_image?.sizes?.['vs-container'] || DefaultImageFallback.Placeholder;
   const brandLogo = event?.acf?.brand_logo?.url;
 
   return (

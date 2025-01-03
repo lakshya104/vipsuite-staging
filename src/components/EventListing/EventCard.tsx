@@ -13,9 +13,9 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
   const brandLogo = item.acf?.brand_logo?.url;
-  const eventImage = item?.acf?.event_image?.sizes?.large || DefaultImageFallback.Placeholder;
+  const eventImage = item?.acf?.event_image?.sizes?.['vs-container-half'] || DefaultImageFallback.Placeholder;
   return (
-    <ProgressBarLink href={`/events/${item.id}`}>
+    <ProgressBarLink href={`/events/${item?.id}`}>
       <Card
         className="landing-product__item-inner"
         sx={{
@@ -46,7 +46,7 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
             <Typography component="span" sx={{ fontWeight: '500' }}>
               Location:
             </Typography>{' '}
-            {item.acf.event_location}
+            {item?.acf?.event_location}
           </Typography>
         </CardContent>
       </Card>

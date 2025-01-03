@@ -17,7 +17,7 @@ interface productsContainerProps {
 }
 
 const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
-  const productImage = get(product, 'images[0].src', DefaultImageFallback.Placeholder);
+  const productImage = product?.acf?.web_detail_image?.sizes['vs-container'] || DefaultImageFallback.Placeholder;
   const productDescription = wrapInParagraph(product?.description);
   const isRequestOnly = get(find(product?.meta_data, { key: 'is_request_only' }), 'value') === '1' || false;
   const showOffers =
@@ -72,12 +72,12 @@ const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
             {isLookbookAvailable && (
               <>
                 <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-                  <ReferCard heading={lookBookHeading} text={lookBookDescription} href={lookbookPdf} isPdf={true} />
+                  <ReferCard heading={lookBookHeading} text={lookBookDescription} href={lookbookPdf} type="lookbook" />
                 </Box>
                 <RequestItemFormButton postId={product?.id} />
               </>
             )}
-            {showOffers && <RedeemBox />}
+            {showOffers && <RedeemBox fetchOffers={showOffers} />}
           </Grid>
         </Grid>
       </Container>

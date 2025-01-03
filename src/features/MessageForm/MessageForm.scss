@@ -1,0 +1,25 @@
+/*
+* Message Form style.
+*/
+
+@import '../../styles/mixins';
+
+.order-details-page {
+  height: calc(100vh - 340px);
+  overflow-y: auto;
+  .inbox__date {
+    border-bottom: 0.0625rem solid var(--color-textBlack-10);
+    padding-bottom: rem(20);
+  }
+}
+
+.message-form-input {
+  max-width: rem(1276);
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--color-marble);
+  @include fixed(right 20px left 20px bottom 50px);
+  @media screen and (min-width: 992px) {
+    bottom: 0;
+  }
+}

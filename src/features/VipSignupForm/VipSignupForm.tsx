@@ -16,6 +16,7 @@ import Toaster from '@/components/Toaster';
 import { VerifyEmail, VipSignUp } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
+import { isEqual } from 'lodash';
 
 const VipSignupForm = () => {
   const [error, setError] = useState<string>('');
@@ -28,6 +29,9 @@ const VipSignupForm = () => {
   const [isCodeSent, setCodeSent] = useState<boolean>(false);
   const [isCodeVerified, setIsCodeVerified] = useState<boolean>(false);
   const [isCodeVerificationFailed, setIsCodeVerificationFailed] = useState<boolean>(false);
+  const [previousEmail, setPreviousEmail] = useState<string>('');
+  const [verifiedEmail, setVerifiedEmail] = useState<string>('');
+  const [isVerificationLoading, setVerificationLoading] = useState<boolean>(false);
 
   const {
     control,
@@ -77,12 +81,13 @@ const VipSignupForm = () => {
   const handleEmailVerification = async (email: string | undefined) => {
     try {
       setError('');
-      setIsPending(true);
+      setVerificationLoading(true);
       if (email) {
         setVerificationCode('');
         const response = await VerifyEmail(email);
         setApiResponseCode(response.verification_code);
         setCodeSent(true);
+        setPreviousEmail(email);
       } else {
         console.error('Email is undefined');
       }
@@ -90,15 +95,16 @@ const VipSignupForm = () => {
       if (typeof error === 'string') setError(error);
       setToasterOpen(true);
     } finally {
-      setIsPending(false);
+      setVerificationLoading(false);
     }
   };
 
-  const handleCodeVerification = () => {
+  const handleCodeVerification = (email: string | undefined) => {
     if (apiResponseCode === Number(verificationCode)) {
       setError('');
       setIsCodeVerified(true);
       setIsCodeVerificationFailed(false);
+      if (email) setVerifiedEmail(email);
     } else {
       setError('Your OTP is incorrect, please try again');
       setIsCodeVerified(false);
@@ -106,13 +112,18 @@ const VipSignupForm = () => {
     }
   };
 
-  const handleEmailChange = () => {
-    setVerificationCode('');
-    setCodeSent(false);
-    setIsCodeVerified(false);
-    setIsCodeVerificationFailed(false);
-    setApiResponseCode(null);
-    setError('');
+  const handleEmailChange = (email: string) => {
+    if (isEqual(email, verifiedEmail) && email.length > 1) {
+      setCodeSent(true);
+      setIsCodeVerified(true);
+    } else if (isEqual(email, previousEmail) && email.length > 1) {
+      setCodeSent(true);
+    } else {
+      setCodeSent(false);
+      setIsCodeVerified(false);
+      setIsCodeVerificationFailed(false);
+      setError('');
+    }
   };
 
   return (
@@ -137,7 +148,7 @@ const VipSignupForm = () => {
                     autoComplete={autocomplete}
                     onChange={(e) => {
                       field.onChange(e);
-                      if (name === 'email') handleEmailChange();
+                      if (name === 'email') handleEmailChange(e.target.value);
                     }}
                     InputProps={
                       name === 'password'
@@ -163,29 +174,40 @@ const VipSignupForm = () => {
                               </InputAdornment>
                             ),
                           }
-                        : undefined
+                        : name === 'email'
+                          ? {
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <Box
+                                    sx={{
+                                      p: 0,
+                                      m: 0,
+                                      minWidth: 'auto',
+                                      width: 'auto',
+                                      height: 'auto',
+                                    }}
+                                  >
+                                    {isCodeVerified && <DoneIcon sx={{ color: 'white' }} />}
+                                  </Box>
+                                </InputAdornment>
+                              ),
+                            }
+                          : undefined
                     }
                   />
                   {name === 'email' && (
                     <Box className="verify-button">
-                      {!isCodeSent && (
+                      {!isCodeSent && field.value && isValidEmail(field.value) && (
                         <Button
                           onClick={() => handleEmailVerification(field.value)}
-                          disabled={isPending || !field.value || !isValidEmail(field.value)}
-                          className="button verify-btn"
+                          disabled={isVerificationLoading || !field.value || !isValidEmail(field.value)}
+                          className="button button--white"
                         >
-                          Verify Email
+                          {isVerificationLoading ? 'Sending...' : 'Verify Email'}
                         </Button>
                       )}
                       {isCodeSent && !isCodeVerified && (
                         <>
-                          <Button
-                            onClick={() => handleEmailVerification(field.value)}
-                            disabled={isPending}
-                            className="button resend-btn"
-                          >
-                            Resend OTP
-                          </Button>
                           <InputForm
                             placeholder="Enter OTP"
                             type="number"
@@ -194,16 +216,21 @@ const VipSignupForm = () => {
                             helperText={error}
                             onChange={(e) => setVerificationCode(e.target.value)}
                           />
-                          <Button onClick={handleCodeVerification} disabled={isPending} className="button submit-btn">
+                          <Button
+                            onClick={() => handleCodeVerification(field.value)}
+                            disabled={isVerificationLoading}
+                            className="button button--white"
+                          >
                             Verify OTP
                           </Button>
+                          <Button
+                            onClick={() => handleEmailVerification(field.value)}
+                            disabled={isVerificationLoading}
+                            className="button button--white"
+                          >
+                            {isVerificationLoading ? 'Sending...' : 'Resend OTP'}
+                          </Button>
                         </>
-                      )}
-                      {isCodeVerified && (
-                        <Box className="input-text" display="flex" alignItems="center" justifyContent="center" gap={1}>
-                          <Typography>Email Verified</Typography>
-                          <DoneIcon sx={{ color: 'white' }} />
-                        </Box>
                       )}
                     </Box>
                   )}

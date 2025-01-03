@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 import { MessageDialogBox } from './Dialog';
 
 const HighEndItemMessage = () => {
@@ -20,22 +20,26 @@ const HighEndItemMessage = () => {
       display="flex"
       alignItems="center"
       gap={1}
-      sx={{ position: 'relative', width: 'fit-content', padding: 0.75, backgroundColor: '#f0f0e5', borderRadius: 2 }}
+      sx={{
+        position: 'relative',
+        width: 'fit-content',
+        padding: 0.75,
+        backgroundColor: '#f0f0e5',
+        borderRadius: 2,
+        mb: 1,
+      }}
     >
-      <Typography fontSize={14} variant="body1">
+      <Typography fontSize={14} variant="body1" fontWeight={500} className="highlight-text">
         High End Product
       </Typography>
-      <InfoOutlinedIcon
+      <InfoIcon
         sx={{
-          fontSize: 16,
+          fontSize: 18,
           cursor: 'pointer',
           position: 'absolute',
-          top: -5,
-          right: -5,
-          backgroundColor: '#f0f0e5',
-          padding: 0.1,
+          top: -4,
+          right: -10,
           borderRadius: 2,
-          color: 'black',
         }}
         onClick={handleIconClick}
       />
@@ -46,6 +50,7 @@ const HighEndItemMessage = () => {
           title: 'High End Product Information',
           description:
             'Acceptance of the terms and conditions is required for high-end items, with e-signature available on a later page.',
+          isCrossIcon: true,
         }}
       />
     </Box>

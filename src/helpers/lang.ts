@@ -80,6 +80,13 @@ const en = {
       'Thank you for your application. The concierge team will review your submission and will be in touch in due course with their decision.',
     done: 'Done',
   },
+  customBrandReviewScreen: {
+    thankyou: 'Thank you!',
+    inReview: 'We’ll be in touch',
+    description:
+      'Thank you for your application. The concierge team will review your submission and will be in touch in due course.',
+    done: 'Done',
+  },
   customAcceptedScreen: {
     acceptedTxt: 'Application Accepted!',
     welcomeTxt: 'Welcome',
@@ -91,7 +98,7 @@ const en = {
     rejectedTxt: 'Application Rejected!',
     subTitle: 'Unfortunately!',
     rejectedPara:
-      'Your profile did not meet the approval criteria. Please review and update your information before resubmitting.',
+      'Your account application for VIP Suite has been reviewed and rejected. If you believe this decision was made in error or have questions, please feel free to contact our support team for further clarification.',
     continue: 'Continue',
     logoutText: 'Press OK to log out and exit the app.',
   },
@@ -261,7 +268,7 @@ const en = {
       email: 'Email is required.',
       requiredEmail: 'Invalid email.',
       password: 'Invalid password.',
-      phoneValidation: 'Please enter a valid phone number.',
+      phoneValidation: 'Please enter a valid phone number, including the country code with + sign.',
       passwordValidation:
         'The password must be a minimum of 6 characters long and include at least one uppercase, one lowercase letter, one number, and one special character.',
       requiredPassword: 'Password is required.',
@@ -298,6 +305,7 @@ const en = {
     noCartDataMessage: 'Start adding and Come Back',
     noEventData: 'No Events Available',
     noOrderData: 'No Orders Available',
+    noMessageData: 'No Messages Available',
     noProductData: 'No Products Available',
     noOpportunityData: 'No Opportunities Available',
     noBioData: 'Bio',

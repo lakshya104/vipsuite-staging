@@ -81,6 +81,11 @@
   .MuiCardContent-root {
     padding: 0;
   }
+  .MuiPaper-root {
+    .MuiCardContent-root {
+      padding: rem(16) rem(16) rem(24);
+    }
+  }
   .opportunity__details {
     margin: rem(16) 0;
     @media only screen and (min-width: 768px) {

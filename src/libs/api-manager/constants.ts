@@ -13,15 +13,17 @@ const Endpoints = {
   getBrandProductDetails: (productId: number) => `/wc/v3/products/${productId}`,
   getProducts: `/wc/v3/products`,
   getSignupContent: '/wp/v2/signup-content',
-  getVipEvents: '/wp/v2/events',
+  getVipEvents: '/wp/v2/events?_fields=id,title,acf',
   getVipEventDetails: (id: number) => `/wp/v2/events/${id}`,
   getProfileBuilderContent: '/wp/v2/profile-builder-content',
   updateProfile: '/wp/v2/vip-profile',
   createProfile: '/wp/v2/vip-profile',
   forgotPassword: '/wp/v2/forgot-password',
   resetPassword: '/wp/v2/reset-password',
-  getAllOrders: (customerId: number, page: number) => `/wc/v3/orders?customer=${customerId}&page=${page}`,
-  getOrderById: (id: number) => `/wc/v3/orders/${id}`,
+  getAllOrders: (customerId: number, page: number) =>
+    `/wc/v3/orders?customer=${customerId}&page=${page}&_fields=meta_data,status,id,opportunity,event,line_items,date_created`,
+  getOrderById: (id: number) =>
+    `/wc/v3/orders/${id}?_fields=meta_data,status,id,opportunity,line_items,date_created,location,is_feedback_provided`,
   getVipCart: '/wp/v2/vip-profiles/cart',
   addItemToCart: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
   removeVipCartItem: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
@@ -29,9 +31,9 @@ const Endpoints = {
   createOrder: `/wc/v3/orders`,
   getVipOpportunities: (oppId?: string) => {
     if (oppId) {
-      return `/wp/v2/opportunities?opportunity-category=${oppId}`;
+      return `/wp/v2/opportunities?opportunity-category=${oppId}&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
     } else {
-      return '/wp/v2/opportunities';
+      return '/wp/v2/opportunities?_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf';
     }
   },
   sendRsvp: '/wp/v2/rsvp-request',
@@ -39,7 +41,7 @@ const Endpoints = {
   getVipRsvpEvents: `/wp/v2/vip-profiles/rsvp-events`,
   getAddresses: '/wp/v2/vip-profiles/addresses',
   deleteAddress: (addressId: string) => `/wp/v2/vip-profiles/addresses/${addressId}`,
-  getVipOpportunityDetails: (id: number) => `/wp/v2/opportunities/${id}?_fields=id,title,acf,is_wishlisted`,
+  getVipOpportunityDetails: (id: number) => `/wp/v2/opportunities/${id}?_fields=id,title,acf`,
   orderFeedback: (orderNumber: number) => `/wp/v2/vip-profiles/orders/${orderNumber}/feedback`,
   eventFeedback: (eventId: number) => `/wp/v2/vip-profiles/events/${eventId}/feedback`,
   getWishlistItems: `/wp/v2/vip-profiles/wishlist`,
@@ -55,6 +57,9 @@ const Endpoints = {
   getFormId: `/wp/v2/coming-soon/form`,
   submitComingSoonForm: (id: string) => `/contact-form-7/v1/contact-forms/${id}/feedback`,
   getOffers: `/wp/v2/offers`,
+  getMessages: `/wp/v2/vip-profiles/orders/messages`,
+  getMessageDetails: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
+  sendMessage: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
 };
 
 export { Endpoints };

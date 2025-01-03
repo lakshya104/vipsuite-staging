@@ -1,22 +1,19 @@
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import { Box, Typography } from '@mui/material';
-import AgentSignupForm from '@/features/AgentSignupForm';
-import { SignupContent } from '@/interfaces/signup';
-import { GetSignupContent } from '@/libs/api-manager/manager';
-import { get } from 'lodash';
+import AgentSignupPage from '@/site-pages/AgentSignupPage';
+import SignupLoading from '@/site-pages/VipSignupPage/loading';
 
-const VipSignupPage = async () => {
-  const signupContent: SignupContent = await GetSignupContent();
-  const agentSignupContent = get(signupContent, 'agent_intro_copy', '');
+const AgentSignup = async () => {
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">
         <Typography variant="h2">Sign up as a manager, publicist or commercial agent</Typography>
-        <Typography component="p">{agentSignupContent}</Typography>
-        <AgentSignupForm />
+        <Suspense fallback={<SignupLoading />}>
+          <AgentSignupPage />
+        </Suspense>
       </Box>
     </Box>
   );
 };
 
-export default VipSignupPage;
+export default AgentSignup;

@@ -1,68 +1,57 @@
 import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MessageLink from '../MessageLink';
 import './Messages.scss';
 import { ProgressBarLink } from '../ProgressBar';
+import { MessageArray } from '@/interfaces';
+import { calculateRelativeTime } from '@/helpers/utils';
+import { isEmpty } from 'lodash';
+import ErrorFallback from '../ErrorFallback';
+import en from '@/helpers/lang';
 
-const Messages = () => {
-  const messages = [
-    {
-      id: 1,
-      title: 'Title of the message goes here',
-      excerpt: 'Short snippet of the message is shown here as an excerpt. Lorem ipsum dolor sit amet, id scripserit...',
-      timeAgo: '1hr ago',
-    },
-    {
-      id: 2,
-      title: 'Title of the message goes here',
-      excerpt: 'Short snippet of the message is shown here as an excerpt. Lorem ipsum dolor sit amet, id scripserit...',
-      timeAgo: '12hrs ago',
-    },
-    {
-      id: 3,
-      title: 'Title of the message goes here',
-      excerpt: 'Short snippet of the message is shown here as an excerpt. Lorem ipsum dolor sit amet, id scripserit...',
-      timeAgo: '3 days ago',
-    },
-    {
-      id: 4,
-      title: 'Title of the message goes here',
-      excerpt: 'Short snippet of the message is shown here as an excerpt. Lorem ipsum dolor sit amet, id scripserit...',
-      timeAgo: '7 days ago',
-    },
-  ];
+interface MessagesProps {
+  messageData: MessageArray[];
+}
+
+const Messages: React.FC<MessagesProps> = ({ messageData }) => {
+  if (isEmpty(messageData)) {
+    return (
+      <ErrorFallback
+        errorMessage={en.listEmptyMessage.noMessageData}
+        hideSubtext={true}
+        subtext={en.listEmptyMessage.addItemMessage}
+      />
+    );
+  }
 
   return (
-    <Container>
-      <Box className="message__items">
-        {messages.map((message) => (
-          <ProgressBarLink href={`/messages/${message.id}`} key={message.id}>
-            <Box
-              className="message__item"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={2}
-              p={2}
-              borderBottom="1px solid #E0E0E0"
-            >
-              <Box>
-                <MessageLink />
-                <Typography variant="h2">{message.title}</Typography>
-                <Typography variant="body1" color="textSecondary">
-                  {message.excerpt}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {message.timeAgo}
-                </Typography>
-              </Box>
-              <ArrowForwardIcon />
+    <Box className="message__items">
+      {messageData.map((message) => (
+        <ProgressBarLink href={`/messages/${message?.order_id}`} key={message?.order_id}>
+          <Box
+            className="message__item"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb={2}
+            p={2}
+            borderBottom="1px solid #E0E0E0"
+          >
+            <Box>
+              <MessageLink title={message?.product_name} imageLink={message?.product_image} />
+              <Typography variant="body1" pt={2} color="textSecondary">
+                {message?.last_message}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {calculateRelativeTime(message?.last_updated?.date)}
+              </Typography>
             </Box>
-          </ProgressBarLink>
-        ))}
-      </Box>
-    </Container>
+            <ArrowForwardIcon />
+          </Box>
+        </ProgressBarLink>
+      ))}
+    </Box>
   );
 };
 

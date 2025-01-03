@@ -55,7 +55,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const filteredBySearch = useMemo(() => {
     if (!searchQuery.trim()) return opportunitiesData;
     const lowerCaseQuery = searchQuery.toLowerCase().trim();
-    return opportunitiesData.filter((event) => event.title.rendered.toLowerCase().includes(lowerCaseQuery));
+    return opportunitiesData.filter((event) => event?.title?.rendered.toLowerCase().includes(lowerCaseQuery));
   }, [opportunitiesData, searchQuery]);
 
   const handleFilter = (categoryId: number) => {

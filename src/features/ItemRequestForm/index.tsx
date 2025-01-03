@@ -78,6 +78,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
         } else {
           if (isEmpty(product.questions)) {
             const addToCart = await AddItemToCart(item.id);
+            await revalidatePathAction('/basket');
             if (addToCart && addToCart.code === 'permission_denied') {
               openToaster(addToCart.message?.toString());
             } else {
@@ -145,6 +146,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
             questions: updatedPayload,
           };
           const addToCart = await AddItemToCart(productId, payload);
+          await revalidatePathAction('/basket');
           if (addToCart && addToCart.code === 'permission_denied') {
             openToaster(addToCart.message?.toString());
           } else {

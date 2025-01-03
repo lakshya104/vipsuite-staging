@@ -42,14 +42,22 @@
       }
       .verify-button {
         position: relative;
-        text-align: right;
-        margin-bottom: rem(16);
-        margin-top: 4px;
+        text-align: center;
+        margin-bottom: rem(32);
+        &:empty {
+          margin-bottom: 0;
+        }
         &:has(.submit-btn) {
           flex-wrap: wrap;
           display: flex;
           justify-content: flex-end;
           margin-bottom: 0;
+        }
+        button {
+          margin-top: 0;
+          + button {
+            margin-left: rem(16);
+          }
         }
         .MuiFormControl-root {
           max-width: 100%;

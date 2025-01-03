@@ -14,6 +14,7 @@ export enum ProfileStatus {
 export enum DefaultImageFallback {
   PersonPlaceholder = '/img/personPlaceholder.png',
   Placeholder = '/img/placeholder.png',
+  LandscapePlaceholder = '/img/landscape-placeholder.webp',
 }
 
 export enum HomeModuleTypes {

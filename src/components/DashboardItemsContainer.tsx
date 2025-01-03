@@ -3,50 +3,29 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Box, Grid, Skeleton, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import { isEmpty, partition } from 'lodash';
-import { DashboardContent, DashboardItem } from '@/interfaces';
+import { DashboardData, DashboardItem } from '@/interfaces';
 import { GetVipSearch } from '@/libs/api-manager/manager';
 import SearchBar from './SearchBar';
 import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
-import { useUserInfoStore } from '@/store/useStore';
-import { UserRole } from '@/helpers/enums';
 import en from '@/helpers/lang';
+import ContentCardBox from './DashboardCard/ContentCard';
 
 interface DashboardItemsContainerProps {
-  dashboardItems: DashboardItem[];
-  dashboardContent: DashboardContent | null;
-  vipId: number;
-  token: string;
-  totalFollowerCount: number;
-  userRole: UserRole;
-  userEmail: string;
+  dashboardData: DashboardData;
 }
 
-const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
-  dashboardItems,
-  dashboardContent,
-  vipId,
-  token,
-  totalFollowerCount,
-  userRole,
-  userEmail,
-}) => {
+const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashboardData }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<DashboardItem[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-  const [featuredItems, nonFeaturedItems] = partition(dashboardItems, (item: DashboardItem) => item?.is_featured);
-  const { setVipIdStore, setTokenStore, setUserRoleStore, setUserEmailStore } = useUserInfoStore();
-
-  useEffect(() => {
-    setVipIdStore(vipId);
-    setTokenStore(token);
-    setUserRoleStore(userRole);
-    setUserEmailStore(userEmail);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [featuredItems, nonFeaturedItems] = partition(
+    dashboardData?.dashboard_content,
+    (item: DashboardItem) => item?.is_featured,
+  );
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -97,8 +76,15 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     </Grid>
   );
 
-  const renderItems = (items: DashboardItem[]) => (
+  const renderItems = (items: DashboardItem[], showContentCard?: boolean) => (
     <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+      {showContentCard &&
+        !isEmpty(dashboardData.dashboard_content_cards) &&
+        dashboardData.dashboard_content_cards.map((item, index) => (
+          <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+            <ContentCardBox data={item} />
+          </Grid>
+        ))}
       {items.map((item, index) => (
         <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
           <DashboardCard item={item} />
@@ -107,19 +93,28 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     </Grid>
   );
 
-  const renderDashboard = () =>
-    dashboardContent && (
-      <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
-    );
+  const renderDashboard = () => (
+    <DashboardContentComponent
+      dashboardContent={dashboardData?.static_form_requests}
+      showMakeRequest={dashboardData?.show_make_request_form}
+      formRequests={dashboardData?.dynamic_form_requests}
+    />
+  );
 
   const renderContent = () => {
     if (searchQuery) {
       return hasSearched && !isEmpty(searchResults) ? renderSearchResults() : renderNoResults();
     }
-    if (!dashboardItems || isEmpty(dashboardItems)) {
+    if (!dashboardData.dashboard_content || isEmpty(dashboardData.dashboard_content)) {
       return (
         <>
-          {dashboardContent && renderDashboard()}
+          {renderDashboard()}
+          {!isEmpty(dashboardData.dashboard_content_cards) &&
+            dashboardData.dashboard_content_cards.map((item, index) => (
+              <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+                <ContentCardBox data={item} />
+              </Grid>
+            ))}
           <ErrorFallback
             errorMessage={en.listEmptyMessage.noItems}
             hideSubtext={true}
@@ -132,8 +127,8 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({
     return (
       <>
         {!isEmpty(featuredItems) && renderItems(featuredItems)}
-        {dashboardContent && renderDashboard()}
-        {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems)}
+        {renderDashboard()}
+        {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems, true)}
       </>
     );
   };

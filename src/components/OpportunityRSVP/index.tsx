@@ -144,8 +144,11 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       case formState.showReasonField:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
+            <Typography variant="h6" gutterBottom>
+              Reason
+            </Typography>
             <Input
-              placeholder="Reason"
+              placeholder="Enter here..."
               fullWidth
               multiline
               rows={4}
@@ -170,6 +173,9 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       default:
         return (
           <>
+            <Typography variant="h2" gutterBottom>
+              {he.decode(opportunity?.title?.rendered)}
+            </Typography>
             {!isEmpty(opportunity.acf.questions) ? (
               <Box mt={2}>
                 <Button
@@ -213,12 +219,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
 
   return (
     <Box>
-      <CardContent className="site-dialog__content">
-        <Typography variant="h2" gutterBottom>
-          {he.decode(opportunity?.title?.rendered)}
-        </Typography>
-        {renderContent()}
-      </CardContent>
+      <CardContent className="site-dialog__content">{renderContent()}</CardContent>
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>

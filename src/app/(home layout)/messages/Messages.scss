@@ -28,6 +28,28 @@
   }
 }
 
+.page-title {
+  padding: rem(27) 0;
+  border-bottom: rem(1) solid var(--color-textBlack-10);
+  @include relative;
+  @media only screen and (max-width: 767px) {
+    line-height: 1.07;
+    letter-spacing: -0.03em;
+    @include fontSize(14);
+  }
+  a {
+    @include absolute(left 0);
+  }
+}
+.MuiTypography-body1 {
+  color: var(--color-textBlack-80);
+  @media only screen and (max-width: 767px) {
+    line-height: 1.33;
+    letter-spacing: -0.01em;
+    @include fontSize(12);
+  }
+}
+
 .inbox {
   &__header {
     display: flex;

@@ -3,7 +3,7 @@ import { Box, Grid } from '@mui/material';
 import BrandCard from './BrandCard';
 import { Brand } from '@/interfaces/brand';
 import { partition } from 'lodash';
-import DashboardContentComponent from '../DashboardContent';
+// import DashboardContentComponent from '../DashboardContent';
 import { DashboardContent } from '@/interfaces';
 
 interface BrandsListingProps {
@@ -14,7 +14,7 @@ interface BrandsListingProps {
 
 const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard, dashboardContent }) => {
   const [featuredBrands, nonFeaturedBrands] = partition(brands, (brand) => brand?.acf?.is_featured);
-  const totalFollowerCount = 0 + 0;
+  // const totalFollowerCount = 0 + 0;
 
   return (
     <>
@@ -29,7 +29,7 @@ const BrandsListing: React.FC<BrandsListingProps> = ({ brands, hideReferCard, da
           </Grid>
           {dashboardContent && (
             <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-              <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} />
+              {/* <DashboardContentComponent dashboardContent={dashboardContent} totalFollowers={totalFollowerCount} /> */}
             </Box>
           )}
           <Grid className="landing-product" container spacing={2.5}>

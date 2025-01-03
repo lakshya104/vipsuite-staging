@@ -25,7 +25,7 @@ const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDeta
               heading={brandDetails?.acf?.lookbook_heading}
               text={brandDetails?.acf?.lookbook_description}
               href={brandDetails?.acf?.lookbook_pdf}
-              isPdf={true}
+              type="lookbook"
             />
           </Box>
           <RequestItemFormButton postId={brandDetails?.id} />

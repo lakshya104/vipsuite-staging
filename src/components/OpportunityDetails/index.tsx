@@ -14,16 +14,19 @@ import ArrowBackBtn from '../ArrowBackBtn';
 import ReferCard from '../ReferCard';
 import RequestItemFormButton from '../RequestItemFormButton';
 import RedeemBox from '../RedeemBox';
+import { DefaultImageFallback } from '@/helpers/enums';
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
 }
 
 const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
-  const images = opportunity?.acf?.gallery?.map((item) => item.url) || [];
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterMessage, setToasterMessage] = useState<string>('');
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const images = opportunity?.acf?.web_detail_images?.map((item) => item?.sizes['vs-container']) || [
+    DefaultImageFallback.LandscapePlaceholder,
+  ];
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => {
@@ -64,13 +67,13 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
               heading={opportunity?.acf?.lookbook_heading}
               text={opportunity?.acf?.lookbook_description}
               href={opportunity?.acf?.lookbook_pdf}
-              isPdf={true}
+              type="lookbook"
             />
           </Box>
           <RequestItemFormButton postId={opportunity?.id} />
         </>
       )}
-      {opportunity?.acf?.show_offers && <RedeemBox />}
+      {opportunity?.acf?.show_offers && <RedeemBox fetchOffers={opportunity?.acf?.show_offers} />}
       <Box>
         <Button
           variant="contained"

@@ -1,23 +1,19 @@
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import { Box, Typography } from '@mui/material';
-import BrandSignupForm from '@/features/BrandSignupForm';
-import { SignupContent } from '@/interfaces/signup';
-import { GetSignupContent } from '@/libs/api-manager/manager';
-import { get } from 'lodash';
+import BrandSignupPage from '@/site-pages/BrandSignupPage';
+import SignupLoading from '@/site-pages/VipSignupPage/loading';
 
-const VipSignupPage = async () => {
-  const signupContent: SignupContent = await GetSignupContent();
-  const brandSignupContent = get(signupContent, 'brand_intro_copy', '');
-  const brandSignupOptions = get(signupContent, 'business_options', ['']);
+const BrandSignup = async () => {
   return (
     <Box className="signup__page">
       <Box flexGrow={1} className="signup__page-inner">
         <Typography variant="h2">Sign up as a brand or PR agency</Typography>
-        <Typography component="p">{brandSignupContent}</Typography>
-        <BrandSignupForm brandSignupOptions={brandSignupOptions} />
+        <Suspense fallback={<SignupLoading />}>
+          <BrandSignupPage />
+        </Suspense>
       </Box>
     </Box>
   );
 };
 
-export default VipSignupPage;
+export default BrandSignup;

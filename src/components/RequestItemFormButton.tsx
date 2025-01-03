@@ -85,7 +85,7 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ postId })
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
-              <Typography variant="body1" fontWeight="500">
+              <Typography variant="body1" fontWeight="500" sx={{ mb: 2 }}>
                 Please let us know which items you would like to request. Include size and colour if needed.
               </Typography>
               <InputTextAreaFormField

@@ -134,8 +134,11 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       case formState.showReasonField:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
+            <Typography variant="h6" gutterBottom>
+              Reason
+            </Typography>
             <Input
-              placeholder="Reason"
+              placeholder="Enter here..."
               fullWidth
               multiline
               rows={4}
@@ -155,6 +158,17 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       default:
         return (
           <>
+            <Typography variant="h2" gutterBottom>
+              {he.decode(event?.title?.rendered)}
+            </Typography>
+            <Typography variant="body1">
+              <Box component="strong">Date:</Box>
+              {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
+              {formatDateWithOrdinal(event.acf.event_end_date, true)}
+            </Typography>
+            <Typography variant="body1" paragraph>
+              <Box component="strong">Location:</Box> {event.acf.event_location}
+            </Typography>
             {!isEmpty(event.acf.questions) ? (
               <Box mt={2}>
                 <Button
@@ -199,20 +213,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
   return (
     <>
       <Box>
-        <CardContent className="site-dialog__content">
-          <Typography variant="h2" gutterBottom>
-            {he.decode(event?.title?.rendered)}
-          </Typography>
-          <Typography variant="body1">
-            <Box component="strong">Date:</Box>
-            {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
-            {formatDateWithOrdinal(event.acf.event_end_date, true)}
-          </Typography>
-          <Typography variant="body1" paragraph>
-            <Box component="strong">Location:</Box> {event.acf.event_location}
-          </Typography>
-          {renderContent()}
-        </CardContent>
+        <CardContent className="site-dialog__content">{renderContent()}</CardContent>
         <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
           <CircularProgress color="inherit" />
         </Backdrop>

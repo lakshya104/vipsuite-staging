@@ -1,27 +1,58 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react';
-import InboxHeader from '@/components/InboxHeader';
+'use client';
+import React, { Fragment, useEffect, useRef } from 'react';
+import { Box, Container, Typography } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './InboxHeader/InboxHeader.scss';
-export default async function MessagesDetail() {
-  return (
-    <Box className="order-details-page">
-      <InboxHeader />
-      <Box className="inbox_content">
-        <Typography className="inbox__date">
-          1hr ago <span></span> 03/10/2024
-        </Typography>
-        <Typography variant="h6"> Title of the message goes here</Typography>
-        <Typography variant="body1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus quaerat enim voluptatem porro, fugit
-          facilis dolorem exercitationem voluptatibus ratione, delectus quasi necessitatibus accusantium, inventore
-          asperiores. Vitae non odio dolor necessitatibus!{' '}
-        </Typography>
-        <Typography variant="body1">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat in, itaque vel optio nobis magnam nihil
-          eveniet mollitia porro ipsa est dignissimos, officia minus totam recusandae maiores iure exercitationem
-          dolores.
-        </Typography>
-      </Box>
-    </Box>
-  );
+import { MessageDetails } from '@/interfaces';
+import { calculateRelativeTime, extractDate } from '@/helpers/utils';
+import { ProgressBarLink } from './ProgressBar';
+import MessageForm from '@/features/MessageForm';
+
+interface MessagesDetailProps {
+  messageDetail: MessageDetails;
 }
+
+const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messageDetail]);
+
+  return (
+    <>
+      <Container>
+        <Typography className="page-title" variant="h2" align="center">
+          <ProgressBarLink href={'/inbox'} aria-label="Back to All Messages">
+            <ArrowBackIcon />
+          </ProgressBarLink>
+          {messageDetail?.product_name}
+        </Typography>
+      </Container>
+      <Box className="user-inbox order-details-page">
+        <Container>
+          <Box className="order-details-page">
+            <Box className="inbox_content">
+              {[...messageDetail.messages].reverse().map((message) => (
+                <Fragment key={message?.id}>
+                  <Typography variant="body1">{message?.content}</Typography>
+                  <Typography className="inbox__date">
+                    {calculateRelativeTime(message?.date_created?.date)} <span></span>
+                    {extractDate(message?.date_created?.date)} <span></span>
+                    By {message?.added_by}
+                  </Typography>
+                </Fragment>
+              ))}
+              <div ref={messagesEndRef} />
+            </Box>
+            <MessageForm orderId={messageDetail?.order_id} />
+          </Box>
+        </Container>
+      </Box>
+    </>
+  );
+};
+
+export default MessagesDetail;

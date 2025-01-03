@@ -6,7 +6,11 @@ import '../../app/(auth)/on-boarding/style.scss';
 import './ApplicationReviewDialog.scss';
 import { useRouter } from 'next/navigation';
 
-const ApplicationReviewDialog = () => {
+interface ApplicationReviewDialogProps {
+  isBrand?: boolean;
+}
+
+const ApplicationReviewDialog: React.FC<ApplicationReviewDialogProps> = ({ isBrand = false }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -24,11 +28,17 @@ const ApplicationReviewDialog = () => {
       <Box className="bg-textBlack application__review onboarding__page">
         <Box flexGrow={1} className="onboarding__page-inner">
           <Box className="onboarding__logo">
-            <Typography variant="h1">{en.customReviewScreen.thankyou}</Typography>
+            <Typography variant="h1">
+              {isBrand ? en.customBrandReviewScreen.thankyou : en.customReviewScreen.thankyou}
+            </Typography>
           </Box>
           <Box className="application__review-content">
-            <Typography variant="h3">{en.customReviewScreen.inReview}</Typography>
-            <Typography variant="body1">{en.customReviewScreen.description}</Typography>
+            <Typography variant="h3">
+              {isBrand ? en.customBrandReviewScreen.inReview : en.customReviewScreen.inReview}
+            </Typography>
+            <Typography variant="body1">
+              {isBrand ? en.customBrandReviewScreen.description : en.customReviewScreen.description}
+            </Typography>
           </Box>
           <Box className="onboarding__page-links">
             <Button className="onboarding__link button button--white" onClick={handleReviewDialogChange}>

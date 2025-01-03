@@ -40,7 +40,7 @@ export interface Acf {
   show_offers: boolean;
   associated_brand_profile: number;
   featured_image: FeaturedImage;
-  gallery: FeaturedImage[];
+  web_detail_images: FeaturedImage[];
   short_description: string;
   description: string;
   is_lookbook_available: boolean;
