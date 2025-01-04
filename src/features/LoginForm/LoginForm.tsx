@@ -24,6 +24,7 @@ const LoginForm = () => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isUserBrand, setIsUserBrand] = useState<boolean>(false);
 
   useEffect(() => {
     const deleteCookies = async () => {
@@ -60,7 +61,10 @@ const LoginForm = () => {
             if (errorMessage.includes('rejected')) {
               setIsRejectDialogOpen(true);
               reset();
-            } else if (errorMessage.includes('Your account is not approved')) {
+            } else if (errorMessage.includes('not approved')) {
+              if (errorMessage.includes('brand')) {
+                setIsUserBrand(true);
+              }
               setIsReviewDialogOpen(true);
               reset();
             } else {
@@ -154,7 +158,7 @@ const LoginForm = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <Dialog open={isReviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ApplicationReviewDialog />
+        <ApplicationReviewDialog isBrand={isUserBrand} />
       </Dialog>
       <Dialog open={isRejectDialogOpen} fullScreen aria-labelledby="form-dialog-title">
         <ApplicationRejectedDialog />
