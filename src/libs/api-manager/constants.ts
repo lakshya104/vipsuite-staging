@@ -54,7 +54,7 @@ const Endpoints = {
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,
   verifyEmail: '/wp/v2/email-verification-code',
   getOpportunityCategory: 'wp/v2/opportunity-category',
-  getFormId: `/wp/v2/coming-soon/form`,
+  getFormId: `/wp/v2/website-content?_fields=notification_form_id`,
   submitComingSoonForm: (id: string) => `/contact-form-7/v1/contact-forms/${id}/feedback`,
   getOffers: `/wp/v2/offers`,
   getMessages: `/wp/v2/vip-profiles/orders/messages`,

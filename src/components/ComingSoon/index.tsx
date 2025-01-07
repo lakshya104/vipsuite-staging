@@ -25,7 +25,7 @@ const ComingSoon = () => {
       const fetchUnitTag = async () => {
         try {
           const response = await GetFormId();
-          setUnitTag(response.formID);
+          setUnitTag(response?.notification_form_id);
         } catch (error) {
           setToasterType('error');
           openToaster('Failed to fetch Form ID');
