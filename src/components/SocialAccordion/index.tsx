@@ -37,49 +37,51 @@ const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const SliderComponent = Slider as unknown as React.ComponentType<any>;
   return (
-    <Container>
-      <Box className="site-card__wrapper">
-        {isMobile ? (
-          <Box className="accordionItem">
-            <SliderComponent {...sliderSettings}>
+    <Box component="section" className="site-card">
+      <Container>
+        <Box className="site-card__wrapper">
+          {isMobile ? (
+            <Box className="accordionItem">
+              <SliderComponent {...sliderSettings}>
+                {socialLinks?.map((link, index) => (
+                  <Box key={index} className="accordionItem__link">
+                    <Box className="accordionItem__image">
+                      <Image src={link?.image?.sizes?.['vs-container']} alt={link?.heading} width={1024} height={430} />
+                    </Box>
+                    <Box className="accordionItem__full">
+                      <Typography variant="h2">{link?.heading}</Typography>
+                      <Typography variant="body1">{link?.copy}</Typography>
+                      <Button variant="contained" type="submit" className="button button--border">
+                        Find out more
+                      </Button>
+                    </Box>
+                  </Box>
+                ))}
+              </SliderComponent>
+            </Box>
+          ) : (
+            <Box className="accordionItem">
               {socialLinks?.map((link, index) => (
-                <Box key={index} className="accordionItem__link">
-                  <Box className="accordionItem__image">
-                    <Image src={link?.image?.sizes?.['vs-container']} alt={link?.heading} width={1024} height={430} />
+                <Fragment key={index}>
+                  <Box className="accordionItem__link">
+                    <Box className="accordionItem__image">
+                      <Image src={link?.image?.sizes?.['vs-container']} alt={link?.heading} width={1024} height={430} />
+                    </Box>
+                    <Box className="accordionItem__full">
+                      <Typography variant="h2">{link?.heading}</Typography>
+                      <Typography variant="body1">{link?.copy}</Typography>
+                      <Button variant="contained" type="submit" className="button button--border">
+                        Find out more
+                      </Button>
+                    </Box>
                   </Box>
-                  <Box className="accordionItem__full">
-                    <Typography variant="h2">{link?.heading}</Typography>
-                    <Typography variant="body1">{link?.copy}</Typography>
-                    <Button variant="contained" type="submit" className="button button--border">
-                      Find out more
-                    </Button>
-                  </Box>
-                </Box>
+                </Fragment>
               ))}
-            </SliderComponent>
-          </Box>
-        ) : (
-          <Box className="accordionItem">
-            {socialLinks?.map((link, index) => (
-              <Fragment key={index}>
-                <Box className="accordionItem__link">
-                  <Box className="accordionItem__image">
-                    <Image src={link?.image?.sizes?.['vs-container']} alt={link?.heading} width={1024} height={430} />
-                  </Box>
-                  <Box className="accordionItem__full">
-                    <Typography variant="h2">{link?.heading}</Typography>
-                    <Typography variant="body1">{link?.copy}</Typography>
-                    <Button variant="contained" type="submit" className="button button--border">
-                      Find out more
-                    </Button>
-                  </Box>
-                </Box>
-              </Fragment>
-            ))}
-          </Box>
-        )}
-      </Box>
-    </Container>
+            </Box>
+          )}
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

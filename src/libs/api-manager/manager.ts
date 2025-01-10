@@ -754,11 +754,8 @@ export const SendMessage = async (id: number, payload: { message: string; order_
 export const GetWebsiteContent = async () => {
   try {
     const response = await Instance.get(Endpoints.getWebsiteContent);
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetching Form Id');
+    return { data: null, error };
   }
 };

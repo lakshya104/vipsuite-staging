@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@mui/material';
 import { ContentModule } from '@/interfaces/public-page';
 import HeroSection from './HeroSection/HeroSection';
 import SocialAccordion from './SocialAccordion';
@@ -24,11 +23,7 @@ const ModuleSlides: React.FC<ModuleSlidesProps> = ({ module }) => {
     case HomeModuleTypes.Intro:
       return <HeroSection data={module} />;
     case HomeModuleTypes.Slider:
-      return (
-        <Box component="section" className="site-card">
-          <SocialAccordion data={module} />
-        </Box>
-      );
+      return <SocialAccordion data={module} />;
     case HomeModuleTypes.InfoList:
       return <PublicJoinUs data={module} />;
     case HomeModuleTypes.InfoTable:

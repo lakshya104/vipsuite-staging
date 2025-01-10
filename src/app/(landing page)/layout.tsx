@@ -3,22 +3,26 @@ import Header from '@/components/Header/Header';
 import { Box } from '@mui/material';
 import './landingPages.scss';
 import Footer from '@/components/Footer';
-import { MenuItemData, WebsiteContent } from '@/interfaces/public-page';
+import { MenuItemData } from '@/interfaces/public-page';
 import { GetWebsiteContent } from '@/libs/api-manager/manager';
 import { getLastPathSegment } from '@/helpers/utils';
 import HeaderTop from '@/components/HeaderTop/HeaderTop';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
+import ErrorHandler from '@/components/ErrorHandler';
 
 export default async function LandingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data: WebsiteContent = await GetWebsiteContent();
-  const menuItems: MenuItemData[] = data.header_menu.map((item) => {
+  const { data, error } = await GetWebsiteContent();
+  const menuItems: MenuItemData[] = data?.header_menu.map((item: MenuItemData) => {
     item.url = getLastPathSegment(item?.url);
     return item;
   });
+  if (error) {
+    return <ErrorHandler error={error} errMessage="Not able to show landing page currently." />;
+  }
   return (
     <Box className="background--dark">
       <HeaderTop text={data?.website_tagline} />
