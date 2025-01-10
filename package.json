@@ -12,12 +12,11 @@
     "format:check": "npx prettier --check ."
   },
   "engines": {
-    "node": ">=20.15.1",
+    "node": ">=22.12.0",
     "yarn": ">=1.x && <=2.x",
     "npm": "Please use yarn instead of npm"
   },
   "dependencies": {
-    "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.9.0",
@@ -28,12 +27,12 @@
     "@mui/x-date-pickers": "^7.11.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.12",
-    "framer-motion": "^11.3.28",
     "he": "^1.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "next": "14.2.15",
     "next-auth": "^5.0.0-beta.19",
+    "next-nprogress-bar": "^2.4.3",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",

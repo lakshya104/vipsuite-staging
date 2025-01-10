@@ -16,11 +16,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
         <Typography component="h1" variant="h1">
           {data?.heading}
         </Typography>
-        {data.cta_group?.map((ctaItem, index) => {
-          const relativeUrl = getRelativePath(ctaItem.cta_url);
+        {data?.cta_group?.map((ctaItem, index) => {
+          const relativeUrl = getRelativePath(ctaItem?.cta_url);
           return (
             <Link key={index} href={relativeUrl} legacyBehavior>
-              <a className="button button--black">{ctaItem.cta_text}</a>
+              <a className="button button--black button--fill">{ctaItem?.cta_text}</a>
             </Link>
           );
         })}

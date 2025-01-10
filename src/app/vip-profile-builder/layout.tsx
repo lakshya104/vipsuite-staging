@@ -6,6 +6,7 @@ import { ProgressBarLink } from '@/components/ProgressBar';
 import BackToHome from '@/components/BackToHome';
 import { GetSession } from '@/libs/api-manager/manager';
 import { ProfileStatus } from '@/helpers/enums';
+import ProgressProvider from '@/libs/providers/ProgressProvider';
 
 export default async function AuthLayout({
   children,
@@ -24,7 +25,9 @@ export default async function AuthLayout({
         </ProgressBarLink>
         {profileStatus === ProfileStatus.Approved && <BackToHome role={session.role} />}
       </Box>
-      <Box className="profile-builder__main">{children}</Box>
+      <Box className="profile-builder__main">
+        <ProgressProvider color="black"> {children}</ProgressProvider>
+      </Box>
     </Box>
   );
 }

@@ -23,8 +23,13 @@ export enum HomeModuleTypes {
   InfoList = 'module_info_list',
   InfoTable = 'module_info_table',
   Promo = 'module_promo',
+  PromoWrapper = 'module_promo_wrapper',
   LogoList = 'module_logo_list',
   Testimonials = 'module_testimonials',
+  PublicFooter = 'public_footer',
+  FAQ = 'module_faqs',
+  Form = 'module_form',
+  Text = 'module_text',
 }
 
 export enum CookieName {

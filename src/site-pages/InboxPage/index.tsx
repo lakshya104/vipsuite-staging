@@ -6,6 +6,7 @@ import ErrorHandler from '@/components/ErrorHandler';
 interface InboxPageProps {
   currentPage: number;
 }
+
 const InboxPage: React.FC<InboxPageProps> = async ({ currentPage }) => {
   const [{ orders, totalOrders, totalPages, error: ordersError }, { data: messageData, error: messagesError }] =
     await Promise.all([GetAllOrders(currentPage), GetAllMessages()]);

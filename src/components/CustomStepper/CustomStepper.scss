@@ -5,6 +5,7 @@
 @import '../../styles/mixins';
 
 .custom-stepper {
+  margin-bottom: rem(40);
   margin-top: auto;
   padding-top: rem(32);
   background-color: var(--color-marble);

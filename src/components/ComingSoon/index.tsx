@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useTransition } from 'react';
 import { Box, Typography, TextField, Button, Backdrop, CircularProgress } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { GetFormId, SubmitComingSoonForm } from '@/libs/api-manager/manager';
+import { GetFormId, SubmitLandingPageForm } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import './comingsoon.scss';
@@ -24,7 +24,7 @@ const ComingSoon = () => {
     startTransition(() => {
       const fetchUnitTag = async () => {
         try {
-          const response = await GetFormId();
+          const response = await GetFormId('notification_form_id');
           setUnitTag(response?.notification_form_id);
         } catch (error) {
           setToasterType('error');
@@ -44,7 +44,7 @@ const ComingSoon = () => {
         const payload = new FormData();
         payload.append('email', data.email);
         payload.append('_wpcf7_unit_tag', unitTag);
-        const res = await SubmitComingSoonForm(unitTag, payload);
+        const res = await SubmitLandingPageForm(unitTag, payload);
         setToasterType('info');
         openToaster(res.message ?? 'You have successfully submitted your email');
         reset();

@@ -16,8 +16,8 @@ const InboxHeader: React.FC<InboxHeaderProps> = ({ image, title }) => {
         <Image
           src={image || DefaultImageFallback.Placeholder}
           alt="Boda Skins Logo"
-          width={60}
-          height={60}
+          width={110}
+          height={110}
           style={{
             marginRight: 12,
           }}

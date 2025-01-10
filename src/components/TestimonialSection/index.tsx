@@ -3,13 +3,16 @@ import React from 'react';
 import TestimonialCard from '../Testimonial/Testimonial';
 import './TestimonialSection.scss';
 import { ContentModule } from '@/interfaces/public-page';
+import TestimonialSectionFull from '../TestimonialSectionFull';
 
 interface TestimonialSectionProps {
   data: ContentModule;
 }
 
 const TestimonialSection: React.FC<TestimonialSectionProps> = ({ data }) => {
-  return (
+  return data.full_width_layout ? (
+    <TestimonialSectionFull data={data} />
+  ) : (
     <Box component="section" className="testimonial-section">
       <Container>
         <Typography variant="h2">{data?.heading}</Typography>

@@ -15,8 +15,8 @@ const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title }) => {
       <Image
         src={imageLink || DefaultImageFallback.Placeholder}
         alt="Boda Skins Logo"
-        width={60}
-        height={60}
+        width={110}
+        height={110}
         style={{
           marginRight: 12,
         }}

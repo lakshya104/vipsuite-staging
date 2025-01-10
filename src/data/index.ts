@@ -211,28 +211,28 @@ export const vipNavLinks = [
 export const brandNavLinks = [
   {
     label: 'Home',
-    href: '/home',
-    paths: ['/home'],
+    href: '/brand-home',
+    paths: ['/brand-home'],
   },
   {
     label: 'Services',
-    href: '/services',
-    paths: ['/services'],
+    href: '/brand-home',
+    paths: ['/brand-homee'],
   },
   {
     label: 'Profiling',
-    href: '/profiling',
-    paths: ['/profiling'],
+    href: '/brand-home',
+    paths: ['/brand-homee'],
   },
   {
     label: 'Opportunities',
-    href: '/brand-opportunities',
-    paths: ['/opportunities'],
+    href: '/brand-home',
+    paths: ['/brand-homee'],
   },
   {
     label: 'Dashboard',
-    href: '/dashboard',
-    paths: ['/dashboard'],
+    href: '/brand-home',
+    paths: ['/brand-homee'],
   },
 ];
 
@@ -320,4 +320,21 @@ export const brandFooterItems = [
     paths: ['/dashboard'],
     srcselected: '/img/inbox-selected.svg',
   },
+];
+
+export const BookDemoFormFields = [
+  { name: 'role', placeholder: 'Brand, VIP or Agent?', label: 'Role', autocomplete: 'off', type: 'select' },
+  { name: 'name', placeholder: 'Name', label: 'Name', autocomplete: 'off', type: 'text' },
+  { name: 'email', placeholder: 'Email', label: 'Email', autocomplete: 'off', type: 'text' },
+  { name: 'jobTitle', placeholder: 'Job Title', label: 'Job Title', autocomplete: 'off', type: 'text' },
+  { name: 'company', placeholder: 'Company Name', label: 'Company Name', autocomplete: 'off', type: 'text' },
+];
+
+export const ContactUsFormFields = [
+  { name: 'role', placeholder: 'Brand, VIP or Agent?', label: 'Role', autocomplete: 'off', type: 'select' },
+  { name: 'name', placeholder: 'Name', label: 'Name', autocomplete: 'off', type: 'text' },
+  { name: 'email', placeholder: 'Email', label: 'Email', autocomplete: 'off', type: 'text' },
+  { name: 'jobTitle', placeholder: 'Job Title', label: 'Job Title', autocomplete: 'off', type: 'text' },
+  { name: 'company', placeholder: 'Company Name', label: 'Company Name', autocomplete: 'off', type: 'text' },
+  { name: 'phone', label: 'Phone', placeholder: 'Phone', autocomplete: 'tel', type: 'tel' },
 ];

@@ -11,9 +11,15 @@ const Endpoints = {
   getBrandDetails: (brandId: number) => `/wp/v2/brand-profiles/${brandId}`,
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,
   getBrandProductDetails: (productId: number) => `/wc/v3/products/${productId}`,
-  getProducts: `/wc/v3/products`,
+  getProducts: (page: number) => `/wc/v3/products?page=${page}&per_page=15`,
   getSignupContent: '/wp/v2/signup-content',
-  getVipEvents: '/wp/v2/events?_fields=id,title,acf',
+  getVipEvents: (page: number, search?: string) => {
+    if (search) {
+      return `/wp/v2/events?search=${search}&per_page=15&_fields=id,title,acf`;
+    } else {
+      return `/wp/v2/events?page=${page}&per_page=15&_fields=id,title,acf`;
+    }
+  },
   getVipEventDetails: (id: number) => `/wp/v2/events/${id}`,
   getProfileBuilderContent: '/wp/v2/profile-builder-content',
   updateProfile: '/wp/v2/vip-profile',
@@ -29,11 +35,15 @@ const Endpoints = {
   removeVipCartItem: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
   removeAllCartItems: `/wc/store/v1/cart/items`,
   createOrder: `/wc/v3/orders`,
-  getVipOpportunities: (oppId?: string) => {
-    if (oppId) {
-      return `/wp/v2/opportunities?opportunity-category=${oppId}&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+  getVipOpportunities: (oppId?: string, page?: number, search?: string) => {
+    if (oppId && search) {
+      return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=15&page=${page}&search=${search}&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+    } else if (oppId) {
+      return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=15&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+    } else if (search) {
+      return `/wp/v2/opportunities?search=${search}&per_page=15&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
     } else {
-      return '/wp/v2/opportunities?_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf';
+      return `/wp/v2/opportunities?page=${page}&per_page=15&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
     }
   },
   sendRsvp: '/wp/v2/rsvp-request',
@@ -54,12 +64,13 @@ const Endpoints = {
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,
   verifyEmail: '/wp/v2/email-verification-code',
   getOpportunityCategory: 'wp/v2/opportunity-category',
-  getFormId: `/wp/v2/website-content?_fields=notification_form_id`,
-  submitComingSoonForm: (id: string) => `/contact-form-7/v1/contact-forms/${id}/feedback`,
+  getFormId: (tag: string) => `/wp/v2/website-content?_fields=${tag}`,
+  submitLandingPageForm: (id: string) => `/contact-form-7/v1/contact-forms/${id}/feedback`,
   getOffers: `/wp/v2/offers`,
   getMessages: `/wp/v2/vip-profiles/orders/messages`,
   getMessageDetails: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
   sendMessage: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
+  getWebsiteContent: `/wp/v2/website-content`,
 };
 
 export { Endpoints };

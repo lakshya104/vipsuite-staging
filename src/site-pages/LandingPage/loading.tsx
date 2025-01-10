@@ -6,13 +6,13 @@ const LandingPageLoading = () => {
     <Container maxWidth="xl" sx={{ minHeight: '100vh' }}>
       <Box sx={{ mb: 6 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, flexDirection: 'column', alignItems: 'center' }}>
-          <Skeleton variant="text" width="70%" height={70} />
-          <Skeleton variant="text" width="70%" height={70} />
-          <Skeleton variant="text" width="40%" height={70} />
+          <Skeleton sx={{ backgroundColor: 'darkgray' }} variant="text" width="70%" height={70} />
+          <Skeleton sx={{ backgroundColor: 'darkgray' }} variant="text" width="70%" height={70} />
+          <Skeleton sx={{ backgroundColor: 'darkgray' }} variant="text" width="40%" height={70} />
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Skeleton variant="rectangular" width={160} height={50} sx={{ mr: 3 }} />
-          <Skeleton variant="rectangular" width={160} height={50} />
+          <Skeleton variant="rectangular" width={160} height={50} sx={{ mr: 3, backgroundColor: 'darkgray' }} />
+          <Skeleton variant="rectangular" width={160} height={50} sx={{ backgroundColor: 'darkgray' }} />
         </Box>
       </Box>
       <Grid container spacing={4}>
@@ -27,6 +27,7 @@ const LandingPageLoading = () => {
                   left: 0,
                   width: '100%',
                   height: '100%',
+                  backgroundColor: 'darkgray',
                 }}
               />
               <Typography
@@ -38,19 +39,19 @@ const LandingPageLoading = () => {
                   zIndex: 1,
                 }}
               >
-                <Skeleton width={120} />
+                <Skeleton width={120} sx={{ backgroundColor: 'darkgray' }} />
               </Typography>
             </Box>
           </Grid>
         ))}
       </Grid>
       <Typography variant="h5" sx={{ mt: 8, mb: 4 }}>
-        <Skeleton width="25%" height={70} />
+        <Skeleton width="25%" height={70} sx={{ backgroundColor: 'darkgray' }} />
       </Typography>
       <Grid container spacing={2} mb={10}>
         {[...Array(8)].map((_, index) => (
           <Grid item xs={6} sm={3} md={1.5} key={index}>
-            <Skeleton variant="rectangular" width="100%" height={80} />
+            <Skeleton variant="rectangular" width="100%" height={80} sx={{ backgroundColor: 'darkgray' }} />
           </Grid>
         ))}
       </Grid>

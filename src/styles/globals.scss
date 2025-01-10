@@ -18,6 +18,7 @@
   --color-textBlack-80: rgba(27, 27, 27, 0.8);
   --color-red: #de4b23;
   --color-darkgray: #1b1b1b;
+  --color-very-darkgray: #111111;
   --font-family: 'Graphik', serif;
 }
 
@@ -475,6 +476,23 @@ main.product-detail {
   &.product-slides {
     .MuiContainer-root {
       max-width: 1318px;
+    }
+  }
+}
+
+.pl-129 {
+  @media only screen and (min-width: 990px) {
+    padding-left: rem(129) !important;
+  }
+}
+
+section {
+  @media only screen and (min-width: 900px) {
+    margin-bottom: rem(96) !important;
+  }
+  &:has(+ section) {
+    @media only screen and (min-width: 900px) {
+      margin-bottom: rem(96) !important;
     }
   }
 }

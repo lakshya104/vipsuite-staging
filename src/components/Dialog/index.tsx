@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { RefCallBack } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import Btn from '../Button/CommonBtn';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface DialogBoxProps {
   isDialogOpen: boolean;
@@ -48,7 +49,7 @@ const DialogBox: React.FC<DialogBoxProps> = ({ isDialogOpen, onDataChange, conte
             <Box>
               <Image
                 alt="Dialog Image"
-                src={content?.image}
+                src={content?.image || DefaultImageFallback.Placeholder}
                 height={199}
                 width={199}
                 sizes="(max-width: 199px) 100vw, 199px"
@@ -145,7 +146,7 @@ export const MessageDialogBox: React.FC<MessageDialogBoxProps> = ({ isDialogOpen
             <Box>
               <Image
                 alt="Dialog Image"
-                src={content?.image}
+                src={content?.image || DefaultImageFallback.Placeholder}
                 height={199}
                 width={199}
                 sizes="(max-width: 199px) 100vw, 199px"

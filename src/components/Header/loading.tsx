@@ -6,7 +6,7 @@ const HeaderSkeleton = () => {
     <Box>
       <MenuList className="site-header__navigation">
         <MenuItem>
-          <Skeleton variant="text" width={80} height={40} />
+          <Skeleton sx={{ backgroundColor: 'darkgray' }} variant="text" width={80} height={40} />
         </MenuItem>
       </MenuList>
     </Box>

@@ -5,7 +5,10 @@
 @import '../../styles/mixins';
 
 .brand-section {
-  margin-bottom: rem(20);
+  margin-bottom: rem(50);
+  @media screen and (min-width: 600px) {
+    margin-bottom: rem(80);
+  }
   @media only screen and (min-width: 992px) {
     margin-bottom: rem(87);
   }
@@ -22,7 +25,7 @@
       text-transform: capitalize;
       @include fontSize(30);
       @media only screen and (min-width: 992px) {
-        @include fontSize(50);
+        @include fontSize(40);
       }
     }
     p {
@@ -78,19 +81,11 @@
       @include flex(center, center);
     }
     h3 {
-      min-height: rem(50);
-      @media only screen and (min-width: 600px) {
-        min-height: rem(78);
-      }
-      @media only screen and (min-width: 991px) {
-        min-height: rem(58);
-      }
+      line-height: rem(20);
+      min-height: rem(40);
     }
     p {
-      min-height: rem(50);
-      @media only screen and (min-width: 600px) {
-        min-height: rem(99);
-      }
+      margin-bottom: rem(24);
     }
   }
 }

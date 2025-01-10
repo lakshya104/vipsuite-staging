@@ -22,11 +22,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 
 const formSchema = z.object({
-  itemName: z
-    .string()
-    .min(1, 'This field is required')
-    .min(15, 'Describe the item in at least 15 characters')
-    .max(400, 'Describe the item in less than 400 characters'),
+  itemName: z.string().min(1, 'This field is required'),
 });
 
 type FormValues = z.infer<typeof formSchema>;

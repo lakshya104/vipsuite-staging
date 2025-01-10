@@ -18,7 +18,7 @@ const BrandHome: React.FC<BrandHomeProps> = ({ firstName }) => {
     >
       <Typography variant="h2">Welcome back, {firstName}</Typography>
       <Typography textAlign="center" variant="h1">
-        Home page is coming soon
+        Coming soon...
       </Typography>
     </Box>
   );

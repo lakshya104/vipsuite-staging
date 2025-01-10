@@ -1,0 +1,62 @@
+/*
+* Book a Demo page style.
+*/
+
+@import '../../styles/mixins';
+@import '../../styles/globals';
+
+.demo-signup {
+  margin-bottom: rem(80);
+  p {
+    &.page-title {
+      max-width: rem(412);
+      margin-left: auto;
+      margin-right: auto;
+      &:not(:empty) {
+        margin-bottom: rem(40);
+      }
+    }
+  }
+  .signup-form {
+    max-width: rem(412);
+    margin: 0 auto;
+    .signup__item {
+      .MuiFormControl-root {
+        margin-bottom: rem(16);
+      }
+      .MuiSelect-select {
+        color: var(--color-black);
+        background: var(--color-white);
+        height: rem(48);
+        fieldset {
+          padding-top: rem(15);
+        }
+      }
+      fieldset {
+        top: 0;
+        display: none;
+        border-color: #d1d1cb;
+      }
+      label,
+      legend {
+        display: none;
+      }
+      .custom-placeholder {
+        color: #1b1b1b;
+        opacity: 50%;
+      }
+      input {
+        padding-top: rem(15);
+        height: rem(48);
+        background: var(--color-white);
+        color: var(--color-black);
+        &[type='text'] {
+          &::placeholder {
+            color: #1b1b1b;
+            opacity: 50% !important;
+          }
+        }
+      }
+    }
+  }
+}

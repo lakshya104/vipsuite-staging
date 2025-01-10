@@ -51,28 +51,28 @@ const OpportunitiesFilterModal: React.FC<OpportunitiesFilterModalProps> = ({
             {categories.map((category) => (
               <ImageListItem
                 className="filter-modal__image-list"
-                key={category.id}
+                key={category?.id}
                 sx={{
                   cursor: 'pointer',
-                  border: selectedCategoryId === category.id ? '1px solid gray' : '1px solid transparent',
+                  border: selectedCategoryId === category?.id ? '1px solid gray' : '1px solid transparent',
                 }}
                 onClick={() => handleFilter(category.id)}
               >
                 <Image
                   height={200}
                   width={200}
-                  src={category.url ?? DefaultImageFallback.Placeholder}
-                  alt={category.name}
+                  src={category?.url ?? DefaultImageFallback.Placeholder}
+                  alt={category?.name}
                   loading="lazy"
                 />
-                {selectedCategoryId === category.id && <CheckCircleIcon className="filter-modal__circle-icon" />}
+                {selectedCategoryId === category?.id && <CheckCircleIcon className="filter-modal__circle-icon" />}
                 <ImageListItemBar
                   className="filter-modal__list-item"
                   title={
                     <Box className="filter-modal__list-icon">
-                      {category.name}
-                      {category.emoji_url && (
-                        <Image src={category.emoji_url} alt={`${category.name} icon`} width={24} height={24} />
+                      {category?.name}
+                      {category?.emoji_url && (
+                        <Image src={category?.emoji_url} alt={`${category?.name} icon`} width={24} height={24} />
                       )}
                     </Box>
                   }

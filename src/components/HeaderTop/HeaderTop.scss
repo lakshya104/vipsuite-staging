@@ -5,12 +5,12 @@
 @import '../../styles/mixins';
 
 .headerTop {
-  background-color: var(--color-textBlack);
+  background-color: var(--color-black);
   min-height: rem(28);
   @include flex(center, center);
   p,
   a {
-    color: var(--color-white);
+    color: var(--color-marble);
     @include fontSize(11);
   }
 }

@@ -6,7 +6,6 @@ import LandingPageLoading from '@/site-pages/LandingPage/loading';
 export async function generateMetadata(): Promise<Metadata> {
   try {
     return {
-      metadataBase: new URL('https://vipsuite-staging.vercel.app'),
       title: 'Welcome to VIP Suite',
       description:
         'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today! Invite-only, private members portal for events, campaigns, gifting and more.',
@@ -19,7 +18,6 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } catch {
     return {
-      metadataBase: new URL('https://vipsuite-staging.vercel.app'),
       title: 'Welcome to VIP Suite',
       description:
         'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today! Invite-only, private members portal for events, campaigns, gifting and more.',

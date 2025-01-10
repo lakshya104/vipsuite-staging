@@ -245,7 +245,7 @@ const VipSignupForm = () => {
             )}
             {name === 'phone' && !errors[name] && (
               <Box className="input-text">
-                <Typography>Including Country Code</Typography>
+                <Typography>Including the country code with + sign</Typography>
                 <Typography>Optional</Typography>
               </Box>
             )}

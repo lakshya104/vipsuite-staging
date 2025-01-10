@@ -10,7 +10,7 @@ interface JoinUsProps {
 }
 const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
   return (
-    <Box component="section" className="joinus-section">
+    <Box component="section" className="joinus-section joinus-section--dark">
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
@@ -26,7 +26,7 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
           <Grid item xs={12} sm={8} className="joinus-section__content">
             <Grid container spacing={2.5} justifyContent={'space-between'}>
               {data.list_items?.map((item, index) => (
-                <Grid item xs={12} md={6} key={index}>
+                <Grid item xs={12} md={6} key={index} className="joinus-section__items">
                   <Paper elevation={0} className="joinus-section__feature">
                     <Box className="joinus-section__icon">
                       <StarOutlineIcon />
@@ -38,6 +38,9 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
                   </Paper>
                 </Grid>
               ))}
+              <Button variant="outlined" className="joinus-section__button button button--white">
+                {data?.cta?.cta_text}
+              </Button>
             </Grid>
           </Grid>
         </Grid>

@@ -43,6 +43,9 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
     pauseOnHover: true,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const SliderComponent = Slider as unknown as React.ComponentType<any>;
+
   return (
     <Box sx={{ position: 'relative', marginBottom: 4 }}>
       {/* {withLikeIcon && (
@@ -54,13 +57,13 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
           vipId={vipId}
         />
       )} */}
-      <Slider {...settings}>
+      <SliderComponent {...settings}>
         {images.map((src, index) => (
           <StyledBox key={index}>
             <StyledImage src={src} alt={`Slide ${index + 1}`} fill />
           </StyledBox>
         ))}
-      </Slider>
+      </SliderComponent>
     </Box>
   );
 };

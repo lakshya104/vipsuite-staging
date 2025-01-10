@@ -1,0 +1,79 @@
+/*
+* Book a Demo page style.
+*/
+
+@import '../../styles/mixins';
+@import '../../styles/globals';
+
+.demo-signup {
+  margin-bottom: rem(80);
+  p {
+    &.page-title {
+      max-width: rem(412);
+      margin-left: auto;
+      margin-right: auto;
+      &:not(:empty) {
+        margin-bottom: rem(40);
+      }
+    }
+  }
+  .signup-form {
+    max-width: rem(412);
+    margin: 0 auto;
+    .signup__item {
+      .MuiFormControl-root {
+        margin-bottom: rem(16);
+      }
+      .MuiSelect-select {
+        color: var(--color-black);
+        background: var(--color-white);
+        height: rem(48);
+        fieldset {
+          padding-top: rem(15);
+        }
+      }
+      fieldset {
+        top: 0;
+        border-color: #d1d1cb;
+      }
+      label,
+      legend {
+        display: none;
+      }
+      input {
+        padding-top: rem(15);
+        background: var(--color-white);
+        color: var(--color-black);
+        &[type='text'],
+        &[type='tel'] {
+          &::placeholder {
+            color: #1b1b1b;
+            opacity: 50% !important;
+          }
+        }
+      }
+    }
+  }
+  &.contact-form {
+    p {
+      &.page-title {
+        max-width: rem(446);
+        margin-left: 0;
+        line-height: rem(21);
+        @include fontSize(14);
+      }
+    }
+    h2 {
+      font-weight: 500;
+      line-height: rem(45);
+      @include fontSize(40);
+    }
+    .signup-form {
+      max-width: rem(520);
+      margin-left: 0;
+    }
+    .contact-form__title {
+      margin-bottom: rem(9);
+    }
+  }
+}

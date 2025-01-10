@@ -2,6 +2,7 @@ import React from 'react';
 import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter/HomeFooter';
 import { GetSession } from '@/libs/api-manager/manager';
+import ProgressProvider from '@/libs/providers/ProgressProvider';
 
 export default async function AgentSectionLayout({
   children,
@@ -13,7 +14,7 @@ export default async function AgentSectionLayout({
   return (
     <>
       <HomeHeader role={role} token={session.token} />
-      {children}
+      <ProgressProvider color="black"> {children}</ProgressProvider>
       <HomeFooter role={role} />
     </>
   );

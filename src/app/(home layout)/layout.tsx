@@ -7,10 +7,11 @@ import { isEmpty } from 'lodash';
 import { GetSession } from '@/libs/api-manager/manager';
 import { CookieName, ProfileStatus, UserRole } from '@/helpers/enums';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
-import VipPage from '../my-vips/page';
+import VipPage from '../(my vips)/my-vips/page';
 import ProfileReviewDialog from '@/components/ProfileReviewDialog';
 import StoreUserDetails from '@/components/StoreUserDetails';
 import { getVipId } from '@/helpers/utils';
+import ProgressProvider from '@/libs/providers/ProgressProvider';
 
 export default async function HomeSectionLayout({
   children,
@@ -37,12 +38,14 @@ export default async function HomeSectionLayout({
     if (!userId || userId?.value === undefined) {
       return <VipPage />;
     }
+  } else if (role === UserRole.Brand) {
+    return <ApplicationAcceptedDialog name={first_name} role={UserRole.Brand} />;
   }
   return (
     <>
       <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={vipId} />
       <HomeHeader role={role} token={token} />
-      {children}
+      <ProgressProvider color="black"> {children}</ProgressProvider>
       <HomeFooter role={role} />
     </>
   );

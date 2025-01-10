@@ -85,16 +85,6 @@ const agentMenuItems = [
   { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
 ];
 
-const brandMenuItems = [
-  {
-    label: 'Login & Security',
-    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: '/login-security',
-  },
-  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
-  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
-];
-
 interface HomeHeaderProps {
   role?: UserRole;
   token: string;
@@ -106,13 +96,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
   const menuItems =
-    role === UserRole.Vip
-      ? vipMenuItems
-      : role === UserRole.Brand
-        ? brandMenuItems
-        : role === UserRole.Agent
-          ? agentMenuItems
-          : [];
+    role === UserRole.Vip ? vipMenuItems : role === UserRole.Brand ? [] : role === UserRole.Agent ? agentMenuItems : [];
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const { clearAll } = useUserInfoStore();

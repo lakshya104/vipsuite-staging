@@ -4,8 +4,9 @@ import './ProfileBuilderLayout.scss';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import BackToHome from '@/components/BackToHome';
 import Image from 'next/image';
+import ProgressProvider from '@/libs/providers/ProgressProvider';
 
-export default async function AuthLayout({
+export default async function AgentProfileBuilderLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -18,7 +19,9 @@ export default async function AuthLayout({
         </ProgressBarLink>
         <BackToHome />
       </Box>
-      <Box className="profile-builder__main">{children}</Box>
+      <Box className="profile-builder__main">
+        <ProgressProvider color="black"> {children}</ProgressProvider>
+      </Box>
     </Box>
   );
 }

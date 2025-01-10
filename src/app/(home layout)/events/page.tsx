@@ -4,12 +4,23 @@ import './Event.scss';
 import EventsPage from '@/site-pages/EventsPage';
 import EventsPageLoading from '@/site-pages/EventsPage/loading';
 
-export default async function Page() {
+interface SearchParams {
+  page?: string;
+  search?: string;
+}
+
+interface PageProps {
+  searchParams: SearchParams;
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const page = parseInt(searchParams?.page || '1', 10);
+  const search = searchParams?.search;
   return (
     <Box component={'main'} className="landing-page">
       <Container>
         <Suspense fallback={<EventsPageLoading />}>
-          <EventsPage />
+          <EventsPage currentPage={page} search={search} />
         </Suspense>
       </Container>
     </Box>

@@ -3,12 +3,21 @@ import { Box, Container } from '@mui/material';
 import ProductsPage from '@/site-pages/ProductsPage';
 import ProductsPageLoading from '@/site-pages/ProductsPage/loading';
 
-export default async function Page() {
+interface SearchParams {
+  page?: string;
+}
+
+interface PageProps {
+  searchParams: SearchParams;
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const page = parseInt(searchParams?.page || '1', 10);
   return (
     <Box className="products">
       <Container>
         <Suspense fallback={<ProductsPageLoading />}>
-          <ProductsPage />
+          <ProductsPage currentPage={page} />
         </Suspense>
       </Container>
     </Box>

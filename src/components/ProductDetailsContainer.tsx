@@ -17,7 +17,7 @@ interface productsContainerProps {
 }
 
 const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
-  const productImage = product?.acf?.web_detail_image?.sizes['vs-container'] || DefaultImageFallback.Placeholder;
+  const productImage = product?.images?.[0]?.src || DefaultImageFallback.Placeholder;
   const productDescription = wrapInParagraph(product?.description);
   const isRequestOnly = get(find(product?.meta_data, { key: 'is_request_only' }), 'value') === '1' || false;
   const showOffers =

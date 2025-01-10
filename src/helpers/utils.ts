@@ -155,9 +155,8 @@ export const getLastPathSegment = (url: string) => {
     const parsedUrl = new URL(url);
     const pathSegments = parsedUrl.pathname.split('/').filter(Boolean);
     return `/${pathSegments.pop()}`;
-  } catch (error) {
-    console.error('Invalid URL', error);
-    return '';
+  } catch {
+    return '#';
   }
 };
 

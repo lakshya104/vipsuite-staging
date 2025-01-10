@@ -127,7 +127,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
             )}
             {name === 'phone' && !errors[name] && (
               <Box className="input-text">
-                <Typography>Including Country Code</Typography>
+                <Typography>Including the country code with + sign</Typography>
               </Box>
             )}
           </Box>

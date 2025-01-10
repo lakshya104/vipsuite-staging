@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { filter, first } from 'lodash';
 import he from 'he';
 import FeedbackForm from '@/features/FeedbackForm';
-import { formatDate, formatDateWithoutOrdinal, formatString } from '@/helpers/utils';
+import { formatDate, formatEventDates, formatString } from '@/helpers/utils';
 import OrderItem from './OrderItem';
 import { Order } from '@/interfaces';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -22,8 +22,8 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
     orderDetail.status === 'rsvp-request'
       ? orderDetail?.meta_data.find((item) => item.key === 'response')?.value === 'interested'
       : true;
-
   const response = orderDetail?.meta_data.find((item) => item.key === 'response')?.value;
+
   return (
     <>
       <Box my={2.5}>
@@ -60,7 +60,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               </Typography>
               {orderDetail?.opportunity?.start_date && (
                 <Typography variant="body1">
-                  {formatDateWithoutOrdinal(orderDetail?.opportunity?.start_date)}
+                  {formatEventDates(orderDetail?.opportunity?.start_date, orderDetail?.opportunity?.end_date)}
                 </Typography>
               )}
               {orderDetail?.opportunity?.location && (

@@ -15,8 +15,9 @@
     margin-bottom: rem(20);
     @include fontSize(30);
     @media only screen and (min-width: 992px) {
-      margin-bottom: rem(37);
-      @include fontSize(50);
+      margin-bottom: rem(40);
+      line-height: rem(60);
+      @include fontSize(40);
     }
   }
 }

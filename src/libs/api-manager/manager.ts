@@ -261,10 +261,11 @@ export const GetBrandProductDetail = async (id: number) => {
   }
 };
 
-export const GetProducts = async () => {
+export const GetProducts = async (page = 1) => {
   try {
-    const response = await Instance.get(Endpoints.getProducts);
-    return { data: response.data, error: null };
+    const response = await Instance.get(Endpoints.getProducts(page));
+    const totalPages = response.headers['x-wp-totalpages'];
+    return { data: response.data, totalPages, error: null };
   } catch (error) {
     return { data: null, error };
   }
@@ -282,10 +283,12 @@ export const GetSignupContent = async () => {
   }
 };
 
-export const GetVipEvents = async () => {
+export const GetVipEvents = async (page = 1, search?: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipEvents);
-    return { data: response.data, error: null };
+    const response = await Instance.get(Endpoints.getVipEvents(page, search));
+    const totalEvents = response.headers['x-wp-total'];
+    const totalPages = response.headers['x-wp-totalpages'];
+    return { data: response.data, totalEvents, totalPages, error: null };
   } catch (error) {
     return { data: null, error };
   }
@@ -426,12 +429,19 @@ export const CreateOrder = async (data: CreateOrderData) => {
   }
 };
 
-export const GetVipOpportunities = async (opportunityCategory?: string) => {
+export const GetVipOpportunities = async (page = 1, opportunityCategory?: string, search?: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipOpportunities(opportunityCategory));
-    return { data: response.data, error: null };
+    const response = await Instance.get(Endpoints.getVipOpportunities(opportunityCategory, page, search));
+    const totalOpportunities = response.headers['x-wp-total'];
+    const totalPages = response.headers['x-wp-totalpages'];
+    return {
+      opportunities: response.data,
+      totalOpportunities,
+      totalPages,
+      error: null,
+    };
   } catch (error) {
-    return { data: null, error };
+    return { opportunities: null, error };
   }
 };
 
@@ -675,9 +685,9 @@ export const GetOpportunityCategory = async () => {
   }
 };
 
-export const GetFormId = async () => {
+export const GetFormId = async (tag: string) => {
   try {
-    const response = await Instance.get(Endpoints.getFormId);
+    const response = await Instance.get(Endpoints.getFormId(tag));
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -687,9 +697,9 @@ export const GetFormId = async () => {
   }
 };
 
-export const SubmitComingSoonForm = async (id: string, formData: FormData) => {
+export const SubmitLandingPageForm = async (id: string, formData: FormData) => {
   try {
-    const response = await Instance.post(Endpoints.submitComingSoonForm(id), formData, {
+    const response = await Instance.post(Endpoints.submitLandingPageForm(id), formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;
@@ -738,5 +748,17 @@ export const SendMessage = async (id: number, payload: { message: string; order_
     console.error('Error during sending message:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending message';
     throw new Error(errorMessage);
+  }
+};
+
+export const GetWebsiteContent = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getWebsiteContent);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetching Form Id');
   }
 };

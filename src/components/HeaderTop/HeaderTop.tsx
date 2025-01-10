@@ -1,17 +1,15 @@
 import React from 'react';
-import { Box, Link as MuiLink, Typography } from '@mui/material';
-import Link from 'next/link';
+import { Box, Typography } from '@mui/material';
 import './HeaderTop.scss';
 
-const HeaderTop = () => {
+interface HeaderTopProps {
+  text: string;
+}
+const HeaderTop: React.FC<HeaderTopProps> = ({ text }) => {
   return (
     <Box className="headerTop">
       <Typography component="p" lineHeight={1.4} letterSpacing={'normal'}>
-        Refer a VIP and get a gift voucher worth £50.
-        <MuiLink href="/" prefetch component={Link}>
-          {' '}
-          *Find out more
-        </MuiLink>
+        {text}
       </Typography>
     </Box>
   );

@@ -94,6 +94,12 @@ const en = {
     continue: 'Continue',
     agentWelcomePara: 'As an agent, explore new opportunities.',
   },
+  customBrandAcceptedScreen: {
+    acceptedTxt: 'Welcome!',
+    welcomeTxt: 'Glad to have you',
+    welcomePara: 'You can now build your brand profile.',
+    continue: 'Continue',
+  },
   customRejectedScreen: {
     rejectedTxt: 'Application Rejected!',
     subTitle: 'Unfortunately!',
@@ -173,7 +179,7 @@ const en = {
         child: 'Enter child details.',
         ageOfChild: "Enter child's age.",
         genderOfChild: "Select child's gender.",
-        pets: 'Please enter pet(s) name.',
+        pets: 'Please select a pet.',
         homePostcode: 'Invalid postal code. Please enter a valid postal code.',
       },
     },
@@ -268,7 +274,7 @@ const en = {
       email: 'Email is required.',
       requiredEmail: 'Invalid email.',
       password: 'Invalid password.',
-      phoneValidation: 'Please enter a valid phone number, including the country code with + sign.',
+      phoneValidation: 'Please enter a valid phone number.',
       passwordValidation:
         'The password must be a minimum of 6 characters long and include at least one uppercase, one lowercase letter, one number, and one special character.',
       requiredPassword: 'Password is required.',
@@ -313,6 +319,25 @@ const en = {
     noContactDataMessage: 'Update Profile And Come Back',
     noSocialData: 'Social Handles',
     noAddressData: 'No Address Available',
+  },
+
+  landingForm: {
+    placeholder: {
+      role: 'Brand, VIP or Agent?',
+      name: 'Name',
+      email: 'Email',
+      jobTitle: 'Job Title',
+      companyName: 'Company Name',
+      phone: 'Phone',
+    },
+    errorMessage: {
+      roleRequired: 'Select a Role.',
+      nameRequired: 'Name is required.',
+      emailRequired: 'Email is required.',
+      companyRequired: 'Company Name is required.',
+      jobTitleRequired: 'Job Title is required.',
+      phoneValidation: 'Please enter a valid phone number, including the country code with + sign.',
+    },
   },
 };
 

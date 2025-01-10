@@ -5,15 +5,15 @@ import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import OfferAskComponent from './OfferAskComponent';
 
 const TABS = [
-  { section: 'overview', label: 'Quick Overview' },
-  { section: 'details', label: 'Details' },
+  { section: 'offer', label: 'The Offer' },
+  { section: 'ask', label: 'The Ask' },
 ];
 
 const OpportunityTabs = ({ opportunity }: { opportunity: OpportunityDetails }) => {
-  const [section, setSection] = useState<'overview' | 'details'>('overview');
+  const [section, setSection] = useState<'offer' | 'ask'>('offer');
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setSection(TABS[newValue].section as 'overview' | 'details');
+    setSection(TABS[newValue].section as 'offer' | 'ask');
   };
 
   const currentTabIndex = TABS.findIndex((tab) => tab.section === section) || 0;

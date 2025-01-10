@@ -5,11 +5,13 @@
 @import '../../styles/mixins';
 
 .order-details-page {
-  height: calc(100vh - 340px);
-  overflow-y: auto;
   .inbox__date {
     border-bottom: 0.0625rem solid var(--color-textBlack-10);
     padding-bottom: rem(20);
+  }
+  .inbox_content {
+    height: calc(100vh - 340px);
+    overflow-y: auto;
   }
 }
 

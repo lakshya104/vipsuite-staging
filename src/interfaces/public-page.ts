@@ -69,21 +69,55 @@ export interface PublicCta {
 }
 
 export interface ContentModule {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  cta: any;
+  description: string;
+  image: {
+    url: string;
+    name: string;
+    alt: string;
+  };
+  heading?: string;
+  cta?: {
+    cta_type: string;
+    cta_url: string;
+    cta_external_link: boolean;
+    cta_text: string;
+  };
+  content?: string;
+  copy?: string;
   acf_fc_layout: string;
-  heading: string;
+  form_type: 'book-demo' | 'contact-us';
   html_tag?: string;
   cta_group?: CTA[];
   slides?: Slide[];
   list_items?: ListItem[];
+  full_width_layout?: boolean;
+  apply_wrapper?: boolean;
   settings: {
     hide_component: boolean;
   };
-  description?: string;
   table_columns?: [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content_blocks?: any;
+  content_blocks: ContentBlocks[];
+  faqs: FAQ[];
+}
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface ContentBlocks {
+  heading: string;
+  show_cta?: boolean;
+  image: {
+    url: string;
+    name: string;
+    alt: string;
+  };
+  description?: string;
+  cta: {
+    cta_url: string;
+    cta_text: string;
+  };
+  image_position?: 'left' | 'right';
 }
 
 export interface Slide {
@@ -206,4 +240,34 @@ export interface BrandLogo {
   icon: string;
   width: number;
   height: number;
+}
+
+export interface MenuItemData {
+  ID: number;
+  title: string;
+  url: string;
+  menu_item_parent: string;
+  object: string;
+}
+
+export interface WebsiteContent {
+  header_menu: MenuItemData[];
+  notification_form_id: number;
+  contact_form_id: number;
+  book_demo_form_id: number;
+  website_tagline: string;
+  play_store_url: string;
+  apple_store_url: string;
+  instagram_url: string;
+  facebook_url: string;
+  x_url: string;
+  pinterest_url: string;
+  footer_menu_1: HeaderMenu[];
+  footer_menu_2: HeaderMenu[];
+  footer_bottom: HeaderMenu[];
+}
+
+export interface HeaderMenu {
+  title: string;
+  url: string;
 }

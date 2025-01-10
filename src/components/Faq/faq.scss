@@ -1,0 +1,53 @@
+/*
+* FAQ page style.
+*/
+
+@import '../../styles/mixins';
+
+.accordion-container {
+  margin-bottom: rem(80);
+  .accordion-tab {
+    background-color: #1b1b1b;
+    box-shadow: none;
+    margin: 0 !important;
+    border-bottom: rem(1) solid #494947;
+    &:first-child {
+      border-top: rem(1) solid #494947;
+    }
+    svg {
+      fill: var(--color-marble);
+    }
+    &.Mui-expanded {
+      padding-bottom: rem(24);
+      .accordion-detail {
+        padding-top: rem(8);
+      }
+    }
+  }
+  p {
+    line-height: rem(22);
+    @include fontSize(14);
+  }
+  .accordion-detail {
+    padding-bottom: 0;
+    p {
+      opacity: 70%;
+    }
+  }
+  .accordion-title {
+    p {
+      padding: rem(16) 0;
+      font-weight: 500;
+    }
+    &.Mui-expanded {
+      min-height: unset;
+      p {
+        padding-bottom: 0;
+      }
+    }
+    min-height: unset;
+    .MuiAccordionSummary-content {
+      margin: 0;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     remotePatterns: [
       {
@@ -9,6 +9,14 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+  },
+  modularizeImports: {
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}',
+    },
+    '@mui/material': {
+      transform: '@mui/material/{{member}}',
+    },
   },
 };
 

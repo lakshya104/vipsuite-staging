@@ -56,18 +56,18 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
         {cartItems?.length > 0 ? (
           <>
             {cartItems.map((product) => {
-              const productImage = product.image_url || DefaultImageFallback.Placeholder;
+              const productImage = product?.image_url || DefaultImageFallback.Placeholder;
               return (
                 <Box className="basket-product__item" key={product.id}>
                   <Image src={productImage} alt={product?.name} height={110} width={110} style={{ borderRadius: 6 }} />
                   <Box className="product-info">
                     <Typography gutterBottom variant="h2">
-                      {he.decode(product?.brand_name)}
+                      {he.decode(product?.name)}
                     </Typography>
-                    <Typography variant="body1"> {he.decode(product?.name)}</Typography>
+                    <Typography variant="body1">{he.decode(product?.brand_name)}</Typography>
                     <Box mb={0.5}>
                       {product.type === 'variation' &&
-                        take(product.variation, 5).map(
+                        take(product?.variation, 5).map(
                           (variation, index) =>
                             variation && (
                               <Typography key={index} variant="body1">
@@ -88,7 +88,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
                       </Typography>
                     )}
                   </Box>
-                  <DeleteItemFromCartBtn productId={product.id} startTransition={startTransition} />
+                  <DeleteItemFromCartBtn productId={product?.id} startTransition={startTransition} />
                 </Box>
               );
             })}

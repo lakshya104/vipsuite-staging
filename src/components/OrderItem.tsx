@@ -19,10 +19,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
       />
       <Box>
         <Typography gutterBottom variant="h2">
-          {item?.brand_name}
+          {item?.name}
         </Typography>
         <Typography gutterBottom variant="body1">
-          {item?.name}
+          {item?.brand_name}
         </Typography>
         {item?.variation_id !== 0 &&
           item?.meta_data?.map((attr, index) => (

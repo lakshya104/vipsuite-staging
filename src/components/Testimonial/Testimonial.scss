@@ -10,6 +10,9 @@
   .site-testimonial {
     &__inner {
       padding: rem(16) rem(24) rem(32);
+      &:last-child {
+        padding-bottom: rem(32);
+      }
       p {
         line-height: 1.58;
         color: var(--color-textBlack-80);
@@ -22,11 +25,8 @@
         @include border-radius(3px);
       }
     }
-    &__logo {
-      padding: rem(7) rem(6);
-    }
     &__body {
-      min-height: rem(89);
+      min-height: rem(88);
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;

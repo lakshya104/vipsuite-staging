@@ -1,28 +1,38 @@
 'use client';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useTransition } from 'react';
 import SearchBar from './SearchBar';
 import { Box, Grid, Typography } from '@mui/material';
+import en from '@/helpers/lang';
 import EventsListing from './EventListing';
+import { isEmpty } from 'lodash';
 import { Event } from '@/interfaces/events';
 import ErrorFallback from './ErrorFallback';
-import en from '@/helpers/lang';
-import { isEmpty } from 'lodash';
+import { useRouter } from 'next/navigation';
+import { useDebounce } from 'use-debounce';
 
 interface EventCardsProps {
   eventsData: Event[];
+  totalPages: number;
+  currentPage: number;
 }
 
-const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
+const EventCards: React.FC<EventCardsProps> = ({ eventsData, currentPage, totalPages }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
-  const filteredEvents = useMemo(() => {
-    if (!searchQuery.trim()) return eventsData;
-    const lowerCaseQuery = searchQuery.toLowerCase().trim();
-    return eventsData.filter((event) => {
-      const searchableFields = [event.title.rendered];
-      return searchableFields.some((field) => field && field.toLowerCase().includes(lowerCaseQuery));
+  useEffect(() => {
+    startTransition(() => {
+      const params = new URLSearchParams(window.location.search);
+      if (debouncedSearchQuery) {
+        params.set('search', debouncedSearchQuery);
+      } else {
+        params.delete('search');
+      }
+      router.push(`?${params.toString()}`);
     });
-  }, [eventsData, searchQuery]);
+  }, [debouncedSearchQuery, router]);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -32,26 +42,6 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
     setSearchQuery('');
   }, []);
 
-  if (isEmpty(eventsData)) {
-    return (
-      <>
-        <Box my={2.5}>
-          <SearchBar
-            searchTerm={searchQuery}
-            placeholder="Search for events..."
-            handleChange={handleChange}
-            handleClear={handleClear}
-            aria-label="Search events"
-          />
-        </Box>
-        <ErrorFallback
-          errorMessage={en.listEmptyMessage.noEventData}
-          hideSubtext={true}
-          subtext={en.listEmptyMessage.noData}
-        />
-      </>
-    );
-  }
   return (
     <>
       <Box my={2.5}>
@@ -63,20 +53,20 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
           aria-label="Search events"
         />
       </Box>
-      {!searchQuery ? (
-        <EventsListing events={eventsData} />
-      ) : searchQuery && filteredEvents.length > 0 ? (
+      {!isEmpty(eventsData) ? (
         <>
-          <Grid container mb={2.5}>
-            <Grid item xs={12}>
-              <Box width="100%">
-                <Typography variant="h3" component="h2" mb={1}>
-                  {filteredEvents.length} Results for &quot;{searchQuery}&quot;
-                </Typography>
-              </Box>
+          {debouncedSearchQuery && !isPending && (
+            <Grid container mb={2.5}>
+              <Grid item xs={12}>
+                <Box width="100%">
+                  <Typography variant="h3" component="h2" mb={1}>
+                    {eventsData.length} Results for &quot;{debouncedSearchQuery}&quot;
+                  </Typography>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-          <EventsListing events={filteredEvents} />
+          )}
+          <EventsListing events={eventsData} totalPages={totalPages} currentPage={currentPage} />
         </>
       ) : (
         <ErrorFallback

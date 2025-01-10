@@ -52,6 +52,11 @@ header.site-header {
     &.showMenu {
       display: block;
     }
+    .login-link {
+      @media screen and (min-width: 992px) {
+        display: none;
+      }
+    }
   }
   &__navigation {
     @media only screen and (min-width: 992px) {
@@ -85,7 +90,7 @@ header.site-header {
         }
       }
       &.button--white {
-        margin-top: 0;
+        margin-top: 0 !important;
         padding: rem(5) rem(14);
         line-height: 1.07;
         @include fontSize(11);
@@ -114,6 +119,9 @@ header.site-header {
     img {
       height: auto;
       width: auto;
+    }
+    .white-logo {
+      display: none;
     }
     @media only screen and (max-width: 991px) {
       @include align(true, true, absolute);

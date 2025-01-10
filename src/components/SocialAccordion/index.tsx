@@ -34,12 +34,14 @@ const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
     slidesToScroll: 1,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const SliderComponent = Slider as unknown as React.ComponentType<any>;
   return (
     <Container>
       <Box className="site-card__wrapper">
         {isMobile ? (
           <Box className="accordionItem">
-            <Slider {...sliderSettings}>
+            <SliderComponent {...sliderSettings}>
               {socialLinks?.map((link, index) => (
                 <Box key={index} className="accordionItem__link">
                   <Box className="accordionItem__image">
@@ -54,7 +56,7 @@ const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
                   </Box>
                 </Box>
               ))}
-            </Slider>
+            </SliderComponent>
           </Box>
         ) : (
           <Box className="accordionItem">

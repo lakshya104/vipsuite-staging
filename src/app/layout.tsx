@@ -2,7 +2,6 @@ import React from 'react';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import type { Metadata } from 'next';
 import '../styles/globals.scss';
-import { ProgressBar } from '@/components/ProgressBar';
 import ThemeRegistry from './ThemeRegistry';
 
 export const dynamic = 'force-dynamic';
@@ -21,9 +20,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ThemeRegistry options={{ key: 'mui-theme' }}>
-            <ProgressBar>{children}</ProgressBar>
-          </ThemeRegistry>
+          <ThemeRegistry options={{ key: 'mui-theme' }}>{children}</ThemeRegistry>
         </AppRouterCacheProvider>
       </body>
     </html>

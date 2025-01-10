@@ -1,12 +1,13 @@
 'use client';
 import * as React from 'react';
-import { Typography, Box } from '@mui/material';
-import Slider from 'react-slick';
+import { Box } from '@mui/material';
+import Slider, { Settings } from 'react-slick';
 import Image from 'next/image';
 import './Partner.scss';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { ContentModule } from '@/interfaces/public-page';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface PartnerProps {
   data: ContentModule;
@@ -15,7 +16,7 @@ interface PartnerProps {
 const Partner: React.FC<PartnerProps> = ({ data }) => {
   const logos = data?.list_items;
 
-  const settings = {
+  const settings: Settings = {
     dots: false,
     variableWidth: true,
     infinite: true,
@@ -46,29 +47,37 @@ const Partner: React.FC<PartnerProps> = ({ data }) => {
     ],
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const SliderComponent = Slider as unknown as React.ComponentType<any>;
+
   return (
     data && (
       <Box component="section" className="site-partner">
-        <Typography component="h2" variant="h2">
-          {data?.heading}
-        </Typography>
         <Box>
-          <Slider {...settings}>
+          <SliderComponent {...settings}>
             {logos?.map((item, index) => (
               <Box key={index} className="site-partner__card">
                 <Box className="site-partner__card-inner">
-                  <Image src={item?.logo?.sizes?.['thumbnail'] ?? ''} alt={item?.logo?.title ?? 'Partner Logo'} fill />
+                  <Image
+                    src={item?.logo?.sizes?.['thumbnail'] || DefaultImageFallback.Placeholder}
+                    alt={item?.logo?.title || 'Partner Logo'}
+                    fill
+                  />
                 </Box>
               </Box>
             ))}
             {logos?.map((item, index) => (
               <Box key={index} className="site-partner__card">
                 <Box className="site-partner__card-inner">
-                  <Image src={item?.logo?.sizes?.['thumbnail'] ?? ''} alt={item?.logo?.title ?? 'Partner Logo'} fill />
+                  <Image
+                    src={item?.logo?.sizes?.['thumbnail'] || DefaultImageFallback.Placeholder}
+                    alt={item?.logo?.title || 'Partner Logo'}
+                    fill
+                  />
                 </Box>
               </Box>
             ))}
-          </Slider>
+          </SliderComponent>
         </Box>
       </Box>
     )

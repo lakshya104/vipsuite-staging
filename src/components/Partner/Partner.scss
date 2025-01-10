@@ -15,9 +15,9 @@
   }
   .site-partner__card {
     &-inner {
-      background-color: var(--color-gray-40);
+      background-color: #323231;
       padding: rem(10) rem(40);
-      border: rem(1) solid var(--color-textBlack-20);
+      border: rem(1) solid #494947;
       min-height: rem(70);
       margin: 0 rem(6);
       @include border-radius(6px);

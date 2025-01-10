@@ -49,7 +49,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
               orderType === 'rsvp'
                 ? order?.opportunity?.image?.sizes?.medium
                 : orderType === 'order'
-                  ? first(order.line_items)?.image.src
+                  ? first(order?.line_items)?.image?.src
                   : orderType === 'lookbookOrder'
                     ? order?.opportunity?.image?.sizes?.medium
                     : DefaultImageFallback.Placeholder;

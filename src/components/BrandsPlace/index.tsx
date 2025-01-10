@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Typography, Button, Grid, Container } from '@mui/material';
+import { Box, Typography, Grid, Container, ListItemIcon } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import './BrandsPlace.scss';
 import { ProgressBarLink } from '../ProgressBar';
 import { ContentModule } from '@/interfaces/public-page';
+import CheckIcon from '@mui/icons-material/Check';
 
 interface TableDataItem {
   heading: string;
@@ -36,30 +37,31 @@ const BrandsPlace: React.FC<BrandsPlaceProps> = ({ data }) => {
     <Box component="section" className="brand-section">
       <Container>
         <Grid container>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12}>
             <Box className="brand-section__head">
               <Typography variant="h2">{data?.heading}</Typography>
               <Typography variant="body1" paragraph>
                 {data?.description}
               </Typography>
-              <ProgressBarLink href="/on-boarding">
-                <Button variant="contained" className="button button--white">
-                  Join The VIP Suite
-                </Button>
-              </ProgressBarLink>
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={8} className="brand-section__content">
+          <Grid item xs={12} className="brand-section__content">
             <Grid container spacing={0}>
               {tableData &&
                 tableData.map((feature, index) => (
                   <Grid item xs={12} sm={2.4} key={index} className="brand-section__item">
+                    <ListItemIcon>
+                      <CheckIcon color="success" />
+                    </ListItemIcon>
                     <FeatureCell heading={feature?.heading} points={feature?.points} />
                   </Grid>
                 ))}
             </Grid>
           </Grid>
+          <ProgressBarLink className="brand-section__btn" href="/on-boarding">
+            Join Today
+          </ProgressBarLink>
         </Grid>
       </Container>
     </Box>

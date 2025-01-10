@@ -137,7 +137,7 @@ export const genderOfChildValidation = z.array(
   z.string().min(1, { message: en.profileBuilder.yourDetails.errorMessage.genderOfChild }),
 );
 
-export const petsValidation = z.string().min(1, { message: en.profileBuilder.yourDetails.errorMessage.pets });
+export const petsValidation = z.array(z.string()).min(1, { message: en.profileBuilder.yourDetails.errorMessage.pets });
 
 export const homePostcodeValidation = z
   .string()
@@ -160,3 +160,29 @@ export const socialLookValidation = z
   .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.lookFeelOfSocials });
 
 export const habitsValidation = z.array(z.string()).min(1, { message: 'Please select at least one habit.' });
+
+export const nameValidation = z
+  .string()
+  .trim()
+  .min(1, { message: en.landingForm.errorMessage.nameRequired })
+  .refine((value) => value.length > 0, {
+    message: en.landingForm.errorMessage.nameRequired,
+  });
+
+export const companyRequiredValidation = z
+  .string()
+  .trim()
+  .min(1, { message: en.landingForm.errorMessage.companyRequired })
+  .refine((value) => value.length > 0, {
+    message: en.landingForm.errorMessage.companyRequired,
+  });
+
+export const jobTitleValidation = z
+  .string()
+  .trim()
+  .min(1, { message: en.landingForm.errorMessage.jobTitleRequired })
+  .refine((value) => value.length > 0, {
+    message: en.landingForm.errorMessage.jobTitleRequired,
+  });
+
+export const roleValidation = z.string().min(1, { message: en.landingForm.errorMessage.roleRequired });

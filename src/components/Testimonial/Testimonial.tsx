@@ -16,7 +16,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, title, testimon
     <Box className="site-testimonial">
       <CardContent className="site-testimonial__inner">
         <Box mb={2} className="site-testimonial__logo">
-          <Image src={logo} alt={`${name}'s Logo`} width={28} height={25} />
+          <Image src={logo} alt={`${name}'s Logo`} width={40} height={40} />
         </Box>
         <Typography className="site-testimonial__body" variant="body1" mb={3}>
           {testimonial}

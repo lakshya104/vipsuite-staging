@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
+import { Backdrop, Box, Checkbox, CircularProgress, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
@@ -13,11 +13,12 @@ import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
+import { join, split } from 'lodash';
 
 interface FormField {
   name: keyof Step3FormValues;
   label: string;
-  type: 'select' | 'date' | 'text';
+  type: 'select' | 'date' | 'text' | 'checkbox';
   placeholder?: string;
   options?: { value: string; label: string }[];
 }
@@ -96,7 +97,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       {
         name: 'pets',
         label: 'Pets',
-        type: 'text',
+        type: 'checkbox',
         placeholder: 'Pets',
       },
       {
@@ -117,7 +118,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     numberOfChildren: profileDetail.number_of_children || '',
     ageOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: ChildInfo) => child.dob) : [],
     genderOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: ChildInfo) => child.gender) : [],
-    pets: profileDetail.pets || '',
+    pets: split([profileDetail?.pets?.toLowerCase()]?.[0], ','),
     homePostcode: profileDetail.home_post_code || '',
   };
 
@@ -129,6 +130,8 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     getValues,
     clearErrors,
     reset,
+    setValue,
+    register,
   } = useForm<Step3FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
@@ -158,6 +161,8 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     if (childInfo.length === 0) {
       childInfo = false;
     }
+
+    const petsString = join(data.pets, ',');
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
@@ -166,7 +171,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         nationality: data.nationality,
         ethnicity: data.ethnicity,
         number_of_children: data.numberOfChildren,
-        pets: data.pets,
+        pets: petsString,
         home_post_code: data.homePostcode,
         child_info: childInfo,
       };
@@ -179,7 +184,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           nationality: data.nationality === '' ? null : data.nationality,
           ethnicity: data.ethnicity === '' ? null : data.ethnicity,
           number_of_children: data.numberOfChildren === '' ? null : data.numberOfChildren,
-          pets: data.pets,
+          pets: petsString,
           home_post_code: data.homePostcode,
           child_info: childInfo,
         },
@@ -196,6 +201,20 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const numberOfChildren = watch('numberOfChildren');
   const homePostcodeValue = watch('homePostcode');
   const petsValue = watch('pets');
+  const petOptions = [
+    { label: 'Dogs', value: 'dogs' },
+    { label: 'Cats', value: 'cats' },
+    { label: 'Others', value: 'others' },
+  ];
+  const toggleInterest = (value: string) => {
+    const currentPets = petsValue;
+    if (currentPets.includes(value)) {
+      setValue(
+        'pets',
+        currentPets.filter((i) => i !== value),
+      );
+    }
+  };
   const vipStep3formFields = getVipStep3FormFields(Number(numberOfChildren));
 
   useEffect(() => {
@@ -212,7 +231,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   }, [numberOfChildren, reset, getValues, clearErrors]);
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step1-form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
           Your Details
@@ -244,6 +263,35 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
               <Box key={field.name} width="100%">
                 <FormDatePicker {...commonProps} />
               </Box>
+            );
+          case 'checkbox':
+            return (
+              <FormGroup key={field.name} className="profile-builder__form-group">
+                <Typography variant="body1" fontWeight={500} gutterBottom textAlign="left">
+                  {field.placeholder}
+                </Typography>
+                <Box className="profile-builder__form-row">
+                  {petOptions.map((option: { label: string; value: string }, index: number) => (
+                    <FormControlLabel
+                      key={index}
+                      control={
+                        <Checkbox
+                          checked={petsValue.includes(option.value)}
+                          onClick={() => toggleInterest(option.value)}
+                          {...register(field.name)}
+                          value={option.value}
+                        />
+                      }
+                      label={option.label}
+                    />
+                  ))}
+                </Box>
+                {errors?.[field.name] && (
+                  <Typography color="error" textAlign="center">
+                    {errors?.[field.name]?.message}
+                  </Typography>
+                )}
+              </FormGroup>
             );
           case 'text':
           default:

@@ -1,8 +1,8 @@
 'use client';
-import React, { useState, useEffect, useMemo, useCallback, useTransition } from 'react';
+import React, { useState, useEffect, useCallback, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { isEmpty } from 'lodash';
-import { Box, Typography, CircularProgress, Backdrop, Grid } from '@mui/material';
+import { Box, CircularProgress, Backdrop, Grid, Typography } from '@mui/material';
 import SearchBar from '../SearchBar';
 import { Opportunity } from '@/interfaces/opportunities';
 import { GetOpportunityCategory } from '@/libs/api-manager/manager';
@@ -11,32 +11,43 @@ import './OpportunitiesContainer.scss';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
 import FilterButton from '../FilterButton';
+import { useDebounce } from 'use-debounce';
 
 interface OpportunitiesContainerProps {
   opportunitiesData: Opportunity[];
+  totalOpportunities: number;
+  totalPages: number;
+  currentPage: number;
 }
 
-const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData }) => {
+const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
+  opportunitiesData,
+  totalPages,
+  currentPage,
+}) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [categories, setCategories] = useState<{ id: number; name: string; url: string; emoji_url: string }[]>([]);
   const [isPending, startTransition] = useTransition();
+  const [isSearchPending, startSearchTransition] = useTransition();
   const router = useRouter();
   const searchParams = useSearchParams();
   const isFilterApplied = searchParams.get('opportunityCategory');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await GetOpportunityCategory();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const categoryList = response.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          url: item.acf.image.url,
-          emoji_url: item?.acf?.emoji_icon?.url,
-        }));
+        const categoryList = response.map(
+          (item: { id: string; name: string; acf: { image: { url: string }; emoji_icon: { url: string } } }) => ({
+            id: item.id,
+            name: item.name,
+            url: item.acf.image.url,
+            emoji_url: item?.acf?.emoji_icon?.url,
+          }),
+        );
         setCategories(categoryList);
       } catch (error) {
         console.error('Failed to fetch categories', error);
@@ -52,30 +63,59 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     }
   }, [selectedCategoryId, isFilterApplied]);
 
-  const filteredBySearch = useMemo(() => {
-    if (!searchQuery.trim()) return opportunitiesData;
-    const lowerCaseQuery = searchQuery.toLowerCase().trim();
-    return opportunitiesData.filter((event) => event?.title?.rendered.toLowerCase().includes(lowerCaseQuery));
-  }, [opportunitiesData, searchQuery]);
-
-  const handleFilter = (categoryId: number) => {
-    const sameId = selectedCategoryId === categoryId;
-    const newCategoryId = sameId ? null : categoryId;
-    if (newCategoryId === null) {
-      clearFilter();
-    } else {
-      setSelectedCategoryId(newCategoryId);
-      startTransition(() => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (newCategoryId) {
-          params.set('opportunityCategory', newCategoryId.toString());
+  useEffect(() => {
+    try {
+      startSearchTransition(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (debouncedSearchQuery) {
+          params.set('search', debouncedSearchQuery);
         } else {
-          params.delete('opportunityCategory');
+          params.delete('search');
         }
         router.push(`?${params.toString()}`);
       });
+    } catch (error) {
+      console.error('Error updating search query:', error);
     }
-    setIsFilterOpen(false);
+  }, [debouncedSearchQuery, router]);
+
+  const handleFilter = (categoryId: number) => {
+    try {
+      const sameId = selectedCategoryId === categoryId;
+      const newCategoryId = sameId ? null : categoryId;
+
+      if (newCategoryId === null) {
+        clearFilter();
+      } else {
+        setSelectedCategoryId(newCategoryId);
+        startTransition(() => {
+          const params = new URLSearchParams(searchParams.toString());
+          if (newCategoryId) {
+            params.set('opportunityCategory', newCategoryId.toString());
+          } else {
+            params.delete('opportunityCategory');
+          }
+          router.push(`?${params.toString()}`);
+        });
+      }
+      setIsFilterOpen(false);
+    } catch (error) {
+      console.error('Error handling filter:', error);
+    }
+  };
+
+  const clearFilter = () => {
+    try {
+      startTransition(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete('opportunityCategory');
+        router.push(`?${params.toString()}`);
+        setSelectedCategoryId(null);
+        setIsFilterOpen(false);
+      });
+    } catch (error) {
+      console.error('Error clearing filter:', error);
+    }
   };
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,16 +125,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const handleClear = useCallback(() => {
     setSearchQuery('');
   }, []);
-
-  const clearFilter = () => {
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('opportunityCategory');
-      router.push(`?${params.toString()}`);
-      setSelectedCategoryId(null);
-      setIsFilterOpen(false);
-    });
-  };
 
   if (isEmpty(opportunitiesData) && !isFilterApplied) {
     return (
@@ -138,36 +168,25 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           aria-label="Search opportunities"
         />
       </Box>
-      {isEmpty(opportunitiesData) && isFilterApplied && (
+      {isEmpty(opportunitiesData) && (
         <ErrorFallback
           errorMessage={en.listEmptyMessage.noOpportunityData}
           hideSubtext={true}
           subtext={en.listEmptyMessage.noData}
         />
       )}
-      {!searchQuery ? (
-        <OpportunitiesListing opportunities={opportunitiesData} />
-      ) : searchQuery && filteredBySearch.length > 0 ? (
-        <>
-          <Grid container mb={2.5}>
-            <Grid item xs={12}>
-              <Box width="100%">
-                <Typography variant="h3" component="h2" mb={1}>
-                  {filteredBySearch.length} {filteredBySearch.length > 1 ? 'Results' : 'Result'} for &quot;{searchQuery}
-                  &quot;
-                </Typography>
-              </Box>
-            </Grid>
+      {debouncedSearchQuery && !isSearchPending && (
+        <Grid container mb={2.5}>
+          <Grid item xs={12}>
+            <Box width="100%">
+              <Typography variant="h3" component="h2" mb={1}>
+                {opportunitiesData.length} Results for &quot;{debouncedSearchQuery}&quot;
+              </Typography>
+            </Box>
           </Grid>
-          <OpportunitiesListing opportunities={filteredBySearch} />
-        </>
-      ) : (
-        <ErrorFallback
-          errorMessage={en.listEmptyMessage.noOpportunityData}
-          hideSubtext={true}
-          subtext={en.listEmptyMessage.noData}
-        />
+        </Grid>
       )}
+      <OpportunitiesListing opportunities={opportunitiesData} totalPages={totalPages} currentPage={currentPage} />
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>

@@ -5,11 +5,11 @@ import { preprocessContent } from '@/helpers/utils';
 
 interface RSVPProps {
   opportunity: OpportunityDetails;
-  show: 'overview' | 'details';
+  show: 'offer' | 'ask';
 }
 
 const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
-  const rawContent = show === 'overview' ? opportunity?.acf?.short_description : opportunity?.acf?.description;
+  const rawContent = show === 'offer' ? opportunity?.acf?.short_description : opportunity?.acf?.description;
   const content = preprocessContent(rawContent);
   return (
     <Box

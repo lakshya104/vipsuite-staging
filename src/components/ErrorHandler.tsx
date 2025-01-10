@@ -9,6 +9,7 @@ interface ErrorHandlerProps {
 
 const ErrorHandler: React.FC<ErrorHandlerProps> = ({ error, errMessage }) => {
   const message = get(error, 'message', '');
+  console.error(message);
   if (
     message.toLowerCase().includes('expired') ||
     message.toLowerCase().includes('token') ||
