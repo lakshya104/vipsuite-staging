@@ -13,9 +13,12 @@ const en = {
   },
   helperText: {
     noAccount: "Don't have an account?",
+    alreadyAccount: 'Already have an account?',
+    loginHere: 'Login here',
     continue: 'Continue',
     loading: 'Loading...',
     applyHere: 'Apply here',
+    forgotPassword: 'Forgotten your password?',
   },
   nav: {
     home: 'Home',
@@ -40,6 +43,12 @@ const en = {
     asBrand: 'As Brand',
     asAgent: 'As Agent',
     loginTxt: 'Log in here',
+  },
+  onBoarding: {
+    applyAs: 'Apply as',
+    vip: 'VIP',
+    agency: 'Agencies',
+    brand: 'Brands & PR',
   },
   login: {
     placeholder: {
@@ -67,10 +76,21 @@ const en = {
       passwordMustMatch: 'Passwords must match.',
     },
     forgotPassword: {
-      forgotPass: 'Forgot Password?',
-      subTitle: 'Enter your email to reset your password.',
-      backToLogin: 'Back to login',
-      codeSent: 'Verification code sent.',
+      sending: 'Sending...',
+      sendBtn: 'Send Password Reset',
+      dialogTitle: 'Check Your Email!',
+      subTitle: 'Verification code sent.',
+      description:
+        'A verification code has been sent to your email. Please enter the code on the next page to reset your password and log in.',
+      done: 'Got it',
+    },
+    resetPassword: {
+      saving: 'Saving...',
+      save: 'Save Password',
+      dialogTitle: 'Password Updated Successfully!',
+      subtitle: 'Your password has been changed',
+      description: 'You can now log in using your new password. If you encounter any issues, please contact support.',
+      buttonText: 'Go to Login',
     },
   },
   customReviewScreen: {

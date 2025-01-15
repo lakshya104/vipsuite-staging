@@ -1,5 +1,4 @@
-'use client';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MyVipCard from './MyVipCard';
@@ -17,29 +16,27 @@ interface MyVipsListingProps {
 }
 
 const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token }) => {
-  const sortedVips = useMemo(() => {
-    return [...myVips].sort((a, b) => {
-      const statusPriority = {
-        [ProfileStatus.Approved]: 1,
-        [ProfileStatus.Pending]: 2,
-        [ProfileStatus.Rejected]: 3,
-      };
-      const statusA = statusPriority[a.profile_status];
-      const statusB = statusPriority[b.profile_status];
+  const sortedVips = [...myVips].sort((a, b) => {
+    const statusPriority = {
+      [ProfileStatus.Approved]: 1,
+      [ProfileStatus.Pending]: 2,
+      [ProfileStatus.Rejected]: 3,
+    };
+    const statusA = statusPriority[a?.profile_status];
+    const statusB = statusPriority[b?.profile_status];
 
-      if (statusA !== statusB) {
-        return statusA - statusB;
-      }
-      const firstNameA = a.first_name.toLowerCase();
-      const firstNameB = b.first_name.toLowerCase();
-      if (firstNameA !== firstNameB) {
-        return firstNameA.localeCompare(firstNameB);
-      }
-      const lastNameA = a.last_name.toLowerCase();
-      const lastNameB = b.last_name.toLowerCase();
-      return lastNameA.localeCompare(lastNameB);
-    });
-  }, [myVips]);
+    if (statusA !== statusB) {
+      return statusA - statusB;
+    }
+    const firstNameA = a?.first_name.toLowerCase();
+    const firstNameB = b?.first_name.toLowerCase();
+    if (firstNameA !== firstNameB) {
+      return firstNameA.localeCompare(firstNameB);
+    }
+    const lastNameA = a?.last_name.toLowerCase();
+    const lastNameB = b?.last_name.toLowerCase();
+    return lastNameA.localeCompare(lastNameB);
+  });
 
   return (
     <Box className="my-vips-page">
@@ -54,30 +51,32 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token }) => {
           </Typography>
         </Box>
         <Box>
-          {isEmpty(sortedVips) && (
+          {isEmpty(sortedVips) ? (
             <ErrorFallback
               errorMessage={en.listEmptyMessage.noVipListData}
               hideSubtext={true}
               subtext={en.listEmptyMessage.addItemMessage}
             />
+          ) : (
+            sortedVips.map((item) => {
+              const link =
+                item?.profile_status === ProfileStatus.Pending ? `/agent-profile-builder?edit=true` : `/home`;
+              const name = `${item?.first_name} ${item?.last_name}`;
+              return (
+                <MyVipCard
+                  token={token}
+                  vipId={String(item?.vip_profile_id)}
+                  key={item?.vip_profile_id}
+                  name={name}
+                  image={item?.profile_image}
+                  link={link}
+                  instaFollowers={item?.instagram_follower_count}
+                  tiktokFollowers={item?.tiktok_follower_count}
+                  status={item?.profile_status}
+                />
+              );
+            })
           )}
-          {sortedVips.map((item) => {
-            const link = item.profile_status === ProfileStatus.Pending ? `/agent-profile-builder?edit=true` : `/home`;
-            const name = `${item.first_name} ${item.last_name}`;
-            return (
-              <MyVipCard
-                token={token}
-                vipId={String(item.vip_profile_id)}
-                key={item.vip_profile_id}
-                name={name}
-                image={item.profile_image}
-                link={link}
-                instaFollowers={item.instagram_follower_count}
-                tiktokFollowers={item.tiktok_follower_count}
-                status={item.profile_status}
-              />
-            );
-          })}
         </Box>
       </Container>
     </Box>

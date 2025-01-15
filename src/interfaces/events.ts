@@ -1,3 +1,4 @@
+import { QuestionType } from '@/helpers/enums';
 import { BrandLogo } from './brand';
 
 export interface EventImageSizes {
@@ -102,24 +103,13 @@ export interface EventDetails {
   is_wishlisted?: boolean;
 }
 
-export type QuestionInputType =
-  | 'text'
-  | 'checkboxes'
-  | 'textarea'
-  | 'dropdown'
-  | 'radio'
-  | 'date'
-  | 'datetime'
-  | 'file_upload'
-  | 'time';
-
 export interface Choice {
   text: string;
 }
 
 export interface Question {
   title: string;
-  input_type: QuestionInputType;
+  input_type: QuestionType;
   is_required: boolean;
   choices: Choice[] | null;
   answer?: string;

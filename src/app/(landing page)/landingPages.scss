@@ -349,6 +349,7 @@
       border: none;
       color: var(--color-marble);
       margin: 0 auto;
+      margin-bottom: rem(16);
       @include fontSize(16);
       @media screen and (min-width: 600px) {
         max-width: rem(156);
@@ -380,12 +381,14 @@
       padding-bottom: 0;
       margin-bottom: rem(48);
       p {
-        min-height: rem(66);
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        @media screen and (min-width: 600px) {
+          min-height: rem(66);
+        }
       }
     }
     &__item {

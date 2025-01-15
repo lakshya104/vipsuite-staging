@@ -432,6 +432,22 @@ div.site-dialog {
         margin-right: rem(9);
       }
     }
+    .form-radioBtn,
+    .form-checkbox {
+      .MuiFormControlLabel-label {
+        @include fontSize(13);
+      }
+    }
+    .form-radioBtn {
+      .MuiButtonBase-root {
+        padding: 0;
+        margin-right: rem(9);
+      }
+      svg {
+        width: rem(13);
+        height: rem(13);
+      }
+    }
   }
   &__action {
     gap: rem(10);

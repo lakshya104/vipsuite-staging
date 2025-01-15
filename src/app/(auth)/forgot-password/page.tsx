@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import Image from 'next/image';
-import ForgotPassword from '@/features/ForgotPasswordForm';
+import ChangePassword from '@/components/ChangePassword';
 
 const ForgotPasswordPage = () => {
   return (
@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
           priority
         />
       </Box>
-      <ForgotPassword />
+      <ChangePassword />
     </Box>
   );
 };

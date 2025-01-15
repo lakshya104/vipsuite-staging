@@ -128,7 +128,7 @@ const LoginForm = () => {
       <Box className="forgot-password">
         <Typography className="forgot-password__text">
           <Link href="/forgot-password" className="forgot-password__link">
-            Forgotten your password?
+            {en.helperText.forgotPassword}
           </Link>
         </Typography>
       </Box>
@@ -136,7 +136,7 @@ const LoginForm = () => {
         {isPending ? en.helperText.loading : en.helperText.continue}
       </Button>
       <Typography className="signup-text">
-        {en.helperText.noAccount}
+        {en.helperText.noAccount}{' '}
         <Typography
           variant="body2"
           component="span"

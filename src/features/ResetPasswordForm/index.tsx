@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,22 +13,25 @@ import './ResetPasswordForm.scss';
 import { ResetPassword } from '@/libs/api-manager/manager';
 import { defaultValues, ResetPasswordFormValues, ResetPasswordSchema } from './schema';
 import UseToaster from '@/hooks/useToaster';
+import en from '@/helpers/lang';
 
-const ResetPasswordForm = () => {
+interface ResetPasswordFormProps {
+  userMail: string;
+}
+
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ userMail }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const email = searchParams.get('email');
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
 
   const dialogBoxContent = {
-    title: 'Password Updated Successfully!',
-    subTitle: 'Your password has been changed',
-    description: 'You can now log in using your new password. If you encounter any issues, please contact support.',
-    buttonText: 'Go to Login',
+    title: en.login.resetPassword.dialogTitle,
+    subTitle: en.login.resetPassword.subtitle,
+    description: en.login.resetPassword.description,
+    buttonText: en.login.resetPassword.buttonText,
     isCrossIcon: true,
   };
 
@@ -53,7 +56,7 @@ const ResetPasswordForm = () => {
     reset();
     try {
       const data = {
-        email: email ?? '',
+        email: userMail,
         code: Number(values.code),
         password: values.password,
       };
@@ -139,7 +142,7 @@ const ResetPasswordForm = () => {
         }}
       />
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
-        {isPending ? 'Saving' : 'Save Password'}
+        {isPending ? en.login.resetPassword.saving : en.login.resetPassword.save}
       </Button>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>

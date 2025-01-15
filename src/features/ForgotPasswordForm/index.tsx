@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
@@ -13,27 +12,31 @@ import './ForgotPasswordForm.scss';
 import { ForgotPassword } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import { requiredEmailValidation } from '@/helpers/validations';
+import en from '@/helpers/lang';
 
-const ForgotPasswordForm = () => {
+interface ForgotPasswordFormProps {
+  // eslint-disable-next-line no-unused-vars
+  handleStepChange: (step: number) => void;
+  // eslint-disable-next-line no-unused-vars
+  handleUserMailChange: (mail: string) => void;
+}
+const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ handleStepChange, handleUserMailChange }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [resetPasswordLink, setResetPasswordLink] = useState<string>('');
-  const router = useRouter();
 
   const dialogBoxContent = {
-    title: 'Check Your Email!',
-    subTitle: 'Verification Code Sent',
-    description:
-      'A verification code has been sent to your email. Please enter the code on the next page to reset your password and log in.',
-    buttonText: 'Got it',
+    title: en.login.forgotPassword.dialogTitle,
+    subTitle: en.login.forgotPassword.subTitle,
+    description: en.login.forgotPassword.description,
+    buttonText: en.login.forgotPassword.done,
     isCrossIcon: true,
   };
 
   const handleDialogBoxDataChange = (open: boolean) => {
     setIsDialogOpen(open);
     setIsPending(true);
-    router.push(resetPasswordLink);
+    handleStepChange(2);
   };
 
   const ForgotPasswordSchema = z.object({
@@ -58,7 +61,7 @@ const ForgotPasswordForm = () => {
     setIsPending(true);
     try {
       const data = { email: values.email };
-      setResetPasswordLink(`/reset-password?email=${values.email}`);
+      handleUserMailChange(values.email);
       await ForgotPassword(data);
       setIsPending(false);
       setIsDialogOpen(true);
@@ -82,10 +85,10 @@ const ForgotPasswordForm = () => {
         autoComplete="email"
       />
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
-        {isPending ? 'Sending...' : 'Send Password Reset'}
+        {isPending ? en.login.forgotPassword.sending : en.login.forgotPassword.sendBtn}
       </Button>
       <Typography className="signup-text">
-        Don&apos;t have an account?{' '}
+        {en.helperText.noAccount}{' '}
         <Link
           href={'/on-boarding'}
           style={{
@@ -95,7 +98,7 @@ const ForgotPasswordForm = () => {
             color: 'white',
           }}
         >
-          Apply here
+          {en.helperText.applyHere}
         </Link>
       </Typography>
       <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />

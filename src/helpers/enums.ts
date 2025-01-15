@@ -36,3 +36,15 @@ export enum CookieName {
   VipId = 'vipId',
   FollowerCount = 'followers',
 }
+
+export enum QuestionType {
+  Text = 'text',
+  TextArea = 'textarea',
+  CheckBoxes = 'checkboxes',
+  Dropdown = 'dropdown',
+  Radio = 'radio',
+  Date = 'date',
+  DateTime = 'datetime',
+  Time = 'time',
+  FileUpload = 'file_upload',
+}

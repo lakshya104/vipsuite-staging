@@ -11,6 +11,7 @@ import FormDatePicker, { FormDateTimePicker, FormTimePicker } from '../../compon
 import { mapQuestionsToSchema } from '@/helpers/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SelectBoxWithoutLabel from '../../components/SelectBoxWithOutLabel';
+import { QuestionType } from '@/helpers/enums';
 
 interface DynamicFormProps {
   questions: Question[];
@@ -51,7 +52,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
     const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
 
     switch (question?.input_type) {
-      case 'text':
+      case QuestionType.Text:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
@@ -64,7 +65,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
             />
           </Box>
         );
-      case 'textarea':
+      case QuestionType.TextArea:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
@@ -72,9 +73,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
           </Box>
         );
 
-      case 'checkboxes':
+      case QuestionType.CheckBoxes:
         return (
-          <Box key={fieldName} mb={2}>
+          <Box className="form-checkbox" key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
             <br />
             <Controller
@@ -104,7 +105,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
           </Box>
         );
 
-      case 'dropdown':
+      case QuestionType.Dropdown:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
@@ -120,9 +121,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
           </Box>
         );
 
-      case 'radio':
+      case QuestionType.Radio:
         return (
-          <Box key={fieldName} mb={2}>
+          <Box className="form-radioBtn" key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
             <Controller
               name={fieldName}
@@ -139,21 +140,21 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
           </Box>
         );
 
-      case 'date':
+      case QuestionType.Date:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
             <FormDatePicker name={fieldName} control={control} selectFutureDate={true} />
           </Box>
         );
-      case 'datetime':
+      case QuestionType.DateTime:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
             <FormDateTimePicker name={fieldName} control={control} selectFutureDate={true} />
           </Box>
         );
-      case 'time':
+      case QuestionType.Time:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
@@ -161,7 +162,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
           </Box>
         );
 
-      case 'file_upload':
+      case QuestionType.FileUpload:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicTitle title={question.title} isRequired={question?.is_required} />

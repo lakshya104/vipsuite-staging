@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { UserRole } from '@/helpers/enums';
 
 interface BackToHomeProps {
-  role?: string;
+  role?: UserRole;
 }
 const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
   const [isPending, startTransition] = useTransition();
