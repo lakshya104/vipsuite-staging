@@ -92,15 +92,9 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
 
   const defaultValues: Step4FormValues = {
     habits: profileDetail.habits || [],
-    sportsPlay:
-      profileDetail.sports_play === null || profileDetail.sports_play === undefined
-        ? 'None'
-        : profileDetail.sports_play || '',
+    sportsPlay: profileDetail.sports_play || '',
     sports: profileDetail.other_sports || '',
-    sportsFollow:
-      profileDetail.sports_follow === null || profileDetail.sports_follow === undefined
-        ? 'None'
-        : profileDetail.sports_follow || '',
+    sportsFollow: profileDetail.sports_follow || '',
     skills: profileDetail.skills || '',
     socialLook: profileDetail.look_feel_of_socials || '',
   };
@@ -141,9 +135,9 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           first_name: profileDetail.first_name,
           last_name: profileDetail.last_name,
           habits: data.habits,
-          sports_play: data.sportsPlay === '' || data.sportsPlay === 'None' ? null : data.sportsPlay,
+          sports_play: data.sportsPlay === '' ? null : data.sportsPlay,
           other_sports: data.sports,
-          sports_follow: data.sportsFollow === '' || data.sportsFollow === 'None' ? null : data.sportsFollow,
+          sports_follow: data.sportsFollow === '' ? null : data.sportsFollow,
           skills: data.skills === '' ? null : data.skills,
           look_feel_of_socials: data.socialLook === '' ? null : data.socialLook,
         },

@@ -137,7 +137,7 @@ export const genderOfChildValidation = z.array(
   z.string().min(1, { message: en.profileBuilder.yourDetails.errorMessage.genderOfChild }),
 );
 
-export const petsValidation = z.array(z.string()).min(1, { message: en.profileBuilder.yourDetails.errorMessage.pets });
+export const petsValidation = z.array(z.string());
 
 export const homePostcodeValidation = z
   .string()
