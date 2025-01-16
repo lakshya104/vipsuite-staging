@@ -4,7 +4,6 @@ import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, TextFi
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { isUndefined } from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -18,7 +17,6 @@ import ApplicationRejectedDialog from '@/components/ApplicationRejectedDialog';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
@@ -44,12 +42,6 @@ const LoginForm = () => {
       password: '',
     },
   });
-
-  const handleNavigation = () => {
-    startTransition(() => {
-      router.push('/on-boarding');
-    });
-  };
 
   const onSubmit = (values: LoginFormValues) => {
     setToasterOpen(false);
@@ -137,21 +129,22 @@ const LoginForm = () => {
       </Button>
       <Typography className="signup-text">
         {en.helperText.noAccount}{' '}
-        <Typography
-          variant="body2"
-          component="span"
-          onClick={handleNavigation}
-          sx={{
-            textDecoration: 'underline',
-            padding: 0,
-            margin: 0,
-            color: 'white',
-            fontSize: '0.8rem',
-            cursor: 'pointer',
-          }}
-        >
-          {en.helperText.applyHere}
-        </Typography>
+        <Link href={'/on-boarding'}>
+          <Typography
+            variant="body2"
+            component="span"
+            sx={{
+              textDecoration: 'underline',
+              padding: 0,
+              margin: 0,
+              color: 'white',
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+            }}
+          >
+            {en.helperText.applyHere}
+          </Typography>
+        </Link>
       </Typography>
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
