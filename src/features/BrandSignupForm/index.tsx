@@ -264,7 +264,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                 )}
               />
             )}
-            {name === 'phone' && !errors[name] && (
+            {name === 'phone' && (
               <Box className="input-text">
                 <Typography>Including the country code with + sign</Typography>
                 <Typography>Optional</Typography>

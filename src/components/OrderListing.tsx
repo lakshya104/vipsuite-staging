@@ -82,7 +82,9 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                       ) : (
                         <>
                           <Typography variant="body1">{formatDate(order?.date_created)}</Typography>
-                          <Typography variant="body1">Status: {formatString(order?.status)}</Typography>
+                          <Typography variant="body1">
+                            {en.common.status}: {formatString(order?.status)}
+                          </Typography>
                         </>
                       )}
                     </Box>

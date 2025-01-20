@@ -27,7 +27,7 @@ export default async function LandingLayout({
     <Box className="background--dark">
       <HeaderTop text={data?.website_tagline} />
       <Header menuItems={menuItems} />
-      <ProgressProvider color="#FFFFF7"> {children}</ProgressProvider>
+      <ProgressProvider color="#FFFFF7">{children}</ProgressProvider>
       <Footer footerItems={data} />
     </Box>
   );

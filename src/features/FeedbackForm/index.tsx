@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useForm, Controller, Control, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Backdrop, Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
-import * as z from 'zod';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -14,41 +13,16 @@ import { OrderFeedback } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import revalidatePathAction from '@/libs/actions';
+import {
+  defaultEventValues,
+  defaultOrderValues,
+  EventFeedbackFormValues,
+  eventFeedbackSchema,
+  FeedbackFormValues,
+  orderFeedbackSchema,
+} from './schema';
+import en from '@/helpers/lang';
 
-const orderFeedbackSchema = z.object({
-  socialPostUrl: z.string().url('Valid URL is required'),
-  screenshot: z
-    .custom<File>((val) => val instanceof File || !val)
-    .refine((val) => val instanceof File, {
-      message: 'Screenshot is required',
-    }),
-});
-
-const eventFeedbackSchema = z.object({
-  rating: z.number().min(1, 'Rating is required'),
-  socialPostUrl: z.string().url('Valid URL is required'),
-  screenshot: z
-    .custom<File>((val) => val instanceof File || !val)
-    .refine((val) => val instanceof File, {
-      message: 'Screenshot is required',
-    }),
-});
-
-export type OrderFeedbackFormValues = z.infer<typeof orderFeedbackSchema>;
-type EventFeedbackFormValues = z.infer<typeof eventFeedbackSchema>;
-
-type FeedbackFormValues = OrderFeedbackFormValues | EventFeedbackFormValues;
-
-const defaultOrderValues: OrderFeedbackFormValues = {
-  socialPostUrl: '',
-  screenshot: undefined as unknown as File,
-};
-
-const defaultEventValues: EventFeedbackFormValues = {
-  rating: 0,
-  socialPostUrl: '',
-  screenshot: undefined as unknown as File,
-};
 interface FeedbackFormProps {
   type: 'order' | 'event';
   orderId: number;
@@ -108,12 +82,12 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
         await revalidatePathAction(`/my-orders/${orderId}`);
         setIsSubmitted(true);
         setToasterType('success');
-        openToaster(res.message ?? 'Your feedback has been successfully submitted!');
+        openToaster(res.message ?? en.feedbackForm.successMessage);
         setFileName(null);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster(String(error) ?? 'Error submitting feedback');
+        openToaster(String(error) ?? en.feedbackForm.errorMessage);
       } finally {
         setBtnDisable(false);
       }
@@ -132,12 +106,12 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
         await revalidatePathAction(`/my-orders/${orderId}`);
         setIsSubmitted(true);
         setToasterType('success');
-        openToaster(res.message ?? 'Your feedback has been successfully submitted!');
+        openToaster(res.message ?? en.feedbackForm.successMessage);
         setFileName(null);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster(String(error) ?? 'Error submitting feedback');
+        openToaster(String(error) ?? en.feedbackForm.errorMessage);
       } finally {
         setBtnDisable(false);
       }
@@ -149,13 +123,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
       {isSubmitted ? null : (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className="feedback-form">
           <Typography variant="h2" mb={2}>
-            Feedback
+            {en.feedbackForm.formTitle}
           </Typography>
 
           {type === 'event' && (
             <Box mb={2}>
               <Typography mb={1} variant="body1">
-                Rate the Event
+                {en.feedbackForm.fieldNames.rating}
               </Typography>
               <Box mb={2}>
                 <Controller
@@ -188,18 +162,18 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           )}
 
           <Typography mb={1} variant="body1">
-            URL of the related social post
+            {en.feedbackForm.fieldNames.url}
           </Typography>
           <InputTextFormField<FeedbackFormValues>
             name="socialPostUrl"
             control={control}
-            placeholder="https://instagram.com/postID"
+            placeholder={en.feedbackForm.fieldPlaceholders.url}
             errors={errors}
             noLabel={true}
           />
 
           <Typography mb={1} variant="body1">
-            Upload a screenshot of your post
+            {en.feedbackForm.fieldNames.screesshot}
           </Typography>
           <Box
             mb={1}
@@ -229,9 +203,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                       <Typography textAlign="center">{fileName}</Typography>
                     </Box>
                   ) : errors.screenshot ? (
-                    <span style={{ color: '#d32f2f' }}>Screenshot is required</span>
+                    <span style={{ color: '#d32f2f' }}>{en.feedbackForm.fieldErrorMessages.screesshot}</span>
                   ) : (
-                    <span style={{ textTransform: 'capitalize' }}>Upload a file</span>
+                    <span style={{ textTransform: 'capitalize' }}>{en.feedbackForm.fieldPlaceholders.screesshot}</span>
                   )}
                   <input
                     type="file"
@@ -269,7 +243,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
             className="button button--white"
             disabled={btnDisable}
           >
-            {btnDisable ? 'Submitting' : 'Submit'}
+            {btnDisable ? en.feedbackForm.submitting : en.feedbackForm.submit}
           </Btn>
         </Box>
       )}

@@ -28,6 +28,9 @@
       .MuiFormControl-root {
         margin-bottom: 1rem;
       }
+      .input-text {
+        @include relative();
+      }
     }
   }
 }

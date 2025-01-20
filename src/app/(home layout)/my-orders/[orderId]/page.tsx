@@ -22,7 +22,7 @@ export default async function Page({
           <ProgressBarLink href={`/inbox?isOrderTab=true&page=${page || 1}`} aria-label="Back to Messages">
             <ArrowBackIcon />
           </ProgressBarLink>
-          Order #{orderId}
+          {/* Order #{orderId} */}
         </Typography>
         <Suspense fallback={<MyOrderDetailLoading />}>
           <MyOrderDetailPage orderId={orderId} />

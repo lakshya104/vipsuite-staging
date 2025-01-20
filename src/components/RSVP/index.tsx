@@ -10,6 +10,7 @@ import { formatDateWithOrdinal } from '@/helpers/utils';
 import DynamicForm from '@/features/DynamicForm';
 import revalidatePathAction from '@/libs/actions';
 import { isEmpty } from 'lodash';
+import en from '@/helpers/lang';
 
 interface RSVPProps {
   onClose: () => void;
@@ -130,15 +131,15 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
   const renderContent = () => {
     switch (true) {
       case formState.showForm:
-        return <DynamicForm questions={event.acf.questions} onSubmit={onSubmitDynamic} />;
+        return <DynamicForm questions={event?.acf?.questions} onSubmit={onSubmitDynamic} />;
       case formState.showReasonField:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h6" gutterBottom>
-              Reason
+              {en.events.eventRsvp.reason}
             </Typography>
             <Input
-              placeholder="Enter here..."
+              placeholder={en.events.eventRsvp.reasonPlaceholder}
               fullWidth
               multiline
               rows={4}
@@ -150,7 +151,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
             />
             <Box className="site-dialog__action" marginTop={3}>
               <Button variant="contained" type="submit" className="button button--black" disabled={event?.acf?.is_rsvp}>
-                Submit
+                {en.events.eventRsvp.submit}
               </Button>
             </Box>
           </form>
@@ -162,12 +163,12 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
               {he.decode(event?.title?.rendered)}
             </Typography>
             <Typography variant="body1">
-              <Box component="strong">Date:</Box>
+              <Box component="strong">{en.events.date}</Box>
               {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
               {formatDateWithOrdinal(event.acf.event_end_date, true)}
             </Typography>
             <Typography variant="body1" paragraph>
-              <Box component="strong">Location:</Box> {event.acf.event_location}
+              <Box component="strong">{en.events.location}</Box> {event.acf.event_location}
             </Typography>
             {!isEmpty(event.acf.questions) ? (
               <Box mt={2}>
@@ -177,13 +178,13 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
                   type="submit"
                   fullWidth
                 >
-                  RSVP
+                  {en.events.eventRsvp.text}
                 </Button>
               </Box>
             ) : (
               <Box mt={2}>
                 <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
-                  RSVP
+                  {en.events.eventRsvp.text}
                 </Button>
               </Box>
             )}
@@ -194,7 +195,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
                 className="button button--white"
                 disabled={event?.acf?.is_rsvp}
               >
-                Not Available
+                {en.events.eventRsvp.notAvailable}
               </Button>
               <Button
                 onClick={handleNotInterested}
@@ -202,7 +203,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
                 className="button button--white"
                 disabled={event?.acf?.is_rsvp}
               >
-                Not Interested
+                {en.events.eventRsvp.notInterested}
               </Button>
             </Box>
           </>

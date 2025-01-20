@@ -50,7 +50,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         );
         setCategories(categoryList);
       } catch (error) {
-        console.error('Failed to fetch categories', error);
+        console.error(en.opportunities.categoriesErrorMessage, error);
         setCategories([]);
       }
     };
@@ -75,7 +75,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         router.push(`?${params.toString()}`);
       });
     } catch (error) {
-      console.error('Error updating search query:', error);
+      console.error(en.opportunities.searchErrorMessage, error);
     }
   }, [debouncedSearchQuery, router]);
 
@@ -100,7 +100,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
       }
       setIsFilterOpen(false);
     } catch (error) {
-      console.error('Error handling filter:', error);
+      console.error(en.opportunities.filterErrorMessage, error);
     }
   };
 
@@ -114,7 +114,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         setIsFilterOpen(false);
       });
     } catch (error) {
-      console.error('Error clearing filter:', error);
+      console.error(en.opportunities.filterErrorMessage, error);
     }
   };
 
@@ -132,10 +132,10 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         <Box my={2.5}>
           <SearchBar
             searchTerm={searchQuery}
-            placeholder="Search for opportunities..."
+            placeholder={en.opportunities.searchPlaceholder}
             handleChange={handleChange}
             handleClear={handleClear}
-            aria-label="Search events"
+            aria-label={en.opportunities.searchPlaceholder}
           />
         </Box>
         <ErrorFallback
@@ -162,10 +162,10 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         />
         <SearchBar
           searchTerm={searchQuery}
-          placeholder="Search for opportunities..."
+          placeholder={en.opportunities.searchPlaceholder}
           handleChange={handleChange}
           handleClear={handleClear}
-          aria-label="Search opportunities"
+          aria-label={en.opportunities.searchPlaceholder}
         />
       </Box>
       {isEmpty(opportunitiesData) && (
@@ -180,7 +180,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
           <Grid item xs={12}>
             <Box width="100%">
               <Typography variant="h3" component="h2" mb={1}>
-                {opportunitiesData.length} Results for &quot;{debouncedSearchQuery}&quot;
+                {opportunitiesData.length} {en.opportunities.results} &quot;{debouncedSearchQuery}&quot;
               </Typography>
             </Box>
           </Grid>

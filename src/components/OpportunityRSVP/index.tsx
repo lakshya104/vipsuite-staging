@@ -7,6 +7,7 @@ import { SendRsvp } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
 import DynamicForm from '@/features/DynamicForm';
 import { isEmpty } from 'lodash';
+import en from '@/helpers/lang';
 
 interface RSVPProps {
   onClose: () => void;
@@ -145,10 +146,10 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h6" gutterBottom>
-              Reason
+              {en.opportunities.opportunityRsvp.reason}
             </Typography>
             <Input
-              placeholder="Enter here..."
+              placeholder={en.opportunities.opportunityRsvp.reasonPlaceholder}
               fullWidth
               multiline
               rows={4}
@@ -165,7 +166,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
                 className="button button--black"
                 disabled={opportunity?.acf?.is_rsvp}
               >
-                Submit
+                {en.opportunities.opportunityRsvp.submit}
               </Button>
             </Box>
           </form>
@@ -184,13 +185,13 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
                   type="submit"
                   fullWidth
                 >
-                  RSVP
+                  {en.opportunities.opportunityRsvp.text}
                 </Button>
               </Box>
             ) : (
               <Box mt={2}>
                 <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
-                  RSVP
+                  {en.opportunities.opportunityRsvp.text}
                 </Button>
               </Box>
             )}
@@ -201,7 +202,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
                 className="button button--white"
                 disabled={opportunity?.acf?.is_rsvp}
               >
-                Not Available
+                {en.opportunities.opportunityRsvp.notAvailable}
               </Button>
               <Button
                 onClick={handleNotInterested}
@@ -209,7 +210,7 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
                 className="button button--white"
                 disabled={opportunity?.acf?.is_rsvp}
               >
-                Not Interested
+                {en.opportunities.opportunityRsvp.notInterested}
               </Button>
             </Box>
           </>

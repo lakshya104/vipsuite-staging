@@ -16,7 +16,7 @@ const ProfilePage = async () => {
   if (profileDetailsError) {
     return <ErrorHandler error={profileDetailsError} errMessage="Not able to show Profile currently." />;
   }
-  const age = calculateAge(profileDetails?.acf.date_of_birth);
+  const age = calculateAge(profileDetails?.acf?.date_of_birth);
   return (
     <>
       <Box className="user-profile__info" textAlign={'center'} mb={3}>
@@ -31,9 +31,9 @@ const ProfilePage = async () => {
           {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
         </Typography>
         <Typography variant="body2" mb={1}>
-          Age {age}
+          Age {age} {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
         </Typography>
-        <EditProfileBtn vipId={profileDetails.vip_profile_id} role={session?.role} />
+        <EditProfileBtn vipId={profileDetails?.vip_profile_id} role={session?.role} />
       </Box>
       <Box>
         <ProfileTabs profileData={profileDetails} />

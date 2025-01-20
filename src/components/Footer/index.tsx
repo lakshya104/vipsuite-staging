@@ -8,12 +8,12 @@ import { WebsiteContent } from '@/interfaces/public-page';
 import { getLastPathSegment } from '@/helpers/utils';
 import Link from 'next/link';
 
-const currentYear = new Date().getFullYear();
-
 interface FooterProps {
   footerItems: WebsiteContent;
 }
+
 const Footer: React.FC<FooterProps> = ({ footerItems }) => {
+  const currentYear = new Date().getFullYear();
   return (
     <Box className="site-footer" component="footer">
       <Container>

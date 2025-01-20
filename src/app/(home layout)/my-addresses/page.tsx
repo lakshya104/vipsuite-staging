@@ -11,7 +11,7 @@ const AddressPage = async () => {
     <Box className="address-page">
       <Container>
         <Box className="address-page__head">
-          <Typography className="page-title" variant="h2" align="center" component="h1">
+          <Typography variant="h2" align="center" component="h1">
             My Addresses
             <ProgressBarLink className="button button--black" href="/my-addresses/add">
               Add <AddIcon />

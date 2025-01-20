@@ -47,10 +47,10 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData, currentPage, totalP
       <Box my={2.5}>
         <SearchBar
           searchTerm={searchQuery}
-          placeholder="Search for events..."
+          placeholder={en.events.searchPlaceholder}
           handleChange={handleChange}
           handleClear={handleClear}
-          aria-label="Search events"
+          aria-label={en.events.searchPlaceholder}
         />
       </Box>
       {!isEmpty(eventsData) ? (
@@ -60,7 +60,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData, currentPage, totalP
               <Grid item xs={12}>
                 <Box width="100%">
                   <Typography variant="h3" component="h2" mb={1}>
-                    {eventsData.length} Results for &quot;{debouncedSearchQuery}&quot;
+                    {eventsData.length} {en.events.results} &quot;{debouncedSearchQuery}&quot;
                   </Typography>
                 </Box>
               </Grid>

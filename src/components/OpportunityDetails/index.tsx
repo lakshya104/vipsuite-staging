@@ -15,6 +15,8 @@ import ReferCard from '../ReferCard';
 import RequestItemFormButton from '../RequestItemFormButton';
 import RedeemBox from '../RedeemBox';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
+
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
 }
@@ -38,9 +40,9 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const handleToasterMessage = (type: 'error' | 'success', message?: string) => {
     setToasterType(type);
     if (type === 'success') {
-      setToasterMessage(message ?? 'Response submitted successfully');
+      setToasterMessage(message ?? en.opportunities.toasterMessage.success);
     } else {
-      setToasterMessage(message ?? 'Error submitting response');
+      setToasterMessage(message ?? en.opportunities.toasterMessage.error);
     }
   };
 
@@ -82,7 +84,9 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           disabled={opportunity?.acf?.is_rsvp}
           style={{ marginBottom: '50px' }}
         >
-          {opportunity?.acf?.is_rsvp ? 'Already Responded' : ' Respond Now'}
+          {opportunity?.acf?.is_rsvp
+            ? en.opportunities.opportunityRsvp.responded
+            : opportunity?.acf?.cta_label || en.opportunities.opportunityRsvp.text}
         </Button>
       </Box>
       <Dialog className="site-dialog" open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>

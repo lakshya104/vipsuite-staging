@@ -665,10 +665,12 @@ export const GetMenuItems = async () => {
 export const VerifyEmail = async (email: string) => {
   try {
     const response = await Instance.post(Endpoints.verifyEmail, { email });
+    console.log(response);
+
     return response.data;
   } catch (error) {
-    console.error('Error during signing out:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error during signing out';
+    console.error('Error sending verification code:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending verification code';
     throw new Error(errorMessage);
   }
 };

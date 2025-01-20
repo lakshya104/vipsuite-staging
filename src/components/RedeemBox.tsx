@@ -7,6 +7,7 @@ import { GetOffers } from '@/libs/api-manager/manager';
 import { Offer } from '@/interfaces/opportunitiesDetails';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
+import en from '@/helpers/lang';
 
 interface RedeemBoxProps {
   fetchOffers: boolean;
@@ -26,15 +27,14 @@ const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
         const response: Offer[] = await GetOffers();
         setOffers(response);
       } catch (err) {
-        console.error('Error fetching offers:', err);
-        openToaster(err?.toString() ?? 'An error occurred while fetching offers. Please try again later.');
+        console.error(en.redeemBox.errMessage, ':', err);
+        openToaster(err?.toString() ?? en.redeemBox.errMessage + '.');
       } finally {
         setOffersLoading(false);
       }
     };
     if (fetchOffers) fetchRedeemOffers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchOffers, openToaster]);
 
   const toggleVisibility = (id: number) => {
     setVisibleItems((prevState) => ({
@@ -61,15 +61,15 @@ const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
   return (
     <Box display="flex" flexDirection="column" gap={3} p={2} mb={4} borderRadius={2} bgcolor="#F0F0E5">
       <Typography variant="h2" fontWeight={500} gutterBottom>
-        Coupons and Offers
+        {en.redeemBox.couponsAndOffers}
       </Typography>
       {offersLoading ? (
         <>
-          <Skeleton variant="text" width="100%" height={150} />
-          <Skeleton variant="text" width="100%" height={150} />
+          <Skeleton variant="rectangular" width="100%" height={150} />
+          <Skeleton variant="rectangular" width="100%" height={150} />
         </>
       ) : isEmpty(offers) ? (
-        <Typography>Currently, no coupons are available, but new ones may be introduced soon</Typography>
+        <Typography>{en.redeemBox.noCouponsAvailable}</Typography>
       ) : (
         offers.map((coupon) => (
           <Card
@@ -93,7 +93,7 @@ const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
                   sx={{ backgroundColor: '#F0F0E5', borderRadius: '8px' }}
                 >
                   <Typography variant="body1" fontWeight={600}>
-                    {visibleItems[coupon.id] ? coupon?.acf?.coupon_code : 'XXXXXX'}
+                    {visibleItems[coupon.id] ? coupon?.acf?.coupon_code : en.redeemBox.placeholder}
                   </Typography>
                   <Button
                     variant="text"
@@ -104,7 +104,11 @@ const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
                     }
                     sx={{ textTransform: 'none', color: '#000' }}
                   >
-                    {visibleItems[coupon.id] ? (copySuccess[coupon.id] ? 'Copied!' : 'Copy') : 'Show'}
+                    {visibleItems[coupon.id]
+                      ? copySuccess[coupon.id]
+                        ? en.redeemBox.copied
+                        : en.redeemBox.copy
+                      : en.redeemBox.show}
                   </Button>
                 </Box>
               ) : (
@@ -128,14 +132,14 @@ const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
                     sx={{ backgroundColor: '#F0F0E5', borderRadius: '8px' }}
                   >
                     <Typography variant="body1" fontWeight={600}>
-                      XXXXXX
+                      {en.redeemBox.placeholder}
                     </Typography>
                     <Button
                       variant="text"
                       onClick={() => toggleVisibility(coupon.id)}
                       sx={{ textTransform: 'none', color: '#000' }}
                     >
-                      Show
+                      {en.redeemBox.show}
                     </Button>
                   </Box>
                 ))

@@ -7,11 +7,13 @@ interface HeaderTopProps {
 }
 const HeaderTop: React.FC<HeaderTopProps> = ({ text }) => {
   return (
-    <Box className="headerTop">
-      <Typography component="p" lineHeight={1.4} letterSpacing={'normal'}>
-        {text}
-      </Typography>
-    </Box>
+    text && (
+      <Box className="headerTop">
+        <Typography component="p" lineHeight={1.4} letterSpacing={'normal'}>
+          {text}
+        </Typography>
+      </Box>
+    )
   );
 };
 

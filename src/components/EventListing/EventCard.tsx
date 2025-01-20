@@ -5,13 +5,14 @@ import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatEventDates } from '@/helpers/utils';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface EventCardProps {
   item: Event;
-  isFeatured?: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
+const EventCard: React.FC<EventCardProps> = ({ item }) => {
+  const isFeatured = item?.acf?.is_featured;
   const brandLogo = item.acf?.brand_logo?.url;
   const eventImage = item?.acf?.event_image?.sizes?.['vs-container-half'] || DefaultImageFallback.Placeholder;
   return (
@@ -31,20 +32,20 @@ const EventCard: React.FC<EventCardProps> = ({ item, isFeatured }) => {
           {isFeatured && (
             <Box className="category-label">
               <Typography variant="overline" color="black" display="block">
-                Featured Event
+                {en.events.featuredTag}
               </Typography>
             </Box>
           )}
           <Typography variant="h2" dangerouslySetInnerHTML={{ __html: item?.title?.rendered || '' }} />
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>
-              Date:
+              {en.events.date}
             </Typography>{' '}
             {formatEventDates(item?.acf?.event_start_date, item?.acf?.event_end_date)}
           </Typography>
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>
-              Location:
+              {en.events.location}
             </Typography>{' '}
             {item?.acf?.event_location}
           </Typography>

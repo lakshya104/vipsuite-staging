@@ -13,6 +13,7 @@ import {
   Modal,
 } from '@mui/material';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface OpportunitiesFilterModalProps {
   isFilterOpen: boolean;
@@ -42,7 +43,7 @@ const OpportunitiesFilterModal: React.FC<OpportunitiesFilterModalProps> = ({
         </Box>
         <Box className="filter-modal__clear-btn">
           <Button variant="text" onClick={clearFilter}>
-            Clear Filter
+            {en.opportunities.clearFilter}
           </Button>
         </Box>
 

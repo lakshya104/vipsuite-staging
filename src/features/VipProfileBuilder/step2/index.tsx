@@ -135,32 +135,36 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           <Typography variant="body2" gutterBottom>
             {description}
           </Typography>
-          <TextField
-            fullWidth
-            label="Email"
-            variant="outlined"
-            margin="normal"
-            {...register(`${name}Email` as keyof FormValues)}
-            error={!!errors[`${name}Email` as keyof FormValues]}
-            helperText={errors[`${name}Email` as keyof FormValues]?.message}
-            disabled={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
-            InputLabelProps={{
-              shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
-            }}
-          />
-          <TextField
-            fullWidth
-            label="Secondary Email"
-            variant="outlined"
-            margin="normal"
-            {...register(`${name}SecondaryEmail` as keyof FormValues)}
-            error={!!errors[`${name}SecondaryEmail` as keyof FormValues]}
-            helperText={errors[`${name}SecondaryEmail` as keyof FormValues]?.message}
-            disabled={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
-            InputLabelProps={{
-              shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
-            }}
-          />
+          {!checkboxStates[`${name}ContactMeDirectly` as keyof FormValues] && (
+            <>
+              <TextField
+                fullWidth
+                label="Email"
+                variant="outlined"
+                margin="normal"
+                {...register(`${name}Email` as keyof FormValues)}
+                error={!!errors[`${name}Email` as keyof FormValues]}
+                helperText={errors[`${name}Email` as keyof FormValues]?.message}
+                disabled={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
+                InputLabelProps={{
+                  shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
+                }}
+              />
+              <TextField
+                fullWidth
+                label="Secondary Email"
+                variant="outlined"
+                margin="normal"
+                {...register(`${name}SecondaryEmail` as keyof FormValues)}
+                error={!!errors[`${name}SecondaryEmail` as keyof FormValues]}
+                helperText={errors[`${name}SecondaryEmail` as keyof FormValues]?.message}
+                disabled={checkboxStates[`${name}ContactMeDirectly` as keyof FormValues]}
+                InputLabelProps={{
+                  shrink: !checkboxStates[`${name}ContactMeDirectly` as keyof FormValues],
+                }}
+              />
+            </>
+          )}
           <FormControl error={!!errors[`${name}ContactMeDirectly` as keyof FormValues]}>
             <FormControlLabel
               control={

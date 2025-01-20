@@ -92,7 +92,15 @@ const VipSignupForm = () => {
         console.error('Email is undefined');
       }
     } catch (error) {
-      if (typeof error === 'string') setError(error);
+      if (typeof error === 'string') {
+        setError(error);
+      } else {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unexpected error occurred');
+        }
+      }
       setToasterOpen(true);
     } finally {
       setVerificationLoading(false);
@@ -237,13 +245,13 @@ const VipSignupForm = () => {
                 </>
               )}
             />
-            {name === 'secondary_email' && !errors[name] && (
+            {name === 'secondary_email' && (
               <Box className="input-text">
                 <Typography>Add a PA or Staff Email</Typography>
                 <Typography>Optional</Typography>
               </Box>
             )}
-            {name === 'phone' && !errors[name] && (
+            {name === 'phone' && (
               <Box className="input-text">
                 <Typography>Including the country code with + sign</Typography>
                 <Typography>Optional</Typography>

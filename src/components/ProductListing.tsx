@@ -3,12 +3,11 @@ import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import { Box, Grid, Typography } from '@mui/material';
 import { BrandProduct } from '@/interfaces/brand';
-import MyProductsCard from './DashboardCard/MyProductCard';
 import { isEmpty } from 'lodash';
 import ErrorFallback from './ErrorFallback';
 import en from '@/helpers/lang';
-import CustomPagination from './CustomPagination';
 import './CustomStepper/CustomStepper.scss';
+import ProductCardsListing from './ProductCardsListing';
 
 interface ProductListingContainerProps {
   products: BrandProduct[];
@@ -69,18 +68,7 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
       </Box>
       {!searchQuery ? (
         <>
-          <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-            {products.map((product) => (
-              <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={product.id}>
-                <MyProductsCard data={product} />
-              </Grid>
-            ))}
-          </Grid>
-          {totalPages > 1 && (
-            <Box className="custom-stepper">
-              <CustomPagination currentPage={currentPage} totalPages={totalPages} />
-            </Box>
-          )}
+          <ProductCardsListing products={products} currentPage={currentPage} totalPages={totalPages} />
         </>
       ) : searchQuery && filteredProducts.length > 0 ? (
         <>
@@ -93,13 +81,7 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
               </Box>
             </Grid>
           </Grid>
-          <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-            {filteredProducts.map((product) => (
-              <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={product.id}>
-                <MyProductsCard data={product} />
-              </Grid>
-            ))}
-          </Grid>
+          <ProductCardsListing products={products} currentPage={currentPage} totalPages={totalPages} />
         </>
       ) : (
         <ErrorFallback

@@ -12,6 +12,8 @@ export interface ContactInfo {
 }
 
 export interface ACF {
+  city?: string;
+  gender?: string;
   first_name: string;
   last_name: string;
   created_by?: number;

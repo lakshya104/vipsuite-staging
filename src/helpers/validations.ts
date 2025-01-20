@@ -143,9 +143,7 @@ export const homePostcodeValidation = z
   .string()
   .regex(/^[A-Za-z0-9\s-]{3,10}$/, { message: en.profileBuilder.yourDetails.errorMessage.homePostcode });
 
-export const sportsPlayValidation = z
-  .string()
-  .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.sportsPlay });
+export const sportsPlayValidation = z.string().optional().or(z.literal(''));
 
 export const sportsValidation = z.string();
 
@@ -159,7 +157,9 @@ export const socialLookValidation = z
   .string()
   .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.lookFeelOfSocials });
 
-export const habitsValidation = z.array(z.string()).min(1, { message: 'Please select at least one habit.' });
+export const habitsValidation = z
+  .array(z.string())
+  .min(1, { message: en.profileBuilder.typeOfContent.errorMessage.habits });
 
 export const nameValidation = z
   .string()
@@ -186,3 +186,5 @@ export const jobTitleValidation = z
   });
 
 export const roleValidation = z.string().min(1, { message: en.landingForm.errorMessage.roleRequired });
+
+export const genderValidation = z.string().min(1, { message: 'Gender is required' });

@@ -1,5 +1,4 @@
-'use client';
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import he from 'he';
@@ -14,14 +13,6 @@ interface MessagesDetailProps {
 }
 
 const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messageDetail]);
-
   return (
     <>
       <Container>
@@ -36,7 +27,7 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
         <Container>
           <Box className="order-details-page">
             <Box className="inbox_content">
-              {[...messageDetail.messages].reverse().map((message) => (
+              {messageDetail.messages.map((message) => (
                 <Fragment key={message?.id}>
                   <Typography variant="body1">{message?.content}</Typography>
                   <Typography className="inbox__date">
@@ -46,7 +37,6 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
                   </Typography>
                 </Fragment>
               ))}
-              <div ref={messagesEndRef} />
             </Box>
             <MessageForm orderId={messageDetail?.order_id} />
           </Box>

@@ -87,6 +87,11 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
                 errors={errors}
                 autoFill={addressId ? false : true}
               />
+              {name === 'phone' && (
+                <Box className="input-text">
+                  <Typography>Including the country code with + sign</Typography>
+                </Box>
+              )}
             </Box>
           ))}
           <Btn look="dark-filled" width="100%" fullWidth disabled={isLoading} type="submit">

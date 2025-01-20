@@ -148,4 +148,14 @@
       }
     }
   }
+  &__pets {
+    .step1-form & {
+      justify-content: flex-start;
+      label {
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
 }

@@ -4,13 +4,15 @@ import { Card, CardContent, Typography } from '@mui/material';
 import { first, isUndefined } from 'lodash';
 import he from 'he';
 import { Opportunity } from '@/interfaces/opportunities';
+import en from '@/helpers/lang';
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
   image: string;
-  isFeatured: boolean;
 }
-const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image, isFeatured }) => {
+
+const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image }) => {
+  const isFeatured = opportunity?.acf?.is_featured;
   return (
     <ProgressBarLink href={`/opportunities/${opportunity?.id}`}>
       <Card
@@ -27,7 +29,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image, i
         <CardContent className="opportunities-card__item-content">
           {isFeatured && (
             <Typography className="opportunities-card__item-category" marginTop={5} variant="overline" gutterBottom>
-              Featured Opportunity
+              {en.opportunities.featuredTag}
             </Typography>
           )}
           <Typography variant="h2"> {he.decode(opportunity?.title?.rendered)}</Typography>

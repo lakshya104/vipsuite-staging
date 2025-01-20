@@ -6,6 +6,7 @@ import { EventDetails } from '@/interfaces/events';
 import { useRouter } from 'next/navigation';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
+import en from '@/helpers/lang';
 
 interface EventsDialogProps {
   event: EventDetails;
@@ -72,15 +73,14 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
       >
         <DialogContent>
           <Typography id="confirmation-dialog-title" variant="h6" component="h1" gutterBottom>
-            RSVP Confirmed!
+            {en.events.confirmationRsvp.title}
           </Typography>
           <Typography variant="body1" paragraph>
-            Please check your email for your event confirmation and details. If you have any additional questions,
-            please contact one of the team on info@thevipsuite.co.uk
+            {en.events.confirmationRsvp.description}
           </Typography>
           <DialogActions>
             <Button variant="contained" onClick={handleConfirmationClose} className="button button--black">
-              Back to All Events
+              {en.events.confirmationRsvp.cta}
             </Button>
           </DialogActions>
         </DialogContent>

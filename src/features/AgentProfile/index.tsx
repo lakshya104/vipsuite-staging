@@ -120,12 +120,12 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
                 )}
               />
             )}
-            {name === 'company_name' && !errors[name] && (
+            {name === 'company_name' && (
               <Box className="input-text company-name">
                 <Typography>Optional</Typography>
               </Box>
             )}
-            {name === 'phone' && !errors[name] && (
+            {name === 'phone' && (
               <Box className="input-text">
                 <Typography>Including the country code with + sign</Typography>
               </Box>

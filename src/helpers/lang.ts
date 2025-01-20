@@ -10,6 +10,7 @@ const en = {
     cancel: 'Cancel',
     yes: 'Yes',
     ok: 'OK',
+    status: 'Status',
   },
   helperText: {
     noAccount: "Don't have an account?",
@@ -204,13 +205,20 @@ const en = {
       },
     },
     typeOfContent: {
+      title: 'Interested in',
+      placeholders: {
+        habits: 'Habits',
+        sportsPlay: 'Sports you play',
+        sportsFollow: 'What sports you have interest in',
+        skills: 'Skills',
+        lookFeelOfSocials: 'Look & feel of your socials',
+      },
       errorMessage: {
-        otherSports: 'Specify other sports.',
+        habits: 'At least one habit must be selected.',
         sportsPlay: 'Specify sports you play.',
-        sportsFollow: 'Specify sports you follow.',
-        skills: 'Enter your skills.',
-        lookFeelOfSocials: 'Describe your social media presence.',
-        contentType: 'Specify content type.',
+        sportsFollow: 'Please select a sport.',
+        skills: 'Please select skills.',
+        lookFeelOfSocials: 'Please select the look & feel of your socials.',
       },
     },
     addVip: {
@@ -235,6 +243,7 @@ const en = {
       avgEngagementHeading: 'Average Engagement Rate',
       avgEngagementSubheading: 'Enter engagement details.',
     },
+    errorMessage: 'Error during profile update. ',
   },
   applyAndSignin: {
     apply: 'Apply',
@@ -340,7 +349,6 @@ const en = {
     noSocialData: 'Social Handles',
     noAddressData: 'No Address Available',
   },
-
   landingForm: {
     placeholder: {
       role: 'Brand, VIP or Agent?',
@@ -358,6 +366,107 @@ const en = {
       jobTitleRequired: 'Job Title is required.',
       phoneValidation: 'Please enter a valid phone number, including the country code with + sign.',
     },
+  },
+  opportunities: {
+    clearFilter: 'Clear Filter',
+    featuredTag: 'Featured Opportunity',
+    searchPlaceholder: 'Search for opportunities...',
+    results: 'Results for',
+    listingErrMessage: 'Not able to show opportunities currently.',
+    errMessage: 'Not able to show opportunity details currently.',
+    categoriesErrorMessage: 'Failed to fetch categories:',
+    searchErrorMessage: 'Error updating search query:',
+    filterErrorMessage: 'Error handling filter:',
+    toasterMessage: {
+      success: 'Response submitted successfully',
+      error: 'Error submitting response',
+    },
+    opportunityRsvp: {
+      responded: 'Already Responded',
+      text: 'RSVP',
+      notAvailable: 'Not Available',
+      notInterested: 'Not Interested',
+      reason: 'Reason',
+      reasonPlaceholder: 'Enter here...',
+      submit: 'Submit',
+    },
+  },
+  events: {
+    listingErrMessage: 'Not able to show events currently.',
+    errMessage: 'Not able to show event details currently.',
+    searchPlaceholder: 'Search for events...',
+    results: 'Results for',
+    featuredTag: 'Featured Event',
+    date: 'Date:',
+    location: 'Location:',
+    overview: 'Quick Overview',
+    details: 'Details',
+    eventRsvp: {
+      responded: 'Already Responded',
+      text: 'RSVP',
+      notAvailable: 'Not Available',
+      notInterested: 'Not Interested',
+      reason: 'Reason',
+      reasonPlaceholder: 'Enter here...',
+      submit: 'Submit',
+    },
+    confirmationRsvp: {
+      title: 'RSVP Confirmed!',
+      description:
+        'Please check your email for your event confirmation and details. If you have any additional questions, please contact one of the team on info@thevipsuite.co.uk',
+      cta: 'Back to All Events',
+    },
+  },
+  lookBookForm: {
+    fieldErrMessage: 'This field is required',
+    btn: 'Request Items from Lookbook',
+    formSubTitle: 'Request Form',
+    description: 'Please let us know which items you would like to request. Include size and colour if needed.',
+    placeholder: 'e.g. Red dress on Page 4 in size 12',
+    submitText: 'Submit Request',
+  },
+  redeemBox: {
+    couponsAndOffers: 'Coupons and Offers',
+    noCouponsAvailable: 'Currently, no coupons are available, but new ones may be introduced soon',
+    placeholder: 'XXXXXX',
+    copy: 'Copy',
+    copied: 'Copied!',
+    show: 'Show',
+    errMessage: 'Error while fetching offers',
+  },
+  inboxTabs: {
+    messages: 'Messages',
+    orders: 'Orders',
+    errMessage: 'Not able to show Inbox content currently.',
+  },
+  myOrders: {
+    errMessage: 'Not able to show order details currently.',
+    rsvpDate: 'RSVP Date:',
+    orderDate: 'Order Date:',
+    status: 'Status:',
+    location: 'Location:',
+    description: 'Description:',
+  },
+  feedbackForm: {
+    formTitle: 'Feedback',
+    successMessage: 'Your feedback has been successfully submitted!',
+    errorMessage: 'Error submitting feedback',
+    fieldErrorMessages: {
+      rating: 'Rating is required',
+      url: 'Valid URL is required',
+      screesshot: 'Screenshot is required',
+    },
+    fieldNames: {
+      rating: 'Rate the Event',
+      url: 'URL of the related social post',
+      screesshot: 'Upload a screenshot of your post',
+    },
+    fieldPlaceholders: {
+      url: 'https://instagram.com/postID',
+      screesshot: 'Upload a file',
+    },
+    submit: 'Submit',
+    submitting: 'Submitting',
   },
 };
 

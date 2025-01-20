@@ -48,15 +48,6 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
 
   return (
     <Box sx={{ position: 'relative', marginBottom: 4 }}>
-      {/* {withLikeIcon && (
-        <FeedLikeIcon
-          postId={item?.id}
-          isWishlisted={item?.is_wishlisted}
-          type="opportunity"
-          token={token}
-          vipId={vipId}
-        />
-      )} */}
       <SliderComponent {...settings}>
         {images.map((src, index) => (
           <StyledBox key={index}>

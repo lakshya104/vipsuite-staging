@@ -12,11 +12,7 @@ import { InputTextAreaFormField } from '@/components/InputTextFormField';
 import { MakeRequestSubmit } from '@/libs/api-manager/manager';
 
 const formSchema = z.object({
-  request_user_response: z
-    .string()
-    .min(1, 'This field is required')
-    .min(15, 'Describe the item in at least 15 characters')
-    .max(400, 'Describe the item in less than 400 characters'),
+  request_user_response: z.string().min(1, 'This field is required'),
 });
 
 type FormValues = z.infer<typeof formSchema>;

@@ -13,8 +13,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { filter, includes, union } from 'lodash';
 import SelectBox from '@/components/SelectBox';
-import FormDatePicker from '@/components/FormDatePicker';
-import InputTextFormField from '@/components/InputTextFormField';
 import CustomStepper from '@/components/CustomStepper/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
@@ -22,6 +20,8 @@ import { UpdateProfile } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { formSchema, Step4FormValues } from './schema';
+import en from '@/helpers/lang';
+import { QuestionType } from '@/helpers/enums';
 
 type FormFieldNames =
   | 'sportsPlay'
@@ -54,38 +54,32 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
   const vipStep4formFields = [
     {
       name: 'habits',
-      label: 'Habits',
-      type: 'checkBox',
+      label: en.profileBuilder.typeOfContent.placeholders.habits,
+      type: QuestionType.CheckBoxes,
       options: habits_options.map((opt: string) => ({ value: opt, label: opt })),
     },
     {
       name: 'sportsPlay',
-      label: 'Sports You Play',
-      type: 'select',
+      label: en.profileBuilder.typeOfContent.placeholders.sportsPlay,
+      type: QuestionType.Dropdown,
       options: sports_play_options.map((opt: string) => ({ value: opt, label: opt })),
     },
     {
-      name: 'sports',
-      label: 'Sports',
-      type: 'text',
-      placeholder: 'Other Sport',
-    },
-    {
       name: 'sportsFollow',
-      label: 'Sports You Follow',
-      type: 'select',
+      label: en.profileBuilder.typeOfContent.placeholders.sportsFollow,
+      type: QuestionType.Dropdown,
       options: sports_follow_options.map((opt: string) => ({ value: opt, label: opt })),
     },
     {
       name: 'skills',
-      label: 'Skills',
-      type: 'select',
+      label: en.profileBuilder.typeOfContent.placeholders.skills,
+      type: QuestionType.Dropdown,
       options: skills_options.map((opt: string) => ({ value: opt, label: opt })),
     },
     {
       name: 'socialLook',
-      label: 'Look & feel of your socials',
-      type: 'select',
+      label: en.profileBuilder.typeOfContent.placeholders.lookFeelOfSocials,
+      type: QuestionType.Dropdown,
       options: look_feel_of_socials_options.map((opt: string) => ({ value: opt, label: opt })),
     },
   ];
@@ -125,7 +119,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
         ...profileDetail,
         habits: data.habits,
         sports_play: data.sportsPlay,
-        other_sports: data.sports,
         sports_follow: data.sportsFollow,
         skills: data.skills,
         look_feel_of_socials: data.socialLook,
@@ -136,7 +129,6 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
           last_name: profileDetail.last_name,
           habits: data.habits,
           sports_play: data.sportsPlay === '' ? null : data.sportsPlay,
-          other_sports: data.sports,
           sports_follow: data.sportsFollow === '' ? null : data.sportsFollow,
           skills: data.skills === '' ? null : data.skills,
           look_feel_of_socials: data.socialLook === '' ? null : data.socialLook,
@@ -145,7 +137,7 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
       await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster(en.profileBuilder.errorMessage + error);
     } finally {
       setIsLoading(false);
     }
@@ -155,12 +147,12 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step4-form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
-          Interested in
+          {en.profileBuilder.typeOfContent.title}
         </Typography>
       </Box>
-      {vipStep4formFields.map(({ name, type, options }) => (
+      {vipStep4formFields.map(({ name, type, options, label }) => (
         <Box key={name} width="100%">
-          {type === 'checkBox' && (
+          {type === QuestionType.CheckBoxes ? (
             <FormGroup>
               <Box className="form-checkbox-group">
                 {options &&
@@ -188,31 +180,14 @@ const Step4Form: React.FC<ProfileBuilderStepsProps> = ({
               </Box>
               <FormHelperText error>{errors[name as keyof Step4FormValues]?.message}</FormHelperText>
             </FormGroup>
-          )}
-        </Box>
-      ))}
-      {vipStep4formFields.map(({ name, label, type, options, placeholder }) => (
-        <Box key={name} width="100%">
-          {type === 'select' ? (
+          ) : (
             <SelectBox
               name={name as FormFieldNames}
               control={control}
-              placeholder={placeholder}
               options={options as { value: string; label: string }[]}
               label={label}
               errors={errors}
             />
-          ) : type === 'date' ? (
-            <FormDatePicker name={name as FormFieldNames} control={control} label={label} />
-          ) : (
-            type === 'text' && (
-              <InputTextFormField
-                name={name as FormFieldNames}
-                placeholder={placeholder}
-                control={control}
-                errors={errors}
-              />
-            )
           )}
         </Box>
       ))}

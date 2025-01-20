@@ -54,10 +54,26 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         placeholder: 'Birthplace',
       },
       {
+        name: 'gender',
+        label: 'Gender',
+        type: 'select',
+        options: [
+          { value: 'Male', label: 'Male' },
+          { value: 'Female', label: 'Female' },
+          { value: 'Transgender', label: 'Transgender' },
+        ],
+      },
+      {
         name: 'nationality',
         label: 'Nationality',
         type: 'select',
         options: nationality_options.map((opt: string) => ({ value: opt, label: opt })),
+      },
+      {
+        name: 'city',
+        label: 'City',
+        type: 'text',
+        placeholder: 'City',
       },
       {
         name: 'ethnicity',
@@ -113,7 +129,9 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const defaultValues: Step3FormValues = {
     dateOfBirth: profileDetail.date_of_birth || '',
     birthplace: profileDetail.birth_place || '',
+    gender: profileDetail.gender || '',
     nationality: profileDetail.nationality || '',
+    city: profileDetail.city || '',
     ethnicity: profileDetail.ethnicity || '',
     numberOfChildren: profileDetail.number_of_children || '',
     ageOfChild: profileDetail.child_info ? profileDetail.child_info.map((child: ChildInfo) => child.dob) : [],
@@ -168,7 +186,9 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         ...profileDetail,
         date_of_birth: data.dateOfBirth,
         birth_place: data.birthplace,
+        gender: data.gender,
         nationality: data.nationality,
+        city: data.city,
         ethnicity: data.ethnicity,
         number_of_children: data.numberOfChildren,
         pets: petsString,
@@ -181,7 +201,9 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           last_name: profileDetail.last_name,
           date_of_birth: data.dateOfBirth,
           birth_place: data.birthplace,
+          gender: data.gender,
           nationality: data.nationality === '' ? null : data.nationality,
+          city: data.city,
           ethnicity: data.ethnicity === '' ? null : data.ethnicity,
           number_of_children: data.numberOfChildren === '' ? null : data.numberOfChildren,
           pets: petsString,
@@ -270,7 +292,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
                 <Typography variant="body1" fontWeight={500} gutterBottom textAlign="left">
                   {field.placeholder}
                 </Typography>
-                <Box className="profile-builder__form-row">
+                <Box className="profile-builder__form-row profile-builder__pets">
                   {petOptions.map((option: { label: string; value: string }, index: number) => (
                     <FormControlLabel
                       key={index}
@@ -298,12 +320,12 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
             return (
               <Box key={field.name} width="100%">
                 <InputTextFormField {...commonProps} placeholder={field.placeholder} />
-                {field.name === 'pets' && !errors[field.name] && !petsValue && (
+                {field.name === 'pets' && !petsValue && (
                   <Box className="input-text">
                     <Typography>Separate with commas</Typography>
                   </Box>
                 )}
-                {field.name === 'homePostcode' && !errors[field.name] && !homePostcodeValue && (
+                {field.name === 'homePostcode' && !homePostcodeValue && (
                   <Box className="input-text">
                     <Typography>You can enter the first part only e.g. EC1</Typography>
                   </Box>

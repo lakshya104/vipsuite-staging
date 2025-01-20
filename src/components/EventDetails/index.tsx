@@ -11,6 +11,7 @@ import ArrowBackBtn from '../ArrowBackBtn';
 import ReferCard from '../ReferCard';
 import RequestItemFormButton from '../RequestItemFormButton';
 import RedeemBox from '../RedeemBox';
+import en from '@/helpers/lang';
 
 interface EventDetailsCardProps {
   event: EventDetails;
@@ -45,14 +46,14 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
           {he.decode(event?.title?.rendered)}
         </Typography>
         <Typography variant="body1">
-          <Box component="strong">Date:</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -
+          <Box component="strong">{en.events.date}</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -
           {formatDateWithOrdinal(event?.acf?.event_end_date, true)}
         </Typography>
         <Typography variant="body1" paragraph>
-          <Box component="strong">Location:</Box> {event?.acf?.event_location}
+          <Box component="strong">{en.events.location}</Box> {event?.acf?.event_location}
         </Typography>
         <Typography variant="h6" component="h3" gutterBottom>
-          Quick Overview
+          {en.events.overview}
         </Typography>
         <Box
           sx={{
@@ -76,7 +77,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
           dangerouslySetInnerHTML={{ __html: eventOverview || '' }}
         />
         <Typography variant="h6" component="h3" gutterBottom>
-          Details
+          {en.events.details}
         </Typography>
         <Box
           sx={{

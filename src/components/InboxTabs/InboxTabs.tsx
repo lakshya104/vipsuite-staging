@@ -6,16 +6,12 @@ import OrderListing from '../OrderListing';
 import { MessageDetails, Order } from '@/interfaces';
 import './InboxTabs.scss';
 import Messages from '../Messages';
+import en from '@/helpers/lang';
 
 type Tabs = {
   section: 'messages' | 'orders';
   label: string;
 };
-
-const TABS: Tabs[] = [
-  { section: 'messages', label: 'Messages' },
-  { section: 'orders', label: 'Orders' },
-];
 
 interface InboxTabsProps {
   totalOrders: number;
@@ -30,6 +26,10 @@ const InboxTabs: React.FC<InboxTabsProps> = ({ order, totalPages, currentPage, m
   const searchParams = useSearchParams();
   const isOrderTab = searchParams.get('isOrderTab');
   const [section, setSection] = useState<'messages' | 'orders'>(isOrderTab ? 'orders' : 'messages');
+  const TABS: Tabs[] = [
+    { section: 'messages', label: en.inboxTabs.messages },
+    { section: 'orders', label: en.inboxTabs.orders },
+  ];
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     const selectedSection = TABS[newValue].section;

@@ -43,7 +43,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token }) => {
       <Container>
         <Box className="my-vips-page__head">
           <SignoutBtn token={token} />
-          <Typography className="page-title" variant="h2" align="center">
+          <Typography variant="h2" align="center">
             My VIPs
             <ProgressBarLink className="button button--black" href="/agent-profile-builder">
               Add <AddIcon />

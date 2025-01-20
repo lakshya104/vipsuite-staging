@@ -20,9 +20,10 @@ import { InputTextAreaFormField } from '@/components/InputTextFormField';
 import { useLookbookOrder } from '@/store/useStore';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
+import en from '@/helpers/lang';
 
 const formSchema = z.object({
-  itemName: z.string().min(1, 'This field is required'),
+  itemName: z.string().min(1, en.lookBookForm.fieldErrMessage),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -30,6 +31,7 @@ type FormValues = z.infer<typeof formSchema>;
 interface RequestItemFormButtonProps {
   postId: number;
 }
+
 const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ postId }) => {
   const [open, setOpen] = useState(false);
   const { setLookbookDescription, clearLookbookDescription } = useLookbookOrder();
@@ -72,28 +74,27 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ postId })
     <>
       <Box className="request-button">
         <Button className="button" onClick={handleClickOpen}>
-          Request Items from Lookbook
+          {en.lookBookForm.btn}
         </Button>
       </Box>
-
       <Dialog className="site-dialog" open={open} onClose={handleClose}>
-        <DialogTitle>Request Form</DialogTitle>
+        <DialogTitle>{en.lookBookForm.formSubTitle}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
               <Typography variant="body1" fontWeight="500" sx={{ mb: 2 }}>
-                Please let us know which items you would like to request. Include size and colour if needed.
+                {en.lookBookForm.description}
               </Typography>
               <InputTextAreaFormField
                 name="itemName"
                 control={control}
-                placeholder="e.g. Red dress on Page 4 in size 12"
+                placeholder={en.lookBookForm.placeholder}
                 errors={errors}
               />
             </Box>
             <DialogActions>
               <Btn look="dark-filled" width="100%" type="submit">
-                Submit Request
+                {en.lookBookForm.submitText}
               </Btn>
             </DialogActions>
           </form>
