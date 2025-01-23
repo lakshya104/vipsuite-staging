@@ -6,6 +6,7 @@ import { LogOut } from '@/libs/api-manager/manager';
 import Toaster from './Toaster';
 import { useUserInfoStore } from '@/store/useStore';
 import { signOutAction } from '@/libs/actions';
+import { useRouter } from 'next/navigation';
 
 interface SignoutBtnProps {
   token: string;
@@ -14,15 +15,15 @@ interface SignoutBtnProps {
 const SignoutBtn: React.FC<SignoutBtnProps> = ({ token }) => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const router = useRouter();
   const { clearAll } = useUserInfoStore();
   const handleLogout = async () => {
     startTransition(async () => {
       try {
         await Promise.all([LogOut(token), clearAll(), signOutAction()]);
+        router.push('/');
       } catch (error) {
         openToaster('Error during logging out. ' + error);
-      } finally {
-        window.location.href = '/';
       }
     });
   };

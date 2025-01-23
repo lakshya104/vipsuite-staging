@@ -2,21 +2,21 @@
 * Address page style.
 */
 
-@import '../../../styles/mixins';
+@use '../../../styles/mixins';
 
 .opportunities {
   .page-title {
-    padding: 0 0 rem(13);
-    margin-bottom: rem(20);
-    border-bottom: rem(1) solid var(--color-textBlack-10);
-    @include relative;
+    padding: 0 0 mixins.rem(13);
+    margin-bottom: mixins.rem(20);
+    border-bottom: mixins.rem(1) solid var(--color-textBlack-10);
+    @include mixins.relative;
     @media only screen and (max-width: 767px) {
       line-height: 1.07;
       letter-spacing: -0.03em;
-      @include fontSize(14);
+      @include mixins.fontSize(14);
     }
     a {
-      @include absolute(left 0);
+      @include mixins.absolute(left 0);
     }
   }
   .MuiTypography-body1 {
@@ -24,22 +24,22 @@
     @media only screen and (max-width: 767px) {
       line-height: 1.33;
       letter-spacing: -0.01em;
-      @include fontSize(12);
+      @include mixins.fontSize(12);
     }
   }
   h2 {
-    margin-bottom: rem(12);
+    margin-bottom: mixins.rem(12);
     letter-spacing: -0.01em;
-    @include fontSize(24);
+    @include mixins.fontSize(24);
     @media only screen and (max-width: 767px) {
-      margin-bottom: rem(8);
+      margin-bottom: mixins.rem(8);
       line-height: 1.2;
-      @include fontSize(20);
+      @include mixins.fontSize(20);
     }
   }
 }
 .opportunities-card {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   &__item {
     &-inner {
       position: relative;
@@ -48,46 +48,46 @@
       background-position: center;
       .MuiChip-filled {
         background: var(--color-white);
-        @include absolute(left 12px top 12px);
+        @include mixins.absolute(left 12px top 12px);
       }
     }
     &-overline.MuiTypography-root {
       background-color: rgba(255, 255, 247, 0.5);
-      padding: rem(6) rem(10);
+      padding: mixins.rem(6) mixins.rem(10);
       font-weight: 500;
       letter-spacing: 0.09em;
       display: inline-block;
       line-height: 1.4;
-      @include absolute(top 12px left 12px);
-      @include border-radius(3px);
+      @include mixins.absolute(top 12px left 12px);
+      @include mixins.border-radius(3px);
       @media only screen and (max-width: 767px) {
         line-height: 1.4;
-        @include fontSize(10);
+        @include mixins.fontSize(10);
       }
     }
     &-content {
-      padding: rem(12) !important;
+      padding: mixins.rem(12) !important;
       color: var(--color-marble);
       width: 100%;
-      min-height: rem(81.45);
-      @include absolute(bottom 0 left 0);
+      min-height: mixins.rem(81.45);
+      @include mixins.absolute(bottom 0 left 0);
       &::after {
         content: '';
         width: 100%;
         height: 115%;
         opacity: 0.3;
         background: linear-gradient(0deg, #1b1b1b 0%, rgba(27, 27, 27, 0) 100%);
-        @include absolute(bottom 0 left 0 z-index 0);
+        @include mixins.absolute(bottom 0 left 0 z-index 0);
         @media only screen and (min-width: 768px) {
           opacity: 0.5;
         }
       }
       * {
-        @include relative(z-index 1);
+        @include mixins.relative(z-index 1);
       }
       p {
         @media only screen and (max-width: 767px) {
-          @include fontSize(12);
+          @include mixins.fontSize(12);
         }
         span {
           opacity: 20%;
@@ -100,11 +100,11 @@
         letter-spacing: 0.09em;
         display: inline-block;
         line-height: 1.4;
-        margin-bottom: rem(10);
+        margin-bottom: mixins.rem(10);
         color: var(--color-darkgray);
-        border-radius: rem(3);
+        border-radius: mixins.rem(3);
         + h2 {
-          margin-bottom: rem(32);
+          margin-bottom: mixins.rem(32);
         }
       }
     }
@@ -112,7 +112,7 @@
 }
 
 .gray-card {
-  margin-bottom: rem(20);
+  margin-bottom: mixins.rem(20);
   flex-wrap: wrap;
   .gray-card {
     &__item {
@@ -120,40 +120,40 @@
       flex: 1 0 0;
       box-shadow: 0 0 0 transparent;
       flex-basis: calc(50% - 20px);
-      @include relative;
-      @include border-radius(8px);
+      @include mixins.relative;
+      @include mixins.border-radius(8px);
       h2 {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
         @media only screen and (max-width: 767px) {
-          margin-bottom: rem(6);
+          margin-bottom: mixins.rem(6);
           line-height: 1.07;
           letter-spacing: -0.03em;
-          @include fontSize(16);
+          @include mixins.fontSize(16);
         }
       }
       p {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
         color: var(--color-textBlack-60);
         @media only screen and (max-width: 767px) {
-          margin-bottom: rem(11);
+          margin-bottom: mixins.rem(11);
           line-height: 1.45;
           letter-spacing: -0.03em;
-          @include fontSize(11);
+          @include mixins.fontSize(11);
         }
       }
       svg {
         text-decoration: none;
-        @include absolute(bottom 3px right 9px);
+        @include mixins.absolute(bottom 3px right 9px);
       }
       a {
         text-decoration: none;
         font-size: 0;
         width: 100%;
         height: 100%;
-        @include absolute(top 0 left 0 z-index 1);
+        @include mixins.absolute(top 0 left 0 z-index 1);
       }
       .MuiCardContent-root {
-        padding: rem(16) rem(16) rem(24);
+        padding: mixins.rem(16) mixins.rem(16) mixins.rem(24);
       }
     }
   }

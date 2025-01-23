@@ -4,7 +4,8 @@ import '../Event.scss';
 import EventDetailsPage from '@/site-pages/EventDetailsPage';
 import EventDetailsLoading from '@/site-pages/EventDetailsPage/loading';
 
-export default async function Page({ params }: { params: { id: number } }) {
+export default async function Page(props: { params: Promise<{ id: number }> }) {
+  const params = await props.params;
   return (
     <Box component={'main'} className="product-detail product-slides">
       <Container>

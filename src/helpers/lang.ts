@@ -468,6 +468,34 @@ const en = {
     submit: 'Submit',
     submitting: 'Submitting',
   },
+  joinUs: {
+    findOut: 'Find out more',
+  },
+  promoWrapper: {
+    vipBrandClub: 'VIP Brand Club members',
+  },
+  agentLayout: {
+    errorMessages: {
+      loadFailed: 'Failed to load page',
+    },
+    yourProfile: 'Your Profile',
+    myProfile: 'My Profile',
+  },
+  landingPage: {
+    notShowLandingPage: 'Not able to show landing page currently.',
+    bookDemo: {
+      failedFormId: 'Failed to fetch Form ID',
+      fetchId: 'Error fetching ID:',
+      successFormSubmit: 'You have successfully submitted form.',
+      failedFormSubmit: 'Failed to submit form.',
+      menuItems: {
+        brand: 'Brand',
+        vip: 'VIP',
+        agent: 'Agent',
+      },
+      submit: 'Submit',
+    },
+  },
 };
 
 export default en;

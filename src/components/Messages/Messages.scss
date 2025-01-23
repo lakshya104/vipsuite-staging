@@ -2,24 +2,24 @@
 * Address page style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .user-inbox {
-  margin: rem(30) 0 rem(120);
+  margin: mixins.rem(30) 0 mixins.rem(120);
   @media only screen and (min-width: 768px) {
-    margin: rem(50) 0;
+    margin: mixins.rem(50) 0;
   }
   .page-title {
-    padding: 0 0 rem(27);
-    border-bottom: rem(1) solid var(--color-textBlack-10);
-    @include relative;
+    padding: 0 0 mixins.rem(27);
+    border-bottom: mixins.rem(1) solid var(--color-textBlack-10);
+    @include mixins.relative;
     @media only screen and (max-width: 767px) {
       line-height: 1.07;
       letter-spacing: -0.03em;
-      @include fontSize(14);
+      @include mixins.fontSize(14);
     }
     a {
-      @include absolute(left 0);
+      @include mixins.absolute(left 0);
     }
   }
   .MuiTypography-body1 {
@@ -27,7 +27,7 @@
     @media only screen and (max-width: 767px) {
       line-height: 1.33;
       letter-spacing: -0.01em;
-      @include fontSize(12);
+      @include mixins.fontSize(12);
     }
   }
   .message__item {
@@ -43,41 +43,41 @@
 
 .order-product {
   &__items {
-    margin-bottom: rem(32);
+    margin-bottom: mixins.rem(32);
   }
   &__item {
-    padding: rem(16) 0;
-    gap: rem(20);
+    padding: mixins.rem(16) 0;
+    gap: mixins.rem(20);
     &:last-of-type {
-      margin-bottom: rem(20);
+      margin-bottom: mixins.rem(20);
     }
     &:last-child {
-      border-bottom: rem(1) solid var(--color-textBlack-10);
+      border-bottom: mixins.rem(1) solid var(--color-textBlack-10);
     }
     .order-details-page & {
-      border-top: rem(1) solid var(--color-textBlack-10);
+      border-top: mixins.rem(1) solid var(--color-textBlack-10);
     }
     svg {
       align-self: center;
       justify-self: flex-end;
-      width: rem(28);
-      height: rem(28);
+      width: mixins.rem(28);
+      height: mixins.rem(28);
     }
     h2 {
       @media only screen and (max-width: 767px) {
-        margin-bottom: rem(6);
+        margin-bottom: mixins.rem(6);
         line-height: 1.38;
         letter-spacing: -0.02em;
-        @include fontSize(13);
+        @include mixins.fontSize(13);
       }
     }
     img {
-      border-radius: rem(4);
-      flex: 1 0 rem(110);
-      max-width: rem(110);
+      border-radius: mixins.rem(4);
+      flex: 1 0 mixins.rem(110);
+      max-width: mixins.rem(110);
       @media only screen and (max-width: 767px) {
-        flex: 1 0 rem(54);
-        max-width: rem(54);
+        flex: 1 0 mixins.rem(54);
+        max-width: mixins.rem(54);
       }
     }
   }
@@ -88,26 +88,26 @@
     @media only screen and (max-width: 767px) {
       line-height: 1.16;
       letter-spacing: -0.02em;
-      @include fontSize(16);
+      @include mixins.fontSize(16);
     }
   }
   .MuiTypography-body1 {
     font-weight: 500;
     @media only screen and (max-width: 767px) {
       line-height: 1.54;
-      @include fontSize(13);
+      @include mixins.fontSize(13);
     }
   }
   &__uploader {
-    height: rem(149);
-    padding: rem(9) rem(16) rem(11) rem(20);
-    border: rem(1) solid var(--color-textBlack);
-    @include border-radius(10px);
-    @include flex(center, center);
+    height: mixins.rem(149);
+    padding: mixins.rem(9) mixins.rem(16) mixins.rem(11) mixins.rem(20);
+    border: mixins.rem(1) solid var(--color-textBlack);
+    @include mixins.border-radius(10px);
+    @include mixins.flex(center, center);
   }
   .button {
-    padding-top: rem(9);
-    padding-bottom: rem(9);
+    padding-top: mixins.rem(9);
+    padding-bottom: mixins.rem(9);
   }
 }
 
@@ -118,32 +118,32 @@
     padding-right: 0 !important;
     img {
       .message__items & {
-        border-radius: rem(4);
-        flex: 1 0 rem(110);
-        max-width: rem(110);
+        border-radius: mixins.rem(4);
+        flex: 1 0 mixins.rem(110);
+        max-width: mixins.rem(110);
         object-fit: cover;
         max-height: none;
         @media only screen and (max-width: 899px) {
-          flex: 1 0 rem(54);
-          max-width: rem(54);
-          height: rem(54);
+          flex: 1 0 mixins.rem(54);
+          max-width: mixins.rem(54);
+          height: mixins.rem(54);
         }
       }
     }
     h6 {
-      line-height: rem(16);
-      @include fontSize(14);
+      line-height: mixins.rem(16);
+      @include mixins.fontSize(14);
       @media screen and (min-width: 900px) {
         line-height: 1;
-        @include fontSize(32);
+        @include mixins.fontSize(32);
       }
     }
     h2 {
-      margin-top: rem(10);
-      margin-bottom: rem(6);
+      margin-top: mixins.rem(10);
+      margin-bottom: mixins.rem(6);
       @media screen and (max-width: 899px) {
-        @include fontSize(13);
-        line-height: rem(15.08);
+        @include mixins.fontSize(13);
+        line-height: mixins.rem(15.08);
       }
     }
     svg {
@@ -154,11 +154,11 @@
     }
     p {
       @media screen and (max-width: 899px) {
-        @include fontSize(12);
-        line-height: rem(16);
+        @include mixins.fontSize(12);
+        line-height: mixins.rem(16);
       }
       &:not(:last-child) {
-        margin-bottom: rem(6);
+        margin-bottom: mixins.rem(6);
       }
     }
   }

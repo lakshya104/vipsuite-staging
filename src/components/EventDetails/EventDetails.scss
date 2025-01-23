@@ -2,23 +2,23 @@
 * Home style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 main.product-detail {
-  margin: rem(30) 0 rem(120);
+  margin: mixins.rem(30) 0 mixins.rem(120);
   @media only screen and (min-width: 768px) {
-    margin: rem(50) 0;
+    margin: mixins.rem(50) 0;
   }
   .page-title {
-    padding: 0 0 rem(27);
+    padding: 0 0 mixins.rem(27);
     @media only screen and (max-width: 767px) {
       line-height: 1.07;
       letter-spacing: -0.03em;
-      @include fontSize(14);
+      @include mixins.fontSize(14);
     }
   }
   .request-button {
-    margin-bottom: rem(26);
+    margin-bottom: mixins.rem(26);
     text-align: center;
   }
   // button {
@@ -29,37 +29,37 @@ main.product-detail {
 }
 div.product-detail {
   &__content {
-    padding: rem(20) 0;
+    padding: mixins.rem(20) 0;
     p {
       color: var(--color-textBlack-80);
       @media only screen and (max-width: 767px) {
         line-height: 1.54;
         letter-spacing: -0.01em;
-        @include fontSize(13);
+        @include mixins.fontSize(13);
       }
     }
     h2 {
-      margin-bottom: rem(10);
+      margin-bottom: mixins.rem(10);
       @media only screen and (max-width: 767px) {
         line-height: 1.16;
         letter-spacing: -0.02em;
-        @include fontSize(20);
+        @include mixins.fontSize(20);
       }
     }
     h3 {
       @media only screen and (max-width: 767px) {
-        margin-bottom: rem(8);
+        margin-bottom: mixins.rem(8);
         font-weight: 500;
         line-height: 1.07;
         letter-spacing: -0.03em;
-        @include fontSize(16);
+        @include mixins.fontSize(16);
       }
     }
   }
   .page-title {
-    @include relative();
+    @include mixins.relative();
     svg {
-      @include absolute(left 0);
+      @include mixins.absolute(left 0);
     }
   }
   &__item {
@@ -68,16 +68,16 @@ div.product-detail {
     background-size: cover;
     background-position: center;
     box-shadow: 0 0 0 transparent;
-    @include border-radius(8px);
+    @include mixins.border-radius(8px);
     .MuiChip-filled {
       background: var(--color-white);
-      @include absolute(left 12px top 12px);
+      @include mixins.absolute(left 12px top 12px);
     }
     .brand-logo {
-      width: rem(64);
-      height: rem(64);
-      margin: rem(12);
-      @include flex(center, center);
+      width: mixins.rem(64);
+      height: mixins.rem(64);
+      margin: mixins.rem(12);
+      @include mixins.flex(center, center);
       img {
         height: auto !important;
         max-width: 100%;
@@ -94,11 +94,11 @@ div.product-detail {
     display: none;
   }
   textarea {
-    padding: rem(16);
-    height: rem(188) !important;
+    padding: mixins.rem(16);
+    height: mixins.rem(188) !important;
     font-weight: 400;
     line-height: 1.142;
-    @include border-radius(10px);
-    @include fontSize(14);
+    @include mixins.border-radius(10px);
+    @include mixins.fontSize(14);
   }
 }

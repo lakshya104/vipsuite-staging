@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, useEffect, useState, useTransition } from 'react';
+import React, { Fragment, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { Address, Cart } from '@/interfaces';
@@ -22,15 +22,8 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
   const router = useRouter();
-  const [productImage, setProductImage] = useState<string>(DefaultImageFallback.Placeholder);
   const [signatureData, setSignatureData] = useState<string>('');
-
-  useEffect(() => {
-    const firstItemImageUrl = first(get(cartData, 'items', []))?.image_url;
-    if (firstItemImageUrl) {
-      setProductImage(firstItemImageUrl);
-    }
-  }, [cartData]);
+  const firstItemImageUrl = first(get(cartData, 'items', []))?.image_url;
 
   const handleNext = () => {
     startTransition(() => setActiveStep((prev) => prev + 1));
@@ -63,7 +56,7 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
           cartData={cartData}
           onPrevious={handleBack}
           startTransition={startTransition}
-          productImage={productImage}
+          productImage={firstItemImageUrl || DefaultImageFallback.Placeholder}
           signatureData={signatureData}
         />
       )}

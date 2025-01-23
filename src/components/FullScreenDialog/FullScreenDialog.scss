@@ -2,7 +2,7 @@
 * Full Screen Dialog style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .order-status {
   flex: 1 1;
@@ -10,48 +10,48 @@
   width: 100%;
   max-width: 23.75rem;
   flex-direction: column;
-  @include relative();
-  @include flex($justify-content: center);
+  @include mixins.relative();
+  @include mixins.flex($justify-content: center);
   @media only screen and (min-width: 768px) {
     max-width: 30rem;
   }
   h6 {
-    @include fontSize(28);
+    @include mixins.fontSize(28);
     @media only screen and (max-width: 767px) {
-      line-height: rem(15);
-      @include fontSize(14);
+      line-height: mixins.rem(15);
+      @include mixins.fontSize(14);
     }
   }
   &__wrapper {
     flex: 1;
     flex-direction: column;
-    @include flex($justify-content: flex-end);
+    @include mixins.flex($justify-content: flex-end);
     .button {
       @media screen and (min-width: 600px) {
-        min-width: rem(200);
+        min-width: mixins.rem(200);
         max-width: 100%;
         margin: 0 auto;
       }
     }
     p {
       color: #494947;
-      margin-bottom: rem(61);
+      margin-bottom: mixins.rem(61);
     }
   }
   &__subtitle {
     .order-status & {
-      margin-bottom: rem(16);
+      margin-bottom: mixins.rem(16);
       font-weight: 500;
-      @include fontSize(45);
+      @include mixins.fontSize(45);
       @media only screen and (max-width: 767px) {
-        @include fontSize(28);
+        @include mixins.fontSize(28);
       }
     }
   }
   &__img {
     margin-bottom: auto;
     img {
-      border-radius: rem(8);
+      border-radius: mixins.rem(8);
     }
   }
 }

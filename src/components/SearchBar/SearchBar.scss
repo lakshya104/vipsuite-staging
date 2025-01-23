@@ -2,36 +2,36 @@
 * Partner style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .search-box {
   width: 100%;
-  @include relative;
-  @include flex(center, center);
+  @include mixins.relative;
+  @include mixins.flex(center, center);
   &__popover {
     width: 91%;
     background-color: var(--color-marble);
-    box-shadow: 0 0 rem(3) rgba(27, 27, 27, 0.8);
-    @include border-radius(0 0 7px 7px);
-    @include absolute(top 100% z-index 1);
+    box-shadow: 0 0 mixins.rem(3) rgba(27, 27, 27, 0.8);
+    @include mixins.border-radius(0 0 7px 7px);
+    @include mixins.absolute(top 100% z-index 1);
   }
   .MuiOutlinedInput-root {
-    padding-left: rem(20);
-    padding-right: rem(20);
+    padding-left: mixins.rem(20);
+    padding-right: mixins.rem(20);
   }
   input {
     // width: 90%;
     margin: auto;
     padding: 0;
-    height: rem(44);
+    height: mixins.rem(44);
     background-color: var(--color-marble);
-    @include border-radius(38px);
+    @include mixins.border-radius(38px);
     &:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0 rem(38) transparent !important;
+      -webkit-box-shadow: 0 0 0 mixins.rem(38) transparent !important;
       -webkit-text-fill-color: var(--color-textBlack) !important;
       -webkit-background-clip: text !important;
       background-clip: text !important;
-      @include border-radius(38px);
+      @include mixins.border-radius(38px);
     }
     &.MuiInputBase-input {
       padding-left: 0;
@@ -40,23 +40,23 @@
   }
   fieldset {
     padding: 0;
-    border: rem(1) solid var(--color-textBlack-20) !important;
-    height: rem(49);
-    top: rem(-4);
-    @include border-radius(38px);
+    border: mixins.rem(1) solid var(--color-textBlack-20) !important;
+    height: mixins.rem(49);
+    top: mixins.rem(-4);
+    @include mixins.border-radius(38px);
   }
   button {
     color: var(--color-marble);
     background-color: var(--color-textBlack-60);
     padding: 0;
-    width: rem(16);
-    height: rem(16);
+    width: mixins.rem(16);
+    height: mixins.rem(16);
     &:hover {
       background-color: var(--color-textBlack);
     }
     svg {
-      width: rem(12);
-      height: rem(12);
+      width: mixins.rem(12);
+      height: mixins.rem(12);
     }
   }
 }

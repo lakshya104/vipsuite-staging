@@ -2,10 +2,10 @@
 * Product List style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .product-list__page {
-  margin-bottom: rem(80);
+  margin-bottom: mixins.rem(80);
   .product-card {
     background-color: var(--color-marble);
     border: 0 none;
@@ -13,34 +13,34 @@
     color: var(--color-textBlack-80);
     flex-direction: column;
     height: 100%;
-    @include flex;
-    @include relative;
+    @include mixins.flex;
+    @include mixins.relative;
     justify-content: space-between;
     img {
       height: auto;
-      @include border-radius(4px);
+      @include mixins.border-radius(4px);
       @media only screen and (min-width: 600px) {
-        height: rem(462);
+        height: mixins.rem(462);
         object-fit: cover;
       }
     }
     &__content {
-      padding: rem(12) 0 0;
+      padding: mixins.rem(12) 0 0;
       min-height: 130px;
       span {
         font-weight: 500;
         line-height: 1.4;
         letter-spacing: 0.09em;
         background-color: var(--color-marble);
-        padding: rem(6) rem(10);
+        padding: mixins.rem(6) mixins.rem(10);
         text-transform: uppercase;
-        @include border-radius(3px);
-        @include absolute(top 8px left 8px);
-        @include fontSize(8);
+        @include mixins.border-radius(3px);
+        @include mixins.absolute(top 8px left 8px);
+        @include mixins.fontSize(8);
         @media only screen and (min-width: 768px) {
-          top: rem(12);
-          left: rem(12);
-          @include fontSize(14);
+          top: mixins.rem(12);
+          left: mixins.rem(12);
+          @include mixins.fontSize(14);
         }
       }
     }
@@ -48,35 +48,35 @@
       box-shadow: none;
       margin-top: auto;
       @media only screen and (max-width: 767px) {
-        padding: rem(6);
-        @include fontSize(13);
+        padding: mixins.rem(6);
+        @include mixins.fontSize(13);
       }
     }
   }
   h2 {
-    margin-bottom: rem(20);
+    margin-bottom: mixins.rem(20);
     @media only screen and (min-width: 768px) {
-      margin-bottom: rem(32);
+      margin-bottom: mixins.rem(32);
     }
   }
   h3 {
     font-weight: 500;
     line-height: 1.16;
     letter-spacing: -0.02em;
-    margin-bottom: rem(10);
-    @include fontSize(16);
+    margin-bottom: mixins.rem(10);
+    @include mixins.fontSize(16);
     @media only screen and (min-width: 768px) {
-      @include fontSize(24);
+      @include mixins.fontSize(24);
     }
   }
   p {
     font-weight: 400;
     line-height: 1.36;
     letter-spacing: -0.01em;
-    margin-bottom: rem(16);
-    @include fontSize(11);
+    margin-bottom: mixins.rem(16);
+    @include mixins.fontSize(11);
     @media only screen and (min-width: 768px) {
-      @include fontSize(16);
+      @include mixins.fontSize(16);
     }
   }
 }

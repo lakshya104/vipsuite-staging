@@ -2,22 +2,22 @@
 * Testimonial style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .testimonial-section {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   @media only screen and (min-width: 992px) {
-    margin-bottom: rem(85);
+    margin-bottom: mixins.rem(85);
   }
   h2 {
     line-height: 1.6;
     letter-spacing: -0.05em;
-    margin-bottom: rem(20);
-    @include fontSize(30);
+    margin-bottom: mixins.rem(20);
+    @include mixins.fontSize(30);
     @media only screen and (min-width: 992px) {
-      margin-bottom: rem(40);
-      line-height: rem(60);
-      @include fontSize(40);
+      margin-bottom: mixins.rem(40);
+      line-height: mixins.rem(60);
+      @include mixins.fontSize(40);
     }
   }
 }

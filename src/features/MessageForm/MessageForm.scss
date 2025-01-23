@@ -2,12 +2,12 @@
 * Message Form style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .order-details-page {
   .inbox__date {
     border-bottom: 0.0625rem solid var(--color-textBlack-10);
-    padding-bottom: rem(20);
+    padding-bottom: mixins.rem(20);
   }
   .inbox_content {
     height: calc(100vh - 340px);
@@ -16,11 +16,11 @@
 }
 
 .message-form-input {
-  max-width: rem(1276);
+  max-width: mixins.rem(1276);
   margin-left: auto;
   margin-right: auto;
   background-color: var(--color-marble);
-  @include fixed(right 20px left 20px bottom 50px);
+  @include mixins.fixed(right 20px left 20px bottom 50px);
   @media screen and (min-width: 992px) {
     bottom: 0;
   }

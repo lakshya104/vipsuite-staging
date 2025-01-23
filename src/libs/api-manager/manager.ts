@@ -136,7 +136,7 @@ export const AgentProfileUpdate = async (agentId: number, formData: FormData, to
 
 export const Login = async (data: LoginFormValues) => {
   try {
-    const response = await Instance.post(Endpoints.login, data);
+    const response = await InstanceWithoutHeaders.post(Endpoints.login, data);
     return response.data;
   } catch (error) {
     console.error('Error during authentication:', error);

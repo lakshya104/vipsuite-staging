@@ -34,10 +34,11 @@ interface Params {
 }
 
 interface PageProps {
-  params: Params;
+  params: Promise<Params>;
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   const productId = parseInt(params?.id);
   return (
     <Box className="product-details__page">

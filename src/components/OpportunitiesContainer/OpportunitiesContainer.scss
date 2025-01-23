@@ -2,31 +2,31 @@
 * Opportunity Container page style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .filter-modal {
   width: 100%;
   height: 100%;
   background-color: var(--color-white);
-  padding: rem(32);
+  padding: mixins.rem(32);
   overflow-y: auto;
-  border-radius: rem(10);
-  @include absolute(top 10% left 0);
+  border-radius: mixins.rem(10);
+  @include mixins.absolute(top 10% left 0);
   @media screen and (min-width: 768px) {
     width: 80%;
     max-height: 550px;
-    max-width: rem(600);
+    max-width: mixins.rem(600);
     height: auto;
     transform: translate(-50%, -50%);
-    @include absolute(top 50% left 50%);
+    @include mixins.absolute(top 50% left 50%);
   }
   &__close-btn,
   &__clear-btn {
-    @include absolute(top 16px left 16px);
+    @include mixins.absolute(top 16px left 16px);
   }
   &__clear-btn {
     left: auto;
-    right: rem(16);
+    right: mixins.rem(16);
     button {
       text-transform: capitalize;
       color: var(--color-textPrimary);
@@ -34,12 +34,12 @@
   }
   &__loader {
     height: 100%;
-    @include flex($justify-content: center, $align-items: center);
+    @include mixins.flex($justify-content: center, $align-items: center);
   }
   &__image-list {
     overflow: hidden;
-    border-radius: rem(32);
-    @include relative();
+    border-radius: mixins.rem(32);
+    @include mixins.relative();
     img {
       margin: 0 auto;
     }
@@ -51,18 +51,18 @@
   }
   &__circle-icon {
     color: var(--color-gray-99);
-    font-size: rem(34) !important;
-    @include absolute(top 8px right 12px);
+    font-size: mixins.rem(34) !important;
+    @include mixins.absolute(top 8px right 12px);
   }
   &__list-icon {
     text-align: center;
     img {
       background: var(--color-white);
-      padding: rem(4);
+      padding: mixins.rem(4);
       border-radius: 50%;
-      margin-left: rem(8);
-      width: rem(24);
-      height: rem(24);
+      margin-left: mixins.rem(8);
+      width: mixins.rem(24);
+      height: mixins.rem(24);
     }
   }
 }

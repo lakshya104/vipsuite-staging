@@ -2,34 +2,34 @@
 * Address page style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .address {
   &-form {
-    margin: rem(23) 0;
-    margin-bottom: rem(100);
+    margin: mixins.rem(23) 0;
+    margin-bottom: mixins.rem(100);
     @media only screen and (min-width: 768px) {
-      margin: rem(50) 0;
+      margin: mixins.rem(50) 0;
     }
     &__head {
-      margin-bottom: rem(28);
-      @include relative;
+      margin-bottom: mixins.rem(28);
+      @include mixins.relative;
       h1 {
         margin: 0;
-        padding: rem(7.5) 0;
+        padding: mixins.rem(7.5) 0;
         @media only screen and (max-width: 767px) {
-          padding: rem(5) 0;
+          padding: mixins.rem(5) 0;
         }
       }
     }
     form {
-      max-width: rem(350);
+      max-width: mixins.rem(350);
       margin: 0 auto;
       .MuiFormControl-root {
         margin-bottom: 1rem;
       }
       .input-text {
-        @include relative();
+        @include mixins.relative();
       }
     }
   }

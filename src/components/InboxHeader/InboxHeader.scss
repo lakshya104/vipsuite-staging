@@ -1,4 +1,4 @@
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .inbox {
   &__header {
@@ -13,14 +13,14 @@
     img {
       width: auto;
       max-width: unset;
-      max-height: rem(54);
+      max-height: mixins.rem(54);
     }
     h6 {
       margin-bottom: 0;
-      @include fontSize(16);
-      line-height: rem(18.56);
+      @include mixins.fontSize(16);
+      line-height: mixins.rem(18.56);
       @media screen and (min-width: 900px) {
-        @include fontSize(30);
+        @include mixins.fontSize(30);
         line-height: 1;
       }
     }
@@ -29,41 +29,41 @@
     }
   }
   &_content {
-    margin-top: rem(20);
+    margin-top: mixins.rem(20);
 
     h6 {
-      margin-bottom: rem(6);
-      @include fontSize(16);
-      line-height: rem(18.56);
+      margin-bottom: mixins.rem(6);
+      @include mixins.fontSize(16);
+      line-height: mixins.rem(18.56);
       @media screen and (min-width: 900px) {
-        @include fontSize(30);
+        @include mixins.fontSize(30);
         line-height: 1;
       }
     }
     p {
       @media screen and (max-width: 899px) {
-        @include fontSize(14);
-        line-height: rem(20);
+        @include mixins.fontSize(14);
+        line-height: mixins.rem(20);
       }
       &:not(:last-child) {
-        margin-bottom: rem(20);
+        margin-bottom: mixins.rem(20);
       }
     }
   }
   &__date {
     body & {
-      margin-bottom: rem(16);
-      line-height: rem(16);
-      @include fontSize(10);
+      margin-bottom: mixins.rem(16);
+      line-height: mixins.rem(16);
+      @include mixins.fontSize(10);
       @media screen and (min-width: 900px) {
-        @include fontSize(14);
+        @include mixins.fontSize(14);
       }
       span {
         display: inline-block;
         background: #494947;
         vertical-align: middle;
         margin: 0 4px;
-        @include circle(3px);
+        @include mixins.circle(3px);
       }
     }
   }

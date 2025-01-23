@@ -8,18 +8,18 @@ import { cookies } from 'next/headers';
 import { GetSession } from './api-manager/manager';
 import { getVipId } from '@/helpers/utils';
 import { CookieName } from '@/helpers/enums';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: 'Invalid Fields!' };
   }
-  const { email, password } = validatedFields.data;
+  const { username, password } = validatedFields.data;
   try {
     await signIn('credentials', {
-      email,
+      username,
       password,
-      redirectTo: '/home',
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -36,12 +36,16 @@ export const login = async (values: LoginFormValues) => {
       }
       return { error: errorMessage };
     }
-    throw error;
+    if (isRedirectError(error)) {
+      return;
+    } else {
+      throw error;
+    }
   }
 };
 
 export const signOutAction = async () => {
-  await signOut();
+  await signOut({ redirect: false });
 };
 
 export async function revalidateTag(name: string) {
@@ -57,20 +61,20 @@ export async function revalidateAllData() {
 }
 
 export async function createVipIdCookie(id: string) {
-  cookies().set(CookieName.VipId, id);
+  (await cookies()).set(CookieName.VipId, id);
 }
 
 export async function deleteVipCookies() {
-  cookies().delete(CookieName.VipId);
+  (await cookies()).delete(CookieName.VipId);
 }
 
 export async function getVipIdCookie() {
-  return cookies().get(CookieName.VipId);
+  return (await cookies()).get(CookieName.VipId);
 }
 
 export async function getAuthData() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const userId = cookieStore.get(CookieName.VipId);
     const session = await GetSession();
     const { token, role } = session;

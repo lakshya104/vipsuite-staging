@@ -1,6 +1,6 @@
-@import 'reboot';
-@import 'mixins';
-@import 'typography';
+@use 'reboot';
+@use 'mixins';
+@use 'typography';
 
 :root {
   --color-white: #ffffff;
@@ -34,7 +34,7 @@ h1,
   font-weight: 500;
   line-height: 1.14;
   letter-spacing: -0.05em;
-  @include fontSize(70);
+  @include mixins.fontSize(70);
 }
 
 h2,
@@ -42,7 +42,7 @@ h2,
   font-weight: 500;
   line-height: 1.06;
   letter-spacing: -0.03em;
-  @include fontSize(30);
+  @include mixins.fontSize(30);
 }
 strong {
   font-weight: 500;
@@ -78,19 +78,19 @@ button.button {
   font-weight: 500;
   text-align: center;
   box-shadow: none;
-  padding: rem(9) rem(24);
-  border: rem(1.5) solid var(--color-textBlack);
+  padding: mixins.rem(9) mixins.rem(24);
+  border: mixins.rem(1.5) solid var(--color-textBlack);
   text-decoration: none;
   text-transform: none;
-  @include border-radius(38px);
-  @include fontSize(16);
+  @include mixins.border-radius(38px);
+  @include mixins.fontSize(16);
   &:hover {
     box-shadow: none;
     color: var(--color-textBlack);
     background-color: var(--color-marble);
   }
   + .button {
-    margin-top: rem(15);
+    margin-top: mixins.rem(15);
   }
   &--black {
     background-color: var(--color-textBlack);
@@ -140,26 +140,26 @@ button.button {
 }
 
 .page-title {
-  margin-bottom: rem(28);
+  margin-bottom: mixins.rem(28);
   @media only screen and (max-width: 767px) {
     line-height: 1.07;
     letter-spacing: -0.03em;
-    @include fontSize(14);
+    @include mixins.fontSize(14);
   }
 }
 
 .login__page {
   min-height: 100vh;
-  padding: rem(16);
+  padding: mixins.rem(16);
   width: 100%;
   flex-direction: column;
-  @include flex(center, center);
+  @include mixins.flex(center, center);
   &-logo {
-    max-width: rem(184);
+    max-width: mixins.rem(184);
     width: 100%;
-    @include relative;
+    @include mixins.relative;
     @media only screen and (min-width: 992px) {
-      max-width: rem(300);
+      max-width: mixins.rem(300);
     }
   }
 }
@@ -167,87 +167,87 @@ button.button {
 form {
   .MuiFormControl-root,
   .MuiFormGroup-root {
-    margin-bottom: rem(32);
+    margin-bottom: mixins.rem(32);
     width: 100%;
     .site-dialog & {
-      margin-bottom: rem(16);
+      margin-bottom: mixins.rem(16);
     }
   }
   input.MuiInputBase-input,
   .MuiSelect-select,
   fieldset.MuiOutlinedInput-notchedOutline {
     box-sizing: border-box;
-    padding: rem(8.8) rem(20) rem(15) rem(24);
-    height: rem(53);
+    padding: mixins.rem(8.8) mixins.rem(20) mixins.rem(15) mixins.rem(24);
+    height: mixins.rem(53);
     font-weight: 400;
     line-height: 1.42;
-    border-radius: rem(37.5) !important;
+    border-radius: mixins.rem(37.5) !important;
     border-color: var(--color-textBlack);
-    @include fontSize(15);
+    @include mixins.fontSize(15);
     .site-dialog & {
-      height: rem(40);
-      padding: rem(10) rem(20);
+      height: mixins.rem(40);
+      padding: mixins.rem(10) mixins.rem(20);
       top: 0;
     }
   }
   input {
     &:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0 rem(38) transparent !important;
+      -webkit-box-shadow: 0 0 0 mixins.rem(38) transparent !important;
       -webkit-text-fill-color: var(--color-textBlack) !important;
       -webkit-background-clip: text !important;
       background-clip: text !important;
-      @include border-radius(38px);
+      @include mixins.border-radius(38px);
     }
   }
   .MuiSelect-select {
-    padding-top: rem(13);
+    padding-top: mixins.rem(13);
   }
   label.MuiFormLabel-root {
-    left: rem(15.6);
+    left: mixins.rem(15.6);
     font-weight: 400;
     line-height: 1.42;
-    top: rem(2);
-    @include fontSize(14);
+    top: mixins.rem(2);
+    @include mixins.fontSize(14);
     &:not(.MuiInputLabel-shrink) {
       top: 0;
-      left: rem(10);
+      left: mixins.rem(10);
     }
   }
   .MuiBox-root {
-    @include relative;
+    @include mixins.relative;
   }
   .input-text {
-    padding: 0 rem(14);
-    margin-top: rem(4);
+    padding: 0 mixins.rem(14);
+    margin-top: mixins.rem(4);
     width: 100%;
-    @include flex(space-between, center);
-    @include absolute(bottom 14px left 0);
+    @include mixins.flex(space-between, center);
+    @include mixins.absolute(bottom 14px left 0);
     p {
       color: var(--color-textBlack-60);
       font-weight: 400;
       line-height: 1.27;
-      @include fontSize(11);
+      @include mixins.fontSize(11);
     }
   }
   .date-picker {
     button {
-      margin-top: rem(-5);
+      margin-top: mixins.rem(-5);
       margin-right: 0;
       outline: 0 none;
     }
   }
   .form-checkbox-group {
-    margin-bottom: rem(16);
+    margin-bottom: mixins.rem(16);
     overflow-y: auto;
-    max-height: rem(350);
+    max-height: mixins.rem(350);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: auto;
     label {
-      margin: 0 0 rem(10);
+      margin: 0 0 mixins.rem(10);
       font-weight: 400;
       line-height: 1.38;
-      @include fontSize(13);
+      @include mixins.fontSize(13);
       input {
         border: 0px solid;
         clip: rect(0 0 0 0);
@@ -258,7 +258,7 @@ form {
         white-space: nowrap;
         width: 1px;
         appearance: none;
-        @include absolute;
+        @include mixins.absolute;
         &:checked {
           + span {
             &:before {
@@ -271,26 +271,26 @@ form {
     }
     span {
       display: block;
-      padding-left: rem(32);
-      padding-right: rem(6);
-      @include relative;
+      padding-left: mixins.rem(32);
+      padding-right: mixins.rem(6);
+      @include mixins.relative;
       &:before {
         content: '';
-        border: rem(1) solid var(--color-textBlack-20);
-        width: rem(20);
-        height: rem(20);
+        border: mixins.rem(1) solid var(--color-textBlack-20);
+        width: mixins.rem(20);
+        height: mixins.rem(20);
         display: block;
-        @include absolute(left 0 top 2px);
+        @include mixins.absolute(left 0 top 2px);
       }
       &:after {
         content: '';
         border-bottom: 2px solid var(--color-white);
         border-right: 2px solid var(--color-white);
-        width: rem(8);
-        height: rem(14);
+        width: mixins.rem(8);
+        height: mixins.rem(14);
         display: block;
         transform: rotate(45deg);
-        @include absolute(top 3px left 6px);
+        @include mixins.absolute(top 3px left 6px);
       }
     }
     &.Mui-checked {
@@ -327,7 +327,7 @@ form {
     .MuiSelect-select,
     fieldset.MuiOutlinedInput-notchedOutline {
       box-sizing: border-box;
-      @include flex(auto, center);
+      @include mixins.flex(auto, center);
     }
     input.MuiInputBase-input,
     textarea.MuiInputBase-input,
@@ -348,10 +348,10 @@ form {
       font-family: var(--font-family);
       font-weight: 400;
       line-height: 1.14;
-      border: rem(1) solid #494947;
-      top: rem(-4);
-      @include border-radius(38px);
-      @include fontSize(14);
+      border: mixins.rem(1) solid #494947;
+      top: mixins.rem(-4);
+      @include mixins.border-radius(38px);
+      @include mixins.fontSize(14);
     }
     .button--white {
       background-color: var(--color-white);
@@ -360,8 +360,8 @@ form {
       font-weight: 500;
       line-height: 1.25;
       text-transform: none;
-      margin-top: rem(8);
-      @include fontSize(16);
+      margin-top: mixins.rem(8);
+      @include mixins.fontSize(16);
       &:hover {
         @media only screen and (min-width: 768px) {
           background-color: var(--color-textBlack);
@@ -386,30 +386,30 @@ div.site-dialog {
     width: 100%;
     margin: 0;
     background-color: var(--color-marble);
-    @include border-radius(20px 20px 0 0);
+    @include mixins.border-radius(20px 20px 0 0);
     @media only screen and (min-width: 768px) {
-      @include border-radius(20px);
+      @include mixins.border-radius(20px);
     }
     > div {
       width: 100%;
     }
   }
   &__inner {
-    padding: rem(24) rem(20);
+    padding: mixins.rem(24) mixins.rem(20);
   }
   &__image {
-    width: rem(300);
-    height: rem(80);
-    margin: 0 auto rem(10);
-    @include relative;
+    width: mixins.rem(300);
+    height: mixins.rem(80);
+    margin: 0 auto mixins.rem(10);
+    @include mixins.relative;
   }
   &__content {
     padding: 0;
     .form-label {
-      margin-bottom: rem(9);
+      margin-bottom: mixins.rem(9);
       font-weight: 500;
       line-height: 1.54;
-      @include fontSize(13);
+      @include mixins.fontSize(13);
     }
     legend {
       > span {
@@ -421,7 +421,7 @@ div.site-dialog {
       letter-spacing: -0.01em;
       margin-bottom: 0.5625rem;
       font-weight: 500;
-      @include fontSize(13);
+      @include mixins.fontSize(13);
       strong {
         font-weight: 500;
       }
@@ -429,34 +429,34 @@ div.site-dialog {
     label {
       margin-left: 0;
       input {
-        margin-right: rem(9);
+        margin-right: mixins.rem(9);
       }
     }
     .form-radioBtn,
     .form-checkbox {
       .MuiFormControlLabel-label {
-        @include fontSize(13);
+        @include mixins.fontSize(13);
       }
     }
     .form-radioBtn {
       .MuiButtonBase-root {
         padding: 0;
-        margin-right: rem(9);
+        margin-right: mixins.rem(9);
       }
       svg {
-        width: rem(13);
-        height: rem(13);
+        width: mixins.rem(13);
+        height: mixins.rem(13);
       }
     }
   }
   &__action {
-    gap: rem(10);
-    @include flex(space-between);
+    gap: mixins.rem(10);
+    @include mixins.flex(space-between);
     button {
       margin: 0 !important;
       &.button--white {
         @media only screen and (max-width: 599px) {
-          @include fontSize(15);
+          @include mixins.fontSize(15);
         }
       }
     }
@@ -498,17 +498,17 @@ main.product-detail {
 
 .pl-129 {
   @media only screen and (min-width: 990px) {
-    padding-left: rem(129) !important;
+    padding-left: mixins.rem(129) !important;
   }
 }
 
 section {
   @media only screen and (min-width: 900px) {
-    margin-bottom: rem(96) !important;
+    margin-bottom: mixins.rem(96) !important;
   }
   &:has(+ section) {
     @media only screen and (min-width: 900px) {
-      margin-bottom: rem(96) !important;
+      margin-bottom: mixins.rem(96) !important;
     }
   }
 }

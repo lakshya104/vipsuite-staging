@@ -2,36 +2,36 @@
 * Home Footer style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .footer-menu {
-  padding: rem(13) rem(12);
+  padding: mixins.rem(13) mixins.rem(12);
   width: 100%;
   background-color: var(--color-marble);
-  border-top: rem(1) solid var(--color-textBlack-10);
+  border-top: mixins.rem(1) solid var(--color-textBlack-10);
   opacity: 0;
   transition:
     bottom 1s,
     opacity 1s;
-  @include flex(space-around, center);
-  @include fixed(left 0 bottom -100% z-index 1050);
+  @include mixins.flex(space-around, center);
+  @include mixins.fixed(left 0 bottom -100% z-index 1050);
   @media only screen and (min-width: 992px) {
     display: none;
   }
   &__icon {
     display: inline-block;
-    @include relative;
+    @include mixins.relative;
     span {
       text-align: center;
-      width: rem(14);
-      height: rem(14);
+      width: mixins.rem(14);
+      height: mixins.rem(14);
       display: block;
       color: var(--color-marble);
       font-weight: 500;
       background-color: var(--color-red);
-      @include border-radius(50%);
-      @include absolute(top 0 right -5px);
-      @include fontSize(10);
+      @include mixins.border-radius(50%);
+      @include mixins.absolute(top 0 right -5px);
+      @include mixins.fontSize(10);
     }
   }
   a {

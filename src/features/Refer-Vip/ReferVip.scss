@@ -2,49 +2,49 @@
 * Login Form style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .gray-card__details {
   overflow: hidden;
   min-height: 100vh;
-  padding: rem(16);
+  padding: mixins.rem(16);
   width: 100%;
   flex-direction: column;
-  @include flex(flex-end, center);
+  @include mixins.flex(flex-end, center);
   &-inner {
     width: 100%;
     max-width: 350px;
-    margin: rem(33) 0;
+    margin: mixins.rem(33) 0;
     flex-direction: column;
-    @include flex;
+    @include mixins.flex;
     h2 {
       font-weight: 500;
       line-height: 1.07;
       letter-spacing: -0.03em;
-      margin-bottom: rem(20);
+      margin-bottom: mixins.rem(20);
       color: var(--color-white);
-      @include fontSize(28);
+      @include mixins.fontSize(28);
     }
     > p {
       font-weight: 400;
       line-height: 1.43;
       letter-spacing: -0.01em;
-      margin-bottom: rem(32);
+      margin-bottom: mixins.rem(32);
       color: var(--color-textBlack-40);
-      @include fontSize(16);
+      @include mixins.fontSize(16);
     }
   }
   form {
     width: 100%;
     flex-direction: column;
     margin-top: auto;
-    @include flex;
+    @include mixins.flex;
     .MuiFormControl-root {
-      margin-bottom: rem(16);
+      margin-bottom: mixins.rem(16);
     }
     .button--white {
-      margin-top: rem(30);
-      margin-bottom: rem(7);
+      margin-top: mixins.rem(30);
+      margin-bottom: mixins.rem(7);
     }
   }
 }

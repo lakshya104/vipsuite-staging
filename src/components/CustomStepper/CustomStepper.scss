@@ -2,21 +2,21 @@
 * Custom Stepper style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .custom-stepper {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   margin-top: auto;
-  padding-top: rem(32);
+  padding-top: mixins.rem(32);
   background-color: var(--color-marble);
-  @include flex(space-between, center);
+  @include mixins.flex(space-between, center);
   button {
-    width: rem(87);
-    height: rem(40);
-    border: rem(1) solid var(--color-textBlack);
+    width: mixins.rem(87);
+    height: mixins.rem(40);
+    border: mixins.rem(1) solid var(--color-textBlack);
     background-color: var(--color-textBlack);
     color: var(--color-marble);
-    @include border-radius(60px);
+    @include mixins.border-radius(60px);
     &:hover {
       background-color: var(--color-marble);
       color: var(--color-textBlack);

@@ -1,4 +1,4 @@
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .dashboard-card {
   position: relative;
@@ -12,7 +12,7 @@
       background-position: center;
       .MuiChip-filled {
         background: var(--color-white);
-        @include absolute(left 12px top 12px);
+        @include mixins.absolute(left 12px top 12px);
       }
     }
     &-brandImage {
@@ -25,16 +25,16 @@
     }
     &-overline.MuiTypography-root {
       background-color: var(--color-marble);
-      padding: rem(6) rem(10);
+      padding: mixins.rem(6) mixins.rem(10);
       font-weight: 500;
       letter-spacing: 0.09em;
       display: inline-block;
       line-height: 1.4;
-      @include absolute(top 12px left 12px);
-      @include border-radius(3px);
+      @include mixins.absolute(top 12px left 12px);
+      @include mixins.border-radius(3px);
       @media only screen and (max-width: 767px) {
         line-height: 1.4;
-        @include fontSize(10);
+        @include mixins.fontSize(10);
       }
     }
     &-featured {
@@ -50,52 +50,52 @@
       margin-bottom: 10px;
       color: var(--color-darkgray);
       background-color: var(--color-marble);
-      padding: rem(1) rem(5);
+      padding: mixins.rem(1) mixins.rem(5);
       letter-spacing: 0.09em;
       display: inline-block;
-      line-height: rem(11.2);
-      @include fontSize(8);
-      @include border-radius(3px);
+      line-height: mixins.rem(11.2);
+      @include mixins.fontSize(8);
+      @include mixins.border-radius(3px);
       &:not(.dashboard-card__item-featuredProduct) {
-        margin-right: rem(16);
+        margin-right: mixins.rem(16);
       }
     }
     &-featuredText.MuiTypography-root {
       background-color: var(--color-marble);
-      padding: rem(6) rem(10);
+      padding: mixins.rem(6) mixins.rem(10);
       font-weight: 500;
       letter-spacing: 0.09em;
       display: inline-block;
       line-height: 1.4;
-      @include border-radius(3px);
+      @include mixins.border-radius(3px);
       @media only screen and (max-width: 767px) {
         line-height: 1.4;
-        @include fontSize(10);
+        @include mixins.fontSize(10);
       }
     }
     &-content {
-      padding: rem(12) !important;
+      padding: mixins.rem(12) !important;
       color: var(--color-marble);
       width: 100%;
-      min-height: rem(81.45);
-      @include absolute(bottom 0 left 0);
+      min-height: mixins.rem(81.45);
+      @include mixins.absolute(bottom 0 left 0);
       &::after {
         content: '';
         width: 100%;
         height: 115%;
         opacity: 0.3;
         background: linear-gradient(0deg, #1b1b1b 0%, rgba(27, 27, 27, 0) 100%);
-        @include absolute(bottom 0 left 0 z-index 0);
+        @include mixins.absolute(bottom 0 left 0 z-index 0);
         @media only screen and (min-width: 768px) {
           opacity: 0.5;
         }
       }
       * {
-        @include relative(z-index 1);
+        @include mixins.relative(z-index 1);
       }
       p {
         @media only screen and (max-width: 767px) {
-          @include fontSize(12);
+          @include mixins.fontSize(12);
         }
         span {
           opacity: 20%;

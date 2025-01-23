@@ -2,27 +2,27 @@
 * Partner style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .site-partner {
   overflow: hidden;
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   @media only screen and (min-width: 768px) {
-    margin-bottom: rem(107);
+    margin-bottom: mixins.rem(107);
   }
   .slick-track {
-    @include flex;
+    @include mixins.flex;
   }
   .site-partner__card {
     &-inner {
       background-color: #323231;
-      padding: rem(10) rem(40);
-      border: rem(1) solid #494947;
-      min-height: rem(70);
-      margin: 0 rem(6);
-      @include border-radius(6px);
-      @include flex(center, center);
-      @include relative;
+      padding: mixins.rem(10) mixins.rem(40);
+      border: mixins.rem(1) solid #494947;
+      min-height: mixins.rem(70);
+      margin: 0 mixins.rem(6);
+      @include mixins.border-radius(6px);
+      @include mixins.flex(center, center);
+      @include mixins.relative;
       img {
         position: unset !important;
       }
@@ -30,9 +30,9 @@
   }
   h2 {
     text-align: center;
-    margin-bottom: rem(30);
+    margin-bottom: mixins.rem(30);
     @media only screen and (min-width: 768px) {
-      margin-bottom: rem(83);
+      margin-bottom: mixins.rem(83);
     }
   }
 }

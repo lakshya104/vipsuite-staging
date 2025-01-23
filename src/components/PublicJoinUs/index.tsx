@@ -6,6 +6,7 @@ import { ContentModule } from '@/interfaces/public-page';
 import JoinUs from '../JoinUs';
 import Link from 'next/link';
 import { getLastPathSegment } from '@/helpers/utils';
+import en from '@/helpers/lang';
 
 interface JoinUsProps {
   data: ContentModule;
@@ -52,7 +53,7 @@ const PublicJoinUs: React.FC<JoinUsProps> = ({ data }) => {
                 <Box mt={4}>
                   <Link href={getLastPathSegment(data?.cta?.cta_url || '') || '/'} passHref>
                     <Button variant="outlined" className="button button--white">
-                      {data?.cta?.cta_text || 'Find out more'}
+                      {data?.cta?.cta_text || en.joinUs.findOut}
                     </Button>
                   </Link>
                 </Box>

@@ -6,13 +6,12 @@ import MyOrderDetailLoading from '@/site-pages/MyOrderDetailPage/loading';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ProgressBarLink } from '@/components/ProgressBar';
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: { orderId: number; page: number };
-  searchParams?: { page?: string };
+export default async function Page(props: {
+  params: Promise<{ orderId: number; page: number }>;
+  searchParams?: Promise<{ page?: string }>;
 }) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const orderId = params['orderId'];
   const page = searchParams?.page;
   return (

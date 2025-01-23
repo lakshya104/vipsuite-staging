@@ -5,7 +5,7 @@ import Image from 'next/image';
 import he from 'he';
 import { Order } from '@/interfaces';
 import { ProgressBarLink } from './ProgressBar';
-import { formatDate, formatString, truncateDescription } from '@/helpers/utils';
+import { formatDate, formatString } from '@/helpers/utils';
 import { first, isEmpty } from 'lodash';
 import ErrorFallback from './ErrorFallback';
 import CustomPagination from './CustomPagination';
@@ -68,9 +68,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                     />
                     <Box sx={{ ml: { xs: 2, md: 3 } }}>
                       <Typography gutterBottom variant="h2">
-                        {orderType === 'lookbookOrder'
-                          ? truncateDescription(orderTitle, 4)
-                          : he.decode(orderTitle || '')}
+                        {he.decode(orderTitle || '')}
                       </Typography>
                       {orderType === 'rsvp' ? (
                         <>

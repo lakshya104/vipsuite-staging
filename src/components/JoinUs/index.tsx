@@ -4,6 +4,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import './JoinUs.scss';
 import { ProgressBarLink } from '../ProgressBar';
 import { ContentModule } from '@/interfaces/public-page';
+import en from '@/helpers/lang';
 
 interface JoinUsProps {
   data: ContentModule;
@@ -18,7 +19,7 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
               <Typography variant="h2">{data?.heading}</Typography>
               <ProgressBarLink href={'/on-boarding'}>
                 <Button variant="outlined" className="button button--white">
-                  {data?.cta?.cta_text}
+                  {data?.cta?.cta_text || en.joinUs.findOut}
                 </Button>
               </ProgressBarLink>
             </Box>
@@ -39,7 +40,7 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
                 </Grid>
               ))}
               <Button variant="outlined" className="joinus-section__button button button--white">
-                {data?.cta?.cta_text}
+                {data?.cta?.cta_text || en.joinUs.findOut}
               </Button>
             </Grid>
           </Grid>

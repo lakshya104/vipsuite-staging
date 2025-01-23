@@ -3,7 +3,8 @@ import './my-vips.scss';
 import MyVipPage from '@/site-pages/MyVipsPage';
 import Loading from './loading';
 
-export default function Page({ searchParams }: { searchParams?: { accepted?: boolean } }) {
+export default async function Page(props: { searchParams?: Promise<{ accepted?: boolean }> }) {
+  const searchParams = await props.searchParams;
   const isApplicationAcceptedShown = searchParams?.accepted;
   return (
     <Suspense fallback={<Loading />}>

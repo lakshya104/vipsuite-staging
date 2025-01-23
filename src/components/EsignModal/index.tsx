@@ -42,11 +42,8 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
   return (
     <>
       <Dialog open={ESignOpen} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ m: 0, p: 2 }}>
-          <Typography variant="h2" ml={1}>
-            {' '}
-            E Signature
-          </Typography>
+        <DialogTitle sx={{ m: 0, p: 2, ml: 1 }}>
+          E Signature
           <IconButton
             aria-label="close"
             onClick={handleClose}
@@ -76,6 +73,7 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
             }}
           >
             <SignatureCanvas
+              backgroundColor="white"
               ref={sigPadRef}
               penColor="black"
               canvasProps={{ width: 550, height: 300, className: 'sigCanvas' }}

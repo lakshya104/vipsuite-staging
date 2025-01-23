@@ -43,7 +43,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
         <Button onClick={onPrevious} className="button-arrow">
           <ArrowBackIcon />
         </Button>
-        <Typography className="page-title" variant="h2" align="center" component="h1">
+        <Typography variant="h2" align="center" component="h1">
           Select Address
         </Typography>
         <ProgressBarLink className="button button--black" href={href}>

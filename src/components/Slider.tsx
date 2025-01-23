@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -12,24 +12,8 @@ interface SliderProps {
   item: OpportunityDetails;
 }
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
-  height: 256,
-  overflow: 'hidden',
-  borderRadius: theme.shape.borderRadius,
-  [theme.breakpoints.up('md')]: {
-    height: 426,
-  },
-}));
-
-const StyledImage = styled(Image)({
-  objectFit: 'cover',
-});
-
 const ImageSlider: React.FC<SliderProps> = ({ images }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const settings = {
     dots: images.length > 1 && true,
@@ -50,9 +34,18 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
     <Box sx={{ position: 'relative', marginBottom: 4 }}>
       <SliderComponent {...settings}>
         {images.map((src, index) => (
-          <StyledBox key={index}>
-            <StyledImage src={src} alt={`Slide ${index + 1}`} fill />
-          </StyledBox>
+          <Box
+            key={index}
+            sx={{
+              position: 'relative',
+              width: '100%',
+              height: { xs: 256, md: 426 },
+              overflow: 'hidden',
+              borderRadius: 1,
+            }}
+          >
+            <Image style={{ objectFit: 'cover' }} src={src} alt={`Slide ${index + 1}`} fill />
+          </Box>
         ))}
       </SliderComponent>
     </Box>

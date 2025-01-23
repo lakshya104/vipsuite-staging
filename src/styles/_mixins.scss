@@ -2,14 +2,19 @@
  * @Files
  * Mixins Style.
  */
-@import 'variables';
+@use 'sass:math';
+
+@use 'sass:list';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'variables';
 
 // Color Mixin
 // ==========================================================
 $colors: (
-  'white': $white,
-  'black': $black,
-  'textBlack': $textBlack,
+  'white': variables.$white,
+  'black': variables.$black,
+  'textBlack': variables.$textBlack,
 );
 
 // ===============================================
@@ -146,10 +151,10 @@ $position-props: top right bottom left z-index;
   position: $position;
 
   @each $props in $position-props {
-    $i: index($val, $props);
+    $i: list.index($val, $props);
 
-    @if $i and $i + 1 <= length($val) and type-of(nth($val, $i + 1)) == number {
-      #{$props}: nth($val, $i + 1);
+    @if $i and $i + 1 <= list.length($val) and meta.type-of(list.nth($val, $i + 1)) == number {
+      #{$props}: list.nth($val, $i + 1);
     }
   }
 }
@@ -219,7 +224,7 @@ $position-props: top right bottom left z-index;
 //Font Sizing
 // =======================================================
 @function rem($size) {
-  $remSize: $size / 16;
+  $remSize: math.div($size, 16);
   @return #{$remSize}rem;
 }
 
@@ -242,7 +247,7 @@ $global-path: '../images';
 // Placeholder style
 // =======================================================
 @mixin optional-at-root($sel) {
-  @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+  @at-root #{if(not &, $sel, selector.append(&, $sel))} {
     @content;
   }
 }
@@ -277,7 +282,7 @@ $global-path: '../images';
     display: block;
     content: ' ';
     width: 100%;
-    padding-top: ($height / $width) * 100%;
+    padding-top: math.div($height, $width) * 100%;
   }
   > .content {
     @include absolute(top 0 left 0 right 0 bottom 0);

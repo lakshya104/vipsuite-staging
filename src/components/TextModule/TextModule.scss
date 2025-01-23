@@ -1,18 +1,18 @@
 /* terms and condition page styles */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .terms {
   &-page {
     h1 {
-      margin-bottom: rem(56);
+      margin-bottom: mixins.rem(56);
     }
   }
   &-content {
-    max-width: rem(628);
+    max-width: mixins.rem(628);
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: rem(80);
+    margin-bottom: mixins.rem(80);
     p {
       color: rgba(255, 255, 247, 0.7);
     }

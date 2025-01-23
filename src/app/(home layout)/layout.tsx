@@ -19,7 +19,7 @@ export default async function HomeSectionLayout({
   children: React.ReactNode;
 }>) {
   const session = await GetSession();
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const userId = cookieStore.get(CookieName.VipId);
   const { role, acf, first_name, token, email } = session;
   const vipId = getVipId(role, userId, session);

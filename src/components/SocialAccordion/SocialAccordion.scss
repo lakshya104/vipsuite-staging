@@ -2,17 +2,18 @@
 * Partner style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
+@use '../../styles/variables';
 
 .site-card {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   @media only screen and (min-width: 992px) {
-    margin-bottom: rem(96);
+    margin-bottom: mixins.rem(96);
   }
   &__wrapper {
     width: 100%;
     @media only screen and (min-width: 768px) {
-      height: rem(430);
+      height: mixins.rem(430);
     }
   }
 }
@@ -46,8 +47,8 @@
       cursor: pointer;
       transition: 0.5s ease-out;
       width: 100%;
-      margin-bottom: rem(20);
-      @include relative;
+      margin-bottom: mixins.rem(20);
+      @include mixins.relative;
       @media only screen and (min-width: 768px) {
         margin-bottom: 0;
         width: auto;
@@ -67,10 +68,10 @@
       }
     }
     &__full {
-      max-width: rem(401);
+      max-width: mixins.rem(401);
       overflow: hidden;
-      padding: rem(11) rem(23);
-      @include absolute(top 0 left 0 z-index 2);
+      padding: mixins.rem(11) mixins.rem(23);
+      @include mixins.absolute(top 0 left 0 z-index 2);
       h2,
       p {
         color: var(--color-white);
@@ -80,14 +81,14 @@
         line-height: 1.66;
         letter-spacing: -0.05em;
         margin-bottom: 0;
-        @include fontSize(24);
+        @include mixins.fontSize(24);
       }
       p {
-        margin-top: rem(8);
+        margin-top: mixins.rem(8);
         line-height: 1.57;
-        margin-top: rem(5);
-        margin-bottom: rem(25);
-        @include fontSize(14);
+        margin-top: mixins.rem(5);
+        margin-bottom: mixins.rem(25);
+        @include mixins.fontSize(14);
         @media only screen and (min-width: 768px) {
           opacity: 0;
           visibility: hidden;
@@ -103,20 +104,20 @@
     }
     &__image {
       width: 100%;
-      background-color: $gray;
+      background-color: variables.$gray;
       @media only screen and (min-width: 768px) {
-        @include absolute(left 0 top 0);
+        @include mixins.absolute(left 0 top 0);
       }
       &::before {
         content: '';
         width: 100%;
         height: 70%;
-        background: linear-gradient(180deg, $black 0%, rgba($black, 0) 100%);
+        background: linear-gradient(180deg, variables.$black 0%, rgba(variables.$black, 0) 100%);
         opacity: 0.6;
-        @include absolute(top 0 left 0);
+        @include mixins.absolute(top 0 left 0);
         @media only screen and (min-width: 768px) {
           opacity: 1;
-          height: rem(88);
+          height: mixins.rem(88);
         }
       }
       img {

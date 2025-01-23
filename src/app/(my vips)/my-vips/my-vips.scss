@@ -1,24 +1,24 @@
-@import '../../../styles/mixins';
+@use '../../../styles/mixins';
 
 .my-vips {
   &-page {
-    margin: rem(23) 0;
+    margin: mixins.rem(23) 0;
     @media only screen and (min-width: 768px) {
-      margin: rem(50) 0;
+      margin: mixins.rem(50) 0;
     }
     &__head {
-      margin-bottom: rem(28);
+      margin-bottom: mixins.rem(28);
       border-bottom: 1px solid #e0e0e0;
-      padding-bottom: rem(12);
-      @include relative;
+      padding-bottom: mixins.rem(12);
+      @include mixins.relative;
       @media only screen and (min-width: 768px) {
-        padding-bottom: rem(24);
+        padding-bottom: mixins.rem(24);
       }
       h1 {
         margin: 0;
-        padding: rem(7.5) 0;
+        padding: mixins.rem(7.5) 0;
         @media only screen and (max-width: 767px) {
-          padding: rem(5) 0;
+          padding: mixins.rem(5) 0;
         }
       }
       .button--sign-out {
@@ -33,47 +33,47 @@
       a {
         line-height: 1.33;
         letter-spacing: -0.01em;
-        padding: rem(7) rem(14);
-        @include fontSize(16);
-        @include absolute(right 0 top -2px);
+        padding: mixins.rem(7) mixins.rem(14);
+        @include mixins.fontSize(16);
+        @include mixins.absolute(right 0 top -2px);
         @media only screen and (max-width: 767px) {
-          @include fontSize(12);
-          top: rem(-4);
+          @include mixins.fontSize(12);
+          top: mixins.rem(-4);
         }
         svg {
           display: inline-block;
-          width: rem(20);
-          height: rem(20);
+          width: mixins.rem(20);
+          height: mixins.rem(20);
           vertical-align: bottom;
           @media only screen and (max-width: 767px) {
-            width: rem(18);
-            height: rem(18);
+            width: mixins.rem(18);
+            height: mixins.rem(18);
           }
         }
       }
       button {
         line-height: 1.33;
         letter-spacing: -0.01em;
-        padding: rem(7) rem(14);
-        @include fontSize(16);
-        @include absolute(right 0 top -2px);
+        padding: mixins.rem(7) mixins.rem(14);
+        @include mixins.fontSize(16);
+        @include mixins.absolute(right 0 top -2px);
         @media only screen and (max-width: 767px) {
           line-height: 1.66;
-          top: rem(-4);
-          @include fontSize(12);
+          top: mixins.rem(-4);
+          @include mixins.fontSize(12);
           svg {
-            width: rem(16);
-            height: rem(16);
+            width: mixins.rem(16);
+            height: mixins.rem(16);
           }
         }
       }
     }
     h2 {
       @media only screen and (max-width: 767px) {
-        margin-bottom: rem(6);
+        margin-bottom: mixins.rem(6);
         line-height: 1.38;
         letter-spacing: -0.02em;
-        @include fontSize(14);
+        @include mixins.fontSize(14);
       }
     }
     p {
@@ -81,27 +81,27 @@
       @media only screen and (max-width: 767px) {
         line-height: 1.33;
         letter-spacing: -0.01em;
-        @include fontSize(12);
+        @include mixins.fontSize(12);
       }
     }
     button {
       @media only screen and (min-width: 768px) {
-        max-width: rem(200);
+        max-width: mixins.rem(200);
         float: right;
       }
     }
   }
   .page-title {
-    padding: 0 0 rem(27);
-    border-bottom: rem(1) solid var(--color-textBlack-10);
-    @include relative;
+    padding: 0 0 mixins.rem(27);
+    border-bottom: mixins.rem(1) solid var(--color-textBlack-10);
+    @include mixins.relative;
     @media only screen and (max-width: 767px) {
       line-height: 1.07;
       letter-spacing: -0.03em;
-      @include fontSize(14);
+      @include mixins.fontSize(14);
     }
     a {
-      @include absolute(left 0);
+      @include mixins.absolute(left 0);
     }
   }
   .MuiTypography-body1 {
@@ -109,7 +109,7 @@
     @media only screen and (max-width: 767px) {
       line-height: 1.33;
       letter-spacing: -0.01em;
-      @include fontSize(12);
+      @include mixins.fontSize(12);
     }
   }
 }

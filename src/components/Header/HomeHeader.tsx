@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useTransition } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   AppBar,
   Toolbar,
@@ -95,6 +95,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
+  const router = useRouter();
   const menuItems =
     role === UserRole.Vip ? vipMenuItems : role === UserRole.Brand ? [] : role === UserRole.Agent ? agentMenuItems : [];
 
@@ -108,10 +109,9 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
     startTransition(async () => {
       try {
         await Promise.all([LogOut(token), clearAll(), signOutAction()]);
+        router.push('/');
       } catch (error) {
         openToaster('Error during logging out. ' + error);
-      } finally {
-        window.location.href = '/';
       }
     });
   };

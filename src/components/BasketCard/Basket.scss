@@ -2,12 +2,12 @@
 * Basket style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .basket-page {
-  margin: rem(28) 0;
+  margin: mixins.rem(28) 0;
   @media only screen and (min-width: 768px) {
-    margin: rem(50) 0;
+    margin: mixins.rem(50) 0;
   }
   img {
     object-fit: cover;
@@ -17,10 +17,10 @@
   }
   h2 {
     @media only screen and (max-width: 767px) {
-      margin-bottom: rem(6);
+      margin-bottom: mixins.rem(6);
       line-height: 1.38;
       letter-spacing: -0.02em;
-      @include fontSize(13);
+      @include mixins.fontSize(13);
     }
   }
   p {
@@ -28,18 +28,18 @@
     @media only screen and (max-width: 767px) {
       line-height: 1.33;
       letter-spacing: -0.01em;
-      @include fontSize(12);
+      @include mixins.fontSize(12);
     }
   }
 }
 .basket-product {
   &__items {
-    margin-bottom: rem(50);
+    margin-bottom: mixins.rem(50);
     button {
       width: 100%;
       @media only screen and (min-width: 768px) {
         width: auto;
-        max-width: rem(200);
+        max-width: mixins.rem(200);
         float: right;
       }
       + .button {
@@ -50,12 +50,12 @@
   &__item {
     display: grid;
     grid-template-columns: 60px auto 60px;
-    gap: rem(20);
-    padding: rem(16) rem(8);
-    border-top: rem(1) solid var(--color-textBlack-10);
+    gap: mixins.rem(20);
+    padding: mixins.rem(16) mixins.rem(8);
+    border-top: mixins.rem(1) solid var(--color-textBlack-10);
     &:last-of-type {
-      border-bottom: rem(1) solid var(--color-textBlack-10);
-      margin-bottom: rem(20);
+      border-bottom: mixins.rem(1) solid var(--color-textBlack-10);
+      margin-bottom: mixins.rem(20);
     }
     @media only screen and (min-width: 768px) {
       grid-template-columns: 120px auto 60px;
@@ -64,7 +64,7 @@
   &__delete {
     align-self: center;
     justify-self: flex-end;
-    width: rem(28);
-    height: rem(28);
+    width: mixins.rem(28);
+    height: mixins.rem(28);
   }
 }

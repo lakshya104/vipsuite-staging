@@ -2,30 +2,30 @@
 * Header style.
 */
 
-@import '../../../../styles/mixins';
+@use '../../../../styles/mixins';
 
 .product-details__page {
-  margin: rem(28) 0 rem(80);
+  margin: mixins.rem(28) 0 mixins.rem(80);
   @media only screen and (min-width: 768px) {
-    margin: rem(50) 0;
+    margin: mixins.rem(50) 0;
   }
   img {
     height: auto;
-    @include border-radius(8px);
+    @include mixins.border-radius(8px);
   }
   h1 {
-    margin-bottom: rem(28);
+    margin-bottom: mixins.rem(28);
   }
   h2 {
-    margin-bottom: rem(10);
+    margin-bottom: mixins.rem(10);
     @media only screen and (max-width: 767px) {
       line-height: 1.16;
       letter-spacing: -0.02em;
-      @include fontSize(20);
+      @include mixins.fontSize(20);
     }
   }
   .request-button {
-    margin-bottom: rem(26);
+    margin-bottom: mixins.rem(26);
     text-align: center;
   }
   button {
@@ -36,15 +36,15 @@
   p {
     color: var(--color-textBlack-80);
     @media only screen and (max-width: 767px) {
-      margin-bottom: rem(16);
+      margin-bottom: mixins.rem(16);
       line-height: 1.38;
       letter-spacing: -0.01em;
-      @include fontSize(13);
+      @include mixins.fontSize(13);
     }
     &.MuiTypography-body2 {
-      margin-bottom: rem(30);
+      margin-bottom: mixins.rem(30);
       @media only screen and (max-width: 767px) {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
       }
     }
     &.highlight-text {
@@ -52,11 +52,11 @@
     }
   }
   .product-size {
-    margin-bottom: rem(32);
+    margin-bottom: mixins.rem(32);
     @media only screen and (min-width: 1200px) {
-      padding-top: rem(6);
+      padding-top: mixins.rem(6);
       overflow: hidden;
-      @include flex;
+      @include mixins.flex;
       button {
         align-self: flex-start;
         flex: 1 0 0;
@@ -64,10 +64,10 @@
       }
     }
     .MuiFormControl-root {
-      margin: 0 0 rem(16);
+      margin: 0 0 mixins.rem(16);
       @media only screen and (min-width: 1200px) {
         margin: 0;
-        padding-right: rem(16);
+        padding-right: mixins.rem(16);
         flex: 1 0 0;
         max-width: 60%;
       }
@@ -77,17 +77,17 @@
     }
     label {
       &.MuiFormLabel-root {
-        line-height: rem(16);
+        line-height: mixins.rem(16);
       }
     }
   }
   .page-title {
-    padding-left: rem(30);
-    @include relative();
+    padding-left: mixins.rem(30);
+    @include mixins.relative();
     svg,
     a {
       transform: translateY(-50%);
-      @include absolute(left 0 top 50%);
+      @include mixins.absolute(left 0 top 50%);
     }
     @media only screen and (max-width: 767px) {
       text-align: center;
@@ -100,7 +100,7 @@
 }
 
 .gray-card {
-  margin-bottom: rem(20);
+  margin-bottom: mixins.rem(20);
   flex-wrap: wrap;
   .gray-card {
     &__item {
@@ -108,40 +108,40 @@
       flex: 1 0 0;
       box-shadow: 0 0 0 transparent;
       flex-basis: calc(50% - 20px);
-      @include relative;
-      @include border-radius(8px);
+      @include mixins.relative;
+      @include mixins.border-radius(8px);
       h2 {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
         @media only screen and (max-width: 767px) {
-          margin-bottom: rem(6);
+          margin-bottom: mixins.rem(6);
           line-height: 1.07;
           letter-spacing: -0.03em;
-          @include fontSize(16);
+          @include mixins.fontSize(16);
         }
       }
       p {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
         color: var(--color-textBlack-60);
         @media only screen and (max-width: 767px) {
-          margin-bottom: rem(11);
+          margin-bottom: mixins.rem(11);
           line-height: 1.45;
           letter-spacing: -0.03em;
-          @include fontSize(11);
+          @include mixins.fontSize(11);
         }
       }
       svg {
         text-decoration: none;
-        @include absolute(bottom 3px right 9px);
+        @include mixins.absolute(bottom 3px right 9px);
       }
       a {
         text-decoration: none;
         font-size: 0;
         width: 100%;
         height: 100%;
-        @include absolute(top 0 left 0 z-index 1);
+        @include mixins.absolute(top 0 left 0 z-index 1);
       }
       .MuiCardContent-root {
-        padding: rem(16) rem(16) rem(24);
+        padding: mixins.rem(16) mixins.rem(16) mixins.rem(24);
       }
     }
   }
@@ -154,11 +154,11 @@
     display: none;
   }
   textarea {
-    padding: rem(16);
-    height: rem(188) !important;
+    padding: mixins.rem(16);
+    height: mixins.rem(188) !important;
     font-weight: 400;
     line-height: 1.142;
-    @include border-radius(10px);
-    @include fontSize(14);
+    @include mixins.border-radius(10px);
+    @include mixins.fontSize(14);
   }
 }

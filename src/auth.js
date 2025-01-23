@@ -24,13 +24,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: {},
+        username: {},
         password: {},
       },
       authorize: async (credentials) => {
         let user = null;
         const res = await Login({
-          username: credentials.email,
+          username: credentials.username,
           password: credentials.password,
         });
         user = res;

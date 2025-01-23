@@ -2,70 +2,70 @@
 * Section Club style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .section-club {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   @media only screen and (min-width: 992px) {
-    margin-bottom: rem(80);
+    margin-bottom: mixins.rem(80);
   }
   &__wrapper {
     overflow: hidden;
     background-color: var(--color-gray-40);
-    @include border-radius(8px);
+    @include mixins.border-radius(8px);
   }
   &__image {
-    @include relative;
+    @include mixins.relative;
     img {
       @media only screen and (min-width: 600px) {
         min-width: 100%;
         min-height: 100%;
         object-fit: cover;
-        @include align(true, true, absolute);
+        @include mixins.align(true, true, absolute);
       }
     }
   }
   &__content {
-    padding: rem(20);
+    padding: mixins.rem(20);
     @media only screen and (min-width: 992px) {
-      padding: rem(50) rem(78) rem(57);
-      max-width: rem(600);
+      padding: mixins.rem(50) mixins.rem(78) mixins.rem(57);
+      max-width: mixins.rem(600);
     }
     h2 {
       line-height: 1.25;
       letter-spacing: -0.05em;
-      margin-bottom: rem(24);
-      @include fontSize(32);
+      margin-bottom: mixins.rem(24);
+      @include mixins.fontSize(32);
     }
     p {
       font-weight: 400;
       line-height: 1.58;
       color: var(--color-textBlack);
       opacity: 0.7;
-      @include fontSize(14);
+      @include mixins.fontSize(14);
       @media only screen and (min-width: 992px) {
-        margin-right: rem(32);
+        margin-right: mixins.rem(32);
       }
     }
     li {
       padding: 0;
       &:not(:last-child) {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
       }
       .MuiListItemIcon-root {
         background-color: #d6f1ac;
-        flex: 1 0 rem(28);
-        max-width: rem(28);
-        height: rem(28);
+        flex: 1 0 mixins.rem(28);
+        max-width: mixins.rem(28);
+        height: mixins.rem(28);
         min-width: auto;
         align-items: center;
         justify-content: center;
-        margin-right: rem(12);
-        @include border-radius(50%);
+        margin-right: mixins.rem(12);
+        @include mixins.border-radius(50%);
       }
       svg {
         color: var(--color-textBlack);
-        height: rem(14);
+        height: mixins.rem(14);
       }
       .MuiListItemText-root {
         margin: 0;
@@ -76,7 +76,7 @@
         letter-spacing: -0.05em;
         display: block;
         margin: 0;
-        @include fontSize(16);
+        @include mixins.fontSize(16);
       }
     }
   }

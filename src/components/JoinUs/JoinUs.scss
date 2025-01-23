@@ -2,12 +2,12 @@
 * Join Us Section style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .joinus-section {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   &__head {
-    margin-bottom: rem(20);
+    margin-bottom: mixins.rem(20);
     text-align: center;
     @media only screen and (min-width: 600px) {
       text-align: left;
@@ -15,11 +15,11 @@
     h2 {
       line-height: 1.6;
       letter-spacing: -0.05em;
-      margin-bottom: rem(20);
-      @include fontSize(30);
+      margin-bottom: mixins.rem(20);
+      @include mixins.fontSize(30);
       @media only screen and (min-width: 992px) {
-        margin-bottom: rem(37);
-        @include fontSize(50);
+        margin-bottom: mixins.rem(37);
+        @include mixins.fontSize(50);
       }
     }
     .button {
@@ -33,11 +33,11 @@
   &__content {
     > .MuiGrid-root {
       @media only screen and (min-width: 992px) {
-        padding-top: rem(18);
+        padding-top: mixins.rem(18);
       }
     }
     .joinus-section__button {
-      margin-left: rem(20);
+      margin-left: mixins.rem(20);
       @media only screen and (min-width: 600px) {
         display: none;
       }
@@ -45,28 +45,28 @@
   }
   &__feature {
     background-color: var(--color-marble) !important;
-    margin-bottom: rem(20);
-    @include flex;
+    margin-bottom: mixins.rem(20);
+    @include mixins.flex;
   }
   &__icon {
-    flex: 1 0 rem(48);
-    max-width: rem(48);
-    height: rem(48);
+    flex: 1 0 mixins.rem(48);
+    max-width: mixins.rem(48);
+    height: mixins.rem(48);
     background-color: var(--color-gray-40);
-    @include border-radius(6px);
-    @include flex(center, center);
+    @include mixins.border-radius(6px);
+    @include mixins.flex(center, center);
   }
   h3 {
     line-height: 1.2;
     letter-spacing: -0.03em;
-    margin-bottom: rem(8);
-    @include fontSize(20);
+    margin-bottom: mixins.rem(8);
+    @include mixins.fontSize(20);
   }
   p {
     font-weight: 400;
     line-height: 1.43;
     color: var(--color-textBlack);
     opacity: 0.7;
-    @include fontSize(14);
+    @include mixins.fontSize(14);
   }
 }

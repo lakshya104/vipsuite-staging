@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Backdrop, Box, Checkbox, CircularProgress, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { join, split } from 'lodash';
 import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
@@ -13,14 +14,19 @@ import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
-import { join, split } from 'lodash';
+import { QuestionType } from '@/helpers/enums';
 
 interface FormField {
   name: keyof Step3FormValues;
   label: string;
-  type: 'select' | 'date' | 'text' | 'checkbox';
+  type: QuestionType;
   placeholder?: string;
   options?: { value: string; label: string }[];
+}
+
+interface ChildInfo {
+  dob: string;
+  gender: string;
 }
 
 const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
@@ -44,19 +50,13 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       {
         name: 'dateOfBirth',
         label: 'Date of Birth',
-        type: 'date',
+        type: QuestionType.Date,
         placeholder: 'Date of Birth',
-      },
-      {
-        name: 'birthplace',
-        label: 'Birthplace',
-        type: 'text',
-        placeholder: 'Birthplace',
       },
       {
         name: 'gender',
         label: 'Gender',
-        type: 'select',
+        type: QuestionType.Dropdown,
         options: [
           { value: 'Male', label: 'Male' },
           { value: 'Female', label: 'Female' },
@@ -64,27 +64,27 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         ],
       },
       {
-        name: 'nationality',
-        label: 'Nationality',
-        type: 'select',
-        options: nationality_options.map((opt: string) => ({ value: opt, label: opt })),
+        name: 'birthplace',
+        label: 'Birthplace',
+        type: QuestionType.Text,
+        placeholder: 'Birthplace',
       },
       {
-        name: 'city',
-        label: 'City',
-        type: 'text',
-        placeholder: 'City',
+        name: 'nationality',
+        label: 'Nationality',
+        type: QuestionType.Dropdown,
+        options: nationality_options.map((opt: string) => ({ value: opt, label: opt })),
       },
       {
         name: 'ethnicity',
         label: 'Ethnicity',
-        type: 'select',
+        type: QuestionType.Dropdown,
         options: ethnicity_options.map((opt: string) => ({ value: opt, label: opt })),
       },
       {
         name: 'numberOfChildren',
         label: 'Number of Children',
-        type: 'select',
+        type: QuestionType.Dropdown,
         options: number_of_childs_options.map((opt: string) => ({ value: opt, label: `${opt} Child` })),
       },
     ];
@@ -94,13 +94,13 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
         {
           name: `ageOfChild[${i}]` as keyof Step3FormValues,
           label: `DOB of Child ${i + 1}`,
-          type: 'date',
+          type: QuestionType.Date,
           placeholder: `Date of Birth for Child ${i + 1}`,
         },
         {
           name: `genderOfChild[${i}]` as keyof Step3FormValues,
           label: `Gender of Child ${i + 1}`,
-          type: 'select',
+          type: QuestionType.Dropdown,
           options: [
             { value: 'Male', label: 'Male' },
             { value: 'Female', label: 'Female' },
@@ -113,13 +113,24 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       {
         name: 'pets',
         label: 'Pets',
-        type: 'checkbox',
+        type: QuestionType.CheckBoxes,
         placeholder: 'Pets',
+        options: [
+          { label: 'Dogs', value: 'dogs' },
+          { label: 'Cats', value: 'cats' },
+          { label: 'Others', value: 'others' },
+        ],
+      },
+      {
+        name: 'city',
+        label: 'City',
+        type: QuestionType.Text,
+        placeholder: 'City',
       },
       {
         name: 'homePostcode',
         label: 'Home Postcode',
-        type: 'text',
+        type: QuestionType.Text,
         placeholder: 'Home Postcode',
       },
     ];
@@ -154,10 +165,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
-  interface ChildInfo {
-    dob: string;
-    gender: string;
-  }
 
   const onSubmit = async (data: Step3FormValues) => {
     setIsLoading(true);
@@ -223,11 +230,6 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
   const numberOfChildren = watch('numberOfChildren');
   const homePostcodeValue = watch('homePostcode');
   const petsValue = watch('pets');
-  const petOptions = [
-    { label: 'Dogs', value: 'dogs' },
-    { label: 'Cats', value: 'cats' },
-    { label: 'Others', value: 'others' },
-  ];
   const toggleInterest = (value: string) => {
     const currentPets = petsValue;
     if (currentPets.includes(value)) {
@@ -267,7 +269,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
           errors,
         };
         switch (field.type) {
-          case 'select':
+          case QuestionType.Dropdown:
             return (
               <Box key={field.name} width="100%">
                 <SelectBox
@@ -280,20 +282,20 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
                 />
               </Box>
             );
-          case 'date':
+          case QuestionType.Date:
             return (
               <Box key={field.name} width="100%">
                 <FormDatePicker {...commonProps} />
               </Box>
             );
-          case 'checkbox':
+          case QuestionType.CheckBoxes:
             return (
               <FormGroup key={field.name} className="profile-builder__form-group">
                 <Typography variant="body1" fontWeight={500} gutterBottom textAlign="left">
                   {field.placeholder}
                 </Typography>
                 <Box className="profile-builder__form-row profile-builder__pets">
-                  {petOptions.map((option: { label: string; value: string }, index: number) => (
+                  {field?.options?.map((option: { label: string; value: string }, index: number) => (
                     <FormControlLabel
                       key={index}
                       control={
@@ -315,7 +317,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
                 )}
               </FormGroup>
             );
-          case 'text':
+          case QuestionType.Text:
           default:
             return (
               <Box key={field.name} width="100%">

@@ -18,6 +18,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="maximum-scale=1.0, user-scalable=no" />
+      </head>
       <body>
         <AppRouterCacheProvider>
           <ThemeRegistry options={{ key: 'mui-theme' }}>{children}</ThemeRegistry>

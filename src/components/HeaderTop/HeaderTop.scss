@@ -2,15 +2,15 @@
 * Header Top style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .headerTop {
   background-color: var(--color-black);
-  min-height: rem(28);
-  @include flex(center, center);
+  min-height: mixins.rem(28);
+  @include mixins.flex(center, center);
   p,
   a {
     color: var(--color-marble);
-    @include fontSize(11);
+    @include mixins.fontSize(11);
   }
 }

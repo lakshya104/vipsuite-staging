@@ -2,34 +2,34 @@
 * Book a Demo page style.
 */
 
-@import '../../styles/mixins';
-@import '../../styles/globals';
+@use '../../styles/mixins';
+@use '../../styles/globals';
 
 .demo-signup {
-  margin-bottom: rem(80);
+  margin-bottom: mixins.rem(80);
   p {
     &.page-title {
-      max-width: rem(412);
+      max-width: mixins.rem(412);
       margin-left: auto;
       margin-right: auto;
       &:not(:empty) {
-        margin-bottom: rem(40);
+        margin-bottom: mixins.rem(40);
       }
     }
   }
   .signup-form {
-    max-width: rem(412);
+    max-width: mixins.rem(412);
     margin: 0 auto;
     .signup__item {
       .MuiFormControl-root {
-        margin-bottom: rem(16);
+        margin-bottom: mixins.rem(16);
       }
       .MuiSelect-select {
         color: var(--color-black);
         background: var(--color-white);
-        height: rem(48);
+        height: mixins.rem(48);
         fieldset {
-          padding-top: rem(15);
+          padding-top: mixins.rem(15);
         }
       }
       fieldset {
@@ -46,8 +46,8 @@
         opacity: 50%;
       }
       input {
-        padding-top: rem(15);
-        height: rem(48);
+        padding-top: mixins.rem(15);
+        height: mixins.rem(48);
         background: var(--color-white);
         color: var(--color-black);
         &[type='text'] {

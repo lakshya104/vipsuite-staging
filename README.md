@@ -19,7 +19,7 @@
 # Installation of nodejs
 
     - Install nodejs in system.
-    - Node version 20.15.1
+    - Node version: 22.12.0
 
 # Installation of yarn
 
@@ -30,6 +30,8 @@
             - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
             - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
             - sudo apt-get update && sudo apt-get install yarn
+
+    - Yarn version: 1.22.22
 
 # Run the server :
 

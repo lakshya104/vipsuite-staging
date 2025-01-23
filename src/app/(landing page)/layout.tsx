@@ -9,6 +9,7 @@ import { getLastPathSegment } from '@/helpers/utils';
 import HeaderTop from '@/components/HeaderTop/HeaderTop';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
+import en from '@/helpers/lang';
 
 export default async function LandingLayout({
   children,
@@ -21,7 +22,7 @@ export default async function LandingLayout({
     return item;
   });
   if (error) {
-    return <ErrorHandler error={error} errMessage="Not able to show landing page currently." />;
+    return <ErrorHandler error={error} errMessage={en.landingPage.notShowLandingPage} />;
   }
   return (
     <Box className="background--dark">

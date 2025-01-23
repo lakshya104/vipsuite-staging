@@ -2,36 +2,36 @@
 * Testimonial style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .testimonial-section {
-  margin-bottom: rem(40);
+  margin-bottom: mixins.rem(40);
   @media only screen and (min-width: 992px) {
-    margin-bottom: rem(85);
+    margin-bottom: mixins.rem(85);
   }
   h2 {
     line-height: 1.6;
     letter-spacing: -0.05em;
-    margin-bottom: rem(20);
-    @include fontSize(30);
+    margin-bottom: mixins.rem(20);
+    @include mixins.fontSize(30);
     @media only screen and (min-width: 992px) {
-      margin-bottom: rem(40);
-      line-height: rem(50);
-      @include fontSize(40);
+      margin-bottom: mixins.rem(40);
+      line-height: mixins.rem(50);
+      @include mixins.fontSize(40);
     }
   }
   &--dark {
     .site-testimonial {
       .site-testimonial {
         &__inner {
-          padding-top: rem(44);
-          padding-bottom: rem(47);
+          padding-top: mixins.rem(44);
+          padding-bottom: mixins.rem(47);
           .site-testimonial__body {
             &:not(:empty) {
-              max-width: rem(838);
+              max-width: mixins.rem(838);
               margin: 0 auto;
               text-align: center;
-              margin-bottom: rem(26);
+              margin-bottom: mixins.rem(26);
               min-height: auto;
               color: var(--color-white);
             }
@@ -40,7 +40,7 @@
         &__user {
           flex-direction: column;
           .MuiAvatar-root {
-            margin-bottom: rem(16);
+            margin-bottom: mixins.rem(16);
           }
         }
         &__user-info {

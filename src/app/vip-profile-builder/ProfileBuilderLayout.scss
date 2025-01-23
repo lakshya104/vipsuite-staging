@@ -2,7 +2,8 @@
 * Profile Form style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
+@use '../../styles/variables';
 
 .profile-builder {
   &__page {
@@ -10,29 +11,29 @@
     min-height: 100vh;
     position: relative;
     flex-direction: column;
-    @include flex;
+    @include mixins.flex;
   }
   &__header {
-    border-bottom: 1px solid rgba($black, 0.8);
+    border-bottom: 1px solid rgba(variables.$black, 0.8);
     background-color: var(--color-marble);
     position: sticky;
     text-align: center;
     top: 0;
     z-index: 99;
-    padding: rem(10);
+    padding: mixins.rem(10);
     img {
-      max-width: rem(115);
+      max-width: mixins.rem(115);
       height: auto;
       width: auto;
       @media only screen and (min-width: 768px) {
-        max-width: rem(260);
+        max-width: mixins.rem(260);
       }
     }
   }
   &__main {
     flex: 1;
-    padding: 0 rem(15) rem(56);
-    @include flex(center);
-    @include relative;
+    padding: 0 mixins.rem(15) mixins.rem(56);
+    @include mixins.flex(center);
+    @include mixins.relative;
   }
 }

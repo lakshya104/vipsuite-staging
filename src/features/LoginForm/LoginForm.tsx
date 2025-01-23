@@ -4,7 +4,6 @@ import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, TextFi
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { isUndefined } from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { deleteVipCookies, login } from '@/libs/actions';
@@ -14,6 +13,9 @@ import Toaster from '@/components/Toaster';
 import en from '@/helpers/lang';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import ApplicationRejectedDialog from '@/components/ApplicationRejectedDialog';
+import { useRouter } from 'next/navigation';
+import { Login } from '@/libs/api-manager/manager';
+import { UserRole } from '@/helpers/enums';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -22,7 +24,8 @@ const LoginForm = () => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isUserBrand, setIsUserBrand] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<UserRole | ''>('');
+  const router = useRouter();
 
   useEffect(() => {
     const deleteCookies = async () => {
@@ -30,6 +33,7 @@ const LoginForm = () => {
     };
     deleteCookies();
   }, []);
+
   const {
     register,
     handleSubmit,
@@ -38,49 +42,56 @@ const LoginForm = () => {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
   });
 
   const onSubmit = (values: LoginFormValues) => {
     setToasterOpen(false);
-    startTransition(() => {
-      login(values)
-        .then((data) => {
-          if (data && data.error) {
-            const errorMessage = data.error;
-            if (errorMessage.includes('rejected')) {
-              setIsRejectDialogOpen(true);
-              reset();
-            } else if (errorMessage.includes('not approved')) {
-              if (errorMessage.includes('brand')) {
-                setIsUserBrand(true);
-              }
-              setIsReviewDialogOpen(true);
-              reset();
-            } else {
-              setError(!isUndefined(errorMessage) ? errorMessage : 'An error occurred during login');
-              setToasterOpen(true);
-            }
+    startTransition(async () => {
+      try {
+        const [data, userData] = await Promise.all([login(values), Login(values)]);
+        setUserRole(userData?.role);
+        if (data && data.error) {
+          const errorMessage = data.error;
+          if (errorMessage.includes('rejected')) {
+            setIsRejectDialogOpen(true);
+            reset();
+          } else if (errorMessage.includes('not approved')) {
+            setIsReviewDialogOpen(true);
+            reset();
+          } else {
+            console.error(errorMessage);
+            setError(errorMessage || 'An error occurred during login');
+            setToasterOpen(true);
           }
-        })
-        .catch((error) => {
-          setError('An unexpected error occurred' + error);
-          setToasterOpen(true);
-        });
+        } else {
+          if (userData?.role === UserRole.Vip) {
+            router.push('/home');
+          } else if (userData?.role === UserRole.Agent) {
+            router.push('/my-vips');
+          } else {
+            router.push('/home');
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        setError('Error: ' + error);
+        setToasterOpen(true);
+      }
     });
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="login-form">
       <TextField
-        {...register('email')}
+        {...register('username')}
         placeholder="Email"
         label="Email"
         type="text"
-        error={!!errors.email}
-        helperText={errors.email?.message}
+        error={!!errors.username}
+        helperText={errors.username?.message}
         autoComplete="email"
         fullWidth
       />
@@ -151,7 +162,7 @@ const LoginForm = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <Dialog open={isReviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ApplicationReviewDialog isBrand={isUserBrand} />
+        <ApplicationReviewDialog isBrand={userRole === UserRole.Brand} />
       </Dialog>
       <Dialog open={isRejectDialogOpen} fullScreen aria-labelledby="form-dialog-title">
         <ApplicationRejectedDialog />

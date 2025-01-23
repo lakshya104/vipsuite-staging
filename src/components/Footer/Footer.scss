@@ -2,21 +2,21 @@
 * Header style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .site-footer {
   background-color: var(--color-very-darkgray);
   color: var(--color-white);
-  padding: rem(45) 0 rem(16);
+  padding: mixins.rem(45) 0 mixins.rem(16);
   &__social-icons {
     h2 {
-      margin-bottom: rem(32);
+      margin-bottom: mixins.rem(32);
     }
     a {
       color: var(--color-white);
       padding: 0;
       &:not(:last-child) {
-        margin-right: rem(17);
+        margin-right: mixins.rem(17);
       }
     }
     svg {
@@ -25,48 +25,48 @@
     }
   }
   &__nav {
-    margin-bottom: rem(40);
+    margin-bottom: mixins.rem(40);
     @media screen and (min-width: 900px) {
-      margin-bottom: rem(94);
+      margin-bottom: mixins.rem(94);
     }
     h6 {
-      margin-bottom: rem(12);
-      line-height: rem(20);
+      margin-bottom: mixins.rem(12);
+      line-height: mixins.rem(20);
       letter-spacing: 1.44px;
-      @include fontSize(12);
+      @include mixins.fontSize(12);
     }
     &-links {
       a {
         color: var(--color-white);
         opacity: 70%;
-        margin-bottom: rem(12);
+        margin-bottom: mixins.rem(12);
         display: block;
-        line-height: rem(20);
+        line-height: mixins.rem(20);
         text-decoration: none;
-        @include fontSize(13);
+        @include mixins.fontSize(13);
       }
     }
   }
   &__terms {
-    border-top: rem(1) solid #333;
-    padding-top: rem(16);
+    border-top: mixins.rem(1) solid #333;
+    padding-top: mixins.rem(16);
     span,
     a {
       opacity: 70%;
-      line-height: rem(20);
+      line-height: mixins.rem(20);
       display: inline-block;
-      @include fontSize(10);
+      @include mixins.fontSize(10);
     }
     a {
       &:not(:last-child) {
-        margin-right: rem(16);
+        margin-right: mixins.rem(16);
       }
     }
     &-content {
-      @include flex($justify-content: space-between, $align-items: center);
+      @include mixins.flex($justify-content: space-between, $align-items: center);
     }
     &-links {
-      @include flex($align-items: center);
+      @include mixins.flex($align-items: center);
       a {
         color: var(--color-white);
         text-decoration: underline;
@@ -74,13 +74,13 @@
     }
   }
   &__img {
-    @include flex();
+    @include mixins.flex();
     @media screen and (min-width: 900px) {
       justify-content: flex-end;
     }
     a {
       &:not(:last-child) {
-        margin-right: rem(15);
+        margin-right: mixins.rem(15);
       }
     }
   }

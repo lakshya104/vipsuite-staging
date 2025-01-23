@@ -4,6 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import he from 'he';
 import './PromoWrapper.scss';
 import { ContentModule } from '@/interfaces/public-page';
+import en from '@/helpers/lang';
 
 interface PromoWrapperProps {
   data: ContentModule;
@@ -22,7 +23,7 @@ const PromoWrapper: React.FC<PromoWrapperProps> = ({ data }) => {
             <Box
               component="img"
               src={data?.image?.url}
-              alt={data?.image?.alt || 'VIP Brand Club members'}
+              alt={data?.image?.alt || en.promoWrapper.vipBrandClub}
               className="club-image"
             />
           </Grid>

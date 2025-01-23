@@ -2,7 +2,7 @@
 * Application status style.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 .application__status {
   color: #fff;
@@ -13,26 +13,26 @@
     border-color: var(--color-marble);
   }
   h1 {
-    margin-bottom: rem(16);
+    margin-bottom: mixins.rem(16);
     text-align: center;
     @media only screen and (max-width: 767px) {
-      line-height: rem(45);
-      @include fontSize(41);
+      line-height: mixins.rem(45);
+      @include mixins.fontSize(41);
     }
   }
   &-content {
     margin: auto;
     text-align: center;
     img {
-      margin-bottom: rem(59);
+      margin-bottom: mixins.rem(59);
     }
     h3 {
-      line-height: rem(29.96);
-      margin-bottom: rem(16);
-      @include fontSize(28);
+      line-height: mixins.rem(29.96);
+      margin-bottom: mixins.rem(16);
+      @include mixins.fontSize(28);
     }
     p {
-      margin-bottom: rem(16);
+      margin-bottom: mixins.rem(16);
       color: #a4a49f;
     }
   }
