@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Box, Card, CardContent, Typography } from '@mui/material';
+import he from 'he';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatEventDates } from '@/helpers/utils';
@@ -36,7 +37,7 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
               </Typography>
             </Box>
           )}
-          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: item?.title?.rendered || '' }} />
+          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: he.decode(item?.title?.rendered) || '' }} />
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>
               {en.events.date}

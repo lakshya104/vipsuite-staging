@@ -16,7 +16,6 @@ interface SelectAddressFormProps {
   cartData: Cart;
   onPrevious?: () => void;
   startTransition: typeof import('react').startTransition;
-  productImage: string;
   signatureData: string;
 }
 const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
@@ -24,7 +23,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   cartData,
   onPrevious,
   startTransition,
-  productImage,
   signatureData,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
@@ -73,7 +71,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
               cartData={cartData}
               startTransition={startTransition}
               vipId={vipIdStore}
-              productImage={productImage}
               signatureData={signatureData}
             />
           </Box>

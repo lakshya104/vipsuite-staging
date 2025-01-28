@@ -18,10 +18,18 @@ interface FullScreenDialogProps {
 }
 
 const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, onClose, content }) => {
+  const handleClose = (event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if (reason === 'backdropClick') {
+      return;
+    }
+    onClose();
+  };
+
   return (
     <Dialog
       open={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
+      disableEscapeKeyDown
       PaperProps={{
         sx: {
           display: 'flex',

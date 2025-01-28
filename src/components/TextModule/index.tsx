@@ -1,27 +1,27 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Container, Skeleton } from '@mui/material';
+import { Box, Container, Skeleton } from '@mui/material';
 import { ContentModule } from '@/interfaces/public-page';
-import { wrapInParagraph } from '@/helpers/utils';
 import './TextModule.scss';
+import ShowHtml from '../ShowHtml';
 
 interface TextModuleProps {
   data: ContentModule;
 }
 
 const TextModule: React.FC<TextModuleProps> = ({ data }) => {
-  const privacyPolicy = wrapInParagraph(data?.content || '');
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   return (
     <Box component="main" className="site-main terms-page">
       <Container>
         <Box className="terms-content">
           {isClient ? (
-            <Typography variant="body1" dangerouslySetInnerHTML={{ __html: privacyPolicy || '' }} />
+            <ShowHtml text={data?.content || ''} />
           ) : (
             <Box
               sx={{ gap: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}

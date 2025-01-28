@@ -15,6 +15,7 @@ import en from '@/helpers/lang';
 import EsignModal from '../EsignModal';
 import Toaster from '../Toaster';
 import UseToaster from '@/hooks/useToaster';
+import { useProductImageStore } from '@/store/useStore';
 
 interface BasketCardProps {
   cartData: Cart;
@@ -22,11 +23,19 @@ interface BasketCardProps {
   startTransition: typeof import('react').startTransition;
   // eslint-disable-next-line no-unused-vars
   handleSignature: (signature: string) => void;
+  productImage: string;
 }
 
-const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNext, handleSignature }) => {
+const BasketCard: React.FC<BasketCardProps> = ({
+  cartData,
+  startTransition,
+  onNext,
+  handleSignature,
+  productImage,
+}) => {
   const cartItems = get(cartData, 'items', []);
   const [openESignModel, setOpenESignModel] = useState<boolean>(false);
+  const { setProductImage } = useProductImageStore();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const handleESignModel = (open: boolean) => {
     setOpenESignModel(open);
@@ -119,6 +128,7 @@ const BasketCard: React.FC<BasketCardProps> = ({ cartData, startTransition, onNe
               )}
               <ContinueToCartBtn
                 onNext={() => {
+                  setProductImage(productImage);
                   if (some(cartItems, 'is_high_end_item')) {
                     setOpenESignModel(true);
                   } else {

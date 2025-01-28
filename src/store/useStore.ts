@@ -128,3 +128,15 @@ export const useEditVipIdStore = create<EditVipIdState>()(
     } as PersistOptions<EditVipIdState>,
   ),
 );
+
+interface ProductImageStore {
+  productImage: string | null;
+  setProductImage: (image: string) => void;
+  clearProductImage: () => void;
+}
+
+export const useProductImageStore = create<ProductImageStore>((set) => ({
+  productImage: null,
+  setProductImage: (image) => set({ productImage: image }),
+  clearProductImage: () => set({ productImage: null }),
+}));

@@ -1,14 +1,22 @@
 'use client';
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { Box, Typography, TextField, Button, Backdrop, CircularProgress } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { GetFormId, SubmitLandingPageForm } from '@/libs/api-manager/manager';
+import { SubmitLandingPageForm } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import './comingsoon.scss';
+import { ComingSoonData } from '@/interfaces/public-page';
 
-const ComingSoon = () => {
-  const [unitTag, setUnitTag] = useState('');
+interface ComingSoonProps {
+  comingSoondata: ComingSoonData;
+}
+
+interface FormData {
+  email: string;
+}
+
+const ComingSoon: React.FC<ComingSoonProps> = ({ comingSoondata }) => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
@@ -18,35 +26,17 @@ const ComingSoon = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormData>();
 
-  useEffect(() => {
-    startTransition(() => {
-      const fetchUnitTag = async () => {
-        try {
-          const response = await GetFormId('notification_form_id');
-          setUnitTag(response?.notification_form_id);
-        } catch (error) {
-          setToasterType('error');
-          openToaster('Failed to fetch Form ID');
-          console.error('Error fetching ID:', error);
-        }
-      };
-      fetchUnitTag();
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     startTransition(async () => {
       try {
         const payload = new FormData();
         payload.append('email', data.email);
-        payload.append('_wpcf7_unit_tag', unitTag);
-        const res = await SubmitLandingPageForm(unitTag, payload);
+        payload.append('_wpcf7_unit_tag', comingSoondata?.notification_form_id);
+        const res = await SubmitLandingPageForm(comingSoondata?.notification_form_id, payload);
         setToasterType('info');
-        openToaster(res.message ?? 'You have successfully submitted your email');
+        openToaster(res.message ?? "Thank you for subscribing! You're all set.");
         reset();
       } catch (error) {
         setToasterType('error');
@@ -58,12 +48,16 @@ const ComingSoon = () => {
 
   return (
     <Box className="coming-soon__page">
-      <Typography variant="h1" gutterBottom>
-        The VIP Suite Coming soon
-      </Typography>
-      <Typography className="coming-soon__desc" gutterBottom variant="body1" align="center">
-        If you would like to be the first to know
-      </Typography>
+      {comingSoondata?.title && (
+        <Typography variant="h1" gutterBottom>
+          {comingSoondata?.title}
+        </Typography>
+      )}
+      {comingSoondata?.description && (
+        <Typography className="coming-soon__desc" gutterBottom variant="body1" align="center">
+          {comingSoondata?.description}
+        </Typography>
+      )}
 
       <Box className="coming-soon__form" component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -73,13 +67,13 @@ const ComingSoon = () => {
             pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email format' },
           })}
           variant="outlined"
-          placeholder="Enter your email"
-          type="email"
+          placeholder={comingSoondata?.placeholder_text ?? 'Please enter your email address'}
+          type="text"
           fullWidth
           error={!!errors.email}
           helperText={errors.email?.message?.toString()}
         />
-        <Button type="submit">Notify Me</Button>
+        <Button type="submit">{comingSoondata?.cta_button_text ?? 'Notify'}</Button>
       </Box>
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />

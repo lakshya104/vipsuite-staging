@@ -51,15 +51,29 @@ const InputTextFormField = <T extends FieldValues>({
             error={!!errors[name]}
             helperText={typeof errors[name]?.message === 'string' ? errors[name]?.message : ''}
             sx={{ borderRadius: '50px', '& .MuiOutlinedInput-root': { borderRadius: '50px' } }}
-            inputProps={{
-              ...(autoFill && {
-                onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
-              }),
-            }}
-            InputLabelProps={{
-              ...(autoFill && {
-                shrink: fieldHasValue,
-              }),
+            // inputProps={{
+            //   ...(autoFill && {
+            //     onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
+            //   }),
+            // }}
+            // InputLabelProps={{
+            //   ...(autoFill && {
+            //     shrink: fieldHasValue,
+            //   }),
+            // }}
+            slotProps={{
+              input: {
+                ...(autoFill && {
+                  onAnimationStart: makeAnimationStartHandler(
+                    setFieldHasValue,
+                  ) as React.AnimationEventHandler<HTMLDivElement>,
+                }),
+              },
+              inputLabel: {
+                ...(autoFill && {
+                  shrink: fieldHasValue,
+                }),
+              },
             }}
             {...(autoFill && {
               onFocus: () => setFieldHasValue(true),

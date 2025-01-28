@@ -37,6 +37,9 @@ export interface RenderedString {
 }
 
 export interface Acf {
+  show_description: boolean;
+  the_ask: string;
+  the_offer: string;
   cta_label: string;
   show_offers: boolean;
   associated_brand_profile: number;

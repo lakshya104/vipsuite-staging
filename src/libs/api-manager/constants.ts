@@ -71,6 +71,7 @@ const Endpoints = {
   getMessageDetails: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
   sendMessage: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
   getWebsiteContent: `/wp/v2/website-content`,
+  getComingSoonData: `/wp/v2/coming-soon-content`,
 };
 
 export { Endpoints };

@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Box, Grid, Skeleton, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
-import { isEmpty, partition } from 'lodash';
+import { isEmpty } from 'lodash';
 import { DashboardData, DashboardItem } from '@/interfaces';
 import { GetVipSearch } from '@/libs/api-manager/manager';
 import SearchBar from './SearchBar';
@@ -10,7 +10,6 @@ import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
 import en from '@/helpers/lang';
-import ContentCardBox from './DashboardCard/ContentCard';
 
 interface DashboardItemsContainerProps {
   dashboardData: DashboardData;
@@ -22,10 +21,6 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
   const [isPending, setIsPending] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-  const [featuredItems, nonFeaturedItems] = partition(
-    dashboardData?.dashboard_content,
-    (item: DashboardItem) => item?.is_featured,
-  );
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -76,15 +71,8 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
     </Grid>
   );
 
-  const renderItems = (items: DashboardItem[], showContentCard?: boolean) => (
+  const renderItems = (items: DashboardItem[]) => (
     <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-      {showContentCard &&
-        !isEmpty(dashboardData.dashboard_content_cards) &&
-        dashboardData.dashboard_content_cards.map((item, index) => (
-          <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
-            <ContentCardBox data={item} />
-          </Grid>
-        ))}
       {items.map((item, index) => (
         <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
           <DashboardCard item={item} />
@@ -95,9 +83,9 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
 
   const renderDashboard = () => (
     <DashboardContentComponent
-      dashboardContent={dashboardData?.static_form_requests}
+      dashboardContent={dashboardData?.static_dashboard_questions}
       showMakeRequest={dashboardData?.show_make_request_form}
-      formRequests={dashboardData?.dynamic_form_requests}
+      formRequests={dashboardData?.dynamic_dashboard_questions}
     />
   );
 
@@ -109,10 +97,10 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
       return (
         <>
           {renderDashboard()}
-          {!isEmpty(dashboardData.dashboard_content_cards) &&
-            dashboardData.dashboard_content_cards.map((item, index) => (
+          {!isEmpty(dashboardData.dashboard_cards) &&
+            dashboardData.dashboard_cards.map((item, index) => (
               <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
-                <ContentCardBox data={item} />
+                <DashboardCard item={item} />
               </Grid>
             ))}
           <ErrorFallback
@@ -125,34 +113,17 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
     }
 
     return (
-      // <>
-      //   {!isEmpty(featuredItems) && renderItems(featuredItems)}
-      //   {renderDashboard()}
-      //   {!isEmpty(nonFeaturedItems) ? (
-      //     renderItems(nonFeaturedItems, true)
-      //   ) : (
-      //     <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-      //       {!isEmpty(dashboardData.dashboard_content_cards) &&
-      //         dashboardData.dashboard_content_cards.map((item, index) => (
-      //           <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
-      //             <ContentCardBox data={item} />
-      //           </Grid>
-      //         ))}
-      //     </Grid>
-      //   )}
-      // </>
       <>
-        {!isEmpty(featuredItems) && renderItems(featuredItems)}
+        {!isEmpty(dashboardData?.dashboard_content) && renderItems(dashboardData?.dashboard_content)}
         {renderDashboard()}
         <Grid className="landing-product" container spacing={2}>
-          {!isEmpty(dashboardData.dashboard_content_cards) &&
-            dashboardData.dashboard_content_cards.map((item, index) => (
+          {!isEmpty(dashboardData.dashboard_cards) &&
+            dashboardData.dashboard_cards.map((item, index) => (
               <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
-                <ContentCardBox data={item} />
+                <DashboardCard item={item} />
               </Grid>
             ))}
         </Grid>
-        {!isEmpty(nonFeaturedItems) && renderItems(nonFeaturedItems)}
       </>
     );
   };

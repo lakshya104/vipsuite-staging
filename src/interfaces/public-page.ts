@@ -116,6 +116,9 @@ export interface ContentBlocks {
   cta: {
     cta_url: string;
     cta_text: string;
+    cta_type: 'page' | 'url';
+    cta_page: { slug: string };
+    cta_external_link: boolean;
   };
   image_position?: 'left' | 'right';
 }
@@ -270,4 +273,12 @@ export interface WebsiteContent {
 export interface HeaderMenu {
   title: string;
   url: string;
+}
+
+export interface ComingSoonData {
+  title: string;
+  description: string;
+  cta_button_text: string;
+  placeholder_text: string;
+  notification_form_id: string;
 }

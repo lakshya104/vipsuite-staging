@@ -12,7 +12,7 @@ const UseToaster = () => {
       setToasterOpen(false);
       setError('');
       if (onClose) onClose();
-    }, 2000);
+    }, 4000);
   }, []);
 
   const closeToaster = useCallback(() => {

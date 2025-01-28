@@ -4,15 +4,33 @@ import Image from 'next/image';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
 import { ContentCard } from '@/interfaces';
+import Link from 'next/link';
 
 interface ContentCardBoxProps {
   data: ContentCard;
 }
 
 const ContentCardBox: React.FC<ContentCardBoxProps> = ({ data }) => {
-  const { title, description, image, url } = data;
+  const { title, description, image, linked_opportunity } = data;
+
+  let postTypePath;
+  switch (linked_opportunity.post_type) {
+    case 'opportunity':
+      postTypePath = `/opportunities/${linked_opportunity.ID}`;
+      break;
+    case 'event':
+      postTypePath = `/events/${linked_opportunity.ID}`;
+      break;
+    case 'product':
+      postTypePath = `/products/${linked_opportunity.ID}`;
+      break;
+    default:
+      postTypePath = '/';
+      break;
+  }
+
   return (
-    <a href={url} target="_blank" rel="noreferrer">
+    <Link href={postTypePath}>
       <Box className="dashboard-card">
         <Image
           src={image?.url || DefaultImageFallback.Placeholder}
@@ -32,7 +50,7 @@ const ContentCardBox: React.FC<ContentCardBoxProps> = ({ data }) => {
           <Typography variant="body2">{description} </Typography>
         </Box>
       </Box>
-    </a>
+    </Link>
   );
 };
 

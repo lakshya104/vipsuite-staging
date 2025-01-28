@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, Tab, Box, Container } from '@mui/material';
 import OrderListing from '../OrderListing';
-import { MessageDetails, Order } from '@/interfaces';
+import { MessageArray, Order } from '@/interfaces';
 import './InboxTabs.scss';
 import Messages from '../Messages';
 import en from '@/helpers/lang';
@@ -18,7 +18,7 @@ interface InboxTabsProps {
   totalPages: number;
   currentPage: number;
   order: Order[];
-  messageData: MessageDetails[];
+  messageData: MessageArray[];
 }
 
 const InboxTabs: React.FC<InboxTabsProps> = ({ order, totalPages, currentPage, messageData }) => {

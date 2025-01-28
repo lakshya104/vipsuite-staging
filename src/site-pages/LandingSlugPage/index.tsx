@@ -6,23 +6,23 @@ import './LandingSlugPage.scss';
 import LandingSlugContainer from '@/components/LandingSlugContainer';
 import ErrorHandler from '@/components/ErrorHandler';
 import RedirectIfEmpty from '@/components/RedirectIfEmpty';
+import en from '@/helpers/lang';
 
 interface LandingSlugPageProps {
   slug: string;
 }
 
 const LandingSlugPage: React.FC<LandingSlugPageProps> = async ({ slug }) => {
-  try {
-    const pageData: PageData[] = await GetPageContent(slug);
-    if (isEmpty(pageData)) {
-      return <RedirectIfEmpty />;
-    } else {
-      const data = first(pageData);
-      const isDefaultHeroPanel = get(data, 'acf.use_default_hero_panel', false) === true;
-      return <LandingSlugContainer isDefaultHeroPanel={isDefaultHeroPanel} data={data} />;
-    }
-  } catch (error) {
-    return <ErrorHandler error={error} errMessage="Not able to show page content currently." />;
+  const { data: pageData, error } = await GetPageContent(slug);
+  if (error) {
+    return <ErrorHandler error={error} errMessage={en.landingPage.notShowLandingPage} />;
+  }
+  if (isEmpty(pageData)) {
+    return <RedirectIfEmpty />;
+  } else {
+    const data: PageData = first(pageData);
+    const isDefaultHeroPanel = get(data, 'acf.use_default_hero_panel', false) === true;
+    return <LandingSlugContainer isDefaultHeroPanel={isDefaultHeroPanel} data={data} />;
   }
 };
 

@@ -163,17 +163,18 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
   const onESignChange = async (signature: string) => {
     startTransition(async () => {
       try {
-        setRequestESign(signature);
-        if (product.type === 'variable') {
-          setRequestProductId(productId);
-        } else {
-          setRequestProductId(product.id);
+        if (signature !== '') {
+          setRequestESign(signature);
+          if (product.type === 'variable') {
+            setRequestProductId(productId);
+          } else {
+            setRequestProductId(product.id);
+          }
+          setOpenESignModel(false);
+          router.push(`/basket?step=1&isRequestOnly=true`);
         }
-        router.push(`/basket?step=1&isRequestOnly=true`);
       } catch (error) {
         openToaster(error?.toString() ?? 'Error processing Order');
-      } finally {
-        setOpenESignModel(false);
       }
     });
   };

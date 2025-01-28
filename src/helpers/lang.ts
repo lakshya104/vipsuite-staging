@@ -383,12 +383,13 @@ const en = {
     },
     opportunityRsvp: {
       responded: 'Already Responded',
-      text: 'RSVP',
+      text: 'Yes, Interested',
       notAvailable: 'Not Available',
       notInterested: 'Not Interested',
       reason: 'Reason',
       reasonPlaceholder: 'Enter here...',
       submit: 'Submit',
+      Rsvptext: 'RSVP',
     },
   },
   events: {
@@ -403,7 +404,7 @@ const en = {
     details: 'Details',
     eventRsvp: {
       responded: 'Already Responded',
-      text: 'RSVP',
+      text: 'Yes, Interested',
       notAvailable: 'Not Available',
       notInterested: 'Not Interested',
       reason: 'Reason',

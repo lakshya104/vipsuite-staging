@@ -44,7 +44,7 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
               borderRadius: 1,
             }}
           >
-            <Image style={{ objectFit: 'cover' }} src={src} alt={`Slide ${index + 1}`} fill />
+            <Image style={{ objectFit: 'cover' }} priority src={src} alt={`Slide ${index + 1}`} fill />
           </Box>
         ))}
       </SliderComponent>

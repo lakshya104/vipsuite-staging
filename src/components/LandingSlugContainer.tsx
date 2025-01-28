@@ -1,6 +1,7 @@
-import { Box, Container, Typography } from '@mui/material';
-import Image from 'next/image';
 import React from 'react';
+import Image from 'next/image';
+import { Box, Container, Typography } from '@mui/material';
+import he from 'he';
 import ModuleSlides from './ModuleSlides';
 import { PageData } from '@/interfaces/public-page';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -9,6 +10,7 @@ interface LandingSlugContainerProps {
   data: PageData | undefined;
   isDefaultHeroPanel: boolean;
 }
+
 const LandingSlugContainer: React.FC<LandingSlugContainerProps> = ({ isDefaultHeroPanel, data }) => {
   return (
     <Box component="main" className="site-main" minHeight="50vh">
@@ -31,7 +33,7 @@ const LandingSlugContainer: React.FC<LandingSlugContainerProps> = ({ isDefaultHe
           </>
         ) : (
           <Typography className="page-title" variant="h1" align="center">
-            {data?.acf?.heading}
+            {he.decode(data?.acf?.heading || data?.title?.rendered || '')}
           </Typography>
         )}
       </Container>

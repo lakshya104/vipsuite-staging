@@ -4,13 +4,13 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { find, get } from 'lodash';
 import ItemRequestForm from '@/features/ItemRequestForm';
 import { DefaultImageFallback } from '@/helpers/enums';
-import { wrapInParagraph } from '@/helpers/utils';
 import { Product } from '@/interfaces/brand';
 import ArrowBackBtn from './ArrowBackBtn';
 import ReferCard from './ReferCard';
 import RequestItemFormButton from './RequestItemFormButton';
 import RedeemBox from './RedeemBox';
 import HighEndItemMessage from './HighEndItemMessage';
+import ShowHtml from './ShowHtml';
 
 interface productsContainerProps {
   product: Product;
@@ -18,7 +18,6 @@ interface productsContainerProps {
 
 const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
   const productImage = product?.images?.[0]?.src || DefaultImageFallback.Placeholder;
-  const productDescription = wrapInParagraph(product?.description);
   const isRequestOnly = get(find(product?.meta_data, { key: 'is_request_only' }), 'value') === '1' || false;
   const showOffers =
     get(find(product?.meta_data, { key: 'show_offers' }), 'value') === '1' || product?.acf?.show_offers || false;
@@ -47,27 +46,7 @@ const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
               {product?.name}
             </Typography>
             {isHighEndItem && <HighEndItemMessage />}
-            <Box
-              sx={{
-                iframe: {
-                  width: '100%',
-                  aspectRatio: '16/9',
-                  border: 0,
-                },
-                video: {
-                  maxWidth: '100%',
-                  height: 'auto',
-                },
-                p: {
-                  marginBottom: 2,
-                },
-                a: {
-                  color: 'blue',
-                  textDecoration: 'underline',
-                },
-              }}
-              dangerouslySetInnerHTML={{ __html: productDescription || '' }}
-            />
+            <ShowHtml text={product?.description} />
             <ItemRequestForm product={product} isRequestOnly={isRequestOnly} />
             {isLookbookAvailable && (
               <>

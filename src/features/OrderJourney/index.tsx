@@ -48,6 +48,7 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
           onNext={handleNext}
           startTransition={startTransition}
           handleSignature={handleSignature}
+          productImage={firstItemImageUrl || DefaultImageFallback.Placeholder}
         />
       )}
       {activeStep === 1 && (
@@ -56,7 +57,6 @@ const OrderJourney: React.FC<OrderJourneyProps> = ({ addresses, cartData }) => {
           cartData={cartData}
           onPrevious={handleBack}
           startTransition={startTransition}
-          productImage={firstItemImageUrl || DefaultImageFallback.Placeholder}
           signatureData={signatureData}
         />
       )}

@@ -16,6 +16,7 @@ import RequestItemFormButton from '../RequestItemFormButton';
 import RedeemBox from '../RedeemBox';
 import { DefaultImageFallback } from '@/helpers/enums';
 import en from '@/helpers/lang';
+import ShowHtml from '../ShowHtml';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
@@ -27,7 +28,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const images = opportunity?.acf?.web_detail_images?.map((item) => item?.sizes['vs-container']) || [
-    DefaultImageFallback.LandscapePlaceholder,
+    opportunity.acf.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder,
   ];
 
   const handleDialogOpen = () => setDialogOpen(true);
@@ -59,9 +60,18 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       <Box>
         <ImageSlider images={images} withLikeIcon={true} item={opportunity} />
       </Box>
-      <CardContent>
-        <OpportunityTabs opportunity={opportunity} />
-      </CardContent>
+      {opportunity?.acf?.show_description ? (
+        <Box>
+          <Typography variant="h3" sx={{ my: 2 }}>
+            Description
+          </Typography>
+          <ShowHtml text={opportunity?.acf?.description} />
+        </Box>
+      ) : (
+        <CardContent>
+          <OpportunityTabs opportunity={opportunity} />
+        </CardContent>
+      )}
       {opportunity?.acf?.is_lookbook_available && (
         <>
           <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
@@ -86,7 +96,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         >
           {opportunity?.acf?.is_rsvp
             ? en.opportunities.opportunityRsvp.responded
-            : opportunity?.acf?.cta_label || en.opportunities.opportunityRsvp.text}
+            : opportunity?.acf?.cta_label || en.opportunities.opportunityRsvp.Rsvptext}
         </Button>
       </Box>
       <Dialog className="site-dialog" open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>

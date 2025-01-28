@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 
@@ -12,13 +11,14 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
   ({ placeholder, autoFill = false, value, type, error, helperText, label, onChange, ...rest }, ref) => {
     const [fieldHasValue, setFieldHasValue] = useState<boolean>(value ? !!value : false);
     const makeAnimationStartHandler =
+      // eslint-disable-next-line no-unused-vars
       (stateSetter: (autofilled: boolean) => void) =>
-      (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
-        if (e.animationName === 'mui-auto-fill' || (e.animationName === 'mui-auto-fill-cancel' && !value)) {
-          stateSetter(autofilled);
-        }
-      };
+        (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+          const autofilled = !!(e.target instanceof Element && e.target.matches('*:-webkit-autofill'));
+          if (e.animationName === 'mui-auto-fill' || (e.animationName === 'mui-auto-fill-cancel' && !value)) {
+            stateSetter(autofilled);
+          }
+        };
 
     return (
       <TextField
@@ -37,24 +37,36 @@ const InputForm = React.forwardRef<HTMLInputElement, InputFormProps>(
           '& input[type=number]': {
             MozAppearance: 'textfield',
             '&::-webkit-outer-spin-button': {
-              '-webkit-appearance': 'none',
+              WebkitAppearance: 'none',
               margin: 0,
             },
             '&::-webkit-inner-spin-button': {
-              '-webkit-appearance': 'none',
+              WebkitAppearance: 'none',
               margin: 0,
             },
           },
         }}
-        inputProps={{
-          ...(autoFill && {
-            onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
-          }),
-        }}
-        InputLabelProps={{
-          ...(autoFill && {
-            shrink: fieldHasValue,
-          }),
+        // inputProps={{
+        //   ...(autoFill && {
+        //     onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
+        //   }),
+        // }}
+        // InputLabelProps={{
+        //   ...(autoFill && {
+        //     shrink: fieldHasValue,
+        //   }),
+        // }}
+        slotProps={{
+          htmlInput: {
+            ...(autoFill && {
+              onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
+            }),
+          },
+          inputLabel: {
+            ...(autoFill && {
+              shrink: fieldHasValue,
+            }),
+          },
         }}
         {...(autoFill && {
           onFocus: () => setFieldHasValue(true),

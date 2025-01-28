@@ -7,16 +7,16 @@ import { Address, Cart } from '@/interfaces';
 import { CreateOrder } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
-import { useLookbookOrder, useOrderStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
+import { useLookbookOrder, useProductImageStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
 import { revalidateAllData } from '@/libs/actions';
 import FullScreenDialog from './FullScreenDialog';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
   cartData: Cart;
   startTransition: typeof import('react').startTransition;
   vipId: number;
-  productImage: string;
   signatureData: string;
 }
 
@@ -24,7 +24,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   selectedAddress,
   cartData,
   startTransition,
-  productImage,
   signatureData,
 }) => {
   const router = useRouter();
@@ -34,7 +33,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
   const postId = searchParams.get('postId');
-  const { increaseOrderCount } = useOrderStore();
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const {
     requestProductId,
@@ -44,8 +42,10 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     clearRequestESign,
     requestESign,
   } = useRequestOnlyStore();
+  const { productImage, clearProductImage } = useProductImageStore();
   const { userEmailStore } = useUserInfoStore();
   const cartItems = get(cartData, 'items', []);
+
   const address = {
     first_name: selectedAddress?.first_name,
     last_name: selectedAddress?.last_name,
@@ -120,7 +120,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       isRequestedProduct || isLookbookOrder
         ? 'Please check your email for your order confirmation. We will send you a confirmation once your request has been approved.'
         : 'Please check your email for your order confirmation. We will send you a confirmation by email once your items have shipped.',
-    image: isRequestedProduct || isLookbookOrder ? undefined : productImage,
+    image: isRequestedProduct || isLookbookOrder ? undefined : productImage || DefaultImageFallback.Placeholder,
     buttonText: isRequestedProduct ? 'Home' : 'View My Orders',
   };
 
@@ -151,7 +151,6 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
             await CreateOrder(orderDetails);
           }
           await revalidateAllData();
-          increaseOrderCount();
           setIsDialogOpen(true);
           clearLookbookDescription();
           clearRequestProductId();
@@ -174,6 +173,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       <FullScreenDialog
         isOpen={isDialogOpen}
         onClose={() => {
+          clearProductImage();
           if (isRequestedProduct) {
             startTransition(() => {
               router.push('/home');

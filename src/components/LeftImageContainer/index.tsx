@@ -1,24 +1,20 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Grid, Box, Typography, Button, Container } from '@mui/material';
 import Image from 'next/image';
 import { ContentBlocks } from '@/interfaces/public-page';
 import { DefaultImageFallback } from '@/helpers/enums';
-import { getLastPathSegment, wrapInParagraph } from '@/helpers/utils';
+import { getLastPathSegment } from '@/helpers/utils';
 import Link from 'next/link';
+import ShowHtml from '../ShowHtml';
 
 interface LeftImageContainerProps {
   data: ContentBlocks;
 }
 
 const LeftImageContainer: React.FC<LeftImageContainerProps> = ({ data }) => {
-  const [isClient, setIsClient] = useState(false);
+  const href =
+    data?.cta?.cta_type === 'page' ? data?.cta?.cta_page?.slug : getLastPathSegment(data?.cta?.cta_url || '') || '/';
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const content = wrapInParagraph(data?.description || '');
   return (
     <Container className="about-us__section">
       <Grid container spacing={4} alignItems="center">
@@ -37,14 +33,21 @@ const LeftImageContainer: React.FC<LeftImageContainerProps> = ({ data }) => {
           <Typography variant="h3" gutterBottom>
             {data?.heading}
           </Typography>
-          {isClient && <Typography variant="body1" dangerouslySetInnerHTML={{ __html: content || '' }} />}
-          {data.show_cta && (
-            <Link href={getLastPathSegment(data?.cta?.cta_url || '') || '/'} passHref>
-              <Button variant="contained" className="button button--white">
-                {data?.cta?.cta_text}
-              </Button>
-            </Link>
-          )}
+          <ShowHtml text={data?.description || ''} />
+          {data.show_cta &&
+            (data?.cta?.cta_external_link ? (
+              <a href={data?.cta?.cta_url} target="_blank" rel="noopener noreferrer">
+                <Button variant="contained" className="button button--white">
+                  {data?.cta?.cta_text}
+                </Button>
+              </a>
+            ) : (
+              <Link href={href} passHref>
+                <Button variant="contained" className="button button--white">
+                  {data?.cta?.cta_text}
+                </Button>
+              </Link>
+            ))}
         </Grid>
       </Grid>
     </Container>

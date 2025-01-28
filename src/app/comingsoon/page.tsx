@@ -1,6 +1,6 @@
-import ComingSoon from '@/components/ComingSoon/index';
 import React from 'react';
+import ComingSoonPage from '@/site-pages/ComingSoonPage';
 
 export default async function Page() {
-  return <ComingSoon />;
+  return <ComingSoonPage />;
 }

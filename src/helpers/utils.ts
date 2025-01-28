@@ -78,21 +78,25 @@ export const formatDateWithOrdinalAndTime = (date: string | Date): string => {
   return ` ${dayOfWeek} ${dayOfMonth} ${month} @ ${time}`;
 };
 
-export const wrapInParagraph = (content: string): string => {
-  const trimmedContent = content.trim();
-  const isHTML = /^<[^>]+>/.test(trimmedContent);
+export const wrapInParagraph = (content?: string): string => {
+  if (content) {
+    const trimmedContent = content.trim();
+    const isHTML = /^<[^>]+>/.test(trimmedContent);
 
-  if (isHTML) {
-    return `<p>${trimmedContent
-      .replace(/(\r\n|\r|\n){2,}/g, '</p><p>')
-      .replace(/^<p>/, '')
-      .replace(/<\/p>$/, '')}</p>`;
+    if (isHTML) {
+      return `<p>${trimmedContent
+        .replace(/(\r\n|\r|\n){2,}/g, '</p><p>')
+        .replace(/^<p>/, '')
+        .replace(/<\/p>$/, '')}</p>`;
+    } else {
+      const paragraphs = trimmedContent
+        .split(/(\r\n|\r|\n){2,}/)
+        .map((para) => `<p>${para.trim()}</p>`)
+        .join('');
+      return paragraphs;
+    }
   } else {
-    const paragraphs = trimmedContent
-      .split(/(\r\n|\r|\n){2,}/)
-      .map((para) => `<p>${para.trim()}</p>`)
-      .join('');
-    return paragraphs;
+    return '';
   }
 };
 
@@ -156,7 +160,7 @@ export const getLastPathSegment = (url: string) => {
     const pathSegments = parsedUrl.pathname.split('/').filter(Boolean);
     return `/${pathSegments.pop()}`;
   } catch {
-    return '#';
+    return '/';
   }
 };
 

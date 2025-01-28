@@ -5,22 +5,20 @@ import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
-import { formatDateWithOrdinal, wrapInParagraph } from '@/helpers/utils';
+import { formatDateWithOrdinal } from '@/helpers/utils';
 import { DefaultImageFallback } from '@/helpers/enums';
 import ArrowBackBtn from '../ArrowBackBtn';
 import ReferCard from '../ReferCard';
 import RequestItemFormButton from '../RequestItemFormButton';
 import RedeemBox from '../RedeemBox';
 import en from '@/helpers/lang';
+import ShowHtml from '../ShowHtml';
 
 interface EventDetailsCardProps {
   event: EventDetails;
 }
 
 const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
-  const eventOverview = wrapInParagraph(event?.acf?.event_quick_overview);
-  const eventDetail = wrapInParagraph(event?.acf?.event_details);
-
   return (
     <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
@@ -55,51 +53,11 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
         <Typography variant="h6" component="h3" gutterBottom>
           {en.events.overview}
         </Typography>
-        <Box
-          sx={{
-            iframe: {
-              width: '100%',
-              aspectRatio: '16/9',
-              border: 0,
-            },
-            video: {
-              maxWidth: '100%',
-              height: 'auto',
-            },
-            p: {
-              marginBottom: 2,
-            },
-            a: {
-              color: 'blue',
-              textDecoration: 'underline',
-            },
-          }}
-          dangerouslySetInnerHTML={{ __html: eventOverview || '' }}
-        />
+        <ShowHtml text={event?.acf?.event_quick_overview} />
         <Typography variant="h6" component="h3" gutterBottom>
           {en.events.details}
         </Typography>
-        <Box
-          sx={{
-            iframe: {
-              width: '100%',
-              aspectRatio: '16/9',
-              border: 0,
-            },
-            video: {
-              maxWidth: '100%',
-              height: 'auto',
-            },
-            p: {
-              marginBottom: 2,
-            },
-            a: {
-              color: 'blue',
-              textDecoration: 'underline',
-            },
-          }}
-          dangerouslySetInnerHTML={{ __html: eventDetail || '' }}
-        />
+        <ShowHtml text={event?.acf?.event_details} />
       </Box>
       {event?.acf?.is_lookbook_available && (
         <>

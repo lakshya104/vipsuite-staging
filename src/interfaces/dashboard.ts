@@ -39,9 +39,9 @@ export type DashboardItem = Dashboardproduct | Event | Opportunity;
 export interface DashboardData {
   dashboard_content: DashboardItem[];
   show_make_request_form: boolean;
-  dynamic_form_requests: DynamicFormRequests[];
-  dashboard_content_cards: ContentCard[];
-  static_form_requests: DashboardContent;
+  dynamic_dashboard_questions: DynamicFormRequests[];
+  dashboard_cards: DashboardItem[];
+  static_dashboard_questions: DashboardContent;
 }
 
 export interface DynamicFormRequests {
@@ -52,7 +52,10 @@ export interface DynamicFormRequests {
 export interface ContentCard {
   title: string;
   description: string;
-  url: string;
+  linked_opportunity: {
+    ID: number;
+    post_type: 'opportunity' | 'event' | 'product';
+  };
   image: {
     url: string;
     alt: string;

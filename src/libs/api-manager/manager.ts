@@ -632,12 +632,9 @@ export const MakeRequestSubmit = async (data: FormData) => {
 export const GetPageContent = async (slug: string) => {
   try {
     const response = await Instance.get(Endpoints.getPageContent(slug));
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch page content');
+    return { data: null, error };
   }
 };
 
@@ -665,8 +662,6 @@ export const GetMenuItems = async () => {
 export const VerifyEmail = async (email: string) => {
   try {
     const response = await Instance.post(Endpoints.verifyEmail, { email });
-    console.log(response);
-
     return response.data;
   } catch (error) {
     console.error('Error sending verification code:', error);
@@ -689,13 +684,13 @@ export const GetOpportunityCategory = async () => {
 
 export const GetFormId = async (tag: string) => {
   try {
-    const response = await Instance.get(Endpoints.getFormId(tag));
+    const response = await InstanceWithoutHeaders.get(Endpoints.getFormId(tag));
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
-    throw new Error('Failed to fetching Form Id');
+    throw new Error('Failed to fetch Form Id');
   }
 };
 
@@ -756,6 +751,15 @@ export const SendMessage = async (id: number, payload: { message: string; order_
 export const GetWebsiteContent = async () => {
   try {
     const response = await Instance.get(Endpoints.getWebsiteContent);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const GetComingSoonData = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getComingSoonData);
     return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };

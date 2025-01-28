@@ -10,12 +10,16 @@ import HeaderTop from '@/components/HeaderTop/HeaderTop';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
+import ComingSoonPage from '@/site-pages/ComingSoonPage';
 
 export default async function LandingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
+    return <ComingSoonPage />;
+  }
   const { data, error } = await GetWebsiteContent();
   const menuItems: MenuItemData[] = data?.header_menu.map((item: MenuItemData) => {
     item.url = getLastPathSegment(item?.url);

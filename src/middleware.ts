@@ -5,11 +5,11 @@ export default auth((req) => {
   const { nextUrl } = req;
 
   if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
-    if (nextUrl.pathname === '/comingsoon') {
+    if (nextUrl.pathname === '/') {
       return;
     }
 
-    return Response.redirect(new URL('/comingsoon', nextUrl));
+    return Response.redirect(new URL('/', nextUrl));
   } else {
     const isLoggedIn = !!req.auth;
 

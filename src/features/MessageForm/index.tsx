@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState, useTransition } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -31,6 +30,13 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
     formState: { errors },
   } = useForm<FormValues>();
 
+  useEffect(() => {
+    async function revalidateInbox() {
+      await revalidatePathAction('/inbox');
+    }
+    revalidateInbox();
+  }, []);
+
   const onSubmit = async (data: FormValues) => {
     startTransition(async () => {
       try {
@@ -44,7 +50,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
         openToaster(res?.message ?? 'Message sent successfully!');
         reset();
       } catch (error) {
-        console.error('An error occurred:', error);
+        console.error('Failed to send message:', error);
         setToasterType('error');
         openToaster(error?.toString() ?? 'Failed to send message');
       }
@@ -77,7 +83,6 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
             defaultValue=""
             rules={{
               required: 'Message is required',
-              maxLength: { value: 500, message: 'Message cannot exceed 500 characters' },
             }}
             render={({ field }) => (
               <InputForm

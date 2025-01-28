@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+import Link from 'next/link';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MessageLink from '../MessageLink';
 import './Messages.scss';
-import { ProgressBarLink } from '../ProgressBar';
 import { MessageArray } from '@/interfaces';
 import { calculateRelativeTime } from '@/helpers/utils';
 import { isEmpty } from 'lodash';
@@ -28,7 +28,7 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
   return (
     <Box className="message__items">
       {messageData.map((message) => (
-        <ProgressBarLink href={`/messages/${message?.order_id}`} key={message?.order_id}>
+        <Link prefetch={false} href={`/messages/${message?.order_id}`} key={message?.order_id}>
           <Box
             className="message__item"
             display="flex"
@@ -40,7 +40,14 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
           >
             <Box>
               <MessageLink title={message?.product_name} imageLink={message?.product_image} />
-              <Typography variant="body1" pt={2} color="textSecondary">
+              <Typography
+                variant="body1"
+                pt={2}
+                color="textSecondary"
+                sx={{
+                  fontWeight: message?.read_by_customer === 0 ? 700 : 400,
+                }}
+              >
                 {message?.last_message}
               </Typography>
               <Typography variant="body2" color="textSecondary">
@@ -49,7 +56,7 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
             </Box>
             <ArrowForwardIcon />
           </Box>
-        </ProgressBarLink>
+        </Link>
       ))}
     </Box>
   );

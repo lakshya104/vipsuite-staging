@@ -27,6 +27,7 @@ export interface MessageDetails {
 export interface MessageArray {
   order_id: number;
   last_message: string;
+  read_by_customer: 0 | 1;
   product_name: string;
   product_image: string;
   last_updated: {
