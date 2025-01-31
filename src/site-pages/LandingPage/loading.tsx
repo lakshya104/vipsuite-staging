@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Skeleton, Grid, Container, Typography } from '@mui/material';
+import { Box, Skeleton, Grid2, Container, Typography } from '@mui/material';
 
 const LandingPageLoading = () => {
   return (
@@ -15,9 +15,9 @@ const LandingPageLoading = () => {
           <Skeleton variant="rectangular" width={160} height={50} sx={{ backgroundColor: 'darkgray' }} />
         </Box>
       </Box>
-      <Grid container spacing={4}>
+      <Grid2 container spacing={4}>
         {[...Array(1)].map((_, index) => (
-          <Grid item xs={12} sm={12} md={12} key={index}>
+          <Grid2 size={{ xs: 12, sm: 12, md: 12 }} key={index}>
             <Box sx={{ position: 'relative', paddingTop: '56%', width: '100%' }}>
               <Skeleton
                 variant="rectangular"
@@ -42,19 +42,19 @@ const LandingPageLoading = () => {
                 <Skeleton width={120} sx={{ backgroundColor: 'darkgray' }} />
               </Typography>
             </Box>
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
       <Typography variant="h5" sx={{ mt: 8, mb: 4 }}>
         <Skeleton width="25%" height={70} sx={{ backgroundColor: 'darkgray' }} />
       </Typography>
-      <Grid container spacing={2} mb={10}>
+      <Grid2 container spacing={2} mb={10}>
         {[...Array(8)].map((_, index) => (
-          <Grid item xs={6} sm={3} md={1.5} key={index}>
+          <Grid2 size={{ xs: 12, sm: 3, md: 1.5 }} key={index}>
             <Skeleton variant="rectangular" width="100%" height={80} sx={{ backgroundColor: 'darkgray' }} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Container>
   );
 };

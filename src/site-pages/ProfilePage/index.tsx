@@ -7,6 +7,7 @@ import { GetProfile, GetSession } from '@/libs/api-manager/manager';
 import EditProfileBtn from '@/components/EditProfileBtn';
 import { DefaultImageFallback } from '@/helpers/enums';
 import ErrorHandler from '@/components/ErrorHandler';
+import en from '@/helpers/lang';
 
 const ProfilePage = async () => {
   const [{ data: profileDetails, error: profileDetailsError }, session] = await Promise.all([
@@ -14,7 +15,7 @@ const ProfilePage = async () => {
     GetSession(),
   ]);
   if (profileDetailsError) {
-    return <ErrorHandler error={profileDetailsError} errMessage="Not able to show Profile currently." />;
+    return <ErrorHandler error={profileDetailsError} errMessage={en.profilePage.title} />;
   }
   const age = calculateAge(profileDetails?.acf?.date_of_birth);
   return (
@@ -31,7 +32,7 @@ const ProfilePage = async () => {
           {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
         </Typography>
         <Typography variant="body2" mb={1}>
-          Age {age} {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
+          {en.profilePage.age} {age} {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
         </Typography>
         <EditProfileBtn vipId={profileDetails?.vip_profile_id} role={session?.role} />
       </Box>

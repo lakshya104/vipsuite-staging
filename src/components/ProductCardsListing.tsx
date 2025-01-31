@@ -1,30 +1,47 @@
-import { Box, Grid } from '@mui/material';
 import React from 'react';
+import { Grid2 } from '@mui/material';
 import MyProductsCard from './DashboardCard/MyProductCard';
 import { BrandProduct } from '@/interfaces/brand';
-import CustomPagination from './CustomPagination';
 
 interface ProductCardsListingProps {
   products: BrandProduct[];
-  currentPage: number;
-  totalPages: number;
 }
 
-const ProductCardsListing: React.FC<ProductCardsListingProps> = ({ products, currentPage, totalPages }) => {
+const ProductCardsListing: React.FC<ProductCardsListingProps> = ({ products }) => {
+  const uniqueProducts: BrandProduct[] = [];
+  const mappedBrandIds = new Set();
+  const countMap: Record<number, number> = {};
+
+  products.forEach((item) => {
+    const brandId = item.brand_id;
+    if (brandId) {
+      countMap[brandId] = (countMap[brandId] || 0) + 1;
+    }
+  });
+
+  products.forEach((item) => {
+    const brandId = item.brand_id;
+    if (brandId) {
+      item.isBrandCard = countMap[brandId] >= 2;
+      if (!mappedBrandIds.has(brandId)) {
+        mappedBrandIds.add(brandId);
+        uniqueProducts.push(item);
+      }
+    } else {
+      item.isBrandCard = false;
+      uniqueProducts.push(item);
+    }
+  });
+
   return (
     <>
-      <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-        {products.map((product) => (
-          <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={product.id}>
+      <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+        {uniqueProducts.map((product) => (
+          <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={product.id}>
             <MyProductsCard data={product} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
-      {totalPages > 1 && (
-        <Box className="custom-stepper">
-          <CustomPagination currentPage={currentPage} totalPages={totalPages} />
-        </Box>
-      )}
+      </Grid2>
     </>
   );
 };

@@ -2,10 +2,11 @@
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 import React, { useTransition } from 'react';
 import { map } from 'lodash';
-import { ProgressBarLink } from './ProgressBar';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { ProgressBarLink } from './ProgressBar';
 import DeleteAddressBtn from '@/components/DeleteAddressBtn';
 import { Address } from '@/interfaces';
+import en from '@/helpers/lang';
 
 interface AddressListingProps {
   addresses: Address[];
@@ -37,7 +38,7 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses }) => {
           );
         })
       ) : (
-        <Typography textAlign="center">No Address found</Typography>
+        <Typography textAlign="center">{en.address.noAddress}</Typography>
       )}
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { FormValues, interestSchema } from './schema';
 import SearchBar from '@/components/SearchBar';
-import CustomStepper from '@/components/CustomStepper/CustomStepper';
+import CustomStepper from '@/components/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';

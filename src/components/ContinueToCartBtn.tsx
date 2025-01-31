@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button } from '@mui/material';
+import en from '@/helpers/lang';
 
 const ContinueToCartBtn = ({ onNext }: { onNext: () => void }) => {
   return (
     <Button className="button button--black" sx={{ width: 'full' }} onClick={onNext} fullWidth>
-      Continue Order
+      {en.basket.continue}
     </Button>
   );
 };

@@ -298,6 +298,12 @@
               margin-bottom: mixins.rem(32);
             }
           }
+          li {
+            span {
+              color: var(--color-marble);
+              opacity: 70%;
+            }
+          }
         }
       }
       &--reverse {

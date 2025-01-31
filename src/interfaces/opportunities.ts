@@ -55,6 +55,7 @@ interface Acf {
   location: string;
   is_featured: boolean;
   brand_logo: BrandLogo;
+  brand_id?: number;
 }
 
 export interface Opportunity {
@@ -79,4 +80,5 @@ export interface Opportunity {
   is_wishlisted?: boolean;
   is_featured?: boolean;
   ['opportunity-category']: string[];
+  isBrandCard?: boolean;
 }

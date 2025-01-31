@@ -6,7 +6,6 @@ import OpportunitiesPageLoading from '@/site-pages/OpportunitiesPage/loading';
 
 interface SearchParams {
   opportunityCategory?: string;
-  page?: string;
   search?: string;
 }
 
@@ -17,13 +16,12 @@ interface PageProps {
 export default async function Page(props: PageProps) {
   const searchParams = await props.searchParams;
   const opportunityCategory = searchParams?.opportunityCategory;
-  const page = parseInt(searchParams?.page || '1', 10);
   const search = searchParams?.search;
   return (
     <Box className="opportunities">
       <Container>
         <Suspense fallback={<OpportunitiesPageLoading />}>
-          <OpportunitiesPage opportunityCategory={opportunityCategory} currentPage={page} search={search} />
+          <OpportunitiesPage opportunityCategory={opportunityCategory} search={search} />
         </Suspense>
       </Container>
     </Box>

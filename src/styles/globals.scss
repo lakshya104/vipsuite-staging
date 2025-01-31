@@ -425,9 +425,13 @@ div.site-dialog {
       strong {
         font-weight: 500;
       }
+      &:empty {
+        margin: 0;
+      }
     }
     label {
       margin-left: 0;
+      margin-bottom: mixins.rem(16);
       input {
         margin-right: mixins.rem(9);
       }
@@ -511,4 +515,8 @@ section {
       margin-bottom: mixins.rem(96) !important;
     }
   }
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }

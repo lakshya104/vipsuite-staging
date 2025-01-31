@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button, Grid, Container } from '@mui/material';
+import { Box, Typography, Button, Grid2, Container } from '@mui/material';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import './PublicJoinUs.scss';
 import { ContentModule } from '@/interfaces/public-page';
@@ -18,8 +18,8 @@ const PublicJoinUs: React.FC<JoinUsProps> = ({ data }) => {
       {data?.image?.url ? (
         <Box component="section" className="joinus-section joinus-section--home">
           <Container>
-            <Grid container spacing={{ xs: 5, md: 12 }} alignItems="center">
-              <Grid item xs={12} md={7}>
+            <Grid2 container spacing={{ xs: 5, md: 12 }} alignItems="center">
+              <Grid2 size={{ xs: 12, md: 7 }}>
                 <Box
                   component="img"
                   alt="Join Us Illustration"
@@ -30,16 +30,16 @@ const PublicJoinUs: React.FC<JoinUsProps> = ({ data }) => {
                     borderRadius: 2,
                   }}
                 />
-              </Grid>
-              <Grid className="pl-129" item xs={12} md={5}>
+              </Grid2>
+              <Grid2 className="joinus-section__text" size={{ xs: 12, md: 5 }}>
                 <Box mb={4}>
                   <Typography variant="h2" mb={2}>
                     {data?.heading}
                   </Typography>
                 </Box>
-                <Grid container spacing={3}>
+                <Grid2 container spacing={3}>
                   {data.list_items?.map((item, index) => (
-                    <Grid className="joinus-section__desc" item key={index} display="flex" alignItems="center" gap={2}>
+                    <Grid2 className="joinus-section__desc" key={index} display="flex" alignItems="center" gap={2}>
                       <Box className="joinus-section__icon">
                         <StarOutlineIcon fontSize="large" />
                       </Box>
@@ -47,9 +47,9 @@ const PublicJoinUs: React.FC<JoinUsProps> = ({ data }) => {
                         <Typography variant="h6">{item?.heading}</Typography>
                         <Typography variant="body1">{item?.copy}</Typography>
                       </Box>
-                    </Grid>
+                    </Grid2>
                   ))}
-                </Grid>
+                </Grid2>
                 <Box mt={4}>
                   <Link href={getLastPathSegment(data?.cta?.cta_url || '') || '/'} passHref>
                     <Button variant="outlined" className="button button--white">
@@ -57,8 +57,8 @@ const PublicJoinUs: React.FC<JoinUsProps> = ({ data }) => {
                     </Button>
                   </Link>
                 </Box>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </Container>
         </Box>
       ) : (

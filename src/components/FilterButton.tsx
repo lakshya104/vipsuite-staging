@@ -11,7 +11,7 @@ interface FilterButtonProps {
   isFilterApplied: string | null;
   // eslint-disable-next-line no-unused-vars
   handleFilter: (categoryId: number) => void;
-  categories: { id: number; name: string; emoji_url?: string; url?: string }[];
+  categories: { id: number; name: string; emoji_url: string; url: string }[];
   selectedCategoryId: number | null;
 }
 

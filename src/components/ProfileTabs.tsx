@@ -1,14 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import { Tabs, Tab, Box, Grid, Typography } from '@mui/material';
+import { Tabs, Tab, Box, Grid2, Typography } from '@mui/material';
 import { isUndefined } from 'lodash';
 import { BioComponent, ContactsComponent, SocialComponent } from './ProfileComponents';
 import { UserProfile } from '@/interfaces';
+import en from '@/helpers/lang';
 
 const TABS = [
-  { section: 'bio', label: 'Bio' },
-  { section: 'social', label: 'Social' },
-  { section: 'contacts', label: 'Contacts' },
+  { section: 'bio', label: en.profilePage.profileTabs.bio.title },
+  { section: 'social', label: en.profilePage.profileTabs.social.title },
+  { section: 'contacts', label: en.profilePage.profileTabs.contacts.title },
 ];
 
 interface ProfileTabsProps {
@@ -40,13 +41,13 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ profileData }) => {
   if (!profileData || isUndefined(profileData)) {
     return (
       <Box className="user-profile__details">
-        <Grid container>
-          <Grid item xs={12} className="user-profile__details-item">
+        <Grid2 container>
+          <Grid2 size={{ xs: 12 }} className="user-profile__details-item">
             <Typography textAlign={'center'} variant="body1" fontWeight="500">
-              Profile not available currently
+              {en.profilePage.noProfile}
             </Typography>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Box>
     );
   }

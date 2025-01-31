@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetAllMessages, GetAllOrders } from '@/libs/api-manager/manager';
-import InboxTabs from '@/components/InboxTabs/InboxTabs';
+import InboxTabs from '@/components/InboxTabs';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
 

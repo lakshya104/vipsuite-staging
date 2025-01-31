@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Skeleton } from '@mui/material';
+import { Box, Container, Grid2, Typography, Skeleton } from '@mui/material';
 
 const ProductDetailsPageLoading = () => {
   return (
@@ -7,11 +7,11 @@ const ProductDetailsPageLoading = () => {
       <Typography variant="h2" component="h1" gutterBottom>
         <Skeleton variant="text" width="40%" height={40} />
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+      <Grid2 container spacing={2}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Skeleton variant="rectangular" width={500} height="100%" />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Typography variant="body1" gutterBottom>
             <Skeleton variant="text" width="60%" height={30} />
           </Typography>
@@ -24,8 +24,8 @@ const ProductDetailsPageLoading = () => {
           <Box mt={2}>
             <Skeleton variant="rectangular" width="100%" height={50} />
           </Box>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Container>
   );
 };

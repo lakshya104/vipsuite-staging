@@ -3,7 +3,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { formatDateWithMonth } from '@/helpers/utils';
 import { UserProfile } from '@/interfaces';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid2, Paper, Typography } from '@mui/material';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
 
@@ -15,11 +15,11 @@ interface ProfileComponentProps {
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const dateOfBirth = get(profileDetails, 'acf.date_of_birth', '');
   const bioData = [
-    { label: 'Date of Birth', value: dateOfBirth && formatDateWithMonth(dateOfBirth) },
-    { label: 'Born', value: get(profileDetails, 'acf.birth_place', '') },
-    { label: 'Resides', value: get(profileDetails, 'acf.nationality', '') },
+    { label: en.profilePage.profileTabs.bio.dob, value: dateOfBirth && formatDateWithMonth(dateOfBirth) },
+    { label: en.profilePage.profileTabs.bio.born, value: get(profileDetails, 'acf.birth_place', '') },
+    { label: en.profilePage.profileTabs.bio.resides, value: get(profileDetails, 'acf.nationality', '') },
     {
-      label: 'Interests',
+      label: en.profilePage.profileTabs.bio.interests,
       value:
         get(profileDetails, 'acf.interests', []).length > 0 ? get(profileDetails, 'acf.interests', []).join(', ') : '',
     },
@@ -27,69 +27,69 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
   const filteredBioData = bioData.filter((data) => data.value !== '');
 
   return (
-    <Grid container>
+    <Grid2 container>
       {filteredBioData.map((item, index) => (
-        <Grid item xs={12} key={index} className="user-profile__details-item">
+        <Grid2 size={{ xs: 12 }} key={index} className="user-profile__details-item">
           <Paper elevation={0}>
-            <Grid container>
-              <Grid item xs={4}>
+            <Grid2 container>
+              <Grid2 size={{ xs: 4 }}>
                 <Typography variant="body1" fontWeight="500">
                   {item.label}
                 </Typography>
-              </Grid>
-              <Grid item xs={8}>
+              </Grid2>
+              <Grid2 size={{ xs: 8 }}>
                 <Typography variant="body2">{item.value}</Typography>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </Paper>
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 };
 
 export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const socialData = [
-    { platform: 'Instagram', handle: get(profileDetails, 'acf.instagram_handle', '') },
-    { platform: 'Tik-Tok', handle: get(profileDetails, 'acf.tiktok_handle', '') },
+    { platform: en.profilePage.profileTabs.social.instagram, handle: get(profileDetails, 'acf.instagram_handle', '') },
+    { platform: en.profilePage.profileTabs.social.tikTok, handle: get(profileDetails, 'acf.tiktok_handle', '') },
   ];
   const filteredSocialData = socialData.filter((data) => data.handle !== '');
   return (
-    <Grid container>
+    <Grid2 container>
       {filteredSocialData.map((item, index) => (
-        <Grid item xs={12} key={index} className="user-profile__details-item">
+        <Grid2 size={{ xs: 12 }} key={index} className="user-profile__details-item">
           <Paper elevation={0}>
-            <Grid container>
-              <Grid item xs={4}>
+            <Grid2 container>
+              <Grid2 size={{ xs: 4 }}>
                 <Typography variant="body1" fontWeight="500">
                   {item.platform}
                 </Typography>
-              </Grid>
-              <Grid item xs={8}>
+              </Grid2>
+              <Grid2 size={{ xs: 8 }}>
                 <Typography variant="body2">{item.handle}</Typography>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </Paper>
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent }) => {
   const contactData = [
     {
-      type: 'Email',
+      type: en.profilePage.profileTabs.contacts.email,
       primary: get(profileDetails, 'email', ''),
     },
     {
-      type: isAgent ? 'Phone Number' : 'Phone',
+      type: isAgent ? en.profilePage.profileTabs.contacts.agentPhone : en.profilePage.profileTabs.contacts.phone,
       primary: get(profileDetails, 'acf.phone', ''),
     },
     ...(isAgent
       ? [
           {
-            type: 'Company Name',
+            type: en.profilePage.profileTabs.contacts.company,
             primary: get(profileDetails, 'acf.company_name', ''),
           },
         ]
@@ -109,27 +109,27 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
   }
 
   return (
-    <Grid container>
+    <Grid2 className="user-profile__wrapper" container>
       {filteredContactData.map((item, index) => (
-        <Grid item xs={12} key={index} className="user-profile__details-item">
+        <Grid2 size={{ xs: 12 }} key={index} className="user-profile__details-item">
           <Paper elevation={0}>
-            <Grid container spacing={1}>
-              <Grid item xs={4} container alignItems="center">
+            <Grid2 container spacing={1}>
+              <Grid2 size={{ xs: 4 }} container alignItems="center">
                 <Typography variant="body1" fontWeight="500">
                   {item.type}
                 </Typography>
-              </Grid>
-              <Grid item xs={8}>
+              </Grid2>
+              <Grid2 size={{ xs: 8 }}>
                 {item.primary && (
                   <Typography variant="body2">
                     {item.primary} {item.type.includes('Contact') && '(Primary)'}
                   </Typography>
                 )}
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </Paper>
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 };

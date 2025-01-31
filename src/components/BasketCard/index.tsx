@@ -35,7 +35,7 @@ const BasketCard: React.FC<BasketCardProps> = ({
 }) => {
   const cartItems = get(cartData, 'items', []);
   const [openESignModel, setOpenESignModel] = useState<boolean>(false);
-  const { setProductImage } = useProductImageStore();
+  const { setProductImage, clearProductImage } = useProductImageStore();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const handleESignModel = (open: boolean) => {
     setOpenESignModel(open);
@@ -50,15 +50,16 @@ const BasketCard: React.FC<BasketCardProps> = ({
           setOpenESignModel(false);
         }
       } catch (error) {
-        openToaster(error?.toString() ?? 'Error processing E Sign');
+        openToaster(error?.toString() ?? en.basket.eSignError);
       }
     });
   };
+
   return (
     <Fragment>
       <Box className="address-page__head">
         <Typography className="page-title" variant="h2" align="center" component="h1" gutterBottom>
-          Basket
+          {en.basket.title}
         </Typography>
       </Box>
       <Box className="basket-product__items">
@@ -93,7 +94,7 @@ const BasketCard: React.FC<BasketCardProps> = ({
                         fontWeight={500}
                         sx={{ bgcolor: '#F0F0E5', p: 0.6, borderRadius: 2 }}
                       >
-                        High End Product
+                        {en.basket.highEndProduct}
                       </Typography>
                     )}
                   </Box>
@@ -121,13 +122,13 @@ const BasketCard: React.FC<BasketCardProps> = ({
                     }}
                   />
                   <Typography fontSize={14} variant="body1" fontWeight={400}>
-                    Acceptance of the terms and conditions is required for high-end items, with e-signature available on
-                    a later page.
+                    {en.basket.desc}
                   </Typography>
                 </Box>
               )}
               <ContinueToCartBtn
                 onNext={() => {
+                  clearProductImage();
                   setProductImage(productImage);
                   if (some(cartItems, 'is_high_end_item')) {
                     setOpenESignModel(true);

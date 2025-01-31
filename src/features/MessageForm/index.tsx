@@ -10,6 +10,7 @@ import { Backdrop, CircularProgress } from '@mui/material';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import './MessageForm.scss';
+import en from '@/helpers/lang';
 
 interface FormValues {
   message: string;
@@ -47,12 +48,12 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
         const res = await SendMessage(orderId, payload);
         await revalidatePathAction(`/messages/${orderId}`);
         setToasterType('success');
-        openToaster(res?.message ?? 'Message sent successfully!');
+        openToaster(res?.message || en.messageDetail.successToaster);
         reset();
       } catch (error) {
         console.error('Failed to send message:', error);
         setToasterType('error');
-        openToaster(error?.toString() ?? 'Failed to send message');
+        openToaster(error?.toString() || en.messageDetail.errToaster);
       }
     });
   };
@@ -82,12 +83,12 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
             control={control}
             defaultValue=""
             rules={{
-              required: 'Message is required',
+              required: en.messageDetail.fieldErrMessage,
             }}
             render={({ field }) => (
               <InputForm
                 {...field}
-                placeholder="Type a message..."
+                placeholder={en.messageDetail.placeholder}
                 type="text"
                 error={!!errors.message}
                 helperText={getErrorMessage(errors.message)}
@@ -96,7 +97,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
             )}
           />
           <Button type="submit" className="button button--black" sx={{ height: 'fit-content', minWidth: '100px' }}>
-            Send
+            {en.messageDetail.sendBtn}
           </Button>
         </Box>
       </Box>

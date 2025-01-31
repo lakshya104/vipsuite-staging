@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid2, Typography } from '@mui/material';
 import { ProgressBarLink } from '../ProgressBar';
 import { PageData } from '@/interfaces/public-page';
 
@@ -9,8 +9,8 @@ interface PromoComponentProps {
 const PromoComponent: React.FC<PromoComponentProps> = ({ data }) => {
   return (
     <Box className="content-module">
-      <Grid container spacing={{ xs: 5, md: 12 }} alignItems="center">
-        <Grid item xs={12} md={6}>
+      <Grid2 container spacing={{ xs: 5, md: 12 }} alignItems="center">
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Box
             component="img"
             src="/img/join-us.png"
@@ -21,8 +21,8 @@ const PromoComponent: React.FC<PromoComponentProps> = ({ data }) => {
               borderRadius: 2,
             }}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Typography variant="h4" component="h2" gutterBottom>
             {data?.acf?.subhading}
           </Typography>
@@ -34,8 +34,8 @@ const PromoComponent: React.FC<PromoComponentProps> = ({ data }) => {
               {data?.acf?.cta?.cta_text}
             </Button>
           </ProgressBarLink>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Box>
   );
 };

@@ -9,7 +9,6 @@ interface ShowHtmlProps {
 
 const ShowHtml: React.FC<ShowHtmlProps> = ({ text }) => {
   const content = wrapInParagraph(text);
-
   return (
     <Box
       sx={{

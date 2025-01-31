@@ -6,6 +6,7 @@ import Toaster from './Toaster';
 import UseToaster from '@/hooks/useToaster';
 import DialogConfirmBox from './Dialog/DialogConfirm';
 import revalidatePathAction from '@/libs/actions';
+import en from '@/helpers/lang';
 
 interface DeleteItemFromCartBtnProps {
   productId: number;
@@ -39,8 +40,8 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ productId
         open={openDialog}
         onClose={toggleDialog}
         onConfirm={() => removeProduct(productId)}
-        title="Delete Product From Cart"
-        description="Are you sure you want to delete this product from the cart?"
+        title={en.basket.deleteTitle}
+        description={en.basket.deleteDesc}
       />
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>

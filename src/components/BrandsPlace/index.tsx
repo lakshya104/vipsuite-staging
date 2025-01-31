@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Typography, Grid, Container, ListItemIcon } from '@mui/material';
+import { Box, Typography, Grid2, Container, ListItemIcon } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import './BrandsPlace.scss';
 import { ProgressBarLink } from '../ProgressBar';
 import { ContentModule } from '@/interfaces/public-page';
 import CheckIcon from '@mui/icons-material/Check';
+import en from '@/helpers/lang';
 
 interface TableDataItem {
   heading: string;
@@ -36,33 +37,33 @@ const BrandsPlace: React.FC<BrandsPlaceProps> = ({ data }) => {
   return (
     <Box component="section" className="brand-section">
       <Container>
-        <Grid container>
-          <Grid item xs={12}>
+        <Grid2 container>
+          <Grid2 size={{ xs: 12 }}>
             <Box className="brand-section__head">
               <Typography variant="h2">{data?.heading}</Typography>
               <Typography variant="body1" paragraph>
                 {data?.description}
               </Typography>
             </Box>
-          </Grid>
+          </Grid2>
 
-          <Grid item xs={12} className="brand-section__content">
-            <Grid container spacing={0}>
+          <Grid2 size={{ xs: 12 }} className="brand-section__content">
+            <Grid2 container spacing={0}>
               {tableData &&
                 tableData.map((feature, index) => (
-                  <Grid item xs={12} sm={2.4} key={index} className="brand-section__item">
+                  <Grid2 size={{ xs: 12, sm: 2.4 }} key={index} className="brand-section__item">
                     <ListItemIcon>
                       <CheckIcon color="success" />
                     </ListItemIcon>
                     <FeatureCell heading={feature?.heading} points={feature?.points} />
-                  </Grid>
+                  </Grid2>
                 ))}
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
           <ProgressBarLink className="brand-section__btn" href="/on-boarding">
-            Join Today
+            {en.landingPage.joinToday}
           </ProgressBarLink>
-        </Grid>
+        </Grid2>
       </Container>
     </Box>
   );

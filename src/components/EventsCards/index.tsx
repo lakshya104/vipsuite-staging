@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 import Image from 'next/image';
 import './EventsCards.scss';
 import { ProgressBarLink } from '../ProgressBar';
+import en from '@/helpers/lang';
 
 interface EventCardProps {
   title: string;
@@ -21,7 +22,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, description }) => {
         </Typography>
         <Typography variant="body1">{description}</Typography>
         <ProgressBarLink href="" className="button button--border">
-          Find Out More
+          {en.landingPage.findOutMore}
         </ProgressBarLink>
       </CardContent>
     </Card>

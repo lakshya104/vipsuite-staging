@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, IconButton, Container } from '@mui/material';
+import { Box, Typography, Grid2, IconButton, Container } from '@mui/material';
 import { Instagram, Twitter, Pinterest, Facebook } from '@mui/icons-material';
 import './Footer.scss';
 import Image from 'next/image';
@@ -17,8 +17,8 @@ const Footer: React.FC<FooterProps> = ({ footerItems }) => {
   return (
     <Box className="site-footer" component="footer">
       <Container>
-        <Grid className="site-footer__nav" container spacing={3}>
-          <Grid className="site-footer__social-icons" item xs={12} md={3}>
+        <Grid2 className="site-footer__nav" container spacing={3}>
+          <Grid2 className="site-footer__social-icons" size={{ xs: 12, md: 3 }}>
             <Typography variant="h2">THE VIP SUITE</Typography>
             <Box>
               <IconButton
@@ -58,29 +58,29 @@ const Footer: React.FC<FooterProps> = ({ footerItems }) => {
                 <Pinterest />
               </IconButton>
             </Box>
-          </Grid>
-          <Grid className="site-footer__nav-links" item xs={12} md={4}>
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
+          </Grid2>
+          <Grid2 className="site-footer__nav-links" size={{ xs: 12, sm: 4 }}>
+            <Grid2 container spacing={1}>
+              <Grid2 size={{ xs: 6 }}>
                 <Typography variant="subtitle2">CATEGORY</Typography>
                 {footerItems?.footer_menu_1.map((item, index) => (
                   <Link href={item?.url} color="inherit" key={index}>
                     {he.decode(item?.title || '')}
                   </Link>
                 ))}
-              </Grid>
-              <Grid item xs={6}>
+              </Grid2>
+              <Grid2 size={{ xs: 6 }}>
                 <Typography variant="subtitle2">CATEGORY</Typography>
                 {footerItems?.footer_menu_2.map((item, index) => (
                   <Link href={item?.url} color="inherit" key={index}>
                     {he.decode(item?.title || '')}
                   </Link>
                 ))}
-              </Grid>
-            </Grid>
-          </Grid>
+              </Grid2>
+            </Grid2>
+          </Grid2>
 
-          <Grid item xs={12} md={5}>
+          <Grid2 size={{ xs: 12, md: 5 }}>
             <Box className="site-footer__img">
               <Box>
                 <a href={footerItems?.apple_store_url} target="_blank" rel="noopener noreferrer">
@@ -105,8 +105,8 @@ const Footer: React.FC<FooterProps> = ({ footerItems }) => {
                 </a>
               </Box>
             </Box>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Container>
       <Box className="site-footer__terms">
         <Container>

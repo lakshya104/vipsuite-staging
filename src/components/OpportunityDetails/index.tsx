@@ -63,7 +63,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       {opportunity?.acf?.show_description ? (
         <Box>
           <Typography variant="h3" sx={{ my: 2 }}>
-            Description
+            {en.opportunities.description}
           </Typography>
           <ShowHtml text={opportunity?.acf?.description} />
         </Box>

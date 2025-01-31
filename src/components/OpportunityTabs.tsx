@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import OfferAskComponent from './OfferAskComponent';
+import en from '@/helpers/lang';
 
 const TABS = [
-  { section: 'offer', label: 'The Offer' },
-  { section: 'ask', label: 'The Ask' },
+  { section: 'offer', label: en.opportunities.offer },
+  { section: 'ask', label: en.opportunities.ask },
 ];
 
 const OpportunityTabs = ({ opportunity }: { opportunity: OpportunityDetails }) => {

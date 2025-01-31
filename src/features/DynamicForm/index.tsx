@@ -164,7 +164,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ questions, onSubmit, type }) 
 
       case QuestionType.FileUpload:
         return (
-          <Box key={fieldName} mb={2}>
+          <Box key={fieldName} mb={2} className="overflow-hidden">
             <DynamicTitle title={question.title} isRequired={question?.is_required} />
             <Controller
               name={fieldName}

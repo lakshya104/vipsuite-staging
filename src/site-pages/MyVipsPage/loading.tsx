@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Skeleton } from '@mui/material';
 
-const MyInterestsPageLoading = () => {
+const MyVipsPageLoading = () => {
   return (
     <Box sx={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {[...Array(6)].map((_, index) => (
@@ -21,4 +21,4 @@ const MyInterestsPageLoading = () => {
   );
 };
 
-export default MyInterestsPageLoading;
+export default MyVipsPageLoading;

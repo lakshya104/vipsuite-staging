@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Grid, Box, Typography, Button, Container } from '@mui/material';
+import { Grid2, Box, Typography, Button, Container } from '@mui/material';
 import Image from 'next/image';
 import { ContentBlocks } from '@/interfaces/public-page';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -17,8 +17,8 @@ const RightImageContainer: React.FC<RightImageContainerProps> = ({ data }) => {
 
   return (
     <Container className="about-us__section about-us__section--reverse">
-      <Grid container spacing={4} alignItems="center">
-        <Grid item xs={12} md={6} className="about-us__content">
+      <Grid2 container spacing={4} alignItems="center">
+        <Grid2 size={{ xs: 12, md: 6 }} className="about-us__content">
           <Typography variant="h3" gutterBottom>
             {data?.heading}
           </Typography>
@@ -37,8 +37,8 @@ const RightImageContainer: React.FC<RightImageContainerProps> = ({ data }) => {
                 </Button>
               </Link>
             ))}
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Box className="about-us__image-wrapper">
             <Image
               src={data?.image?.url || DefaultImageFallback.Placeholder}
@@ -48,8 +48,8 @@ const RightImageContainer: React.FC<RightImageContainerProps> = ({ data }) => {
               style={{ borderRadius: '8px', objectFit: 'cover' }}
             />
           </Box>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 } from '@mui/material';
 import { isEmpty } from 'lodash';
 import ProductCard from '@/components/ProductCard';
 import './ProductList.scss';
@@ -20,13 +20,13 @@ const ProductList: React.FC<ProductListProps> = async ({ brandId }) => {
   }
   return (
     <Box className="product-listing">
-      <Grid container spacing={2.5}>
+      <Grid2 container spacing={2.5}>
         {brandProducts.map((product: BrandProduct) => (
-          <Grid item xs={6} sm={4} key={product?.id}>
+          <Grid2 size={{ xs: 6, sm: 4 }} key={product?.id}>
             <ProductCard data={product} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   );
 };

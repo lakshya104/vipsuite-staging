@@ -7,6 +7,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import './comingsoon.scss';
 import { ComingSoonData } from '@/interfaces/public-page';
+import en from '@/helpers/lang';
 
 interface ComingSoonProps {
   comingSoondata: ComingSoonData;
@@ -36,12 +37,12 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ comingSoondata }) => {
         payload.append('_wpcf7_unit_tag', comingSoondata?.notification_form_id);
         const res = await SubmitLandingPageForm(comingSoondata?.notification_form_id, payload);
         setToasterType('info');
-        openToaster(res.message ?? "Thank you for subscribing! You're all set.");
+        openToaster(res.message || en.landingPage.comingSoon.successFormSubmit);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster((error as Error).toString() ?? 'Failed to submit form');
-        console.error('Error fetching ID:', error);
+        openToaster((error as Error).toString() || en.landingPage.comingSoon.failedFormSubmit);
+        console.error(en.landingPage.comingSoon.fetchId, error);
       }
     });
   };
@@ -58,7 +59,6 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ comingSoondata }) => {
           {comingSoondata?.description}
         </Typography>
       )}
-
       <Box className="coming-soon__form" component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           className="coming-soon__wrapper"
@@ -67,13 +67,13 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ comingSoondata }) => {
             pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email format' },
           })}
           variant="outlined"
-          placeholder={comingSoondata?.placeholder_text ?? 'Please enter your email address'}
+          placeholder={comingSoondata?.placeholder_text || en.landingPage.comingSoon.placeholder}
           type="text"
           fullWidth
           error={!!errors.email}
           helperText={errors.email?.message?.toString()}
         />
-        <Button type="submit">{comingSoondata?.cta_button_text ?? 'Notify'}</Button>
+        <Button type="submit">{comingSoondata?.cta_button_text || en.landingPage.comingSoon.notify}</Button>
       </Box>
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />

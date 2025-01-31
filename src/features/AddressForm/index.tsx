@@ -12,6 +12,7 @@ import UseToaster from '@/hooks/useToaster';
 import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
 import revalidatePathAction from '@/libs/actions';
+import en from '@/helpers/lang';
 
 type FormFieldNames =
   | 'first_name'
@@ -74,7 +75,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
       <Container>
         <Box className="address-form__head">
           <Typography className="page-title" variant="h2" align="center" component="h1">
-            {defaultValues.first_name.length > 0 ? 'Edit' : 'Add'} Address
+            {defaultValues.first_name.length > 0 ? en.address.edit : en.address.add} {en.address.addresses}
           </Typography>
         </Box>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
@@ -89,13 +90,13 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
               />
               {name === 'phone' && (
                 <Box className="input-text">
-                  <Typography>Including the country code with + sign</Typography>
+                  <Typography>{en.helperText.phone}</Typography>
                 </Box>
               )}
             </Box>
           ))}
           <Btn look="dark-filled" width="100%" fullWidth disabled={isLoading} type="submit">
-            {isLoading ? 'Saving...' : 'Continue'}
+            {isLoading ? en.address.saving : en.address.continue}
           </Btn>
           <Backdrop sx={{ zIndex: 10000 }} open={isLoading}>
             <CircularProgress color="inherit" />

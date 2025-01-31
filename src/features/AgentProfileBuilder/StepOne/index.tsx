@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextFormField from '@/components/InputTextFormField';
 import SelectBox from '@/components/SelectBox';
-import CustomStepper from '@/components/CustomStepper/CustomStepper';
+import CustomStepper from '@/components/CustomStepper';
 import { agentFields, AgentFormValues, formSchema } from './schema';
 import { CreateVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
 import { ACF, ProfileBuilderOptions } from '@/interfaces';

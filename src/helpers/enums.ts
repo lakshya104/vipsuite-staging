@@ -48,3 +48,9 @@ export enum QuestionType {
   Time = 'time',
   FileUpload = 'file_upload',
 }
+
+export enum PostType {
+  Opportunity = 'opportunity',
+  Event = 'event',
+  Product = 'product',
+}

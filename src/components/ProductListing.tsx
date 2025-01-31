@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import { BrandProduct } from '@/interfaces/brand';
 import { isEmpty } from 'lodash';
 import ErrorFallback from './ErrorFallback';
@@ -11,11 +11,9 @@ import ProductCardsListing from './ProductCardsListing';
 
 interface ProductListingContainerProps {
   products: BrandProduct[];
-  currentPage: number;
-  totalPages: number;
 }
 
-const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ products, currentPage, totalPages }) => {
+const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ products }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return products;
@@ -40,10 +38,10 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
         <Box my={2.5}>
           <SearchBar
             searchTerm={searchQuery}
-            placeholder="Search for products..."
+            placeholder={en.products.searchPlaceholder}
             handleChange={handleChange}
             handleClear={handleClear}
-            aria-label="Search products"
+            aria-label={en.products.searchPlaceholder}
           />
         </Box>
         <ErrorFallback
@@ -60,28 +58,28 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
       <Box my={4}>
         <SearchBar
           searchTerm={searchQuery}
-          placeholder="Search for products..."
+          placeholder={en.products.searchPlaceholder}
           handleChange={handleChange}
           handleClear={handleClear}
-          aria-label="Search products"
+          aria-label={en.products.searchPlaceholder}
         />
       </Box>
       {!searchQuery ? (
         <>
-          <ProductCardsListing products={products} currentPage={currentPage} totalPages={totalPages} />
+          <ProductCardsListing products={products} />
         </>
       ) : searchQuery && filteredProducts.length > 0 ? (
         <>
-          <Grid container mb={2.5}>
-            <Grid item xs={12}>
+          <Grid2 container mb={2.5}>
+            <Grid2 size={{ xs: 12 }}>
               <Box width="100%">
                 <Typography variant="h3" component="h2" mb={1}>
-                  {filteredProducts.length} Results for &quot;{searchQuery}&quot;
+                  {filteredProducts.length} {en.products.resultsFor} &quot;{searchQuery}&quot;
                 </Typography>
               </Box>
-            </Grid>
-          </Grid>
-          <ProductCardsListing products={products} currentPage={currentPage} totalPages={totalPages} />
+            </Grid2>
+          </Grid2>
+          <ProductCardsListing products={products} />
         </>
       ) : (
         <ErrorFallback

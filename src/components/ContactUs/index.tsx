@@ -11,7 +11,7 @@ import {
   FormControl,
   Backdrop,
   CircularProgress,
-  Grid,
+  Grid2,
 } from '@mui/material';
 import './contact-us.scss';
 import { ContactUsFormFields } from '@/data';
@@ -23,6 +23,7 @@ import UseToaster from '@/hooks/useToaster';
 import { ContentModule } from '@/interfaces/public-page';
 import Toaster from '../Toaster';
 import { ContactUsSchema, defaultValues } from './contatcFormTypes';
+import en from '@/helpers/lang';
 
 interface ContactUsProps {
   data: ContentModule;
@@ -61,8 +62,8 @@ const ContactUs: React.FC<ContactUsProps> = ({ data }) => {
           setUnitTag(response?.contact_form_id);
         } catch (error) {
           setToasterType('error');
-          openToaster('Failed to fetch Form ID');
-          console.error('Error fetching ID:', error);
+          openToaster(en.landingPage.contactUs.failedFormId);
+          console.error(en.landingPage.contactUs.fetchId, error);
         }
       };
       fetchUnitTag();
@@ -84,13 +85,13 @@ const ContactUs: React.FC<ContactUsProps> = ({ data }) => {
         payload.append('phone', data.phone);
         const res = await SubmitLandingPageForm(unitTag, payload);
         setToasterType('info');
-        openToaster(res.message ?? 'You have successfully submitted form.');
+        openToaster(res.message ?? en.landingPage.contactUs.successFormSubmit);
         reset();
         setValue('role', '');
         setSelectValue('');
       } catch (error) {
-        openToaster((error as Error).toString() ?? 'Failed to submit form.');
-        console.error('Error fetching ID:', error);
+        openToaster((error as Error).toString() ?? en.landingPage.contactUs.failedFormSubmit);
+        console.error(en.landingPage.contactUs.fetchId, error);
       }
     });
   };
@@ -98,16 +99,16 @@ const ContactUs: React.FC<ContactUsProps> = ({ data }) => {
   return (
     <Box component="main" className="site-main demo-signup contact-form">
       <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+        <Grid2 container spacing={2}>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
             <Typography className="contact-form__title" variant="h2" gutterBottom>
               {data?.heading}
             </Typography>
             <Typography className="page-title" variant="body1">
               {data?.copy}
             </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
             <Box component="form" className="signup-form" onSubmit={handleSubmit(onSubmit)}>
               {ContactUsFormFields.map(({ name, label, placeholder, autocomplete, type }) => (
                 <Box key={name} className="signup__item">
@@ -128,9 +129,9 @@ const ContactUs: React.FC<ContactUsProps> = ({ data }) => {
                             <MenuItem value="" disabled>
                               <span className="custom-placeholder">{placeholder}</span>
                             </MenuItem>
-                            <MenuItem value="Brand">Brand</MenuItem>
-                            <MenuItem value="VIP">VIP</MenuItem>
-                            <MenuItem value="Agent">Agent</MenuItem>
+                            <MenuItem value="Brand">{en.landingPage.contactUs.menuItems.brand}</MenuItem>
+                            <MenuItem value="VIP">{en.landingPage.contactUs.menuItems.vip}</MenuItem>
+                            <MenuItem value="Agent">{en.landingPage.contactUs.menuItems.agent}</MenuItem>
                           </Select>
                           <FormHelperText>{errors[name as keyof typeof errors]?.message}</FormHelperText>
                         </FormControl>
@@ -152,11 +153,11 @@ const ContactUs: React.FC<ContactUsProps> = ({ data }) => {
                 </Box>
               ))}
               <Button type="submit" className="button button--white" fullWidth>
-                Submit
+                {en.landingPage.contactUs.submit}
               </Button>
             </Box>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Container>
 
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>

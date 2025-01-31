@@ -8,7 +8,7 @@ import SelectBox from '@/components/SelectBox';
 import FormDatePicker from '@/components/FormDatePicker';
 import InputTextFormField from '@/components/InputTextFormField';
 import { formSchema, Step3FormValues } from './schema';
-import CustomStepper from '@/components/CustomStepper/CustomStepper';
+import CustomStepper from '@/components/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';

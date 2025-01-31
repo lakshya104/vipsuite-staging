@@ -3,22 +3,9 @@ import { ImageSizes } from './opportunitiesDetails';
 
 export interface BrandDetails {
   id: number;
-  date?: string;
-  date_gmt?: string;
-  guid?: {
-    rendered: string;
-  };
-  modified?: string;
-  modified_gmt?: string;
-  slug?: string;
-  status?: string;
-  type?: string;
-  link?: string;
   title: {
     rendered: string;
   };
-  template?: string;
-  class_list?: string[];
   acf: {
     associated_brand: number;
     brand_name: string;
@@ -32,92 +19,56 @@ export interface BrandDetails {
     lookbook_description: string;
     lookbook_pdf: string;
   };
-  is_wishlisted?: boolean;
-  _links: {
-    self: Array<{
-      href: string;
-    }>;
-    collection: Array<{
-      href: string;
-    }>;
-    about: Array<{
-      href: string;
-    }>;
-    acf_user: Array<{
-      embeddable: boolean;
-      href: string;
-    }>;
-    wp_attachment: Array<{
-      href: string;
-    }>;
-    wp_term: Array<{
-      taxonomy: string;
-      embeddable: boolean;
-      href: string;
-    }>;
-    curies: Array<{
-      name: string;
-      href: string;
-      templated: boolean;
-    }>;
-  };
-  _embedded?: {
-    acfUser?: {
-      code: string;
-      message: string;
-      data: {
-        status: number;
-      };
-    }[];
+  associated_posts: {
+    type: string;
+    posts: Post[];
   };
 }
 
 export interface BrandProduct {
   id: number;
   name: string;
-  slug: string;
-  permalink: string;
-  date_created: string;
-  date_created_gmt: string;
-  date_modified: string;
-  date_modified_gmt: string;
   type: string;
   status: string;
   featured: boolean;
-  catalog_visibility: string;
   description: string;
   short_description: string;
-  sku: string;
-  price: string;
-  regular_price: string;
-  sale_price: string;
-  date_on_sale_from: string | null;
-  date_on_sale_from_gmt: string | null;
-  date_on_sale_to: string | null;
-  date_on_sale_to_gmt: string | null;
-  on_sale: boolean;
-  purchasable: boolean;
-  total_sales: number;
-  virtual: boolean;
-  downloadable: boolean;
-  download_limit: number;
-  download_expiry: number;
-  external_url: string;
-  button_text: string;
-  tax_status: string;
-  tax_class: string;
-  manage_stock: boolean;
-  stock_quantity: number | null;
-  backorders: string;
-  backorders_allowed: boolean;
-  backordered: boolean;
-  low_stock_amount: number | null;
-  sold_individually: boolean;
-  weight: string;
+  brand_id: number;
+  isBrandCard: boolean;
   meta_data: ProductMetaData[];
   images: ProductImage[];
 }
 
+export interface Post {
+  ID: number;
+  title: {
+    rendered: string;
+  };
+  opportunity_category: string[];
+  short_description?: string;
+  acf: {
+    event_start_date?: string;
+    event_end_date?: string;
+    event_location?: string;
+    is_featured: true;
+    associated_brand_profile: number;
+    is_request_only: false;
+    is_high_end_item: true;
+    featured_image: {
+      sizes: {
+        thumbnail: string;
+        medium: string;
+        medium_large: string;
+        large: string;
+        'large-2x': string;
+        'vs-container': string;
+        'vs-container-2x': string;
+        'vs-container-half': string;
+        'vs-container-mobile-2x': string;
+      };
+    };
+  };
+}
 export interface ProductMetaData {
   id: number;
   key: string;

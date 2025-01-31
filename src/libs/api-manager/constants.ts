@@ -1,3 +1,5 @@
+import { PostType } from '@/helpers/enums';
+
 const Endpoints = {
   login: '/wp/v2/login',
   vipSignup: '/wp/v2/signup/vip',
@@ -8,16 +10,22 @@ const Endpoints = {
   getBrands: '/wp/v2/brand-profiles',
   getDashboardContent: '/wp/v2/vip-profiles/dashboard-content',
   getDashboard: '/wp/v2/vip-profiles/dashboard',
-  getBrandDetails: (brandId: number) => `/wp/v2/brand-profiles/${brandId}`,
+  getBrandDetails: (brandId: number, type?: PostType) => {
+    if (type) {
+      return `/wp/v2/brand-profiles/${brandId}?post_type=${type}`;
+    } else {
+      return `/wp/v2/brand-profiles/${brandId}?post_type=opportunity`;
+    }
+  },
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,
   getBrandProductDetails: (productId: number) => `/wc/v3/products/${productId}`,
-  getProducts: (page: number) => `/wc/v3/products?page=${page}&per_page=15`,
+  getProducts: `/wc/v3/products?page=1&per_page=99`,
   getSignupContent: '/wp/v2/signup-content',
-  getVipEvents: (page: number, search?: string) => {
+  getVipEvents: (search?: string) => {
     if (search) {
-      return `/wp/v2/events?search=${search}&per_page=15&_fields=id,title,acf`;
+      return `/wp/v2/events?search=${search}&per_page=99&_fields=id,title,acf`;
     } else {
-      return `/wp/v2/events?page=${page}&per_page=15&_fields=id,title,acf`;
+      return `/wp/v2/events?page=1&per_page=99&_fields=id,title,acf`;
     }
   },
   getVipEventDetails: (id: number) => `/wp/v2/events/${id}`,
@@ -35,15 +43,15 @@ const Endpoints = {
   removeVipCartItem: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
   removeAllCartItems: `/wc/store/v1/cart/items`,
   createOrder: `/wc/v3/orders`,
-  getVipOpportunities: (oppId?: string, page?: number, search?: string) => {
+  getVipOpportunities: (oppId?: string, search?: string) => {
     if (oppId && search) {
-      return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=15&page=${page}&search=${search}&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+      return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=99&page=1&search=${search}&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
     } else if (oppId) {
-      return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=15&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+      return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=99&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
     } else if (search) {
-      return `/wp/v2/opportunities?search=${search}&per_page=15&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+      return `/wp/v2/opportunities?search=${search}&per_page=99&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
     } else {
-      return `/wp/v2/opportunities?page=${page}&per_page=15&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf`;
+      return `/wp/v2/opportunities?page=1&per_page=99&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
     }
   },
   sendRsvp: '/wp/v2/rsvp-request',

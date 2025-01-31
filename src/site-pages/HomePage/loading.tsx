@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid2, Skeleton } from '@mui/material';
 import SearchBar from '@/components/SearchBar';
 
 const HomePageLoading = () => {
@@ -9,26 +9,26 @@ const HomePageLoading = () => {
         <SearchBar searchTerm={''} placeholder="Search for anything..." aria-label="Search anything" />
       </Box>
       <Box my={2.5}>
-        <Grid container spacing={2}>
+        <Grid2 container spacing={2}>
           {[...Array(3)].map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
               <Skeleton variant="rectangular" width="100%" height={450} />
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
       </Box>
       <Box display={'flex'} justifyContent={'space-between'} gap={2.5}>
         <Skeleton variant="rectangular" width="100%" height={140} />
         <Skeleton variant="rectangular" width="100%" height={140} />
       </Box>
       <Box my={2.5}>
-        <Grid container spacing={2}>
+        <Grid2 container spacing={2}>
           {[...Array(3)].map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
               <Skeleton variant="rectangular" width="100%" height={450} />
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
       </Box>
     </>
   );

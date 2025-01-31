@@ -8,7 +8,7 @@ interface RSVPProps {
 }
 
 const OfferAskComponent: React.FC<RSVPProps> = ({ opportunity, show }) => {
-  const rawContent = show === 'offer' ? opportunity?.acf?.the_ask : opportunity?.acf?.the_offer;
+  const rawContent = show === 'offer' ? opportunity?.acf?.the_offer : opportunity?.acf?.the_ask;
   return <ShowHtml text={rawContent} />;
 };
 

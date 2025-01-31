@@ -5,6 +5,7 @@ import { ProgressBarLink } from '@/components/ProgressBar';
 import './address.scss';
 import MyAddressesPage from '@/site-pages/MyAddressesPage';
 import MyAddressesPageLoading from '@/site-pages/MyAddressesPage/loading';
+import en from '@/helpers/lang';
 
 const AddressPage = async () => {
   return (
@@ -12,9 +13,9 @@ const AddressPage = async () => {
       <Container>
         <Box className="address-page__head">
           <Typography variant="h2" align="center" component="h1">
-            My Addresses
+            {en.address.title}
             <ProgressBarLink className="button button--black" href="/my-addresses/add">
-              Add <AddIcon />
+              {en.address.addBtn} <AddIcon />
             </ProgressBarLink>
           </Typography>
         </Box>

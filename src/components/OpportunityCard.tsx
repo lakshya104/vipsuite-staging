@@ -13,8 +13,12 @@ interface OpportunityCardProps {
 
 const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image }) => {
   const isFeatured = opportunity?.acf?.is_featured;
+  const isBrandCard = opportunity?.isBrandCard || false;
+  const href = isBrandCard
+    ? `/brand/${opportunity?.acf?.brand_id}?type=opportunity`
+    : `/opportunities/${opportunity?.id}`;
   return (
-    <ProgressBarLink href={`/opportunities/${opportunity?.id}`}>
+    <ProgressBarLink href={href}>
       <Card
         className="opportunities-card__item-inner"
         sx={{

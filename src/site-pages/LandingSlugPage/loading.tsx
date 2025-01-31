@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, Box, Container, Typography, Grid } from '@mui/material';
+import { Skeleton, Box, Container, Typography, Grid2 } from '@mui/material';
 
 const LandingSlugPageLoading = () => {
   return (
@@ -18,13 +18,13 @@ const LandingSlugPageLoading = () => {
       <Typography variant="h5" sx={{ mt: 8, mb: 4 }}>
         <Skeleton width="25%" height={70} sx={{ backgroundColor: 'darkgray' }} />
       </Typography>
-      <Grid container spacing={2} mb={10}>
+      <Grid2 container spacing={2} mb={10}>
         {[...Array(8)].map((_, index) => (
-          <Grid item xs={6} sm={3} md={1.5} key={index}>
+          <Grid2 size={{ xs: 6, sm: 3, md: 1.5 }} key={index}>
             <Skeleton variant="rectangular" width="100%" height={80} sx={{ backgroundColor: 'darkgray' }} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Container>
   );
 };

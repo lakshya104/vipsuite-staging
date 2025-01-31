@@ -9,7 +9,7 @@ import { isEmpty } from 'lodash';
 const MyAddressesPage = async () => {
   const { data: addresses, error } = await GetAddresses();
   if (error) {
-    return <ErrorHandler error={error} errMessage="Not able to show your addresses currently." />;
+    return <ErrorHandler error={error} errMessage={en.address.errMessage} />;
   }
   if (!addresses || isEmpty(addresses)) {
     return (

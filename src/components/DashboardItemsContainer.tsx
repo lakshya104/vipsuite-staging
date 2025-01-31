@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Box, Grid, Skeleton, Typography } from '@mui/material';
+import { Box, Grid2, Skeleton, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import { isEmpty } from 'lodash';
 import { DashboardData, DashboardItem } from '@/interfaces';
@@ -62,23 +62,23 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
   }, [fetchSearchResults]);
 
   const renderSkeletons = () => (
-    <Grid container spacing={2}>
+    <Grid2 container spacing={2}>
       {[...Array(3)].map((_, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
           <Skeleton variant="rectangular" width="100%" height={450} />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 
   const renderItems = (items: DashboardItem[]) => (
-    <Grid className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+    <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
       {items.map((item, index) => (
-        <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+        <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
           <DashboardCard item={item} />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 
   const renderDashboard = () => (
@@ -99,9 +99,9 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
           {renderDashboard()}
           {!isEmpty(dashboardData.dashboard_cards) &&
             dashboardData.dashboard_cards.map((item, index) => (
-              <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+              <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
                 <DashboardCard item={item} />
-              </Grid>
+              </Grid2>
             ))}
           <ErrorFallback
             errorMessage={en.listEmptyMessage.noItems}
@@ -116,29 +116,29 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
       <>
         {!isEmpty(dashboardData?.dashboard_content) && renderItems(dashboardData?.dashboard_content)}
         {renderDashboard()}
-        <Grid className="landing-product" container spacing={2}>
+        <Grid2 className="landing-product" container spacing={2}>
           {!isEmpty(dashboardData.dashboard_cards) &&
             dashboardData.dashboard_cards.map((item, index) => (
-              <Grid className="landing-product__item" item xs={12} sm={6} lg={4} key={index}>
+              <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
                 <DashboardCard item={item} />
-              </Grid>
+              </Grid2>
             ))}
-        </Grid>
+        </Grid2>
       </>
     );
   };
 
   const renderSearchResults = () => (
     <>
-      <Grid container mb={2.5}>
-        <Grid item xs={12}>
+      <Grid2 container mb={2.5}>
+        <Grid2 size={{ xs: 12 }}>
           <Box width="100%">
             <Typography variant="h3" component="h2" mb={1}>
               {searchResults.length} {searchResults.length > 1 ? 'Results' : 'Result'} for &quot;{searchQuery}&quot;
             </Typography>
           </Box>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
       {renderItems(searchResults)}
     </>
   );

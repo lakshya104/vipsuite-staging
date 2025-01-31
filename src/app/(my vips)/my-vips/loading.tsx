@@ -1,5 +1,5 @@
 import React from 'react';
-import MyInterestsPageLoading from '@/site-pages/MyInterestsPage/loading';
+import MyVipsPageLoading from '@/site-pages/MyVipsPage/loading';
 import { Box, Container, Skeleton } from '@mui/material';
 import './my-vips.scss';
 
@@ -14,7 +14,7 @@ export default function Loading() {
             <Skeleton className="page-title" variant="text" width="10%" height={45} />
           </Box>
         </Box>
-        <MyInterestsPageLoading />
+        <MyVipsPageLoading />
       </Container>
     </Box>
   );

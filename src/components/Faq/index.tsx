@@ -3,6 +3,7 @@ import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, B
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './faq.scss';
 import { ContentModule } from '@/interfaces/public-page';
+import en from '@/helpers/lang';
 
 interface FAQProps {
   data: ContentModule;
@@ -19,7 +20,7 @@ const FAQ: React.FC<FAQProps> = ({ data }) => {
                 <Typography>{faq.question}</Typography>
               </AccordionSummary>
               <AccordionDetails className="accordion-detail">
-                <Typography>{faq.answer || 'Details will be provided soon.'}</Typography>
+                <Typography>{faq.answer || en.landingPage.faq.providedDetails}</Typography>
               </AccordionDetails>
             </Accordion>
           ))}

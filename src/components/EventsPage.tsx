@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useCallback, useEffect, useTransition } from 'react';
 import SearchBar from './SearchBar';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import en from '@/helpers/lang';
 import EventsListing from './EventListing';
 import { isEmpty } from 'lodash';
@@ -12,11 +12,9 @@ import { useDebounce } from 'use-debounce';
 
 interface EventCardsProps {
   eventsData: Event[];
-  totalPages: number;
-  currentPage: number;
 }
 
-const EventCards: React.FC<EventCardsProps> = ({ eventsData, currentPage, totalPages }) => {
+const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -30,7 +28,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData, currentPage, totalP
       } else {
         params.delete('search');
       }
-      router.push(`?${params.toString()}`);
+      router.push(`?${params.toString()}`, { scroll: false });
     });
   }, [debouncedSearchQuery, router]);
 
@@ -56,17 +54,17 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData, currentPage, totalP
       {!isEmpty(eventsData) ? (
         <>
           {debouncedSearchQuery && !isPending && (
-            <Grid container mb={2.5}>
-              <Grid item xs={12}>
+            <Grid2 container mb={2.5}>
+              <Grid2 size={{ xs: 12 }}>
                 <Box width="100%">
                   <Typography variant="h3" component="h2" mb={1}>
                     {eventsData.length} {en.events.results} &quot;{debouncedSearchQuery}&quot;
                   </Typography>
                 </Box>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           )}
-          <EventsListing events={eventsData} totalPages={totalPages} currentPage={currentPage} />
+          <EventsListing events={eventsData} />
         </>
       ) : (
         <ErrorFallback

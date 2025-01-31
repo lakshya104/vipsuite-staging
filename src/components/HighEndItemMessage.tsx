@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { MessageDialogBox } from './Dialog';
+import en from '@/helpers/lang';
 
 const HighEndItemMessage = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -30,7 +31,7 @@ const HighEndItemMessage = () => {
       }}
     >
       <Typography fontSize={14} variant="body1" fontWeight={500} className="highlight-text">
-        High End Product
+        {en.hignEndItem.text}
       </Typography>
       <InfoIcon
         sx={{
@@ -47,9 +48,8 @@ const HighEndItemMessage = () => {
         isDialogOpen={openDialog}
         onClose={handleDialogClose}
         content={{
-          title: 'High End Product Information',
-          description:
-            'Acceptance of the terms and conditions is required for high-end items, with e-signature available on a later page.',
+          title: en.hignEndItem.dialog.title,
+          description: en.hignEndItem.dialog.description,
           isCrossIcon: true,
         }}
       />

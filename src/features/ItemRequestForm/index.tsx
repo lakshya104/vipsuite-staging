@@ -16,6 +16,7 @@ import { useRequestOnlyStore } from '@/store/useStore';
 import DynamicForm from '../DynamicForm';
 import revalidatePathAction from '@/libs/actions';
 import EsignModal from '@/components/EsignModal';
+import en from '@/helpers/lang';
 
 interface ItemRequestFormProps {
   product: Product;
@@ -90,7 +91,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
           }
         }
       } catch (error) {
-        openToaster(error?.toString() ?? 'An error occurred while adding the item to the cart.');
+        openToaster(error?.toString() || en.products.itemRequestForm.addToCartError);
       }
     });
   };
@@ -154,7 +155,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
             setOpen(true);
           }
         } catch (error) {
-          openToaster(error?.toString() ?? 'An error occurred while adding the item to the cart.');
+          openToaster(error?.toString() || en.products.itemRequestForm.addToCartError);
         }
       }
     });
@@ -174,7 +175,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
           router.push(`/basket?step=1&isRequestOnly=true`);
         }
       } catch (error) {
-        openToaster(error?.toString() ?? 'Error processing Order');
+        openToaster(error?.toString() || en.products.itemRequestForm.eSignError);
       }
     });
   };
@@ -246,7 +247,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               );
             })}
           <Btn look="dark-filled" width="100%" type="submit" fullWidth disabled={isProductOrdered}>
-            {!isProductOrdered ? 'Request' : 'Requested'}
+            {!isProductOrdered ? en.products.itemRequestForm.request : en.products.itemRequestForm.requested}
           </Btn>
         </Box>
       )}
@@ -260,7 +261,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
             disabled={isProductOrdered}
             onClick={handleAddToCart}
           >
-            {!isProductOrdered ? 'Request' : 'Requested'}
+            {!isProductOrdered ? en.products.itemRequestForm.request : en.products.itemRequestForm.requested}
           </Btn>
         </Box>
       )}
@@ -281,7 +282,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
         <DialogContent className="site-dialog__inner">
           <Box>
             <Typography align="center" className="site-dialog__title" variant="h3" component="h2">
-              Added to Basket
+              {en.products.itemRequestForm.dialog.title}
             </Typography>
             <Box my={3.5} width="100%">
               <Button
@@ -294,7 +295,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
                 variant="contained"
                 className="button  button--black"
               >
-                Continue Browsing
+                {en.products.itemRequestForm.dialog.ctaOne}
               </Button>
               <Button
                 onClick={() => {
@@ -305,7 +306,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
                 }}
                 className="button  button--black"
               >
-                Go to Basket
+                {en.products.itemRequestForm.dialog.ctaTwo}
               </Button>
             </Box>
           </Box>

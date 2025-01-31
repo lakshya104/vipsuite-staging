@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, Typography, Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Container, Grid2, Typography, Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import he from 'he';
 import './PromoWrapper.scss';
@@ -18,22 +18,18 @@ const PromoWrapper: React.FC<PromoWrapperProps> = ({ data }) => {
   return (
     <Box component="section" className="section-club">
       <Container>
-        <Grid container spacing={0} className="section-club__wrapper">
-          <Grid item xs={12} sm={5.9} className="section-club__image">
+        <Grid2 container spacing={0} className="section-club__wrapper">
+          <Grid2 size={{ xs: 12, sm: 6 }} className="section-club__image">
             <Box
               component="img"
               src={data?.image?.url}
               alt={data?.image?.alt || en.promoWrapper.vipBrandClub}
               className="club-image"
             />
-          </Grid>
-          <Grid item xs={12} sm={6} className="section-club__content">
+          </Grid2>
+          <Grid2 size={{ xs: 12, sm: 6 }} className="section-club__content">
             <Typography variant="h2">{data?.heading}</Typography>
-            {introText && (
-              <Typography variant="body1" paragraph>
-                {introText.trim()}
-              </Typography>
-            )}
+            {introText && <Typography variant="body1">{introText.trim()}</Typography>}
             {listItems.length > 0 && (
               <List>
                 {listItems.map((item, index) => (
@@ -46,8 +42,8 @@ const PromoWrapper: React.FC<PromoWrapperProps> = ({ data }) => {
                 ))}
               </List>
             )}
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Container>
     </Box>
   );

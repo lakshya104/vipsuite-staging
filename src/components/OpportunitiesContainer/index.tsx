@@ -2,10 +2,9 @@
 import React, { useState, useEffect, useCallback, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { isEmpty } from 'lodash';
-import { Box, CircularProgress, Backdrop, Grid, Typography } from '@mui/material';
+import { Box, CircularProgress, Backdrop, Grid2, Typography } from '@mui/material';
 import SearchBar from '../SearchBar';
 import { Opportunity } from '@/interfaces/opportunities';
-import { GetOpportunityCategory } from '@/libs/api-manager/manager';
 import OpportunitiesListing from '../OpportunitiesListing';
 import './OpportunitiesContainer.scss';
 import ErrorFallback from '../ErrorFallback';
@@ -15,18 +14,11 @@ import { useDebounce } from 'use-debounce';
 
 interface OpportunitiesContainerProps {
   opportunitiesData: Opportunity[];
-  totalOpportunities: number;
-  totalPages: number;
-  currentPage: number;
+  categories: { id: number; name: string; acf: { image: { url: string }; emoji_icon: { url: string } } }[];
 }
 
-const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
-  opportunitiesData,
-  totalPages,
-  currentPage,
-}) => {
+const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData, categories }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [categories, setCategories] = useState<{ id: number; name: string; url: string; emoji_url: string }[]>([]);
   const [isPending, startTransition] = useTransition();
   const [isSearchPending, startSearchTransition] = useTransition();
   const router = useRouter();
@@ -35,27 +27,12 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await GetOpportunityCategory();
-        const categoryList = response.map(
-          (item: { id: string; name: string; acf: { image: { url: string }; emoji_icon: { url: string } } }) => ({
-            id: item.id,
-            name: item.name,
-            url: item.acf.image.url,
-            emoji_url: item?.acf?.emoji_icon?.url,
-          }),
-        );
-        setCategories(categoryList);
-      } catch (error) {
-        console.error(en.opportunities.categoriesErrorMessage, error);
-        setCategories([]);
-      }
-    };
-    fetchCategories();
-  }, []);
+  const categoryList = categories.map((item) => ({
+    id: item.id,
+    name: item.name,
+    url: item.acf.image.url,
+    emoji_url: item.acf.emoji_icon.url,
+  }));
 
   useEffect(() => {
     if (!selectedCategoryId && isFilterApplied) {
@@ -72,7 +49,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         } else {
           params.delete('search');
         }
-        router.push(`?${params.toString()}`);
+        router.push(`?${params.toString()}`, { scroll: false });
       });
     } catch (error) {
       console.error(en.opportunities.searchErrorMessage, error);
@@ -151,7 +128,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
     <>
       <Box my={2.5} display="flex" justifyContent="space-between" alignItems="center">
         <FilterButton
-          categories={categories}
+          categories={categoryList}
           clearFilter={clearFilter}
           closeFilter={() => setIsFilterOpen(false)}
           handleFilter={handleFilter}
@@ -176,17 +153,17 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({
         />
       )}
       {debouncedSearchQuery && !isSearchPending && (
-        <Grid container mb={2.5}>
-          <Grid item xs={12}>
+        <Grid2 container mb={2.5}>
+          <Grid2 size={{ xs: 12 }}>
             <Box width="100%">
               <Typography variant="h3" component="h2" mb={1}>
                 {opportunitiesData.length} {en.opportunities.results} &quot;{debouncedSearchQuery}&quot;
               </Typography>
             </Box>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       )}
-      <OpportunitiesListing opportunities={opportunitiesData} totalPages={totalPages} currentPage={currentPage} />
+      <OpportunitiesListing opportunities={opportunitiesData} />
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>

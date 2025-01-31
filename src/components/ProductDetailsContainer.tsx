@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid2, Typography } from '@mui/material';
 import { find, get } from 'lodash';
 import ItemRequestForm from '@/features/ItemRequestForm';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -34,11 +34,11 @@ const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
           <ArrowBackBtn />
           {product?.name}
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+        <Grid2 container spacing={2}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <Image src={productImage} alt={product?.name} height={500} width={500} />
-          </Grid>
-          <Grid item xs={12} md={6}>
+          </Grid2>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <Typography variant="body1" gutterBottom>
               {product?.brand_name}
             </Typography>
@@ -57,8 +57,8 @@ const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
               </>
             )}
             {showOffers && <RedeemBox fetchOffers={showOffers} />}
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Container>
     </Box>
   );

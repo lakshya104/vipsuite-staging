@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './SocialAccordion.scss';
 import { ContentModule } from '@/interfaces/public-page';
+import en from '@/helpers/lang';
 
 interface SocialAccordionProps {
   data: ContentModule;
@@ -52,7 +53,7 @@ const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
                       <Typography variant="h2">{link?.heading}</Typography>
                       <Typography variant="body1">{link?.copy}</Typography>
                       <Button variant="contained" type="submit" className="button button--border">
-                        Find out more
+                        {en.landingPage.findOutMore}
                       </Button>
                     </Box>
                   </Box>
@@ -71,7 +72,7 @@ const SocialAccordion: React.FC<SocialAccordionProps> = ({ data }) => {
                       <Typography variant="h2">{link?.heading}</Typography>
                       <Typography variant="body1">{link?.copy}</Typography>
                       <Button variant="contained" type="submit" className="button button--border">
-                        Find out more
+                        {en.landingPage.findOutMore}
                       </Button>
                     </Box>
                   </Box>

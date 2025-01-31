@@ -14,6 +14,7 @@ export interface EventImageSizes {
 }
 
 interface EventACF {
+  brand_id: number;
   event_start_date: string;
   event_end_date: string;
   event_location: string;
@@ -57,6 +58,7 @@ export interface Event {
   _links: EventLinks;
   is_wishlisted?: boolean;
   is_featured?: boolean;
+  isBrandCard: boolean;
 }
 
 export interface EventDetails {

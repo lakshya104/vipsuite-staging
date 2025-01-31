@@ -57,6 +57,11 @@
     @include mixins.fontSize(14);
   }
   &--home {
+    .joinus-section__text {
+      @media only screen and (min-width: 900px) {
+        padding-left: mixins.rem(33);
+      }
+    }
     .joinus-section {
       &__desc {
         align-items: flex-start;

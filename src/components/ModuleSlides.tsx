@@ -1,8 +1,8 @@
 import React from 'react';
 import { ContentModule } from '@/interfaces/public-page';
-import HeroSection from './HeroSection/HeroSection';
+import HeroSection from './HeroSection';
 import SocialAccordion from './SocialAccordion';
-import Partner from './Partner/Partner';
+import Partner from './Partner';
 import BrandsPlace from './BrandsPlace';
 import BrandClub from './BrandClub';
 import { HomeModuleTypes } from '@/helpers/enums';

@@ -1,6 +1,6 @@
 import React from 'react';
 import HomeHeader from '@/components/Header/HomeHeader';
-import HomeFooter from '@/components/HomeFooter/HomeFooter';
+import HomeFooter from '@/components/HomeFooter';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { isEmpty } from 'lodash';

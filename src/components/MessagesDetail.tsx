@@ -7,6 +7,7 @@ import { MessageDetails } from '@/interfaces';
 import { calculateRelativeTime, extractDate } from '@/helpers/utils';
 import { ProgressBarLink } from './ProgressBar';
 import MessageForm from '@/features/MessageForm';
+import en from '@/helpers/lang';
 
 interface MessagesDetailProps {
   messageDetail: MessageDetails;
@@ -33,7 +34,7 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
                   <Typography className="inbox__date">
                     {calculateRelativeTime(message?.date_created?.date)} <span></span>
                     {extractDate(message?.date_created?.date)} <span></span>
-                    By {message?.added_by}
+                    {en.messageDetail.addedBy} {message?.added_by}
                   </Typography>
                 </Fragment>
               ))}

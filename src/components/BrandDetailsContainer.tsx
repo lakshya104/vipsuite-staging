@@ -1,45 +1,50 @@
+import React from 'react';
 import { BrandDetails } from '@/interfaces/brand';
-import { Box, Container, Typography } from '@mui/material';
-import React, { Suspense } from 'react';
+import { Box, Grid2, Typography } from '@mui/material';
+import { map, partition } from 'lodash';
 import DetailPageImageContainer from './DetailPageImageContainer';
-import ReferCard from './ReferCard';
-import RequestItemFormButton from './RequestItemFormButton';
-import ProductCardLoading from './ProductCard/ProductCardLoading';
-import ProductList from '@/features/ProductList';
+import BrandOpportunityCard from './DashboardCard/BrandOpportunityCard';
+import './EventDetails/EventDetails.scss';
+import ArrowBackBtn from './ArrowBackBtn';
+import { PostType } from '@/helpers/enums';
 
 interface BrandDetailsContainerProps {
   brandDetails: BrandDetails;
+  type?: PostType;
 }
-const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDetails }) => {
+
+const BrandDetailsContainer: React.FC<BrandDetailsContainerProps> = ({ brandDetails, type }) => {
+  const [featuredOpportunities, nonFeaturedOpportunities] = partition(
+    brandDetails?.associated_posts?.posts,
+    (opportunity) => opportunity?.acf?.is_featured,
+  );
+  const sortedOpportunities = [...featuredOpportunities, ...nonFeaturedOpportunities];
+
   return (
-    <Container>
+    <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
+        <ArrowBackBtn />
         {brandDetails?.title?.rendered}
       </Typography>
       <DetailPageImageContainer item={brandDetails} />
-      <Typography className="product-detail__content">{brandDetails?.acf?.short_description}</Typography>
-      {brandDetails?.acf?.is_lookbook_available && (
-        <>
-          <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-            <ReferCard
-              heading={brandDetails?.acf?.lookbook_heading}
-              text={brandDetails?.acf?.lookbook_description}
-              href={brandDetails?.acf?.lookbook_pdf}
-              type="lookbook"
-            />
-          </Box>
-          <RequestItemFormButton postId={brandDetails?.id} />
-        </>
-      )}
-      <Box className="product-list__page">
-        <Typography variant="h2" gutterBottom>
-          Products
-        </Typography>
-        <Suspense fallback={<ProductCardLoading />}>
-          <ProductList brandId={brandDetails?.id} />
-        </Suspense>
+      <Box className="product-detail__content">
+        <Typography>{brandDetails?.acf?.short_description}</Typography>
       </Box>
-    </Container>
+      <Box className="product-list__page">
+        <Typography variant="h2" sx={{ marginTop: 3, marginBottom: 3 }}>
+          {type === PostType.Opportunity ? 'Opportunities' : type === PostType.Event ? 'Events' : 'Products'}
+        </Typography>
+        <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+          {map(sortedOpportunities, (opportunity) => {
+            return (
+              <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={opportunity.ID}>
+                <BrandOpportunityCard opportunity={opportunity} type={type || PostType.Opportunity} />
+              </Grid2>
+            );
+          })}
+        </Grid2>
+      </Box>
+    </Box>
   );
 };
 

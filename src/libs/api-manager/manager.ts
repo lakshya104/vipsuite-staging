@@ -16,6 +16,7 @@ import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 import { Instance, InstanceWithoutHeaders } from './instance';
 import { Question } from '@/interfaces/events';
+import { PostType } from '@/helpers/enums';
 
 export const GetToken = async () => {
   const session = await auth();
@@ -228,9 +229,9 @@ export const GetVipSearch = async (keyword: string) => {
   }
 };
 
-export const GetBrandDetails = async (id: number) => {
+export const GetBrandDetails = async (id: number, type?: PostType) => {
   try {
-    const response = await Instance.get(Endpoints.getBrandDetails(id));
+    const response = await Instance.get(Endpoints.getBrandDetails(id, type));
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -261,11 +262,10 @@ export const GetBrandProductDetail = async (id: number) => {
   }
 };
 
-export const GetProducts = async (page = 1) => {
+export const GetProducts = async () => {
   try {
-    const response = await Instance.get(Endpoints.getProducts(page));
-    const totalPages = response.headers['x-wp-totalpages'];
-    return { data: response.data, totalPages, error: null };
+    const response = await Instance.get(Endpoints.getProducts);
+    return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };
   }
@@ -283,12 +283,10 @@ export const GetSignupContent = async () => {
   }
 };
 
-export const GetVipEvents = async (page = 1, search?: string) => {
+export const GetVipEvents = async (search?: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipEvents(page, search));
-    const totalEvents = response.headers['x-wp-total'];
-    const totalPages = response.headers['x-wp-totalpages'];
-    return { data: response.data, totalEvents, totalPages, error: null };
+    const response = await Instance.get(Endpoints.getVipEvents(search));
+    return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };
   }
@@ -429,15 +427,11 @@ export const CreateOrder = async (data: CreateOrderData) => {
   }
 };
 
-export const GetVipOpportunities = async (page = 1, opportunityCategory?: string, search?: string) => {
+export const GetVipOpportunities = async (opportunityCategory?: string, search?: string) => {
   try {
-    const response = await Instance.get(Endpoints.getVipOpportunities(opportunityCategory, page, search));
-    const totalOpportunities = response.headers['x-wp-total'];
-    const totalPages = response.headers['x-wp-totalpages'];
+    const response = await Instance.get(Endpoints.getVipOpportunities(opportunityCategory, search));
     return {
       opportunities: response.data,
-      totalOpportunities,
-      totalPages,
       error: null,
     };
   } catch (error) {
@@ -678,7 +672,7 @@ export const GetOpportunityCategory = async () => {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
-    throw new Error('Failed to fetch Vips');
+    throw new Error('Failed to fetch Opportunity Categories');
   }
 };
 

@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { ContentModule } from '@/interfaces/public-page';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface PartnerProps {
   data: ContentModule;
@@ -60,7 +61,7 @@ const Partner: React.FC<PartnerProps> = ({ data }) => {
                 <Box className="site-partner__card-inner">
                   <Image
                     src={item?.logo?.sizes?.['thumbnail'] || DefaultImageFallback.Placeholder}
-                    alt={item?.logo?.title || 'Partner Logo'}
+                    alt={item?.logo?.title || en.landingPage.partners.logos}
                     fill
                   />
                 </Box>
@@ -71,7 +72,7 @@ const Partner: React.FC<PartnerProps> = ({ data }) => {
                 <Box className="site-partner__card-inner">
                   <Image
                     src={item?.logo?.sizes?.['thumbnail'] || DefaultImageFallback.Placeholder}
-                    alt={item?.logo?.title || 'Partner Logo'}
+                    alt={item?.logo?.title || en.landingPage.partners.logos}
                     fill
                   />
                 </Box>

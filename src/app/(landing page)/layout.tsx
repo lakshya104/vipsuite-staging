@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '@/components/Header/Header';
+import Header from '@/components/Header';
 import { Box } from '@mui/material';
 import './landingPages.scss';
 import Footer from '@/components/Footer';
 import { MenuItemData } from '@/interfaces/public-page';
 import { GetWebsiteContent } from '@/libs/api-manager/manager';
 import { getLastPathSegment } from '@/helpers/utils';
-import HeaderTop from '@/components/HeaderTop/HeaderTop';
+import HeaderTop from '@/components/HeaderTop';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';

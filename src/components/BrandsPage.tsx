@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import SearchBar from './SearchBar';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid2, Typography } from '@mui/material';
 import { Brand } from '@/interfaces/brand';
 import BrandsListing from './BrandsListing';
 import { DashboardContent } from '@/interfaces';
@@ -47,15 +47,15 @@ const BrandsPage: React.FC<BrandsPageProps> = ({ brands, dashboardContent }) => 
         <BrandsListing brands={brands} hideReferCard={false} dashboardContent={dashboardContent} />
       ) : searchQuery && filteredBrands?.length > 0 ? (
         <>
-          <Grid container mb={2.5}>
-            <Grid item xs={12}>
+          <Grid2 container mb={2.5}>
+            <Grid2 size={{ xs: 12 }}>
               <Box width="100%">
                 <Typography variant="h3" component="h2" mb={1}>
                   {filteredBrands?.length} Results for &quot;{searchQuery}&quot;
                 </Typography>
               </Box>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
           <BrandsListing brands={filteredBrands} hideReferCard={true} />
         </>
       ) : (

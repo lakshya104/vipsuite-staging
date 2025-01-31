@@ -4,6 +4,7 @@ import { UserRole } from '@/helpers/enums';
 import { useEditVipIdStore } from '@/store/useStore';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import en from '@/helpers/lang';
 
 interface EditProfileBtnProps {
   vipId: number | undefined;
@@ -30,7 +31,7 @@ const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ vipId, role }) => {
   return (
     <>
       <span style={{ textDecoration: 'underline', fontWeight: '400', cursor: 'pointer' }} onClick={handleClick}>
-        Edit Profile
+        {en.profilePage.editBtn}
       </span>
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />

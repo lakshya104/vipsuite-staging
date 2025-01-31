@@ -15,7 +15,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormValues, vipStep2Schema } from './schema';
 import { contacts } from '@/data';
-import CustomStepper from '@/components/CustomStepper/CustomStepper';
+import CustomStepper from '@/components/CustomStepper';
 import '../ProfileBuilder.scss';
 import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';

@@ -7,6 +7,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, IconBut
 import CloseIcon from '@mui/icons-material/Close';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
+import en from '@/helpers/lang';
 
 interface EsignModalProps {
   // eslint-disable-next-line no-unused-vars
@@ -35,7 +36,7 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
       onESignChange(signature);
     } else {
       setToasterType('error');
-      openToaster('Please add a signature before saving.');
+      openToaster(en.eSign.addSignature);
     }
   };
 
@@ -43,7 +44,7 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
     <>
       <Dialog open={ESignOpen} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ m: 0, p: 2, ml: 1 }}>
-          E Signature
+          {en.eSign.title}
           <IconButton
             aria-label="close"
             onClick={handleClose}
@@ -59,8 +60,7 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
         </DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ marginBottom: '16px', color: 'text.secondary' }}>
-            Certain items in your cart are classified as high-end and require your consent to proceed. You will need to
-            provide an e-signature to access these items.
+            {en.eSign.description}
           </Typography>
           <Box
             sx={{
@@ -91,14 +91,14 @@ const EsignModal: React.FC<EsignModalProps> = ({ onESignChange, handleESignModel
             className="button button--black"
             sx={{ textTransform: 'none', margin: '0 8px' }}
           >
-            Clear
+            {en.eSign.clear}
           </Button>
           <Button
             onClick={handleSave}
             className="button button--black"
             sx={{ textTransform: 'none', margin: '12px 8px' }}
           >
-            Submit
+            {en.eSign.submit}
           </Button>
         </DialogActions>
       </Dialog>

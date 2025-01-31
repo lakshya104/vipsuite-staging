@@ -7,6 +7,7 @@ import Btn from '../Button/CommonBtn';
 import { truncateDescription } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface ProductCardProps {
   data: BrandProduct;
@@ -25,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
           <CardContent className="product-card__content">
             {isRequestOnlyValue === '1' && (
               <Typography variant="overline" display="block" gutterBottom>
-                Request Only
+                {en.products.requestOnly}
               </Typography>
             )}
             <Typography gutterBottom variant="h5" component="h3">
@@ -34,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             <Box dangerouslySetInnerHTML={{ __html: productDesctiption }} />
           </CardContent>
           <Btn look="dark-filled" width="100%">
-            View Item
+            {en.products.viewItem}
           </Btn>
         </Box>
       </ProgressBarLink>

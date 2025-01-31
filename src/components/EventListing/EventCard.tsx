@@ -16,8 +16,9 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
   const isFeatured = item?.acf?.is_featured;
   const brandLogo = item.acf?.brand_logo?.url;
   const eventImage = item?.acf?.event_image?.sizes?.['vs-container-half'] || DefaultImageFallback.Placeholder;
+  const href = item.isBrandCard ? `/brand/${item?.acf?.brand_id}?type=event` : `/events/${item?.id}`;
   return (
-    <ProgressBarLink href={`/events/${item?.id}`}>
+    <ProgressBarLink href={href}>
       <Card
         className="landing-product__item-inner"
         sx={{
