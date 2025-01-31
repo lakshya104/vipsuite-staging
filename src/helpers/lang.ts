@@ -649,6 +649,9 @@ const en = {
         'Acceptance of the terms and conditions is required for high-end items, with e-signature available on a later page.',
     },
   },
+  brandDetails: {
+    errMessage: 'Not able to show Brand Details currently.',
+  },
 };
 
 export default en;

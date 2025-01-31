@@ -4,10 +4,11 @@ import Image from 'next/image';
 import { first, some } from 'lodash';
 import { truncateDescription, wrapInParagraph } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import './Dashboard.scss';
 import { BrandProduct } from '@/interfaces/brand';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface MyProductsCardProps {
   data: BrandProduct;
@@ -24,7 +25,11 @@ const MyProductsCard: React.FC<MyProductsCardProps> = ({ data }) => {
   const image = first(images)?.src || DefaultImageFallback.Placeholder;
   const isRequestOnlyValue = some(meta_data, { key: 'is_request_only', value: '1' });
   const isFeatured = some(meta_data, { key: 'is_featured', value: '1' });
-  const href = data.isBrandCard ? `/brand/${data?.brand_id}?type=product` : `/products/${id}`;
+  const href = data?.isBrandCard
+    ? withSearchParams(() => paths.root.brandDetails.getHref(data?.brand_id), {
+        type: PostType.Product,
+      })
+    : paths.root.productyDetails.getHref(id);
 
   return (
     <ProgressBarLink href={href}>

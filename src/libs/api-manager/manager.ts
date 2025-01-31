@@ -232,12 +232,9 @@ export const GetVipSearch = async (keyword: string) => {
 export const GetBrandDetails = async (id: number, type?: PostType) => {
   try {
     const response = await Instance.get(Endpoints.getBrandDetails(id, type));
-    return response.data;
+    return { data: response.data, error: null };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Brand Details');
+    return { data: null, error };
   }
 };
 

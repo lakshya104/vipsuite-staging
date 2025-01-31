@@ -45,7 +45,6 @@ export interface Post {
     rendered: string;
   };
   opportunity_category: string[];
-  short_description?: string;
   acf: {
     event_start_date?: string;
     event_end_date?: string;
@@ -54,6 +53,7 @@ export interface Post {
     associated_brand_profile: number;
     is_request_only: false;
     is_high_end_item: true;
+    short_description?: string;
     featured_image: {
       sizes: {
         thumbnail: string;

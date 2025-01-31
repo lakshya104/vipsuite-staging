@@ -1,6 +1,7 @@
 import { AgentEditProfileValues } from '@/features/AgentProfile/types';
 import { AgentSignupValues } from '@/features/AgentSignupForm/types';
 import { BrandSignupValues } from '@/features/BrandSignupForm/types';
+import { paths } from '@/helpers/paths';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 
 type VipSignUpFormField = {
@@ -183,27 +184,27 @@ export const vipRejectedBoxContent = {
 export const vipNavLinks = [
   {
     label: 'Home',
-    href: '/home',
+    href: paths.root.home.getHref(),
     paths: ['/home', '/brands/'],
   },
   {
     label: 'Opportunities',
-    href: '/opportunities',
+    href: paths.root.opportunities.getHref(),
     paths: ['/opportunities'],
   },
   {
     label: 'Events',
-    href: '/events',
+    href: paths.root.events.getHref(),
     paths: ['/events'],
   },
   {
     label: 'Inbox',
-    href: '/inbox',
+    href: paths.root.inbox.getHref(),
     paths: ['/inbox', '/my-orders', '/messages'],
   },
   {
     label: 'Profile',
-    href: '/profile',
+    href: paths.root.profile.getHref(),
     paths: ['/profile'],
   },
 ];
@@ -238,7 +239,7 @@ export const brandNavLinks = [
 
 export const vipFooterItems = [
   {
-    href: '/home',
+    href: paths.root.home.getHref(),
     src: '/img/home.svg',
     alt: 'Home',
     label: 'Home',
@@ -246,7 +247,7 @@ export const vipFooterItems = [
     srcselected: '/img/home-selected.svg',
   },
   {
-    href: '/opportunities',
+    href: paths.root.opportunities.getHref(),
     src: '/img/opportunity.svg',
     alt: 'Opportunities',
     label: 'Opportunities',
@@ -254,7 +255,7 @@ export const vipFooterItems = [
     srcselected: '/img/opportunities-selected.svg',
   },
   {
-    href: '/events',
+    href: paths.root.events.getHref(),
     src: '/img/event.svg',
     alt: 'Events',
     label: 'Events',
@@ -262,7 +263,7 @@ export const vipFooterItems = [
     srcselected: '/img/events-selected.svg',
   },
   {
-    href: '/inbox',
+    href: paths.root.inbox.getHref(),
     src: '/img/inbox.svg',
     alt: 'Inbox',
     label: 'Inbox',
@@ -270,7 +271,7 @@ export const vipFooterItems = [
     srcselected: '/img/inbox-selected.svg',
   },
   {
-    href: '/profile',
+    href: paths.root.profile.getHref(),
     src: '/img/user.svg',
     alt: 'Profile',
     label: 'Profile',

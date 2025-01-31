@@ -73,7 +73,7 @@ export const FormDateTimePicker = <T extends FieldValues>({
             label={label && label}
             format="DD/MM/YYYY HH:mm"
             maxDate={selectFutureDate ? undefined : yesterday}
-            value={value ? dayjs(value as string) : null}
+            value={value ? dayjs(value as string, 'YYYY-MM-DDTHH:mm:ss') : null}
             onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DDTHH:mm:ss') : '')}
             slotProps={{
               field: { clearable: true },
@@ -105,7 +105,7 @@ export const FormTimePicker = <T extends FieldValues>({ name, control, label }: 
           <TimePicker
             className="time-picker"
             label={label && label}
-            value={value ? dayjs(value as string) : null}
+            value={value ? dayjs(value, 'HH:mm:ss') : null}
             onChange={(newValue) => onChange(newValue ? newValue.format('HH:mm:ss') : '')}
             slotProps={{
               textField: {

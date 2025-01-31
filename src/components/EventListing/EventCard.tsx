@@ -5,8 +5,9 @@ import he from 'he';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
 import { formatEventDates } from '@/helpers/utils';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface EventCardProps {
   item: Event;
@@ -16,7 +17,9 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
   const isFeatured = item?.acf?.is_featured;
   const brandLogo = item.acf?.brand_logo?.url;
   const eventImage = item?.acf?.event_image?.sizes?.['vs-container-half'] || DefaultImageFallback.Placeholder;
-  const href = item.isBrandCard ? `/brand/${item?.acf?.brand_id}?type=event` : `/events/${item?.id}`;
+  const href = item?.isBrandCard
+    ? withSearchParams(() => paths.root.brandDetails.getHref(item?.acf?.brand_id), { type: PostType.Event })
+    : paths.root.eventDetails.getHref(item.id);
   return (
     <ProgressBarLink href={href}>
       <Card

@@ -5,6 +5,8 @@ import { first, isUndefined } from 'lodash';
 import he from 'he';
 import { Opportunity } from '@/interfaces/opportunities';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
+import { PostType } from '@/helpers/enums';
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
@@ -13,10 +15,11 @@ interface OpportunityCardProps {
 
 const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image }) => {
   const isFeatured = opportunity?.acf?.is_featured;
-  const isBrandCard = opportunity?.isBrandCard || false;
-  const href = isBrandCard
-    ? `/brand/${opportunity?.acf?.brand_id}?type=opportunity`
-    : `/opportunities/${opportunity?.id}`;
+  const href = opportunity?.isBrandCard
+    ? withSearchParams(() => paths.root.brandDetails.getHref(opportunity?.acf?.brand_id), {
+        type: PostType.Opportunity,
+      })
+    : paths.root.opportunityDetails.getHref(opportunity?.id);
   return (
     <ProgressBarLink href={href}>
       <Card

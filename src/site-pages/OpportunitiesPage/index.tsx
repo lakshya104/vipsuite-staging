@@ -11,8 +11,10 @@ const OpportunitiesPage = async ({
   opportunityCategory?: string;
   search?: string;
 }) => {
-  const { opportunities, error } = await GetVipOpportunities(opportunityCategory, search);
-  const categories = await GetOpportunityCategory();
+  const [{ opportunities, error }, categories] = await Promise.all([
+    GetVipOpportunities(opportunityCategory, search),
+    GetOpportunityCategory(),
+  ]);
   if (error) {
     return <ErrorHandler error={error} errMessage={en.opportunities.listingErrMessage} />;
   }

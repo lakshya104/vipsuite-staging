@@ -14,7 +14,7 @@ const Endpoints = {
     if (type) {
       return `/wp/v2/brand-profiles/${brandId}?post_type=${type}`;
     } else {
-      return `/wp/v2/brand-profiles/${brandId}?post_type=opportunity`;
+      return `/wp/v2/brand-profiles/${brandId}`;
     }
   },
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,

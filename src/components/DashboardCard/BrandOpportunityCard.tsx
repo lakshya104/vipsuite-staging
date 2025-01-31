@@ -10,6 +10,7 @@ import { Post } from '@/interfaces/brand';
 import { first } from 'lodash';
 import { formatEventDates, truncateDescription } from '@/helpers/utils';
 import ShowHtml from '../ShowHtml';
+import { paths } from '@/helpers/paths';
 
 interface BrandOpportunityCardProps {
   opportunity: Post;
@@ -21,12 +22,22 @@ const BrandOpportunityCard: React.FC<BrandOpportunityCardProps> = ({ type, oppor
   const title = opportunity?.title?.rendered;
   const isFeatured = opportunity?.acf?.is_featured;
   const category = first(opportunity?.opportunity_category);
-  const href =
-    type === PostType.Opportunity
-      ? `/opportunities/${opportunity.ID}`
-      : type === PostType.Event
-        ? `/events/${opportunity.ID}`
-        : `/products/${opportunity.ID}`;
+  const id = opportunity?.ID;
+  let href: string;
+  switch (type) {
+    case PostType.Opportunity:
+      href = paths.root.opportunityDetails.getHref(id);
+      break;
+    case PostType.Event:
+      href = paths.root.eventDetails.getHref(id);
+      break;
+    case PostType.Product:
+      href = paths.root.productyDetails.getHref(id);
+      break;
+    default:
+      href = paths.root.home.getHref();
+      break;
+  }
 
   return (
     <ProgressBarLink href={href}>
@@ -66,8 +77,8 @@ const BrandOpportunityCard: React.FC<BrandOpportunityCardProps> = ({ type, oppor
             </Box>
           )}
           <Typography variant="h2">{he.decode(title)}</Typography>
-          {type === PostType.Product && opportunity?.short_description && (
-            <ShowHtml text={truncateDescription(opportunity?.short_description, 30)} />
+          {type === PostType.Product && opportunity?.acf?.short_description && (
+            <ShowHtml text={truncateDescription(opportunity?.acf?.short_description, 30)} />
           )}
           {type === PostType.Event && (
             <>

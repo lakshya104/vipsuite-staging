@@ -15,7 +15,7 @@ export const protectedRoutes = [
   /^\/events$/,
   /^\/brand-home$/,
   /^\/products$/,
-  /^\/brands(\/\d+)?$/,
+  /^\/brand(\/\d+)?$/,
   /^\/events(\/\d+)$/,
   /^\/basket$/,
   /^\/contact$/,

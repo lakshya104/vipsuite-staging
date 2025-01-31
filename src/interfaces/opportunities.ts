@@ -55,7 +55,7 @@ interface Acf {
   location: string;
   is_featured: boolean;
   brand_logo: BrandLogo;
-  brand_id?: number;
+  brand_id: number;
 }
 
 export interface Opportunity {
