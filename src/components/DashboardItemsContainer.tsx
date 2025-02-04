@@ -97,17 +97,21 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
       return (
         <>
           {renderDashboard()}
-          {!isEmpty(dashboardData.dashboard_cards) &&
-            dashboardData.dashboard_cards.map((item, index) => (
-              <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
-                <DashboardCard item={item} />
-              </Grid2>
-            ))}
-          <ErrorFallback
-            errorMessage={en.listEmptyMessage.noItems}
-            hideSubtext={true}
-            subtext={en.listEmptyMessage.noData}
-          />
+          {!isEmpty(dashboardData.dashboard_cards) ? (
+            <Grid2 className="landing-product" container spacing={2}>
+              {dashboardData.dashboard_cards.map((item, index) => (
+                <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
+                  <DashboardCard item={item} />
+                </Grid2>
+              ))}
+            </Grid2>
+          ) : (
+            <ErrorFallback
+              errorMessage={en.listEmptyMessage.noItems}
+              hideSubtext={true}
+              subtext={en.listEmptyMessage.noData}
+            />
+          )}
         </>
       );
     }

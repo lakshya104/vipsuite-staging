@@ -10,7 +10,7 @@ const EventsPageLoading = () => {
       </Box>
       <Box mt={2.5}>
         <Grid2 container spacing={2}>
-          {[...Array(4)].map((_, index) => (
+          {[...Array(6)].map((_, index) => (
             <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
               <Skeleton variant="rectangular" width="100%" height={450} />
             </Grid2>

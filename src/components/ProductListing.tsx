@@ -15,14 +15,6 @@ interface ProductListingContainerProps {
 
 const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ products }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const filteredProducts = useMemo(() => {
-    if (!searchQuery.trim()) return products;
-    const lowerCaseQuery = searchQuery.toLowerCase().trim();
-    return products.filter((product) => {
-      const searchableFields = [product.name];
-      return searchableFields.some((field) => field && field.toLowerCase().includes(lowerCaseQuery));
-    });
-  }, [products, searchQuery]);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -32,7 +24,45 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
     setSearchQuery('');
   }, []);
 
-  if (isEmpty(products)) {
+  const uniqueProducts = useMemo(() => {
+    const uniqueProducts: BrandProduct[] = [];
+    const mappedBrandIds = new Set();
+    const countMap: Record<number, number> = {};
+
+    products.forEach((item) => {
+      const brandId = item.brand_id;
+      if (brandId) {
+        countMap[brandId] = (countMap[brandId] || 0) + 1;
+      }
+    });
+
+    products.forEach((item) => {
+      const brandId = item.brand_id;
+      if (brandId) {
+        item.isBrandCard = countMap[brandId] >= 2;
+        if (!mappedBrandIds.has(brandId)) {
+          mappedBrandIds.add(brandId);
+          uniqueProducts.push(item);
+        }
+      } else {
+        item.isBrandCard = false;
+        uniqueProducts.push(item);
+      }
+    });
+
+    return uniqueProducts;
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery.trim()) return uniqueProducts;
+    const lowerCaseQuery = searchQuery.toLowerCase().trim();
+    return uniqueProducts.filter((product) => {
+      const searchableFields = [product.name];
+      return searchableFields.some((field) => field && field.toLowerCase().includes(lowerCaseQuery));
+    });
+  }, [searchQuery, uniqueProducts]);
+
+  if (isEmpty(uniqueProducts)) {
     return (
       <>
         <Box my={2.5}>
@@ -66,7 +96,7 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
       </Box>
       {!searchQuery ? (
         <>
-          <ProductCardsListing products={products} />
+          <ProductCardsListing products={uniqueProducts} />
         </>
       ) : searchQuery && filteredProducts.length > 0 ? (
         <>
@@ -79,7 +109,7 @@ const ProductListingContainer: React.FC<ProductListingContainerProps> = ({ produ
               </Box>
             </Grid2>
           </Grid2>
-          <ProductCardsListing products={products} />
+          <ProductCardsListing products={filteredProducts} />
         </>
       ) : (
         <ErrorFallback

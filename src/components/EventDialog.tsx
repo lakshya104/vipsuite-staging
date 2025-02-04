@@ -28,7 +28,10 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
     setConfirmationOpen(true);
   };
 
-  const handleConfirmationClose = () => {
+  const handleClose = (event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if (reason === 'backdropClick') {
+      return;
+    }
     setConfirmationOpen(false);
     router.push('/events');
   };
@@ -68,7 +71,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
       <Dialog
         className="site-dialog"
         open={confirmationOpen}
-        onClose={handleConfirmationClose}
+        onClose={handleClose}
         aria-labelledby="confirmation-dialog-title"
       >
         <DialogContent>
@@ -79,7 +82,14 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
             {en.events.confirmationRsvp.description}
           </Typography>
           <DialogActions>
-            <Button variant="contained" onClick={handleConfirmationClose} className="button button--black">
+            <Button
+              variant="contained"
+              onClick={() => {
+                setConfirmationOpen(false);
+                router.push('/events');
+              }}
+              className="button button--black"
+            >
               {en.events.confirmationRsvp.cta}
             </Button>
           </DialogActions>

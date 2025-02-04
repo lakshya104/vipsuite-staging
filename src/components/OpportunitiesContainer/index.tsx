@@ -2,7 +2,9 @@
 import React, { useState, useEffect, useCallback, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { isEmpty } from 'lodash';
-import { Box, CircularProgress, Backdrop, Grid2, Typography } from '@mui/material';
+import { Box, CircularProgress, Backdrop, Grid2, Typography, Skeleton } from '@mui/material';
+import { useDebounce } from 'use-debounce';
+import useUpdateEffect from '@/hooks/useUpdateEffect';
 import SearchBar from '../SearchBar';
 import { Opportunity } from '@/interfaces/opportunities';
 import OpportunitiesListing from '../OpportunitiesListing';
@@ -10,14 +12,12 @@ import './OpportunitiesContainer.scss';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
 import FilterButton from '../FilterButton';
-import { useDebounce } from 'use-debounce';
 
 interface OpportunitiesContainerProps {
   opportunitiesData: Opportunity[];
-  categories: { id: number; name: string; acf: { image: { url: string }; emoji_icon: { url: string } } }[];
 }
 
-const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData, categories }) => {
+const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isPending, startTransition] = useTransition();
   const [isSearchPending, startSearchTransition] = useTransition();
@@ -27,12 +27,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-  const categoryList = categories.map((item) => ({
-    id: item.id,
-    name: item.name,
-    url: item.acf.image.url,
-    emoji_url: item.acf.emoji_icon.url,
-  }));
 
   useEffect(() => {
     if (!selectedCategoryId && isFilterApplied) {
@@ -40,7 +34,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     }
   }, [selectedCategoryId, isFilterApplied]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     try {
       startSearchTransition(() => {
         const params = new URLSearchParams(window.location.search);
@@ -55,6 +49,12 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
       console.error(en.opportunities.searchErrorMessage, error);
     }
   }, [debouncedSearchQuery, router]);
+
+  useEffect(() => {
+    if (!isFilterApplied) {
+      setSelectedCategoryId(null);
+    }
+  }, [isFilterApplied]);
 
   const handleFilter = (categoryId: number) => {
     try {
@@ -81,6 +81,31 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     }
   };
 
+  const uniqueOpportunities: Opportunity[] = [];
+  const mappedBrandIds = new Set();
+  const countMap: Record<number, number> = {};
+
+  opportunitiesData.forEach((item) => {
+    const brandId = item.acf.brand_id;
+    if (brandId) {
+      countMap[brandId] = (countMap[brandId] || 0) + 1;
+    }
+  });
+
+  opportunitiesData.forEach((item) => {
+    const brandId = item.acf.brand_id;
+    if (brandId) {
+      item.isBrandCard = countMap[brandId] >= 2;
+      if (!mappedBrandIds.has(brandId)) {
+        mappedBrandIds.add(brandId);
+        uniqueOpportunities.push(item);
+      }
+    } else {
+      item.isBrandCard = false;
+      uniqueOpportunities.push(item);
+    }
+  });
+
   const clearFilter = () => {
     try {
       startTransition(() => {
@@ -103,10 +128,19 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     setSearchQuery('');
   }, []);
 
-  if (isEmpty(opportunitiesData) && !isFilterApplied) {
+  if (isEmpty(uniqueOpportunities) && !isFilterApplied) {
     return (
       <>
-        <Box my={2.5}>
+        <Box my={2.5} display="flex" justifyContent="space-between" alignItems="center">
+          <FilterButton
+            clearFilter={clearFilter}
+            closeFilter={() => setIsFilterOpen(false)}
+            handleFilter={handleFilter}
+            isFilterOpen={isFilterOpen}
+            selectedCategoryId={selectedCategoryId}
+            isFilterApplied={isFilterApplied}
+            openFilter={() => setIsFilterOpen(true)}
+          />
           <SearchBar
             searchTerm={searchQuery}
             placeholder={en.opportunities.searchPlaceholder}
@@ -128,7 +162,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     <>
       <Box my={2.5} display="flex" justifyContent="space-between" alignItems="center">
         <FilterButton
-          categories={categoryList}
           clearFilter={clearFilter}
           closeFilter={() => setIsFilterOpen(false)}
           handleFilter={handleFilter}
@@ -145,25 +178,30 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           aria-label={en.opportunities.searchPlaceholder}
         />
       </Box>
-      {isEmpty(opportunitiesData) && (
-        <ErrorFallback
-          errorMessage={en.listEmptyMessage.noOpportunityData}
-          hideSubtext={true}
-          subtext={en.listEmptyMessage.noData}
-        />
-      )}
-      {debouncedSearchQuery && !isSearchPending && (
-        <Grid2 container mb={2.5}>
-          <Grid2 size={{ xs: 12 }}>
-            <Box width="100%">
-              <Typography variant="h3" component="h2" mb={1}>
-                {opportunitiesData.length} {en.opportunities.results} &quot;{debouncedSearchQuery}&quot;
-              </Typography>
-            </Box>
-          </Grid2>
+      {isSearchPending && searchQuery ? (
+        <Grid2 container spacing={2}>
+          {[...Array(3)].map((_, index) => (
+            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+              <Skeleton variant="rectangular" width="100%" height={450} />
+            </Grid2>
+          ))}
         </Grid2>
+      ) : debouncedSearchQuery ? (
+        <>
+          <Grid2 container mb={2.5}>
+            <Grid2 size={{ xs: 12 }}>
+              <Box width="100%">
+                <Typography variant="h3" component="h2" mb={1}>
+                  {uniqueOpportunities.length} {en.opportunities.results} &quot;{debouncedSearchQuery}&quot;
+                </Typography>
+              </Box>
+            </Grid2>
+          </Grid2>
+          <OpportunitiesListing opportunities={uniqueOpportunities} />
+        </>
+      ) : (
+        <OpportunitiesListing opportunities={uniqueOpportunities} />
       )}
-      <OpportunitiesListing opportunities={opportunitiesData} />
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>

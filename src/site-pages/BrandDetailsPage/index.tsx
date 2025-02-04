@@ -13,7 +13,7 @@ interface BrandDetailsPageProps {
 const BrandDetailsPage: React.FC<BrandDetailsPageProps> = async ({ brandId, type }) => {
   const { data, error } = await GetBrandDetails(brandId, type);
   if (error) {
-    return <ErrorHandler error={error} errMessage={en.basket.errMessage} />;
+    return <ErrorHandler error={error} errMessage={en.brandDetails.errMessage} />;
   }
   return <BrandDetailsContainer brandDetails={data} type={type} />;
 };
