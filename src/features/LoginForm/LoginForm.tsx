@@ -4,6 +4,7 @@ import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, TextFi
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { deleteVipCookies, login } from '@/libs/actions';
@@ -13,7 +14,6 @@ import Toaster from '@/components/Toaster';
 import en from '@/helpers/lang';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import ApplicationRejectedDialog from '@/components/ApplicationRejectedDialog';
-import { useRouter } from 'next/navigation';
 import { Login } from '@/libs/api-manager/manager';
 import { UserRole } from '@/helpers/enums';
 
@@ -26,12 +26,23 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<UserRole | ''>('');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isTokenExpired = searchParams.get('token-expired');
+  const tokenExpiryError = searchParams.get('error');
 
   useEffect(() => {
     const deleteCookies = async () => {
       await deleteVipCookies();
     };
     deleteCookies();
+  }, []);
+
+  useEffect(() => {
+    if (isTokenExpired) {
+      setError(tokenExpiryError || 'User must be logged in.');
+      setToasterOpen(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {

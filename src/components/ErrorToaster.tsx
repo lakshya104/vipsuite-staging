@@ -18,26 +18,13 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
 }) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
-  const handleLogin = () => {
-    signOut({ callbackUrl: '/login' });
-  };
-
-  useEffect(() => {
-    if (errorMessage) {
-      openToaster(errorMessage);
-    }
-  }, [errorMessage, openToaster, message]);
-
   useEffect(() => {
     if (login) {
-      const timeoutId = setTimeout(() => {
-        handleLogin();
-      }, 1250);
-      return () => {
-        clearTimeout(timeoutId);
-      };
+      signOut({ callbackUrl: `/login?token-expired=true&error=${errorMessage}` });
+    } else if (errorMessage) {
+      openToaster(errorMessage);
     }
-  }, [login]);
+  }, [errorMessage, login, openToaster]);
 
   return (
     <Fragment>

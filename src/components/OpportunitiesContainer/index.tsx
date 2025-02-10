@@ -18,15 +18,17 @@ interface OpportunitiesContainerProps {
 }
 
 const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportunitiesData }) => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [isPending, startTransition] = useTransition();
   const [isSearchPending, startSearchTransition] = useTransition();
   const router = useRouter();
   const searchParams = useSearchParams();
   const isFilterApplied = searchParams.get('opportunityCategory');
+  const isSearchApplied = searchParams.get('search');
+  const [searchQuery, setSearchQuery] = useState<string>(isSearchApplied ? isSearchApplied : '');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  console.log(isSearchApplied);
 
   useEffect(() => {
     if (!selectedCategoryId && isFilterApplied) {
@@ -192,7 +194,9 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
             <Grid2 size={{ xs: 12 }}>
               <Box width="100%">
                 <Typography variant="h3" component="h2" mb={1}>
-                  {uniqueOpportunities.length} {en.opportunities.results} &quot;{debouncedSearchQuery}&quot;
+                  {uniqueOpportunities.length < 1
+                    ? `${uniqueOpportunities.length} ${en.opportunities.results} "${debouncedSearchQuery}"`
+                    : `${uniqueOpportunities.length} ${en.opportunities.singleResult} "${debouncedSearchQuery}"`}
                 </Typography>
               </Box>
             </Grid2>

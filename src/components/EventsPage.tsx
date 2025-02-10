@@ -8,7 +8,7 @@ import EventsListing from './EventListing';
 import { isEmpty } from 'lodash';
 import { Event } from '@/interfaces/events';
 import ErrorFallback from './ErrorFallback';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 
 interface EventCardsProps {
@@ -16,8 +16,10 @@ interface EventCardsProps {
 }
 
 const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const isSearchApplied = searchParams.get('search');
+  const [searchQuery, setSearchQuery] = useState<string>(isSearchApplied ? isSearchApplied : '');
   const [isPending, startTransition] = useTransition();
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
@@ -93,7 +95,9 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
                 <Grid2 size={{ xs: 12 }}>
                   <Box width="100%">
                     <Typography variant="h3" component="h2" mb={1}>
-                      {uniqueEvents.length} {en.events.results} &quot;{debouncedSearchQuery}&quot;
+                      {uniqueEvents.length < 1
+                        ? `${uniqueEvents.length} ${en.events.results} "${debouncedSearchQuery}"`
+                        : `${uniqueEvents.length} ${en.events.singleResult} "${debouncedSearchQuery}"`}
                     </Typography>
                   </Box>
                 </Grid2>
