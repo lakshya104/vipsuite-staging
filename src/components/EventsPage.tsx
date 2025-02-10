@@ -95,7 +95,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
                 <Grid2 size={{ xs: 12 }}>
                   <Box width="100%">
                     <Typography variant="h3" component="h2" mb={1}>
-                      {uniqueEvents.length < 2
+                      {uniqueEvents.length > 1
                         ? `${uniqueEvents.length} ${en.events.results} "${debouncedSearchQuery}"`
                         : `${uniqueEvents.length} ${en.events.singleResult} "${debouncedSearchQuery}"`}
                     </Typography>

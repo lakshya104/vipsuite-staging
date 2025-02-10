@@ -194,7 +194,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
             <Grid2 size={{ xs: 12 }}>
               <Box width="100%">
                 <Typography variant="h3" component="h2" mb={1}>
-                  {uniqueOpportunities.length < 2
+                  {uniqueOpportunities.length > 1
                     ? `${uniqueOpportunities.length} ${en.opportunities.results} "${debouncedSearchQuery}"`
                     : `${uniqueOpportunities.length} ${en.opportunities.singleResult} "${debouncedSearchQuery}"`}
                 </Typography>
