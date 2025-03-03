@@ -19,7 +19,7 @@ const MyEventDetailsContainer: React.FC<MyEventDetailsContainerProps> = ({ event
         <ProgressBarLink href={'/my-events'}>
           <ArrowBackIcon />
         </ProgressBarLink>
-        {he.decode(eventDetails?.title?.rendered)}
+        {he.decode(eventDetails?.title?.rendered || '')}
       </Typography>
       <Box mb={2.5}>
         <Typography variant="body1">{formatDateWithoutOrdinal(eventDetails?.acf?.event_start_date)}</Typography>

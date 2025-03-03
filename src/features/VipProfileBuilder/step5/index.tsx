@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Box,
   Typography,
@@ -23,8 +23,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import revalidatePathAction from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
-import { ProfileStatus, UserRole } from '@/helpers/enums';
-import ProfileReviewDialog from '@/components/ProfileReviewDialog';
+import { paths } from '@/helpers/paths';
 import VipAddedDialog from '@/components/VipAddedDialog';
 
 const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
@@ -33,18 +32,18 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   onPrev,
   id,
   isAgent,
-  token,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [reviewDialogOpen, setReviewDialogOpen] = useState<boolean>(false);
   const [vipAddedDialogOpen, setVipAddedDialogOpen] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [searchTerm, setSearchTerm] = React.useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isProfileEdit = searchParams.get('profile-route');
+  const isEditVip = searchParams.get('edit');
   const { clearVipId } = useEditVipIdStore();
   const interestOptions = profileBuilderOptions?.interests_options;
   const interests = profileDetail?.interests;
-  const isApproved = profileDetail?.profile_status === ProfileStatus.Approved ? true : false;
   const {
     register,
     handleSubmit,
@@ -94,15 +93,14 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
         },
       };
       await UpdateProfile(id, profile);
-      await revalidatePathAction('/profile');
+      await revalidatePathAction(paths.root.profile.getHref());
       clearVipId();
-      if (isApproved) {
-        router.push('/profile');
-      } else if (isAgent) {
+      if (isAgent && !isProfileEdit) {
         setVipAddedDialogOpen(true);
+      } else if (isProfileEdit || isEditVip) {
+        router.push(paths.root.profile.getHref());
       } else {
-        setReviewDialogOpen(true);
-        setIsLoading(false);
+        router.push(paths.root.home.getHref());
       }
     } catch (error) {
       openToaster('Error during profile update. ' + error);
@@ -164,7 +162,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
           <Typography
             color="error"
             textAlign="center"
-            sx={{ position: 'absolute', zIndex: 999, bottom: '10%', left: { xs: '24%', md: '32%' } }}
+            sx={{ position: 'absolute', zIndex: 999, bottom: '20%', left: { xs: '24%', md: '32%' } }}
           >
             {errors.interests.message}
           </Typography>
@@ -175,9 +173,6 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
         <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
-      <Dialog open={reviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ProfileReviewDialog role={UserRole.Vip} token={token} />
-      </Dialog>
       <Dialog open={vipAddedDialogOpen} fullScreen aria-labelledby="form-dialog-title">
         <VipAddedDialog />
       </Dialog>

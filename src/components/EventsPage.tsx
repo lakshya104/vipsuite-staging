@@ -22,6 +22,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
   const [searchQuery, setSearchQuery] = useState<string>(isSearchApplied ? isSearchApplied : '');
   const [isPending, startTransition] = useTransition();
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [isClearing, setIsClearing] = useState<boolean>(false);
 
   useUpdateEffect(() => {
     startTransition(() => {
@@ -32,15 +33,18 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
         params.delete('search');
       }
       router.push(`?${params.toString()}`, { scroll: false });
+      setIsClearing(false);
     });
   }, [debouncedSearchQuery, router]);
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+    setIsClearing(true);
   }, []);
 
   const handleClear = useCallback(() => {
     setSearchQuery('');
+    setIsClearing(true);
   }, []);
 
   const uniqueEvents: Event[] = [];
@@ -68,6 +72,18 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
     }
   });
 
+  const renderLoading = () => {
+    return (
+      <Grid2 container spacing={2}>
+        {[...Array(3)].map((_, index) => (
+          <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+            <Skeleton variant="rectangular" width="100%" height={450} />
+          </Grid2>
+        ))}
+      </Grid2>
+    );
+  };
+
   return (
     <>
       <Box my={2.5}>
@@ -79,16 +95,12 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
           aria-label={en.events.searchPlaceholder}
         />
       </Box>
-      {!isEmpty(uniqueEvents) ? (
+      {isClearing ? (
+        renderLoading()
+      ) : !isEmpty(uniqueEvents) ? (
         <>
           {isPending && searchQuery ? (
-            <Grid2 container spacing={2}>
-              {[...Array(3)].map((_, index) => (
-                <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-                  <Skeleton variant="rectangular" width="100%" height={450} />
-                </Grid2>
-              ))}
-            </Grid2>
+            renderLoading()
           ) : debouncedSearchQuery ? (
             <>
               <Grid2 container mb={2.5}>

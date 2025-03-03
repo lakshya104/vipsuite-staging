@@ -7,6 +7,7 @@ import { ProgressBarLink } from '@/components/ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { GetAgentProfile, GetToken } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
+import { paths } from '@/helpers/paths';
 
 const AgentProfilePage = async () => {
   const token = await GetToken();
@@ -30,7 +31,7 @@ const AgentProfilePage = async () => {
         <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
           {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
         </Typography>
-        <ProgressBarLink href={'edit-profile'} className="button button--link">
+        <ProgressBarLink href={paths.root.editProfile.getHref()} className="button button--link">
           <span style={{ textDecoration: 'underline', fontWeight: '400' }}>Edit Profile</span>
         </ProgressBarLink>
       </Box>

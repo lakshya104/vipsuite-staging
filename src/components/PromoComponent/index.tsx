@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, Grid2, Typography } from '@mui/material';
 import { ProgressBarLink } from '../ProgressBar';
 import { PageData } from '@/interfaces/public-page';
+import { paths } from '@/helpers/paths';
 
 interface PromoComponentProps {
   data: PageData | undefined;
@@ -29,7 +30,7 @@ const PromoComponent: React.FC<PromoComponentProps> = ({ data }) => {
           <Typography variant="body1" paragraph>
             {data?.acf?.copy}
           </Typography>
-          <ProgressBarLink href={'/on-boarding'}>
+          <ProgressBarLink href={paths.auth.onBoarding.getHref()}>
             <Button variant="contained" type="submit" className="joinbtn">
               {data?.acf?.cta?.cta_text}
             </Button>

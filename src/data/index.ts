@@ -1,5 +1,6 @@
 import { AgentEditProfileValues } from '@/features/AgentProfile/types';
 import { AgentSignupValues } from '@/features/AgentSignupForm/types';
+import { BrandEditProfileValues } from '@/features/BrandProfileForm/types';
 import { BrandSignupValues } from '@/features/BrandSignupForm/types';
 import { paths } from '@/helpers/paths';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
@@ -72,10 +73,17 @@ export const BrandSignUpFormFields: BrandSignUpFormField[] = [
     type: 'text',
   },
   {
-    name: 'contact_name',
-    label: 'Contact Name',
-    placeholder: 'Contact Name',
-    autocomplete: 'contact-name',
+    name: 'first_name',
+    label: 'Contact First Name',
+    placeholder: 'Contact First Name',
+    autocomplete: 'contact-first-name',
+    type: 'text',
+  },
+  {
+    name: 'last_name',
+    label: 'Contact Last Name',
+    placeholder: 'Contact Last Name',
+    autocomplete: 'contact-last-name',
     type: 'text',
   },
   {
@@ -127,6 +135,23 @@ export const AgentEditProfileFields: AgentEditProfileFormField[] = [
   { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
   { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
+];
+
+type BrandEditProfileFormField = {
+  name: keyof BrandEditProfileValues;
+  placeholder?: string;
+  autocomplete?: string;
+  type?: string;
+  label?: string;
+  options?: Array<{ value: string; label: string }>;
+};
+
+export const BrandEditProfileFields: BrandEditProfileFormField[] = [
+  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
+  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
+  { name: 'brand_name', placeholder: 'Brand Name', autocomplete: 'b-name', type: 'text' },
+  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
+  { name: 'type_of_business', placeholder: 'Type of Business', autocomplete: 'business', type: 'text' },
 ];
 
 export const contacts = [
@@ -190,7 +215,7 @@ export const vipNavLinks = [
   {
     label: 'Opportunities',
     href: paths.root.opportunities.getHref(),
-    paths: ['/opportunities'],
+    paths: ['/opportunities', '/products'],
   },
   {
     label: 'Events',
@@ -212,32 +237,75 @@ export const vipNavLinks = [
 export const brandNavLinks = [
   {
     label: 'Home',
-    href: '/brand-home',
-    paths: ['/brand-home'],
-  },
-  {
-    label: 'Services',
-    href: '/brand-home',
-    paths: ['/brand-homee'],
-  },
-  {
-    label: 'Profiling',
-    href: '/brand-home',
-    paths: ['/brand-homee'],
+    href: paths.root.home.getHref(),
+    paths: ['/home', '/brands/'],
   },
   {
     label: 'Opportunities',
-    href: '/brand-home',
-    paths: ['/brand-homee'],
+    href: paths.root.opportunities.getHref(),
+    paths: ['/opportunities', '/products'],
   },
   {
-    label: 'Dashboard',
-    href: '/brand-home',
-    paths: ['/brand-homee'],
+    label: 'Events',
+    href: paths.root.events.getHref(),
+    paths: ['/events'],
+  },
+  {
+    label: 'Inbox',
+    href: paths.root.inbox.getHref(),
+    paths: ['/inbox', '/my-orders', '/messages'],
+  },
+  {
+    label: 'Profile',
+    href: paths.root.profile.getHref(),
+    paths: ['/profile', '/edit-profile', '/edit-brand-profile'],
   },
 ];
 
 export const vipFooterItems = [
+  {
+    href: paths.root.home.getHref(),
+    src: '/img/home.svg',
+    alt: 'Home',
+    label: 'Home',
+    paths: ['/home'],
+    srcselected: '/img/home-selected.svg',
+  },
+  {
+    href: paths.root.opportunities.getHref(),
+    src: '/img/opportunity.svg',
+    alt: 'Opportunities',
+    label: 'Opportunities',
+    paths: ['/opportunities', '/products'],
+    srcselected: '/img/opportunities-selected.svg',
+  },
+  {
+    href: paths.root.events.getHref(),
+    src: '/img/event.svg',
+    alt: 'Events',
+    label: 'Events',
+    paths: ['/events'],
+    srcselected: '/img/events-selected.svg',
+  },
+  {
+    href: paths.root.inbox.getHref(),
+    src: '/img/inbox.svg',
+    alt: 'Inbox',
+    label: 'Inbox',
+    paths: ['/inbox', '/my-orders', '/messages'],
+    srcselected: '/img/inbox-selected.svg',
+  },
+  {
+    href: paths.root.profile.getHref(),
+    src: '/img/user.svg',
+    alt: 'Profile',
+    label: 'Profile',
+    paths: ['/profile', '/edit-profile', '/edit-brand-profile'],
+    srcselected: '/img/user-selected.svg',
+  },
+];
+
+export const brandFooterItems = [
   {
     href: paths.root.home.getHref(),
     src: '/img/home.svg',
@@ -277,49 +345,6 @@ export const vipFooterItems = [
     label: 'Profile',
     paths: ['/profile'],
     srcselected: '/img/user-selected.svg',
-  },
-];
-
-export const brandFooterItems = [
-  {
-    href: '/home',
-    src: '/img/home.svg',
-    alt: 'Home',
-    label: 'Home',
-    paths: ['/home', '/brands/', '/product'],
-    srcselected: '/img/home-selected.svg',
-  },
-  {
-    href: '/services',
-    src: '/img/event.svg',
-    alt: 'Services',
-    label: 'Services',
-    paths: ['/services'],
-    srcselected: '/img/events-selected.svg',
-  },
-  {
-    href: '/profiling',
-    src: '/img/user.svg',
-    alt: 'Profiling',
-    label: 'Profiling',
-    paths: ['/profiling'],
-    srcselected: '/img/user-selected.svg',
-  },
-  {
-    href: '/brand-opportunities',
-    src: '/img/opportunity.svg',
-    alt: 'Opportunities',
-    label: 'Opportunities',
-    paths: ['/brand-opportunities'],
-    srcselected: '/img/opportunities-selected.svg',
-  },
-  {
-    href: '/dashboard',
-    src: '/img/inbox.svg',
-    alt: 'Dashboard',
-    label: 'Dashboard',
-    paths: ['/dashboard'],
-    srcselected: '/img/inbox-selected.svg',
   },
 ];
 

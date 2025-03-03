@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import './Header.scss';
+import { paths } from '@/helpers/paths';
 
 interface MenuItemData {
   ID: number;
@@ -55,7 +56,7 @@ const Header: React.FC<HeaderPropr> = ({ menuItems }) => {
         </Box>
 
         <Box className="site-header__brand">
-          <Link href="/">
+          <Link href={paths.landing.getHref()}>
             <Image src="/Logo.svg" alt="The VIP Suite Site black logo" height={25} width={122} />
             <Image
               className="white-logo"
@@ -81,7 +82,7 @@ const Header: React.FC<HeaderPropr> = ({ menuItems }) => {
                     className={isActive ? 'active' : ''}
                     onClick={(event) => handleMenuToggle(event, menuItem.ID)}
                   >
-                    <Link href={menuItem.url} onClick={() => childItems.length < 1 && handleCloseNavMenu()}>
+                    <Link href={menuItem?.url} onClick={() => childItems.length < 1 && handleCloseNavMenu()}>
                       {menuItem.title}
                     </Link>
                     {childItems.length > 0 && <ArrowDropDownIcon />}
@@ -101,7 +102,7 @@ const Header: React.FC<HeaderPropr> = ({ menuItems }) => {
                       >
                         {childItems.map((childItem) => (
                           <MenuItem key={childItem.ID}>
-                            <Link href={childItem.url} onClick={handleCloseNavMenu}>
+                            <Link href={childItem?.url} onClick={handleCloseNavMenu}>
                               {childItem.title}
                             </Link>
                           </MenuItem>
@@ -112,17 +113,17 @@ const Header: React.FC<HeaderPropr> = ({ menuItems }) => {
                 );
               })}
               <MenuItem className="login-link">
-                <Link href="/login">Login</Link>
+                <Link href={paths.auth.login.getHref()}>Login</Link>
               </MenuItem>
             </MenuList>
           </Box>
         </ClickAwayListener>
 
         <Box className="site-header__user">
-          <Link href="/login" className="button button--link">
+          <Link href={paths.auth.login.getHref()} className="button button--link">
             Login
           </Link>
-          <Link href="/on-boarding" className="button button--white">
+          <Link href={paths.auth.onBoarding.getHref()} className="button button--white">
             Apply
           </Link>
         </Box>

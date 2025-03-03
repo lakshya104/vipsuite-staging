@@ -39,7 +39,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, image })
               {en.opportunities.featuredTag}
             </Typography>
           )}
-          <Typography variant="h2"> {he.decode(opportunity?.title?.rendered)}</Typography>
+          <Typography variant="h2"> {he.decode(opportunity?.title?.rendered || '')}</Typography>
         </CardContent>
       </Card>
     </ProgressBarLink>

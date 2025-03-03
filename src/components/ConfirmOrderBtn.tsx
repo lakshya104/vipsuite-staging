@@ -12,6 +12,7 @@ import { revalidateAllData } from '@/libs/actions';
 import FullScreenDialog from './FullScreenDialog';
 import { DefaultImageFallback } from '@/helpers/enums';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
@@ -37,6 +38,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
   const {
     requestProductId,
+    opportunityId,
     clearRequestProductId,
     clearQuestions,
     questions: requestOnlyQuestions,
@@ -113,11 +115,13 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
               product_id: requestProductId,
               quantity: 1,
               questions: requestOnlyQuestions,
+              opportunity_id: opportunityId,
             },
           ]
         : map(cartData.items, (item) => ({
             product_id: item.id,
             quantity: 1,
+            opportunity_id: item.opportunity_id,
             ...(item.questions ? { questions: item.questions } : {}),
           })),
     }),
@@ -135,7 +139,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       if (!isLookbookOrder && isEmpty(orderDetails.line_items)) {
         openToaster(en.selectAddress.emptyError);
         setTimeout(() => {
-          router.push('/home');
+          router.push(paths.root.home.getHref());
         }, 2000);
       } else {
         try {
@@ -181,12 +185,12 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
         onClose={() => {
           if (isRequestedProduct || isLookbookOrder) {
             startTransition(() => {
-              router.push('/home');
+              router.push(paths.root.home.getHref());
               setIsDialogOpen(false);
             });
           } else {
             startTransition(() => {
-              router.push('/inbox?isOrderTab=true');
+              router.push(withSearchParams(() => paths.root.inbox.getHref(), { isOrderTab: 'true' }));
               setIsDialogOpen(false);
             });
           }

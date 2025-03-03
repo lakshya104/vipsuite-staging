@@ -34,7 +34,7 @@ const ProfilePage = async () => {
         <Typography variant="body2" mb={1}>
           {en.profilePage.age} {age} {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
         </Typography>
-        <EditProfileBtn vipId={profileDetails?.vip_profile_id} role={session?.role} />
+        <EditProfileBtn vipId={profileDetails?.profile_id} role={session?.role} />
       </Box>
       <Box>
         <ProfileTabs profileData={profileDetails} />

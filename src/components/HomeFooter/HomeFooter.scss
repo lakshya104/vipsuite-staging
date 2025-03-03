@@ -9,12 +9,11 @@
   width: 100%;
   background-color: var(--color-marble);
   border-top: mixins.rem(1) solid var(--color-textBlack-10);
-  opacity: 0;
   transition:
     bottom 1s,
     opacity 1s;
   @include mixins.flex(space-around, center);
-  @include mixins.fixed(left 0 bottom -100% z-index 1050);
+  @include mixins.fixed(left 0 bottom 0 z-index 1050);
   @media only screen and (min-width: 992px) {
     display: none;
   }
@@ -40,11 +39,12 @@
       display: block;
     }
   }
-  &.show {
-    bottom: 0;
-    opacity: 1;
-    transition:
-      bottom 1s,
-      opacity 1s;
+}
+
+body {
+  &:has(.footer-menu) {
+    @media only screen and (max-width: 991.98px) {
+      padding-bottom: 75px;
+    }
   }
 }

@@ -1,31 +1,42 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Box, Container, Grid2, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { find, get } from 'lodash';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import ItemRequestForm from '@/features/ItemRequestForm';
-import { DefaultImageFallback } from '@/helpers/enums';
 import { Product } from '@/interfaces/brand';
 import ArrowBackBtn from './ArrowBackBtn';
-import ReferCard from './ReferCard';
-import RequestItemFormButton from './RequestItemFormButton';
 import RedeemBox from './RedeemBox';
 import HighEndItemMessage from './HighEndItemMessage';
 import ShowHtml from './ShowHtml';
+import { DefaultImageFallback } from '@/helpers/enums';
 
-interface productsContainerProps {
+interface ProductsContainerProps {
   product: Product;
 }
-
-const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
-  const productImage = product?.images?.[0]?.src || DefaultImageFallback.Placeholder;
-  const isRequestOnly = get(find(product?.meta_data, { key: 'is_request_only' }), 'value') === '1' || false;
+const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
+  const isRequestOnly = product?.acf?.is_request_only || false;
   const showOffers =
     get(find(product?.meta_data, { key: 'show_offers' }), 'value') === '1' || product?.acf?.show_offers || false;
-  const isLookbookAvailable = product?.acf?.is_lookbook_available;
-  const lookBookHeading = product?.acf?.lookbook_heading;
-  const lookBookDescription = product?.acf.lookbook_description;
-  const lookbookPdf = product?.acf?.lookbook_pdf;
   const isHighEndItem = product?.is_high_end_item;
+  const productImage = product?.images?.[0]?.sizes?.['vs-container'] || DefaultImageFallback.Placeholder;
+
+  const settings = {
+    dots: product.gallery_images.length > 1 && true,
+    infinite: product.gallery_images.length > 1,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const SliderComponent = Slider as unknown as React.ComponentType<any>;
 
   return (
     <Box className="product-details__page">
@@ -34,11 +45,35 @@ const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
           <ArrowBackBtn />
           {product?.name}
         </Typography>
-        <Grid2 container spacing={2}>
-          <Grid2 size={{ xs: 12, md: 6 }}>
-            <Image src={productImage} alt={product?.name} height={500} width={500} />
-          </Grid2>
-          <Grid2 size={{ xs: 12, md: 6 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+          <Box sx={{ position: 'relative', marginBottom: 4, width: { xs: '100%', md: '50%' } }}>
+            {product?.gallery_images?.length > 1 ? (
+              <SliderComponent {...settings}>
+                {product?.gallery_images.map((src, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      position: 'relative',
+                      overflow: 'hidden',
+                      borderRadius: 1,
+                    }}
+                  >
+                    <Image
+                      style={{ objectFit: 'cover' }}
+                      priority
+                      src={src.sizes['vs-container']}
+                      alt={`Slide ${index + 1}`}
+                      height={500}
+                      width={500}
+                    />
+                  </Box>
+                ))}
+              </SliderComponent>
+            ) : (
+              <Image src={productImage} alt={product?.name} height={500} width={500} />
+            )}
+          </Box>
+          <Box sx={{ flex: 1 }}>
             <Typography variant="body1" gutterBottom>
               {product?.brand_name}
             </Typography>
@@ -47,21 +82,14 @@ const productsContainer: React.FC<productsContainerProps> = ({ product }) => {
             </Typography>
             {isHighEndItem && <HighEndItemMessage />}
             <ShowHtml text={product?.description} />
-            <ItemRequestForm product={product} isRequestOnly={isRequestOnly} />
-            {isLookbookAvailable && (
-              <>
-                <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-                  <ReferCard heading={lookBookHeading} text={lookBookDescription} href={lookbookPdf} type="lookbook" />
-                </Box>
-                <RequestItemFormButton postId={product?.id} />
-              </>
-            )}
-            {showOffers && <RedeemBox fetchOffers={showOffers} />}
-          </Grid2>
-        </Grid2>
+            <ItemRequestForm product={product} isRequestOnly={isRequestOnly}>
+              {showOffers && <RedeemBox fetchOffers={showOffers} />}
+            </ItemRequestForm>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );
 };
 
-export default productsContainer;
+export default ProductsContainer;

@@ -12,6 +12,7 @@ import CustomPagination from './CustomPagination';
 import './CustomStepper/CustomStepper.scss';
 import en from '@/helpers/lang';
 import { DefaultImageFallback } from '@/helpers/enums';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface OrderListingProps {
   totalPages: number;
@@ -54,7 +55,10 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                     ? order?.opportunity?.image?.sizes?.medium
                     : DefaultImageFallback.Placeholder;
             return (
-              <ProgressBarLink href={`/my-orders/${order?.id}?page=${currentPage}`} key={order?.id}>
+              <ProgressBarLink
+                href={withSearchParams(() => paths.root.orderDetails.getHref(order?.id), { page: currentPage })}
+                key={order?.id}
+              >
                 <Box className="order-product__item" display="flex" justifyContent="space-between" alignItems="center">
                   <Box display="flex" alignItems="center" justifyContent="center">
                     <Image

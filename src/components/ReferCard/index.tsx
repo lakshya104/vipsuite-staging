@@ -24,7 +24,7 @@ const ReferCard: React.FC<ReferCardProps> = ({ heading, text, href, type, descri
       <CardContent>
         <Typography variant="h2">{heading}</Typography>
         <Typography variant="body1">{text}</Typography>
-        <a target="_blank" href={href} rel="noreferrer"></a>
+        {href && <a target="_blank" href={href} rel="noreferrer"></a>}
         <EastIcon />
       </CardContent>
     </Card>

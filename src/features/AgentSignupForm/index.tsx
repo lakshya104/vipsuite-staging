@@ -17,6 +17,7 @@ import { AgentSignUp, VerifyEmail } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
+import { paths } from '@/helpers/paths';
 
 const AgentSignupForm = () => {
   const [error, setError] = useState<string>('');
@@ -319,7 +320,7 @@ const AgentSignupForm = () => {
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
           Already have an account?{' '}
           <Link
-            href={'/login'}
+            href={paths.auth.login.getHref()}
             style={{
               textDecoration: 'underline',
               padding: 0,

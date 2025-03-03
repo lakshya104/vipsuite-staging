@@ -1,7 +1,8 @@
 import * as z from 'zod';
 import {
   brandNameValidation,
-  contactNameValidation,
+  contactFirstNameValidation,
+  contactLastNameValidation,
   passwordValidation,
   phoneValidation,
   requiredEmailValidation,
@@ -10,7 +11,8 @@ import {
 
 export const BrandSignupSchema = z.object({
   brand_name: brandNameValidation,
-  contact_name: contactNameValidation,
+  first_name: contactFirstNameValidation,
+  last_name: contactLastNameValidation,
   email: requiredEmailValidation,
   phone: phoneValidation,
   password: passwordValidation,
@@ -19,7 +21,8 @@ export const BrandSignupSchema = z.object({
 
 export interface BrandSignupValues {
   brand_name: string;
-  contact_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
   password: string;
@@ -28,7 +31,8 @@ export interface BrandSignupValues {
 
 export const defaultValues = {
   brand_name: '',
-  contact_name: '',
+  first_name: '',
+  last_name: '',
   email: '',
   phone: '',
   password: '',

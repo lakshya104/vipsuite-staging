@@ -7,6 +7,7 @@ import { ProgressBarLink } from './ProgressBar';
 import DeleteAddressBtn from '@/components/DeleteAddressBtn';
 import { Address } from '@/interfaces';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface AddressListingProps {
   addresses: Address[];
@@ -29,10 +30,10 @@ const AddressListing: React.FC<AddressListingProps> = ({ addresses }) => {
                 <Typography variant="body2">{`(${add?.phone})`}</Typography>
               </Box>
               <Box className="address__list-action">
-                <ProgressBarLink href={`/my-addresses/edit/${add.unique_id}`}>
+                <ProgressBarLink href={paths.root.editAddress.getHref(add?.unique_id)}>
                   <EditOutlinedIcon />
                 </ProgressBarLink>
-                <DeleteAddressBtn addressId={add.unique_id} startTransition={startTransition} />
+                <DeleteAddressBtn addressId={add?.unique_id} startTransition={startTransition} />
               </Box>
             </Box>
           );

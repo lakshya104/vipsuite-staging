@@ -6,9 +6,9 @@ import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
 import { cookies } from 'next/headers';
 import { GetSession } from './api-manager/manager';
-import { getVipId } from '@/helpers/utils';
 import { CookieName } from '@/helpers/enums';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
+import { getProfileId } from '@/helpers/utils';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -61,27 +61,37 @@ export async function revalidateAllData() {
 }
 
 export async function createVipIdCookie(id: string) {
-  (await cookies()).set(CookieName.VipId, id);
+  (await cookies()).set(CookieName.ProfileId, id);
 }
 
+export async function createIsAgentCookie(bool: string) {
+  (await cookies()).set(CookieName.IsAgent, bool);
+}
+
+export async function createSkipCookie() {
+  (await cookies()).set(CookieName.SkipProfile, 'true');
+}
 export async function deleteVipCookies() {
-  (await cookies()).delete(CookieName.VipId);
+  await Promise.all([
+    (await cookies()).delete(CookieName.ProfileId),
+    (await cookies()).delete(CookieName.SkipProfile),
+    (await cookies()).delete(CookieName.IsAgent),
+  ]);
 }
 
 export async function getVipIdCookie() {
-  return (await cookies()).get(CookieName.VipId);
+  return (await cookies()).get(CookieName.ProfileId);
 }
 
 export async function getAuthData() {
   try {
-    const cookieStore = await cookies();
-    const userId = cookieStore.get(CookieName.VipId);
-    const session = await GetSession();
+    const [cookieStore, session] = await Promise.all([cookies(), GetSession()]);
+    const userId = cookieStore.get(CookieName.ProfileId);
     const { token, role } = session;
-    const vipId = getVipId(role, userId, session);
+    const profileId = getProfileId(role, userId, session);
 
-    return { token, vipId };
+    return { token, profileId };
   } catch {
-    return { token: '', vipId: 0 };
+    return { token: '', profileId: 0 };
   }
 }

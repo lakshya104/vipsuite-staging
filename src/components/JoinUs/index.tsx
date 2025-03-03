@@ -5,6 +5,7 @@ import './JoinUs.scss';
 import { ProgressBarLink } from '../ProgressBar';
 import { ContentModule } from '@/interfaces/public-page';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface JoinUsProps {
   data: ContentModule;
@@ -17,7 +18,7 @@ const JoinUs: React.FC<JoinUsProps> = ({ data }) => {
           <Grid2 size={{ xs: 12, sm: 4 }}>
             <Box className="joinus-section__head">
               <Typography variant="h2">{data?.heading}</Typography>
-              <ProgressBarLink href={'/on-boarding'}>
+              <ProgressBarLink href={paths.auth.onBoarding.getHref()}>
                 <Button variant="outlined" className="button button--white">
                   {data?.cta?.cta_text || en.joinUs.findOut}
                 </Button>

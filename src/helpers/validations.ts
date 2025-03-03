@@ -99,8 +99,12 @@ export const brandNameValidation = z.string().min(2, {
   message: en.signup.errorMessage.brandName,
 });
 
-export const contactNameValidation = z.string().min(2, {
-  message: en.signup.errorMessage.contactName,
+export const contactFirstNameValidation = z.string().min(2, {
+  message: en.signup.errorMessage.contactFirstName,
+});
+
+export const contactLastNameValidation = z.string().min(2, {
+  message: en.signup.errorMessage.contactLastName,
 });
 
 export const loginPasswordValidation = z.string().min(1, {
@@ -188,3 +192,5 @@ export const jobTitleValidation = z
 export const roleValidation = z.string().min(1, { message: en.landingForm.errorMessage.roleRequired });
 
 export const genderValidation = z.string().min(1, { message: 'Gender is required' });
+
+export const MessageBoxValidation = z.string().trim().min(1, { message: en.messageDetail.fieldErrMessage });

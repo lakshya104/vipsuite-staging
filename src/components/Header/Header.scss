@@ -34,6 +34,15 @@ header.site-header {
     margin: 0 auto;
     width: 100%;
     max-width: mixins.rem(1324);
+    &.site-header {
+      &__logo-center {
+        @include mixins.relative();
+        .site-header__brand {
+          @include mixins.absolute(left 50% top 50%);
+          @include mixins.transform(translate(-50%, -50%));
+        }
+      }
+    }
   }
   &__navbar {
     display: none;

@@ -10,11 +10,13 @@ import {
   EventFeedbackData,
   CreateOrderData,
   RsvpFormValues,
+  AgentEditFormDataObject,
+  BrandEditFormDataObject,
 } from '@/interfaces';
 import { Endpoints } from './constants';
 import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
-import { Instance, InstanceWithoutHeaders } from './instance';
+import { Instance, InstanceWithoutHeaders, InstanceWithTokenOnly } from './instance';
 import { Question } from '@/interfaces/events';
 import { PostType } from '@/helpers/enums';
 
@@ -32,7 +34,7 @@ export const GetSession = async () => {
 export const GetLoginUserId = async () => {
   try {
     const session = await auth();
-    const id = (session?.user as unknown as Session)?.vip_profile_id || null;
+    const id = (session?.user as unknown as Session)?.profile_id || null;
     if (!id) {
       throw new Error('User ID not found in session');
     }
@@ -55,7 +57,7 @@ export const GetUserIdAndToken = async () => {
   const session = await auth();
   const user = session?.user as unknown as Session;
   return {
-    id: user?.vip_profile_id,
+    id: user?.profile_id,
     token: user?.token,
   };
 };
@@ -78,7 +80,7 @@ export const GetCustomerIdTokenAndUserId = async () => {
   return {
     id: user?.id,
     token: user?.token,
-    userId: user?.vip_profile_id,
+    userId: user?.profile_id,
   };
 };
 
@@ -115,11 +117,10 @@ export const BrandSignUp = async (formData: BrandSignUpRequestBody) => {
   }
 };
 
-export const AgentProfileUpdate = async (agentId: number, formData: FormData, token: string) => {
+export const AgentProfileUpdate = async (agentId: number, formData: AgentEditFormDataObject, token: string) => {
   try {
     const response = await InstanceWithoutHeaders.post(Endpoints.agentProfileUpdate(agentId), formData, {
       headers: {
-        'Content-Type': 'auto',
         Authorization: `Bearer ${token}`,
       },
     });
@@ -187,7 +188,7 @@ export const GetEditVipProfile = async (token: string, vipId: number) => {
     const response = await InstanceWithoutHeaders.get(Endpoints.getProfile, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'vip-profile-id': vipId?.toString(),
+        'profile-id': vipId?.toString(),
       },
     });
     return response.data;
@@ -250,9 +251,9 @@ export const GetBrandProducts = async (id: number) => {
   }
 };
 
-export const GetBrandProductDetail = async (id: number) => {
+export const GetBrandProductDetail = async (oppId: number, id: number) => {
   try {
-    const response = await Instance.get(Endpoints.getBrandProductDetails(id));
+    const response = await Instance.get(Endpoints.getBrandProductDetails(oppId, id));
     return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };
@@ -300,7 +301,7 @@ export const GetProfileBuilderContent = async () => {
 
 export const UpdateProfile = async (id: number, profile: UserProfile) => {
   try {
-    const response = await Instance.post(`${Endpoints.updateProfile}/${id}`, profile);
+    const response = await InstanceWithTokenOnly.post(`${Endpoints.updateProfile}/${id}`, profile);
     return response.data;
   } catch (error) {
     console.error('Error during updating profile:', error);
@@ -311,7 +312,7 @@ export const UpdateProfile = async (id: number, profile: UserProfile) => {
 
 export const CreateVipProfile = async (profile: UserProfile) => {
   try {
-    const response = await Instance.post(Endpoints.createProfile, profile);
+    const response = await InstanceWithTokenOnly.post(Endpoints.createProfile, profile);
     return response.data;
   } catch (error) {
     console.error('Error during creating profile:', error);
@@ -389,9 +390,9 @@ export const GetVipCart = async () => {
   }
 };
 
-export const RemoveVipCartItem = async (id: number) => {
+export const RemoveVipCartItem = async (id: number, payload: { opportunity_id: string }) => {
   try {
-    const response = await Instance.delete(Endpoints.removeVipCartItem(id));
+    const response = await Instance.delete(Endpoints.removeVipCartItem(id), { data: payload });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -543,7 +544,10 @@ export const OrderFeedback = async (orderNumber: number, data: OrderFeedbackData
   }
 };
 
-export const AddItemToCart = async (id: number, payload?: { product_id: number; questions: Question[] }) => {
+export const AddItemToCart = async (
+  id: number,
+  payload?: { product_id?: number; questions?: Question[]; opportunity_id: string },
+) => {
   try {
     const addItemResponse = await Instance.post(Endpoints.addItemToCart(id), payload);
     return addItemResponse.data;
@@ -751,6 +755,26 @@ export const GetWebsiteContent = async () => {
 export const GetComingSoonData = async () => {
   try {
     const response = await Instance.get(Endpoints.getComingSoonData);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const BrandProfileUpdate = async (agentId: number, formData: BrandEditFormDataObject) => {
+  try {
+    const response = await InstanceWithTokenOnly.post(Endpoints.agentProfileUpdate(agentId), formData);
+    return response.data;
+  } catch (error) {
+    console.error('Error during sending message:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending message';
+    throw new Error(errorMessage);
+  }
+};
+
+export const GetBrandProfile = async () => {
+  try {
+    const response = await InstanceWithTokenOnly.get(Endpoints.getProfile);
     return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };

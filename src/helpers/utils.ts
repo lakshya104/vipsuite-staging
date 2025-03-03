@@ -140,8 +140,12 @@ export const formatString = (str: string) => {
   }
 };
 
-export const getVipId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number | null => {
-  return role === UserRole.Vip ? Number(session?.vip_profile_id) : userId?.value ? Number(userId?.value) : null;
+export const getProfileId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number | null => {
+  return role === UserRole.Vip || role === UserRole.Brand
+    ? Number(session?.profile_id)
+    : userId?.value
+      ? Number(userId?.value)
+      : null;
 };
 
 export const getRelativePath = (url: string) => {
@@ -175,44 +179,46 @@ export const isValidEmail = (email: string) => {
 };
 
 export const mapQuestionsToSchema = (questions: Question[]) => {
-  const schema = questions.reduce(
-    (acc, question) => {
-      const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-      switch (question.input_type) {
-        case 'text':
-        case 'textarea':
-        case 'dropdown':
-        case 'radio':
-        case 'date':
-        case 'datetime':
-        case 'time':
-          acc[fieldName] = question.is_required
-            ? z.string().min(1, { message: 'This field is required' })
-            : z.string().optional().or(z.literal(''));
-          break;
+  if (questions) {
+    const schema = questions?.reduce(
+      (acc, question) => {
+        const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+        switch (question.input_type) {
+          case 'text':
+          case 'textarea':
+          case 'dropdown':
+          case 'radio':
+          case 'date':
+          case 'datetime':
+          case 'time':
+            acc[fieldName] = question.is_required
+              ? z.string().min(1, { message: 'This field is required' })
+              : z.string().optional().or(z.literal(''));
+            break;
 
-        case 'checkboxes':
-          acc[fieldName] = question.is_required
-            ? z.array(z.string()).min(1, { message: 'This field is required' })
-            : z.array(z.string().optional().or(z.literal('')));
-          break;
+          case 'checkboxes':
+            acc[fieldName] = question.is_required
+              ? z.array(z.string()).min(1, { message: 'This field is required' })
+              : z.array(z.string().optional().or(z.literal('')));
+            break;
 
-        case 'file_upload':
-          acc[fieldName] = question.is_required
-            ? z.instanceof(File).refine((val) => val, { message: 'This field is required' })
-            : z.instanceof(File).optional();
-          break;
+          case 'file_upload':
+            acc[fieldName] = question.is_required
+              ? z.instanceof(File).refine((val) => val, { message: 'This field is required' })
+              : z.union([z.instanceof(File), z.null(), z.string().optional()]);
+            break;
 
-        default:
-          acc[fieldName] = z.string().optional().or(z.literal(''));
-      }
+          default:
+            acc[fieldName] = z.string().optional().or(z.literal(''));
+        }
 
-      return acc;
-    },
-    {} as Record<string, z.ZodType<unknown>>,
-  );
+        return acc;
+      },
+      {} as Record<string, z.ZodType<unknown>>,
+    );
 
-  return z.object(schema);
+    return z.object(schema);
+  }
 };
 
 export const timeAgo = (date: string) => {
@@ -225,4 +231,8 @@ export const extractDate = (timestamp: string) => {
 
 export const calculateRelativeTime = (date: string): string => {
   return moment.utc(date).local().startOf('seconds').fromNow();
+};
+
+export const isNonEmptyString = (str: string | undefined | null): boolean => {
+  return typeof str === 'string' && str.trim().length > 0;
 };

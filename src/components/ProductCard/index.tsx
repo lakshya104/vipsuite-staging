@@ -8,6 +8,7 @@ import { truncateDescription } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface ProductCardProps {
   data: BrandProduct;
@@ -20,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const productDesctiption = truncateDescription(short_description, 18);
   return (
     <Card className="product-card" sx={{ cursor: 'pointer' }}>
-      <ProgressBarLink href={`/products/${id}`}>
+      <ProgressBarLink href={paths.root.productDetails.getHref(id, id)}>
         <Image src={productImage} alt={name} height={768} width={768} />
         <Box>
           <CardContent className="product-card__content">

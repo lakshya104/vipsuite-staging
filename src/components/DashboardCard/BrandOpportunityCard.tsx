@@ -8,8 +8,7 @@ import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import './Dashboard.scss';
 import { Post } from '@/interfaces/brand';
 import { first } from 'lodash';
-import { formatEventDates, truncateDescription } from '@/helpers/utils';
-import ShowHtml from '../ShowHtml';
+import { formatEventDates } from '@/helpers/utils';
 import { paths } from '@/helpers/paths';
 
 interface BrandOpportunityCardProps {
@@ -30,9 +29,6 @@ const BrandOpportunityCard: React.FC<BrandOpportunityCardProps> = ({ type, oppor
       break;
     case PostType.Event:
       href = paths.root.eventDetails.getHref(id);
-      break;
-    case PostType.Product:
-      href = paths.root.productyDetails.getHref(id);
       break;
     default:
       href = paths.root.home.getHref();
@@ -76,10 +72,7 @@ const BrandOpportunityCard: React.FC<BrandOpportunityCardProps> = ({ type, oppor
               </Typography>
             </Box>
           )}
-          <Typography variant="h2">{he.decode(title)}</Typography>
-          {type === PostType.Product && opportunity?.acf?.short_description && (
-            <ShowHtml text={truncateDescription(opportunity?.acf?.short_description, 30)} />
-          )}
+          <Typography variant="h2">{he.decode(title || '')}</Typography>
           {type === PostType.Event && (
             <>
               {opportunity.acf.event_start_date && opportunity?.acf?.event_end_date && (

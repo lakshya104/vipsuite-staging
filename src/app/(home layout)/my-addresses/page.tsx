@@ -6,6 +6,7 @@ import './address.scss';
 import MyAddressesPage from '@/site-pages/MyAddressesPage';
 import MyAddressesPageLoading from '@/site-pages/MyAddressesPage/loading';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 const AddressPage = async () => {
   return (
@@ -14,7 +15,7 @@ const AddressPage = async () => {
         <Box className="address-page__head">
           <Typography variant="h2" align="center" component="h1">
             {en.address.title}
-            <ProgressBarLink className="button button--black" href="/my-addresses/add">
+            <ProgressBarLink className="button button--black" href={paths.root.addAddress.getHref()}>
               {en.address.addBtn} <AddIcon />
             </ProgressBarLink>
           </Typography>

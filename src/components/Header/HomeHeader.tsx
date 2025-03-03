@@ -24,65 +24,67 @@ import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
 import { signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
+import { paths } from '@/helpers/paths';
 
 const vipMenuItems = [
   {
     label: 'Basket',
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
-    href: '/basket',
+    href: paths.root.basket.getHref(),
   },
   {
     label: 'My Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-addresses',
-  },
-  {
-    label: 'My Products',
-    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
-    href: '/products',
+    href: paths.root.addresses.getHref(),
   },
   {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: '/login-security',
+    href: paths.root.loginSecurity.getHref(),
   },
-  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
-  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
+  {
+    label: 'Contact',
+    icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
+    href: paths.root.contact.getHref(),
+  },
+  {
+    label: 'Help & FAQs',
+    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
+    href: paths.root.contact.getHref(),
+  },
 ];
 
 const agentMenuItems = [
   {
-    label: 'My Profile',
-    icon: <Image src={'/img/user.svg'} alt="Logo" width={20} height={20} priority />,
-    href: '/my-profile',
-  },
-  {
     label: 'My VIPs',
     icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-vips',
+    href: paths.root.myVips.getHref(),
   },
   {
     label: 'Basket',
     icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
-    href: '/basket',
-  },
-  {
-    label: 'VIP Products',
-    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
-    href: '/products',
+    href: paths.root.basket.getHref(),
   },
   {
     label: 'VIP Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
-    href: '/my-addresses',
+    href: paths.root.addresses.getHref(),
   },
   {
     label: 'Login & Security',
     icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: '/login-security',
+    href: paths.root.loginSecurity.getHref(),
   },
-  { label: 'Contact', icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />, href: '/contact' },
-  { label: 'Help & FAQs', icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />, href: '/help-faq' },
+  {
+    label: 'Contact',
+    icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
+    href: paths.root.contact.getHref(),
+  },
+  {
+    label: 'Help & FAQs',
+    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
+    href: paths.root.helpFaq.getHref(),
+  },
 ];
 
 interface HomeHeaderProps {
@@ -109,7 +111,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
     startTransition(async () => {
       try {
         await Promise.all([LogOut(token), clearAll(), signOutAction()]);
-        router.push('/');
+        router.push(paths.landing.getHref());
       } catch (error) {
         openToaster('Error during logging out. ' + error);
       }
@@ -121,7 +123,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
       <AppBar className="site-header site-header__logged" position="sticky">
         <Toolbar className="site-header__wrapper">
           <Box className="site-header__brand">
-            <ProgressBarLink href={'/home'} title={'THE VIP SUITE'}>
+            <ProgressBarLink href={paths.root.home.getHref()} title={'THE VIP SUITE'}>
               <Image src="/Logo.svg" alt="The VIP Suite Site logo" height={25} width={122} priority />
             </ProgressBarLink>
           </Box>
@@ -168,7 +170,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
           <Drawer className="drawer-menu" anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
             <Box className="drawer-menu__wrapper" role="presentation">
               <Box className="drawer-menu__header">
-                <ProgressBarLink href={'/home'} title={'THE VIP SUITE'} className="logo">
+                <ProgressBarLink href={paths.root.home.getHref()} title={'THE VIP SUITE'} className="logo">
                   <Image src="/vipsblack.png" alt="The VIP Suite Site logo" height={13} width={114} priority />
                 </ProgressBarLink>
                 <CloseIcon onClick={toggleDrawer(false)} />

@@ -184,11 +184,6 @@ form {
     border-radius: mixins.rem(37.5) !important;
     border-color: var(--color-textBlack);
     @include mixins.fontSize(15);
-    .site-dialog & {
-      height: mixins.rem(40);
-      padding: mixins.rem(10) mixins.rem(20);
-      top: 0;
-    }
   }
   input {
     &:-webkit-autofill {
@@ -211,6 +206,8 @@ form {
     &:not(.MuiInputLabel-shrink) {
       top: 0;
       left: mixins.rem(10);
+      line-height: 1rem;
+      margin-bottom: mixins.rem(8);
     }
   }
   .MuiBox-root {
@@ -411,17 +408,15 @@ div.site-dialog {
       line-height: 1.54;
       @include mixins.fontSize(13);
     }
-    legend {
-      > span {
-        display: none !important;
-      }
-    }
     p {
-      line-height: 1.54;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5625rem;
-      font-weight: 500;
-      @include mixins.fontSize(13);
+      &:not(.Mui-error) {
+        line-height: 1.54;
+        letter-spacing: -0.01em;
+        margin-bottom: 0.5625rem;
+        font-weight: 500;
+        color: var(--color-textBlack);
+        @include mixins.fontSize(16);
+      }
       strong {
         font-weight: 500;
       }
@@ -434,12 +429,6 @@ div.site-dialog {
       margin-bottom: mixins.rem(16);
       input {
         margin-right: mixins.rem(9);
-      }
-    }
-    .form-radioBtn,
-    .form-checkbox {
-      .MuiFormControlLabel-label {
-        @include mixins.fontSize(13);
       }
     }
     .form-radioBtn {
@@ -467,10 +456,21 @@ div.site-dialog {
   }
   button {
     width: 100%;
+    margin-top: -0.3125rem;
+    margin-right: 0;
   }
   form {
     .Mui-error {
-      margin-left: 0;
+      margin-left: 0 !important ;
+    }
+  }
+  &.opportunity__form {
+    .site-dialog__content {
+      .site-dialog__title {
+        @media only screen and (min-width: 768px) {
+          @include mixins.fontSize(16);
+        }
+      }
     }
   }
 }
@@ -519,4 +519,18 @@ section {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.field-error {
+  margin-left: mixins.rem(14) !important;
+  font-size: mixins.rem(12) !important;
+  line-height: 1.66 !important;
+}
+
+.site-dialog__content {
+  fieldset {
+    legend {
+      height: mixins.rem(11);
+    }
+  }
 }

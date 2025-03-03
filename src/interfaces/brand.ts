@@ -105,17 +105,6 @@ interface Category {
   slug: string;
 }
 
-interface Image {
-  id: number;
-  date_created: string;
-  date_created_gmt: string;
-  date_modified: string;
-  date_modified_gmt: string;
-  src: string;
-  name: string;
-  alt: string;
-}
-
 export interface AttributeOption {
   id: number;
   name: string;
@@ -155,10 +144,16 @@ export interface Product {
     lookbook_description: string;
     lookbook_pdf: string;
     show_offers: boolean;
-    web_detail_image: {
-      sizes: ImageSizes;
-    };
+    is_request_only: boolean;
   };
+  images: {
+    sizes: ImageSizes;
+  }[];
+  gallery_images: {
+    sizes: ImageSizes;
+  }[];
+  cta_label: string;
+  opportunity_id: string;
   is_high_end_item: boolean;
   slug: string;
   permalink: string;
@@ -214,8 +209,7 @@ export interface Product {
   purchase_note: string;
   categories: Category[];
   tags: string[];
-  images: Image[];
-  attributes: AttributeOption[];
+  product_attributes: AttributeOption[];
   default_attributes: string[];
   variations: number[];
   grouped_products: string[];

@@ -4,10 +4,11 @@ import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { first, isUndefined } from 'lodash';
 import he from 'he';
-import { formatEventDates, truncateDescription, wrapInParagraph } from '@/helpers/utils';
+import { formatEventDates } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import './Dashboard.scss';
+import { paths } from '@/helpers/paths';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -34,27 +35,34 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   }, []);
 
   const itemType = item.type;
-  const isProduct = itemType === 'product';
-  const isEvent = itemType === 'event';
-  const isOpportunity = itemType === 'opportunity';
+  const isEvent = itemType === PostType.Event;
+  const isOpportunity = itemType === PostType.Opportunity;
   const brandLogo = item?.acf?.brand_logo?.url;
   const postTitle = he.decode(item?.title?.rendered);
   const postId = item?.id;
-  const postPath = isProduct ? 'products' : isEvent ? 'events' : isOpportunity ? 'opportunities' : '';
   const image = getImage(item);
   const featuredLabels = [
     { condition: isEvent && item?.acf?.is_featured, text: 'Featured Event' },
     { condition: isOpportunity && item?.acf?.is_featured, text: 'Featured Opportunity' },
-    { condition: isProduct && item?.acf?.is_request_only, text: 'By Request Only' },
-    {
-      condition: isProduct && item?.acf?.is_featured,
-      text: 'Featured Product',
-      extraClass: 'dashboard-card__item-featuredProduct',
-    },
   ];
+  let href: string;
+  switch (itemType) {
+    case PostType.Opportunity:
+      href = paths.root.opportunityDetails.getHref(postId);
+      break;
+    case PostType.Event:
+      href = paths.root.eventDetails.getHref(postId);
+      break;
+    // case PostType.Product:
+    //   href = paths.root.productDetails.getHref(postId);
+    //   break;
+    default:
+      href = paths.root.home.getHref();
+      break;
+  }
 
   return (
-    <ProgressBarLink href={`${postPath}/${postId}`}>
+    <ProgressBarLink href={href}>
       <Box className="dashboard-card">
         <Image
           src={image || DefaultImageFallback.Placeholder}
@@ -76,7 +84,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             </Typography>
           </Box>
         )}
-        {(isEvent || isProduct) && brandLogo && (
+        {isEvent && brandLogo && (
           <Box className="dashboard-card__item-brandImage">
             <Image
               src={brandLogo}
@@ -91,28 +99,16 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
         )}
         <Box className="dashboard-card__item-featured">
           {featuredLabels.map(
-            ({ condition, text, extraClass = '' }, index) =>
+            ({ condition, text }, index) =>
               condition && (
-                <Box key={index} className={`dashboard-card__item-featuredBox ${extraClass}`}>
+                <Box key={index} className={`dashboard-card__item-featuredBox`}>
                   <Typography className="dashboard-card__item-featuredText" variant="overline">
                     {text}
                   </Typography>
                 </Box>
               ),
           )}
-          {isClient && (
-            <>
-              <Typography variant="h2" dangerouslySetInnerHTML={{ __html: postTitle || '' }} />
-              {isProduct && item?.short_description && (
-                <Typography
-                  variant="body2"
-                  dangerouslySetInnerHTML={{
-                    __html: truncateDescription(wrapInParagraph(item?.short_description), 30) || '',
-                  }}
-                />
-              )}
-            </>
-          )}
+          {isClient && <Typography variant="h2" dangerouslySetInnerHTML={{ __html: postTitle || '' }} />}
           {isEvent && (
             <>
               <Typography variant="body2">

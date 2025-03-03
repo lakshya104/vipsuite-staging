@@ -8,10 +8,11 @@ import en from '@/helpers/lang';
 
 interface ProductDetailsPageProps {
   productId: number;
+  opportunityId: number;
 }
 
-const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ productId }) => {
-  const { data: product, error } = await GetBrandProductDetail(productId);
+const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ opportunityId, productId }) => {
+  const { data: product, error } = await GetBrandProductDetail(opportunityId, productId);
   if (error) {
     return <ErrorHandler error={error} errMessage={en.products.errMessage} />;
   }

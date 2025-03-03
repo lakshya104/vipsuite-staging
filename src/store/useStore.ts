@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { UserRole } from '@/helpers/enums';
-import { Question } from '@/interfaces/events';
 import { create } from 'zustand';
 import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
+import { UserRole } from '@/helpers/enums';
+import { Question } from '@/interfaces/events';
 
 interface OrderState {
   orderCount: number;
@@ -41,12 +41,16 @@ interface RequestOnlyState {
   requestProductId: number | null;
   questions: Question[];
   requestESign: string | null;
+  opportunityId: string;
+  setOpportunityId: (id: string) => void;
+  clearOpportunityId: () => void;
   setRequestESign: (sign: string) => void;
   clearRequestESign: () => void;
   setRequestProductId: (count: number) => void;
   clearRequestProductId: () => void;
   setQuestions: (questions: Question[]) => void;
   clearQuestions: () => void;
+  clearAllRequestStore: () => void;
 }
 
 export const useRequestOnlyStore = create<RequestOnlyState>()(
@@ -55,12 +59,16 @@ export const useRequestOnlyStore = create<RequestOnlyState>()(
       requestProductId: 0,
       questions: [],
       requestESign: '',
+      opportunityId: '',
+      setOpportunityId: (id) => set({ opportunityId: id }),
+      clearOpportunityId: () => set({ opportunityId: '' }),
       setRequestESign: (sign) => set({ requestESign: sign }),
       clearRequestESign: () => set({ requestESign: null }),
       setRequestProductId: (count) => set({ requestProductId: count }),
       clearRequestProductId: () => set({ requestProductId: null }),
       setQuestions: (questions) => set({ questions }),
       clearQuestions: () => set({ questions: [] }),
+      clearAllRequestStore: () => set({ requestProductId: null, questions: [], requestESign: null, opportunityId: '' }),
     }),
     {
       name: 'request-only-storage',

@@ -29,21 +29,18 @@ import ProductDetailsPageLoading from '@/site-pages/ProductDetailsPage/loading';
 //   }
 // }
 
-interface Params {
-  id: string;
-}
-
-interface PageProps {
-  params: Promise<Params>;
-}
-
-export default async function Page(props: PageProps) {
-  const params = await props.params;
-  const productId = parseInt(params?.id);
+export default async function Page(props: {
+  params: Promise<{ id: number }>;
+  searchParams: Promise<{ opportunity: string }>;
+}) {
+  const pageParams = await props.params;
+  const searchParams = await props.searchParams;
+  const productId = pageParams?.id;
+  const opportunityId = parseInt(searchParams?.opportunity as string);
   return (
     <Box className="product-details__page">
       <Suspense fallback={<ProductDetailsPageLoading />}>
-        <ProductDetailsPage productId={productId} />
+        <ProductDetailsPage productId={productId} opportunityId={opportunityId} />
       </Suspense>
     </Box>
   );

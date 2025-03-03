@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface EventsDialogProps {
   event: EventDetails;
@@ -33,7 +34,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
       return;
     }
     setConfirmationOpen(false);
-    router.push('/events');
+    router.push(paths.root.events.getHref());
   };
 
   const handleToasterMessage = (type: 'error' | 'success', message: string) => {
@@ -53,7 +54,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
           disabled={event?.acf?.is_rsvp}
           onClick={handleDialogOpen}
         >
-          {event?.acf?.is_rsvp ? 'Already Responded' : ' RSVP'}
+          {event?.acf?.is_rsvp ? 'Already Responded' : 'RSVP'}
         </Button>
       </Box>
 
@@ -86,7 +87,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
               variant="contained"
               onClick={() => {
                 setConfirmationOpen(false);
-                router.push('/events');
+                router.push(paths.root.events.getHref());
               }}
               className="button button--black"
             >

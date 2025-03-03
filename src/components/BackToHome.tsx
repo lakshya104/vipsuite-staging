@@ -1,10 +1,11 @@
 'use client';
 import React, { useTransition } from 'react';
 import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
-import revalidatePathAction from '@/libs/actions';
 import { useRouter, useSearchParams } from 'next/navigation';
+import revalidatePathAction, { createSkipCookie } from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
+import { paths } from '@/helpers/paths';
 
 interface BackToHomeProps {
   role?: UserRole;
@@ -16,18 +17,20 @@ const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isProfileEdit = searchParams.get('profile-route');
-  const isApplicationAcceptedShown = searchParams.get('accepted');
 
   const redirectPath =
-    isProfileEdit || role === UserRole.Vip
-      ? '/profile'
-      : isApplicationAcceptedShown
-        ? '/my-vips?accepted=true'
-        : '/my-vips';
+    role === UserRole.Vip && !isProfileEdit
+      ? paths.root.home.getHref()
+      : isProfileEdit
+        ? paths.root.profile.getHref()
+        : paths.root.myVips.getHref();
 
-  const handleBack = () => {
-    startTransition(() => {
-      revalidatePathAction('/profile');
+  const handleBack = async () => {
+    startTransition(async () => {
+      revalidatePathAction(paths.root.profile.getHref());
+      if (role === UserRole.Vip || role === UserRole.Agent) {
+        await createSkipCookie();
+      }
       router.push(redirectPath);
       clearVipId();
     });

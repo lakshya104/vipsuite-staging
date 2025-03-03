@@ -23,7 +23,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
     <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
         <ArrowBackBtn />
-        {he.decode(event?.title?.rendered)}
+        {he.decode(event?.title?.rendered || '')}
       </Typography>
       <EventContainer event={event} />
       <Box className="product-detail__content">
@@ -37,11 +37,11 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
               marginBottom: { xs: '5px', md: '10px' },
             }}
           >
-            {he.decode(event?.acf?.brand_name)}
+            {he.decode(event?.acf?.brand_name || '')}
           </Typography>
         )}
         <Typography variant="h2" gutterBottom>
-          {he.decode(event?.title?.rendered)}
+          {he.decode(event?.title?.rendered || '')}
         </Typography>
         <Typography variant="body1">
           <Box component="strong">{en.events.date}</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -

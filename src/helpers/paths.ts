@@ -3,12 +3,30 @@ export const paths = {
     getHref: () => '/',
   },
 
+  comingSoon: {
+    getHref: () => '/comingsoon',
+  },
+
   auth: {
     onBoarding: {
-      getHref: () => `/onBoarding`,
+      getHref: () => `/on-boarding`,
     },
     login: {
       getHref: () => `/login`,
+    },
+    forgotPassword: {
+      getHref: () => `/forgot-password`,
+    },
+    signup: {
+      vip: {
+        getHref: () => `/signup/vip`,
+      },
+      agent: {
+        getHref: () => `/signup/agent`,
+      },
+      brand: {
+        getHref: () => `/signup/brand`,
+      },
     },
   },
 
@@ -31,8 +49,8 @@ export const paths = {
     products: {
       getHref: () => '/products',
     },
-    productyDetails: {
-      getHref: (id: number) => `/products/${id}`,
+    productDetails: {
+      getHref: (oppId: number, id: number) => `/products/${id}?opportunity=${oppId}`,
     },
     brandDetails: {
       getHref: (id: number) => `/brand/${id}`,
@@ -42,6 +60,54 @@ export const paths = {
     },
     inbox: {
       getHref: () => '/inbox',
+    },
+    basket: {
+      getHref: () => '/basket',
+    },
+    orderDetails: {
+      getHref: (id: number) => `/my-orders/${id}`,
+    },
+    messageDetails: {
+      getHref: (id: number) => `/messages/${id}`,
+    },
+    addresses: {
+      getHref: () => '/my-addresses',
+    },
+    addAddress: {
+      getHref: () => '/my-addresses/add',
+    },
+    editAddress: {
+      getHref: (id: string) => `/my-addresses/edit/${id}`,
+    },
+    agentProfileBuilder: {
+      getHref: () => '/agent-profile-builder',
+    },
+    vipProfileBuilder: {
+      getHref: () => '/vip-profile-builder',
+    },
+    editProfile: {
+      getHref: () => '/edit-profile',
+    },
+    editBrandProfile: {
+      getHref: () => '/edit-brand-profile',
+    },
+    myVips: {
+      getHref: () => '/my-vips',
+    },
+    myProfile: {
+      getHref: () => '/my-profile',
+    },
+    brandHome: {
+      getHref: () => '/brand-home',
+    },
+    loginSecurity: {
+      getHref: () => '/login-security',
+    },
+    contact: {
+      getHref: () => '/contact',
+    },
+    helpFaq: {
+      getHref: () => '/help-faq',
     },
   },
 } as const;

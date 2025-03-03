@@ -10,11 +10,7 @@ const AgentEditProfilePage = async () => {
     return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
   }
   return (
-    <AgentEditProfileForm
-      profileDetails={profileDetails?.acf}
-      agentId={profileDetails?.agent_profile_id}
-      token={token}
-    />
+    <AgentEditProfileForm profileDetails={profileDetails?.acf} agentId={profileDetails?.profile_id} token={token} />
   );
 };
 

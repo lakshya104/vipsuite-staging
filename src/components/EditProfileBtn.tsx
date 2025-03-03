@@ -5,6 +5,7 @@ import { useEditVipIdStore } from '@/store/useStore';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface EditProfileBtnProps {
   vipId: number | undefined;
@@ -16,8 +17,11 @@ const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ vipId, role }) => {
   const { setVipId } = useEditVipIdStore();
   const editProfileLink =
     role === UserRole.Vip
-      ? '/vip-profile-builder?profile-route=true'
-      : `/agent-profile-builder?edit=true&profile-route=true`;
+      ? withSearchParams(() => paths.root.vipProfileBuilder.getHref(), { 'profile-route': 'true' })
+      : withSearchParams(() => paths.root.agentProfileBuilder.getHref(), {
+          'profile-route': 'true',
+          edit: 'true',
+        });
 
   const handleClick = () => {
     startTransition(() => {

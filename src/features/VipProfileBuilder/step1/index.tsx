@@ -181,7 +181,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
         <Typography
           color="error"
           textAlign="center"
-          sx={{ position: 'absolute', zIndex: 999, bottom: '10%', left: { xs: '24%', md: '32%' } }}
+          sx={{ position: 'absolute', zIndex: 999, bottom: '20%', left: { xs: '24%', md: '32%' } }}
         >
           {errors.interests.message}
         </Typography>

@@ -3,6 +3,8 @@ import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter';
 import { GetSession } from '@/libs/api-manager/manager';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
+import { UserRole } from '@/helpers/enums';
+import UnauthorizedMessage from '@/components/UnauthorizedMessage';
 
 export default async function AgentSectionLayout({
   children,
@@ -11,6 +13,9 @@ export default async function AgentSectionLayout({
 }>) {
   const session = await GetSession();
   const role = session?.role;
+  if (session?.role !== UserRole.Agent) {
+    return <UnauthorizedMessage />;
+  }
   return (
     <>
       <HomeHeader role={role} token={session.token} />

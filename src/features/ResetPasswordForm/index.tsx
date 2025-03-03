@@ -14,6 +14,7 @@ import { ResetPassword } from '@/libs/api-manager/manager';
 import { defaultValues, ResetPasswordFormValues, ResetPasswordSchema } from './schema';
 import UseToaster from '@/hooks/useToaster';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface ResetPasswordFormProps {
   userMail: string;
@@ -38,7 +39,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ userMail }) => {
   const handleDialogBoxDataChange = (open: boolean) => {
     setIsDialogOpen(open);
     setIsPending(true);
-    router.push('/login');
+    router.push(paths.auth.login.getHref());
   };
 
   const {

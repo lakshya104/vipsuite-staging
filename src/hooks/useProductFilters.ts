@@ -6,26 +6,26 @@ import { Product, FilterDropdown } from '@/interfaces/brand';
 import { getAttributes, getFilteredProductVariations } from '@/helpers/product';
 
 export const useProductFilters = (product?: Product) => {
-  const { attributes = [], product_variations: productVariations = [] } = product ?? {};
+  const { product_attributes = [], product_variations: productVariations = [] } = product ?? {};
 
   const [selectedFilters, setSelectedFilters] = useState<FilterDropdown[]>([]);
 
   const [dropdowns, setDropdowns] = useState<FilterDropdown[][]>([]);
 
   useEffect(() => {
-    const firstDropDown = getAttributes(productVariations, [], first(attributes)?.name);
+    const firstDropDown = getAttributes(productVariations, [], first(product_attributes)?.name);
 
     if (firstDropDown) {
       setDropdowns([firstDropDown]);
     }
-  }, [attributes, productVariations]);
+  }, [product_attributes, productVariations]);
 
   const onChangeDropDown = (selectedFilter: FilterDropdown, index: number) => {
     const newSelectedFilters = [...take(selectedFilters, index), selectedFilter];
 
     const nextIndex = index + 1;
 
-    const nextDropdown = getAttributes(productVariations, newSelectedFilters, nth(attributes, nextIndex)?.name);
+    const nextDropdown = getAttributes(productVariations, newSelectedFilters, nth(product_attributes, nextIndex)?.name);
 
     const newDropdowns = [...take(dropdowns, nextIndex), ...(nextDropdown ? [nextDropdown] : [])];
 

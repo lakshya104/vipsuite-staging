@@ -9,6 +9,7 @@ import { calculateRelativeTime } from '@/helpers/utils';
 import { isEmpty } from 'lodash';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface MessagesProps {
   messageData: MessageArray[];
@@ -28,7 +29,7 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
   return (
     <Box className="message__items">
       {messageData.map((message) => (
-        <Link prefetch={false} href={`/messages/${message?.order_id}`} key={message?.order_id}>
+        <Link prefetch={false} href={paths.root.messageDetails.getHref(message?.order_id)} key={message?.order_id}>
           <Box
             className="message__item"
             display="flex"

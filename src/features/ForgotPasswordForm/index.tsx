@@ -13,6 +13,7 @@ import { ForgotPassword } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import { requiredEmailValidation } from '@/helpers/validations';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface ForgotPasswordFormProps {
   // eslint-disable-next-line no-unused-vars
@@ -90,7 +91,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ handleStepChang
       <Typography className="signup-text">
         {en.helperText.noAccount}{' '}
         <Link
-          href={'/on-boarding'}
+          href={paths.auth.onBoarding.getHref()}
           style={{
             textDecoration: 'underline',
             padding: 0,

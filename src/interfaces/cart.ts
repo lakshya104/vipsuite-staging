@@ -26,6 +26,7 @@ interface CartItem {
   is_high_end_item: boolean;
   variation: Variation[];
   questions?: Question[];
+  opportunity_id: string;
 }
 interface Variation {
   attribute: string;

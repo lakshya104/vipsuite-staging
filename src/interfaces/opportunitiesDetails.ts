@@ -1,3 +1,4 @@
+import { QuestionType } from '@/helpers/enums';
 import { Question } from './events';
 
 export interface ImageSizes {
@@ -28,7 +29,6 @@ export interface OpportunityDetails {
   class_list: string[];
   acf: Acf;
   is_wishlisted?: boolean;
-  _links: Links;
   gallery: [];
 }
 
@@ -53,6 +53,15 @@ export interface Acf {
   lookbook_pdf: string;
   is_rsvp: boolean;
   questions: Question[];
+  grouped_products: OpportunityProduct[];
+}
+
+interface OpportunityProduct {
+  product_id: number;
+  product_image: string;
+  product_name: string;
+  product_short_description: string;
+  product_url: string;
 }
 
 export interface FeaturedImage {
@@ -124,3 +133,18 @@ export interface Offer {
     qr_code_image: FeaturedImage;
   };
 }
+
+interface FormChoice {
+  text: string;
+}
+
+interface FormField {
+  title: string;
+  input_type: QuestionType;
+  is_required: boolean;
+  choices: FormChoice[] | null;
+  unique_id: string;
+  answer: string | string[];
+}
+
+export type QuestionFormData = FormField[];

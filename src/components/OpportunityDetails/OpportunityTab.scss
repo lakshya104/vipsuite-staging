@@ -96,4 +96,34 @@
       }
     }
   }
+  &-product {
+    display: flex;
+    flex-direction: column;
+    .dashboard-card {
+      margin-bottom: mixins.rem(12);
+    }
+    .dashboard-card__content {
+      color: #1b1b1b;
+      position: unset;
+      padding: 0;
+      background: none;
+      h2 {
+        margin-bottom: mixins.rem(10);
+      }
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        color: #494947;
+      }
+    }
+    .opportunity-product__link {
+      margin-top: auto;
+      button {
+        width: 100%;
+      }
+    }
+  }
 }

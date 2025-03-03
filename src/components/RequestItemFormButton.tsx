@@ -21,6 +21,7 @@ import { useLookbookOrder } from '@/store/useStore';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 const formSchema = z.object({
   itemName: z.string().min(1, en.lookBookForm.fieldErrMessage),
@@ -62,7 +63,9 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ postId })
     try {
       startTransition(() => {
         setLookbookDescription(data.itemName);
-        router.push(`/basket?step=1&isLookbook=true&postId=${postId}`);
+        router.push(
+          withSearchParams(() => paths.root.basket.getHref(), { step: 1, isLookbook: 'true', postId: postId }),
+        );
       });
       handleClose();
     } catch (error) {

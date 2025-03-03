@@ -18,12 +18,12 @@ const VipProfileBuilderPage = async () => {
       />
     );
   }
-  if (!session.vip_profile_id || !profileBuilderOptions) {
+  if (!session.profile_id || !profileBuilderOptions) {
     return <ErrorFallback errorMessage="Not able to edit Profile currently." />;
   }
   return (
     <ProfileBuilder
-      id={session.vip_profile_id}
+      id={session.profile_id}
       profileBuilderOptions={profileBuilderOptions}
       profileDetails={profileDetails?.acf}
       token={session.token}

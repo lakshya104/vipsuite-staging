@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { map } from 'lodash';
@@ -14,31 +14,11 @@ interface HomeFooterProps {
 }
 
 const HomeFooter: React.FC<HomeFooterProps> = ({ role }) => {
-  const [showFooter, setShowFooter] = useState(true);
-  const lastScrollY = useRef(0);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (typeof window !== 'undefined') {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY.current) {
-          setShowFooter(false);
-        } else {
-          setShowFooter(true);
-        }
-        lastScrollY.current = currentScrollY;
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const footerItems = role === UserRole.Brand ? brandFooterItems : vipFooterItems;
   return (
-    <Box className={`footer-menu ${showFooter ? 'show' : 'hide'}`}>
+    <Box className="footer-menu">
       {map(footerItems, (item) => {
         const isActive = item.paths.some((path) => pathname.startsWith(path));
         return (

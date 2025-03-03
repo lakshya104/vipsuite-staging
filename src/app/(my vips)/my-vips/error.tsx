@@ -6,6 +6,7 @@ import ErrorToaster from '@/components/ErrorToaster';
 import { Container, Skeleton, Typography } from '@mui/material';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import './my-vips.scss';
+import { paths } from '@/helpers/paths';
 
 export default function Error() {
   return (
@@ -15,7 +16,7 @@ export default function Error() {
           <Skeleton className="page-title" variant="text" width="10%" height={45} />
           <Typography className="page-title" variant="h2" align="center">
             My VIPs
-            <ProgressBarLink className="button button--black" href="/agent-profile-builder">
+            <ProgressBarLink className="button button--black" href={paths.root.agentProfileBuilder.getHref()}>
               Add <AddIcon />
             </ProgressBarLink>
           </Typography>

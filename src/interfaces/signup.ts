@@ -22,7 +22,8 @@ export interface SignupContent {
 
 export type BrandSignUpRequestBody = {
   brand_name: string;
-  contact_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   phone: string;
@@ -45,3 +46,23 @@ export type RsvpFormValues = {
   is_pleases: string;
   questions?: Question[];
 };
+
+export interface AgentEditFormDataObject {
+  acf: {
+    first_name: string;
+    last_name: string;
+    phone: string;
+    company_name: string;
+    examples_of_vip_managed: Array<{ text: string }>;
+  };
+}
+
+export interface BrandEditFormDataObject {
+  acf: {
+    first_name: string;
+    last_name: string;
+    phone: string;
+    brand_name: string;
+    type_of_business: string[];
+  };
+}

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Toolbar } from '@mui/material';
 import './ProfileBuilderLayout.scss';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import BackToHome from '@/components/BackToHome';
 import Image from 'next/image';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
+import { paths } from '@/helpers/paths';
 
 export default async function AgentProfileBuilderLayout({
   children,
@@ -14,10 +15,12 @@ export default async function AgentProfileBuilderLayout({
   return (
     <Box className="profile-builder__page">
       <Box className="profile-builder__header">
-        <ProgressBarLink href={'/home'}>
-          <Image alt="VipLogo" src="/vipsblack.png" width={120} height={30} priority style={{ objectFit: 'contain' }} />
-        </ProgressBarLink>
-        <BackToHome />
+        <Toolbar className="profile-builder__wrapper">
+          <ProgressBarLink href={paths.root.home.getHref()}>
+            <Image alt="VipLogo" src="/Logo.svg" width={120} height={30} priority style={{ objectFit: 'contain' }} />
+          </ProgressBarLink>
+          <BackToHome />
+        </Toolbar>
       </Box>
       <Box className="profile-builder__main">
         <ProgressProvider color="black"> {children}</ProgressProvider>

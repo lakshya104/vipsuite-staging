@@ -72,11 +72,11 @@ const BasketCard: React.FC<BasketCardProps> = ({
                   <Image src={productImage} alt={product?.name} height={110} width={110} style={{ borderRadius: 6 }} />
                   <Box className="product-info">
                     <Typography gutterBottom variant="h2">
-                      {he.decode(product?.name)}
+                      {he.decode(product?.name || '')}
                     </Typography>
-                    <Typography variant="body1">{he.decode(product?.brand_name)}</Typography>
+                    <Typography variant="body1">{he.decode(product?.brand_name || '')}</Typography>
                     <Box mb={0.5}>
-                      {product.type === 'variation' &&
+                      {product?.type === 'variation' &&
                         take(product?.variation, 5).map(
                           (variation, index) =>
                             variation && (
@@ -98,7 +98,11 @@ const BasketCard: React.FC<BasketCardProps> = ({
                       </Typography>
                     )}
                   </Box>
-                  <DeleteItemFromCartBtn productId={product?.id} startTransition={startTransition} />
+                  <DeleteItemFromCartBtn
+                    productId={product?.id}
+                    opportunityId={product?.opportunity_id}
+                    startTransition={startTransition}
+                  />
                 </Box>
               );
             })}

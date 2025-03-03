@@ -5,6 +5,7 @@ import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
 import { ContentCard } from '@/interfaces';
 import Link from 'next/link';
+import { paths } from '@/helpers/paths';
 
 interface ContentCardBoxProps {
   data: ContentCard;
@@ -16,14 +17,14 @@ const ContentCardBox: React.FC<ContentCardBoxProps> = ({ data }) => {
   let postTypePath;
   switch (linked_opportunity.post_type) {
     case 'opportunity':
-      postTypePath = `/opportunities/${linked_opportunity.ID}`;
+      postTypePath = paths.root.opportunityDetails.getHref(linked_opportunity.ID);
       break;
     case 'event':
-      postTypePath = `/events/${linked_opportunity.ID}`;
+      postTypePath = paths.root.eventDetails.getHref(linked_opportunity.ID);
       break;
-    case 'product':
-      postTypePath = `/products/${linked_opportunity.ID}`;
-      break;
+    // case 'product':
+    //   postTypePath = paths.root.productDetails.getHref(linked_opportunity.ID);
+    //   break;
     default:
       postTypePath = '/';
       break;

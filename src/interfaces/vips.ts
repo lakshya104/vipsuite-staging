@@ -1,7 +1,7 @@
 import { ProfileStatus } from '@/helpers/enums';
 
 export interface MyVips {
-  vip_profile_id: number;
+  profile_id: number;
   first_name: string;
   last_name: string;
   profile_image: string;

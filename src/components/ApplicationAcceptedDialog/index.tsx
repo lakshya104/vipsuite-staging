@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
+import Image from 'next/image';
 import en from '@/helpers/lang';
 import './ApplicationAcceptedDialog.scss';
-import Image from 'next/image';
 import '../../app/(auth)/on-boarding/style.scss';
 import { UserRole } from '@/helpers/enums';
+import { paths } from '@/helpers/paths';
+import { createSkipCookie } from '@/libs/actions';
 
 interface ApplicationAcceptedDialogProps {
   name: string;
@@ -19,12 +21,13 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
   const handleAcceptDialogChange = async () => {
     setLoading(true);
     try {
+      await createSkipCookie();
       if (role === UserRole.Vip) {
-        await router.push('/vip-profile-builder');
+        await router.push(paths.root.vipProfileBuilder.getHref());
       } else if (role === UserRole.Brand) {
-        await router.push('/brand-home');
+        await router.push(paths.root.home.getHref());
       } else {
-        await router.push('/agent-profile-builder?accepted=true');
+        await router.push(paths.root.agentProfileBuilder.getHref());
       }
     } catch (error) {
       console.error(error);

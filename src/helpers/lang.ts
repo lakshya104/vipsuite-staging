@@ -309,7 +309,8 @@ const en = {
       typeRepresentation: 'Specify representation type.',
       exampleOfVip: 'Provide examples of VIPs.',
       brandName: 'Brand name is required.',
-      contactName: 'Contact name is required.',
+      contactFirstName: 'Contact first name is required.',
+      contactLastName: 'Contact last name is required.',
       typeOfBusiness: 'Specify type of business.',
       selectedCategory: 'Select a category.',
       phoneErrorMessage: 'Please enter a valid phone number.',
@@ -323,6 +324,7 @@ const en = {
     emptyBasket: 'This space is empty, Fill it with something amazing!',
     noData: 'Check Back Soon',
     noItems: 'No Items Available',
+    addVipMessage: 'Add a VIP to manage their profile.',
     addItemMessage: 'Start Adding And Come Back',
     noHomeData: 'Items',
     noVipListData: 'No VIPs Available',
@@ -334,7 +336,7 @@ const en = {
     noMessageData: 'No Messages Available',
     noProductData: 'No Products Available',
     noOpportunityData: 'No Opportunities Available',
-    noBioData: 'Bio',
+    noBioData: 'No Bio Available',
     noContactData: 'No Contacts Available',
     noContactDataMessage: 'Update Profile And Come Back',
     noSocialData: 'Social Handles',
@@ -360,7 +362,7 @@ const en = {
   },
   opportunities: {
     clearFilter: 'Clear Filter',
-    featuredTag: 'Featured Opportunity',
+    featuredTag: 'Featured',
     searchPlaceholder: 'Search for opportunities...',
     results: 'Results for',
     singleResult: 'Result for',
@@ -393,7 +395,7 @@ const en = {
     searchPlaceholder: 'Search for events...',
     results: 'Results for',
     singleResult: 'Result for',
-    featuredTag: 'Featured Event',
+    featuredTag: 'Featured',
     date: 'Date:',
     location: 'Location:',
     overview: 'Quick Overview',
@@ -653,6 +655,12 @@ const en = {
   },
   brandDetails: {
     errMessage: 'Not able to show Brand Details currently.',
+  },
+  myVipsPage: {
+    errMessage: 'Unable to show VIP list currently.',
+    addError: 'Error while selecting Profile:',
+    addText: 'Add',
+    pageTitle: 'My VIPs',
   },
 };
 

@@ -11,7 +11,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        const userData = {
+          id: user?.id,
+          account_status: user?.account_status,
+          role: user?.role,
+          email: user?.email,
+          first_name: user?.first_name,
+          last_name: user?.last_name,
+          profile_id: user?.profile_id,
+          token: user?.token,
+          acf: {
+            known_for: user?.acf?.known_for,
+          },
+        };
+        token.user = userData;
       }
       return token;
     },
@@ -36,9 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         user = res;
         if (res && res?.account_status !== ProfileStatus.Approved) {
           throw new Error(res?.message + res?.role);
-        }
-        if (res && res?.acf?.profile_status == ProfileStatus.Rejected) {
-          throw new Error('Your account was rejected');
         }
         if (user) {
           return user;

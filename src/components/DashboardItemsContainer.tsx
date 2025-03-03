@@ -93,13 +93,13 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
     if (searchQuery) {
       return hasSearched && !isEmpty(searchResults) ? renderSearchResults() : renderNoResults();
     }
-    if (!dashboardData.dashboard_content || isEmpty(dashboardData.dashboard_content)) {
+    if (!dashboardData?.dashboard_content || isEmpty(dashboardData?.dashboard_content)) {
       return (
         <>
           {renderDashboard()}
-          {!isEmpty(dashboardData.dashboard_cards) ? (
+          {!isEmpty(dashboardData?.dashboard_cards) ? (
             <Grid2 className="landing-product" container spacing={2}>
-              {dashboardData.dashboard_cards.map((item, index) => (
+              {dashboardData?.dashboard_cards?.map((item, index) => (
                 <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
                   <DashboardCard item={item} />
                 </Grid2>
@@ -121,8 +121,8 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
         {!isEmpty(dashboardData?.dashboard_content) && renderItems(dashboardData?.dashboard_content)}
         {renderDashboard()}
         <Grid2 className="landing-product" container spacing={2}>
-          {!isEmpty(dashboardData.dashboard_cards) &&
-            dashboardData.dashboard_cards.map((item, index) => (
+          {!isEmpty(dashboardData?.dashboard_cards) &&
+            dashboardData?.dashboard_cards?.map((item, index) => (
               <Grid2 className="landing-product__item" size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
                 <DashboardCard item={item} />
               </Grid2>

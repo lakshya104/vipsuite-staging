@@ -22,6 +22,7 @@ import {
   orderFeedbackSchema,
 } from './schema';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface FeedbackFormProps {
   type: 'order' | 'event';
@@ -79,15 +80,15 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           screenshot: screenshotBase64,
         };
         const res = await OrderFeedback(orderId, feedback);
-        await revalidatePathAction(`/my-orders/${orderId}`);
+        await revalidatePathAction(paths.root.orderDetails.getHref(orderId));
         setIsSubmitted(true);
         setToasterType('success');
-        openToaster(res.message ?? en.feedbackForm.successMessage);
+        openToaster(res.message || en.feedbackForm.successMessage);
         setFileName(null);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster(String(error) ?? en.feedbackForm.errorMessage);
+        openToaster(String(error) || en.feedbackForm.errorMessage);
       } finally {
         setBtnDisable(false);
       }
@@ -103,15 +104,15 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
           rating: data.rating,
         };
         const res = await OrderFeedback(orderId, feedback);
-        await revalidatePathAction(`/my-orders/${orderId}`);
+        await revalidatePathAction(paths.root.orderDetails.getHref(orderId));
         setIsSubmitted(true);
         setToasterType('success');
-        openToaster(res.message ?? en.feedbackForm.successMessage);
+        openToaster(res.message || en.feedbackForm.successMessage);
         setFileName(null);
         reset();
       } catch (error) {
         setToasterType('error');
-        openToaster(String(error) ?? en.feedbackForm.errorMessage);
+        openToaster(String(error) || en.feedbackForm.errorMessage);
       } finally {
         setBtnDisable(false);
       }

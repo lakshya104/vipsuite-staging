@@ -6,6 +6,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import { ContentModule } from '@/interfaces/public-page';
 import CheckIcon from '@mui/icons-material/Check';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface TableDataItem {
   heading: string;
@@ -60,7 +61,7 @@ const BrandsPlace: React.FC<BrandsPlaceProps> = ({ data }) => {
                 ))}
             </Grid2>
           </Grid2>
-          <ProgressBarLink className="brand-section__btn" href="/on-boarding">
+          <ProgressBarLink className="brand-section__btn" href={paths.auth.onBoarding.getHref()}>
             {en.landingPage.joinToday}
           </ProgressBarLink>
         </Grid2>

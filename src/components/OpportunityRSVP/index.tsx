@@ -5,9 +5,9 @@ import he from 'he';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
-import DynamicForm from '@/features/DynamicForm';
-import { isEmpty } from 'lodash';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
+import { Question } from '@/interfaces/events';
 
 interface RSVPProps {
   onClose: () => void;
@@ -15,6 +15,7 @@ interface RSVPProps {
   opportunity: OpportunityDetails;
   // eslint-disable-next-line no-unused-vars
   handleToasterMessage: (type: 'error' | 'success', message?: string) => void;
+  updatedPayload?: Question[];
 }
 
 interface RsvpFormValues {
@@ -27,10 +28,15 @@ const defaultValues: RsvpFormValues = {
   notInterested: null,
 };
 
-const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportunity, handleToasterMessage }) => {
+const OppotunityRSVP: React.FC<RSVPProps> = ({
+  onClose,
+  onConfirmation,
+  opportunity,
+  handleToasterMessage,
+  updatedPayload,
+}) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [formState, setFormState] = useState({
-    showForm: false,
     showReasonField: false,
   });
   const [reasonText, setReasonText] = useState<string>('');
@@ -46,10 +52,11 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         rsvp_post: opportunity.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
         reason: reasonText,
+        ...(updatedPayload && { questions: updatedPayload }),
       };
       try {
         const res = await SendRsvp(rsvp);
-        await revalidatePathAction(`/opportunities/${opportunity?.id}`);
+        await revalidatePathAction(paths.root.opportunityDetails.getHref(opportunity?.id));
         handleToasterMessage('success', res?.message);
       } catch (error) {
         handleToasterMessage('error', String(error));
@@ -64,60 +71,12 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
 
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
-    setFormState({ showForm: false, showReasonField: true });
+    setFormState({ showReasonField: true });
   };
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
-    setFormState({ showForm: false, showReasonField: true });
-  };
-
-  const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const result = reader.result as string;
-        const base64String = result.replace(/^data:[^;]+;base64,/, '');
-        resolve(base64String);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmitDynamic = async (data: any) => {
-    setIsPending(true);
-    const updatedPayload = await Promise.all(
-      opportunity.acf.questions.map(async (field) => {
-        const key = field.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-        let answer;
-        if (field.input_type === 'file_upload') {
-          answer = await convertToBase64(data[key]);
-        } else {
-          answer = data[key];
-        }
-        return {
-          ...field,
-          answer,
-        };
-      }),
-    );
-    const payload = {
-      post_type: 'opportunity',
-      rsvp_post: opportunity.id,
-      is_pleases: 'interested',
-      questions: updatedPayload,
-    };
-    try {
-      const res = await SendRsvp(payload);
-      handleToasterMessage('success', res?.message);
-      await revalidatePathAction(`/events/${opportunity?.id}`);
-      onConfirmation();
-    } catch (error) {
-      handleToasterMessage('error', String(error));
-      setIsPending(false);
-    }
+    setFormState({ showReasonField: true });
   };
 
   const onSubmitRSVP = async () => {
@@ -126,11 +85,12 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
       post_type: 'opportunity',
       rsvp_post: opportunity.id,
       is_pleases: 'interested',
+      ...(updatedPayload && { questions: updatedPayload }),
     };
     try {
       const res = await SendRsvp(rsvp);
       handleToasterMessage('success', res?.message);
-      await revalidatePathAction(`/events/${opportunity?.id}`);
+      await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
       onConfirmation();
     } catch (error) {
       handleToasterMessage('error', String(error));
@@ -140,8 +100,6 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
 
   const renderContent = () => {
     switch (true) {
-      case formState.showForm:
-        return <DynamicForm questions={opportunity.acf.questions} onSubmit={onSubmitDynamic} />;
       case formState.showReasonField:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -175,26 +133,13 @@ const OppotunityRSVP: React.FC<RSVPProps> = ({ onClose, onConfirmation, opportun
         return (
           <>
             <Typography variant="h2" gutterBottom>
-              {he.decode(opportunity?.title?.rendered)}
+              {he.decode(opportunity?.title?.rendered || '')}
             </Typography>
-            {!isEmpty(opportunity.acf.questions) ? (
-              <Box mt={2}>
-                <Button
-                  onClick={() => setFormState({ showForm: true, showReasonField: false })}
-                  className="button button--black"
-                  type="submit"
-                  fullWidth
-                >
-                  {en.opportunities.opportunityRsvp.text}
-                </Button>
-              </Box>
-            ) : (
-              <Box mt={2}>
-                <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
-                  {en.opportunities.opportunityRsvp.text}
-                </Button>
-              </Box>
-            )}
+            <Box mt={2}>
+              <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
+                {en.opportunities.opportunityRsvp.text}
+              </Button>
+            </Box>
             <Box className="site-dialog__action" marginTop={3}>
               <Button
                 onClick={handleNotAvailable}

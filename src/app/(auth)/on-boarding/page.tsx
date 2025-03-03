@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import './style.scss';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 const Onboarding = () => {
   return (
@@ -14,13 +15,13 @@ const Onboarding = () => {
         </Box>
         <Typography variant="h2">{en.onBoarding.applyAs}</Typography>
         <Box className="onboarding__page-links">
-          <Link href="/signup/vip" className="onboarding__link" passHref>
+          <Link href={paths.auth.signup.vip.getHref()} className="onboarding__link" passHref>
             {en.onBoarding.vip}
           </Link>
-          <Link href="/signup/agent" className="onboarding__link" passHref>
+          <Link href={paths.auth.signup.agent.getHref()} className="onboarding__link" passHref>
             {en.onBoarding.agency}
           </Link>
-          <Link href="/signup/brand" className="onboarding__link" passHref>
+          <Link href={paths.auth.signup.brand.getHref()} className="onboarding__link" passHref>
             {en.onBoarding.brand}
           </Link>
         </Box>
@@ -28,7 +29,7 @@ const Onboarding = () => {
       <Typography sx={{ fontSize: '0.8rem', my: 3 }} className="onboarding__text">
         {en.helperText.alreadyAccount}{' '}
         <Link
-          href={'/login'}
+          href={paths.auth.login.getHref()}
           style={{
             textDecoration: 'underline',
             padding: 0,

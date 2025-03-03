@@ -10,6 +10,7 @@ import ErrorFallback from '@/components/ErrorFallback';
 import { useUserInfoStore } from '@/store/useStore';
 import { useSearchParams } from 'next/navigation';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface SelectAddressFormProps {
   addresses: Address[];
@@ -18,6 +19,7 @@ interface SelectAddressFormProps {
   startTransition: typeof import('react').startTransition;
   signatureData: string;
 }
+
 const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   addresses,
   cartData,
@@ -33,8 +35,8 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
     setSelectedAddress((prevAdd) => (prevAdd === address ? null : address));
   };
   const href = isRequestedProduct
-    ? `/my-addresses/add?route=order-journey&isRequestOnly=true`
-    : `/my-addresses/add?route=order-journey`;
+    ? withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey', isRequestOnly: 'true' })
+    : withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey' });
   return (
     <Fragment>
       <Box className="address-page__head">

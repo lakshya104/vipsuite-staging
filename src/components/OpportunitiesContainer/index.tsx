@@ -28,7 +28,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-  console.log(isSearchApplied);
+  const [isClearing, setIsClearing] = useState<boolean>(false);
 
   useEffect(() => {
     if (!selectedCategoryId && isFilterApplied) {
@@ -46,6 +46,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           params.delete('search');
         }
         router.push(`?${params.toString()}`, { scroll: false });
+        setIsClearing(false);
       });
     } catch (error) {
       console.error(en.opportunities.searchErrorMessage, error);
@@ -83,30 +84,30 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     }
   };
 
-  const uniqueOpportunities: Opportunity[] = [];
-  const mappedBrandIds = new Set();
-  const countMap: Record<number, number> = {};
+  // const uniqueOpportunities: Opportunity[] = [];
+  // const mappedBrandIds = new Set();
+  // const countMap: Record<number, number> = {};
 
-  opportunitiesData.forEach((item) => {
-    const brandId = item.acf.brand_id;
-    if (brandId) {
-      countMap[brandId] = (countMap[brandId] || 0) + 1;
-    }
-  });
+  // opportunitiesData.forEach((item) => {
+  //   const brandId = item.acf.brand_id;
+  //   if (brandId) {
+  //     countMap[brandId] = (countMap[brandId] || 0) + 1;
+  //   }
+  // });
 
-  opportunitiesData.forEach((item) => {
-    const brandId = item.acf.brand_id;
-    if (brandId) {
-      item.isBrandCard = countMap[brandId] >= 2;
-      if (!mappedBrandIds.has(brandId)) {
-        mappedBrandIds.add(brandId);
-        uniqueOpportunities.push(item);
-      }
-    } else {
-      item.isBrandCard = false;
-      uniqueOpportunities.push(item);
-    }
-  });
+  // opportunitiesData.forEach((item) => {
+  //   const brandId = item.acf.brand_id;
+  //   if (brandId) {
+  //     item.isBrandCard = countMap[brandId] >= 2;
+  //     if (!mappedBrandIds.has(brandId)) {
+  //       mappedBrandIds.add(brandId);
+  //       uniqueOpportunities.push(item);
+  //     }
+  //   } else {
+  //     item.isBrandCard = false;
+  //     uniqueOpportunities.push(item);
+  //   }
+  // });
 
   const clearFilter = () => {
     try {
@@ -124,13 +125,27 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+    setIsClearing(true);
   }, []);
 
   const handleClear = useCallback(() => {
     setSearchQuery('');
+    setIsClearing(true);
   }, []);
 
-  if (isEmpty(uniqueOpportunities) && !isFilterApplied) {
+  const renderLoading = () => {
+    return (
+      <Grid2 container spacing={2}>
+        {[...Array(3)].map((_, index) => (
+          <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+            <Skeleton variant="rectangular" width="100%" height={450} />
+          </Grid2>
+        ))}
+      </Grid2>
+    );
+  };
+
+  if (isEmpty(opportunitiesData) && !isFilterApplied) {
     return (
       <>
         <Box my={2.5} display="flex" justifyContent="space-between" alignItems="center">
@@ -151,11 +166,15 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
             aria-label={en.opportunities.searchPlaceholder}
           />
         </Box>
-        <ErrorFallback
-          errorMessage={en.listEmptyMessage.noOpportunityData}
-          hideSubtext={true}
-          subtext={en.listEmptyMessage.noData}
-        />
+        {isClearing ? (
+          renderLoading()
+        ) : (
+          <ErrorFallback
+            errorMessage={en.listEmptyMessage.noOpportunityData}
+            hideSubtext={true}
+            subtext={en.listEmptyMessage.noData}
+          />
+        )}
       </>
     );
   }
@@ -180,31 +199,25 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           aria-label={en.opportunities.searchPlaceholder}
         />
       </Box>
-      {isSearchPending && searchQuery ? (
-        <Grid2 container spacing={2}>
-          {[...Array(3)].map((_, index) => (
-            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-              <Skeleton variant="rectangular" width="100%" height={450} />
-            </Grid2>
-          ))}
-        </Grid2>
+      {(isSearchPending && searchQuery) || isClearing ? (
+        renderLoading()
       ) : debouncedSearchQuery ? (
         <>
           <Grid2 container mb={2.5}>
             <Grid2 size={{ xs: 12 }}>
               <Box width="100%">
                 <Typography variant="h3" component="h2" mb={1}>
-                  {uniqueOpportunities.length > 1
-                    ? `${uniqueOpportunities.length} ${en.opportunities.results} "${debouncedSearchQuery}"`
-                    : `${uniqueOpportunities.length} ${en.opportunities.singleResult} "${debouncedSearchQuery}"`}
+                  {opportunitiesData.length > 1
+                    ? `${opportunitiesData.length} ${en.opportunities.results} "${debouncedSearchQuery}"`
+                    : `${opportunitiesData.length} ${en.opportunities.singleResult} "${debouncedSearchQuery}"`}
                 </Typography>
               </Box>
             </Grid2>
           </Grid2>
-          <OpportunitiesListing opportunities={uniqueOpportunities} />
+          <OpportunitiesListing opportunities={opportunitiesData} />
         </>
       ) : (
-        <OpportunitiesListing opportunities={uniqueOpportunities} />
+        <OpportunitiesListing opportunities={opportunitiesData} />
       )}
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />

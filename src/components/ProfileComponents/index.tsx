@@ -25,6 +25,16 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
     },
   ];
   const filteredBioData = bioData.filter((data) => data.value !== '');
+  if (filteredBioData.length === 0) {
+    return (
+      <ErrorFallback
+        halfHeight={true}
+        errorMessage={en.listEmptyMessage.noBioData}
+        hideSubtext={true}
+        subtext={en.listEmptyMessage.noContactDataMessage}
+      />
+    );
+  }
 
   return (
     <Grid2 container>

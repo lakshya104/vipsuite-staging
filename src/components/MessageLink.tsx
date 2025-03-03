@@ -21,7 +21,7 @@ const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title }) => {
           marginRight: 12,
         }}
       />
-      <Typography variant="h6">{he.decode(title)}</Typography>
+      <Typography variant="h6">{he.decode(title || '')}</Typography>
     </Box>
   );
 };

@@ -7,10 +7,10 @@ import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
 import { formatDateWithOrdinal } from '@/helpers/utils';
-import DynamicForm from '@/features/DynamicForm';
 import revalidatePathAction from '@/libs/actions';
-import { isEmpty } from 'lodash';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
+import DynamicForm from '@/features/DynamicForm';
 
 interface RSVPProps {
   onClose: () => void;
@@ -44,7 +44,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       try {
         const res = await SendRsvp(rsvp);
         handleToasterMessage('success', res?.message);
-        await revalidatePathAction(`/events/${event.id}`);
+        await revalidatePathAction(paths.root.eventDetails.getHref(event?.id));
       } catch (error) {
         handleToasterMessage('error', String(error));
         setIsPending(false);
@@ -58,11 +58,12 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       post_type: 'event',
       rsvp_post: event.id,
       is_pleases: 'interested',
+      // ...(updatedPayload && { questions: updatedPayload }),
     };
     try {
       const res = await SendRsvp(rsvp);
       handleToasterMessage('success', res?.message);
-      await revalidatePathAction(`/events/${event.id}`);
+      await revalidatePathAction(paths.root.eventDetails.getHref(event?.id));
       onConfirmation();
     } catch (error) {
       handleToasterMessage('error', String(error));
@@ -72,12 +73,12 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
 
   const handleNotAvailable = () => {
     setValue('notAvailable', 'yes');
-    setFormState({ showForm: false, showReasonField: true });
+    setFormState({ showReasonField: true, showForm: false });
   };
 
   const handleNotInterested = () => {
     setValue('notInterested', 'yes');
-    setFormState({ showForm: false, showReasonField: true });
+    setFormState({ showReasonField: true, showForm: false });
   };
 
   const convertToBase64 = (file: File): Promise<string> => {
@@ -100,7 +101,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       event.acf.questions.map(async (field) => {
         const key = field.title.toLowerCase().replace(/[^a-z0-9]/g, '');
         let answer;
-        if (field.input_type === 'file_upload') {
+        if (field?.input_type === 'file_upload' && field?.is_required) {
           answer = await convertToBase64(data[key]);
         } else {
           answer = data[key];
@@ -111,16 +112,16 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
         };
       }),
     );
-    const payload = {
+    const rsvp = {
       post_type: 'event',
       rsvp_post: event.id,
       is_pleases: 'interested',
-      questions: updatedPayload,
+      ...(updatedPayload && { questions: updatedPayload }),
     };
     try {
-      const res = await SendRsvp(payload);
+      const res = await SendRsvp(rsvp);
       handleToasterMessage('success', res?.message);
-      await revalidatePathAction(`/events/${event.id}`);
+      await revalidatePathAction(paths.root.eventDetails.getHref(event?.id));
       onConfirmation();
     } catch (error) {
       handleToasterMessage('error', String(error));
@@ -130,8 +131,6 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
 
   const renderContent = () => {
     switch (true) {
-      case formState.showForm:
-        return <DynamicForm questions={event?.acf?.questions} onSubmit={onSubmitDynamic} />;
       case formState.showReasonField:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,11 +155,21 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
             </Box>
           </form>
         );
+      case formState.showForm:
+        return (
+          <DynamicForm
+            questions={event?.acf?.questions}
+            onSubmit={onSubmitDynamic}
+            ctaText="Submit"
+            alreadyOrdered={event?.acf?.is_rsvp}
+            ctaIfAlreadyOrdered="Already Responded"
+          />
+        );
       default:
         return (
           <>
             <Typography variant="h2" gutterBottom>
-              {he.decode(event?.title?.rendered)}
+              {he.decode(event?.title?.rendered || '')}
             </Typography>
             <Typography variant="body1">
               <Box component="strong">{en.events.date}</Box>
@@ -170,24 +179,18 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
             <Typography variant="body1" paragraph>
               <Box component="strong">{en.events.location}</Box> {event.acf.event_location}
             </Typography>
-            {!isEmpty(event.acf.questions) ? (
-              <Box mt={2}>
-                <Button
-                  onClick={() => setFormState({ showForm: true, showReasonField: false })}
-                  className="button button--black"
-                  type="submit"
-                  fullWidth
-                >
-                  {en.events.eventRsvp.text}
-                </Button>
-              </Box>
-            ) : (
-              <Box mt={2}>
-                <Button onClick={onSubmitRSVP} className="button button--black" type="submit" fullWidth>
-                  {en.events.eventRsvp.text}
-                </Button>
-              </Box>
-            )}
+            <Box mt={2}>
+              <Button
+                onClick={
+                  event?.acf?.questions ? () => setFormState({ showReasonField: false, showForm: true }) : onSubmitRSVP
+                }
+                className="button button--black"
+                type="submit"
+                fullWidth
+              >
+                {en.events.eventRsvp.text}
+              </Button>
+            </Box>
             <Box className="site-dialog__action" marginTop={3}>
               <Button
                 onClick={handleNotAvailable}

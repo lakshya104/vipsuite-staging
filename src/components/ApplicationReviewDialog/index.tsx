@@ -5,6 +5,7 @@ import en from '@/helpers/lang';
 import '../../app/(auth)/on-boarding/style.scss';
 import './ApplicationReviewDialog.scss';
 import { useRouter } from 'next/navigation';
+import { paths } from '@/helpers/paths';
 
 interface ApplicationReviewDialogProps {
   isBrand?: boolean;
@@ -17,7 +18,7 @@ const ApplicationReviewDialog: React.FC<ApplicationReviewDialogProps> = ({ isBra
   const handleReviewDialogChange = async () => {
     setLoading(true);
     try {
-      await router.push('/');
+      await router.push(paths.landing.getHref());
     } catch (error) {
       console.error(error);
       setLoading(false);

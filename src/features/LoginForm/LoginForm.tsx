@@ -16,6 +16,7 @@ import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import ApplicationRejectedDialog from '@/components/ApplicationRejectedDialog';
 import { Login } from '@/libs/api-manager/manager';
 import { UserRole } from '@/helpers/enums';
+import { paths } from '@/helpers/paths';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -79,11 +80,11 @@ const LoginForm = () => {
           }
         } else {
           if (userData?.role === UserRole.Vip) {
-            router.push('/home');
+            router.push(paths.root.home.getHref());
           } else if (userData?.role === UserRole.Agent) {
-            router.push('/my-vips');
+            router.push(paths.root.myVips.getHref());
           } else {
-            router.push('/home');
+            router.push(paths.root.home.getHref());
           }
         }
       } catch (error) {
@@ -141,7 +142,7 @@ const LoginForm = () => {
       />
       <Box className="forgot-password">
         <Typography className="forgot-password__text">
-          <Link href="/forgot-password" className="forgot-password__link">
+          <Link href={paths.auth.forgotPassword.getHref()} className="forgot-password__link">
             {en.helperText.forgotPassword}
           </Link>
         </Typography>
@@ -151,7 +152,7 @@ const LoginForm = () => {
       </Button>
       <Typography className="signup-text">
         {en.helperText.noAccount}{' '}
-        <Link href={'/on-boarding'}>
+        <Link href={paths.auth.onBoarding.getHref()}>
           <Typography
             variant="body2"
             component="span"

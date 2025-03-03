@@ -1,6 +1,6 @@
 'use client';
 import React, { Fragment, useState, useTransition } from 'react';
-import { Backdrop, Box, Button, CardContent, CircularProgress, Dialog, DialogContent, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Dialog, DialogContent, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { first, isEmpty } from 'lodash';
@@ -13,73 +13,82 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useProductFilters } from '@/hooks/useProductFilters';
 import { useRequestOnlyStore } from '@/store/useStore';
-import DynamicForm from '../DynamicForm';
 import revalidatePathAction from '@/libs/actions';
 import EsignModal from '@/components/EsignModal';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
+import RenderQuestions from '@/components/RenderQuestions';
+import { mapQuestionsToSchema } from '@/helpers/utils';
 
 interface ItemRequestFormProps {
   product: Product;
   isRequestOnly: boolean;
+  children: React.ReactNode;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnly }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnly, children }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [productId, setProductId] = useState<number>(product.id);
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [openESignModel, setOpenESignModel] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { product_ordered: isProductOrdered = false } = product;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const { dropdowns, onChangeDropDown, getSelectedProductVariation, formSchema } = useProductFilters(product);
-  const {
-    setRequestProductId,
-    clearRequestProductId,
-    clearQuestions,
-    setQuestions,
-    setRequestESign,
-    clearRequestESign,
-  } = useRequestOnlyStore();
+  const { setRequestProductId, setQuestions, setRequestESign, setOpportunityId, clearAllRequestStore } =
+    useRequestOnlyStore();
   const isHighEndItem = product?.is_high_end_item;
-
+  const [fileName, setFileName] = useState<string | null>(null);
+  const questionFormSchema = mapQuestionsToSchema(product?.questions);
+  const combinedSchema = questionFormSchema ? formSchema.merge(questionFormSchema) : formSchema;
   const {
     handleSubmit,
     control,
     setValue,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(combinedSchema),
+    defaultValues:
+      (product?.questions &&
+        product?.questions?.reduce(
+          (acc, question) => {
+            const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+            acc[fieldName] = question.input_type === 'checkboxes' ? [] : '';
+            return acc;
+          },
+          {} as Record<string, unknown>,
+        )) ||
+      {},
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createOrder = async (item: any) => {
+  const createOrder = async (item: any, updatedPayload?: any) => {
     startTransition(async () => {
       try {
         if (isRequestOnly) {
-          clearRequestProductId();
-          clearQuestions();
-          clearRequestESign();
-          if (isEmpty(product.questions)) {
-            if (isHighEndItem) {
-              setOpenESignModel(true);
-            } else {
-              if (product.type === 'variable') {
-                setRequestProductId(productId);
-              } else {
-                setRequestProductId(product.id);
-              }
-              router.push(`/basket?step=1&isRequestOnly=true`);
-            }
-          } else {
+          clearAllRequestStore();
+          setOpportunityId(product.opportunity_id);
+          if (!isEmpty(product?.questions)) {
+            setQuestions(updatedPayload);
+          }
+          if (product?.type === 'variable') {
             setProductId(item.id);
-            setDialogOpen(true);
+            setRequestProductId(item.id);
+          } else {
+            setProductId(product.id);
+            setRequestProductId(product.id);
+          }
+          if (isHighEndItem) {
+            setOpenESignModel(true);
+          } else {
+            router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isRequestOnly: 'true' }));
           }
         } else {
-          if (isEmpty(product.questions)) {
-            const addToCart = await AddItemToCart(item.id);
-            await revalidatePathAction('/basket');
+          if (isEmpty(product?.questions)) {
+            const addToCart = await AddItemToCart(item?.id, { opportunity_id: product?.opportunity_id });
+            await revalidatePathAction(paths.root.basket.getHref());
             if (addToCart && addToCart.code === 'permission_denied') {
               openToaster(addToCart.message?.toString());
             } else {
@@ -87,7 +96,23 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
             }
           } else {
             setProductId(item.id);
-            setDialogOpen(true);
+            try {
+              const payload = {
+                product_id: item?.id,
+                questions: updatedPayload,
+                opportunity_id: product?.opportunity_id,
+              };
+              const addToCart = await AddItemToCart(item.id, payload);
+              await revalidatePathAction(paths.root.basket.getHref());
+              reset();
+              if (addToCart && addToCart.code === 'permission_denied') {
+                openToaster(addToCart.message?.toString());
+              } else {
+                setOpen(true);
+              }
+            } catch (error) {
+              openToaster(error?.toString() || en.products.itemRequestForm.addToCartError);
+            }
           }
         }
       } catch (error) {
@@ -109,75 +134,30 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmitDynamic = async (data: any) => {
-    startTransition(async () => {
-      const updatedPayload = await Promise.all(
-        product.questions.map(async (field) => {
-          const key = field.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-          let answer;
-          if (field.input_type === 'file_upload') {
-            answer = await convertToBase64(data[key]);
-          } else {
-            answer = data[key];
-          }
-          return {
-            ...field,
-            answer,
-          };
-        }),
-      );
-      if (isRequestOnly) {
-        setQuestions(updatedPayload);
-        if (isHighEndItem) {
-          setDialogOpen(false);
-          setOpenESignModel(true);
-        } else {
-          if (product.type === 'variable') {
-            setRequestProductId(productId);
-          } else {
-            setRequestProductId(product.id);
-          }
-          router.push(`/basket?step=1&isRequestOnly=true`);
-        }
-      } else {
-        try {
-          const payload = {
-            product_id: productId,
-            questions: updatedPayload,
-          };
-          const addToCart = await AddItemToCart(productId, payload);
-          await revalidatePathAction('/basket');
-          if (addToCart && addToCart.code === 'permission_denied') {
-            openToaster(addToCart.message?.toString());
-          } else {
-            setDialogOpen(false);
-            setOpen(true);
-          }
-        } catch (error) {
-          openToaster(error?.toString() || en.products.itemRequestForm.addToCartError);
-        }
-      }
-    });
-  };
-
   const onESignChange = async (signature: string) => {
     startTransition(async () => {
       try {
         if (signature !== '') {
           setRequestESign(signature);
-          if (product.type === 'variable') {
+          if (product?.type === 'variable') {
             setRequestProductId(productId);
           } else {
             setRequestProductId(product.id);
           }
           setOpenESignModel(false);
-          router.push(`/basket?step=1&isRequestOnly=true`);
+          router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isRequestOnly: 'true' }));
         }
       } catch (error) {
         openToaster(error?.toString() || en.products.itemRequestForm.eSignError);
       }
     });
+  };
+
+  const handleClose = (event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if (reason === 'backdropClick') {
+      return;
+    }
+    setOpen(false);
   };
 
   const handleESignModel = (open: boolean) => {
@@ -186,7 +166,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
 
   const getProductData = () => {
     const productVariation = getSelectedProductVariation();
-    if (product.type === 'variable' && productVariation) {
+    if (product?.type === 'variable' && productVariation) {
       productVariation.quantity = 1;
       return productVariation;
     } else {
@@ -196,20 +176,50 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
       };
     }
   };
-  const onSubmit = async () => {
-    const prepareItem = getProductData();
-    await createOrder(prepareItem);
-  };
 
-  const handleAddToCart = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    const updatedPayload =
+      product?.questions &&
+      (await Promise.all(
+        product?.questions.map(async (field) => {
+          const key = field?.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+          let answer;
+          if (field?.input_type === 'file_upload' && field?.is_required) {
+            answer = await convertToBase64(data[key]);
+          } else {
+            answer = data[key];
+          }
+          return {
+            ...field,
+            answer,
+          };
+        }),
+      ));
     const prepareItem = getProductData();
-    await createOrder(prepareItem);
+    await createOrder(prepareItem, updatedPayload);
   };
 
   return (
     <>
       {product.type === 'variable' && (
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} className="product-size">
+        <Box
+          component="form"
+          onSubmit={handleSubmit((data) => {
+            onSubmit(data);
+            reset();
+            setFileName(null);
+          })}
+          className="product-size"
+        >
+          {!isProductOrdered && (
+            <Typography
+              sx={{ fontWeight: 500, color: 'rgb(27, 27, 27) !important', mb: 1, fontSize: '1rem !important' }}
+              gutterBottom
+            >
+              Select variant
+            </Typography>
+          )}
           {!isProductOrdered &&
             dropdowns.map((dropdown, index) => {
               const firstItem = first(dropdown)!;
@@ -221,64 +231,100 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
                 };
               });
               return (
-                <Fragment key={firstItem.slug}>
-                  <SelectBox
-                    name={name}
-                    control={control}
-                    placeholder={`Select ${name}`}
-                    options={options}
-                    label={`Select ${name}`}
-                    errors={errors}
-                    onChange={(value) => {
-                      clearErrors();
-                      for (let i = index + 1; i < dropdowns.length; ++i) {
-                        const firstItem = first(dropdowns[i])!;
-                        const name = firstItem.name;
-                        setValue(name, undefined);
-                      }
+                <Box key={firstItem.slug} className="product-size__select">
+                  <Fragment>
+                    <SelectBox
+                      name={name}
+                      control={control}
+                      placeholder={`Select ${name}`}
+                      options={options}
+                      label={`Select ${name}`}
+                      errors={errors}
+                      onChange={(value) => {
+                        clearErrors(name);
+                        for (let i = index + 1; i < dropdowns.length; ++i) {
+                          const firstItem = first(dropdowns[i])!;
+                          const name = firstItem.name;
+                          setValue(name, undefined);
+                        }
 
-                      const selectedFilter = dropdown.find((item) => item.option === value);
-                      if (selectedFilter) {
-                        onChangeDropDown(selectedFilter, index);
-                      }
-                    }}
-                  />
-                </Fragment>
+                        const selectedFilter = dropdown.find((item) => item.option === value);
+                        if (selectedFilter) {
+                          onChangeDropDown(selectedFilter, index);
+                        }
+                      }}
+                    />
+                  </Fragment>
+                </Box>
               );
             })}
-          <Btn look="dark-filled" width="100%" type="submit" fullWidth disabled={isProductOrdered}>
-            {!isProductOrdered ? en.products.itemRequestForm.request : en.products.itemRequestForm.requested}
-          </Btn>
+          {children}
+          {product?.questions && (
+            <Box className="site-dialog__content">
+              <RenderQuestions
+                noHeading={true}
+                questions={product?.questions}
+                control={control}
+                errors={errors}
+                fileName={fileName}
+                setFileName={setFileName}
+              />
+            </Box>
+          )}
+          <Button
+            className="button button--black"
+            sx={{ marginTop: { xs: '10px', md: '40px' } }}
+            type="submit"
+            fullWidth
+            disabled={isProductOrdered}
+          >
+            {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
+          </Button>
         </Box>
       )}
-      {product.type === 'simple' && (
-        <Box className="product-size">
+      {product?.type === 'simple' && (
+        <Box
+          component="form"
+          onSubmit={handleSubmit((data) => {
+            onSubmit(data);
+            reset();
+            setFileName(null);
+          })}
+          className="product-size product-size--request"
+        >
+          {children}
+          {product?.questions && (
+            <Box className="site-dialog__content">
+              <RenderQuestions
+                noHeading={true}
+                questions={product?.questions}
+                control={control}
+                errors={errors}
+                fileName={fileName}
+                setFileName={setFileName}
+              />
+            </Box>
+          )}
           <Btn
             look="dark-filled"
             className="button button--black"
+            style={{ marginTop: '40px' }}
             width="100%"
             fullWidth
+            type="submit"
             disabled={isProductOrdered}
-            onClick={handleAddToCart}
           >
-            {!isProductOrdered ? en.products.itemRequestForm.request : en.products.itemRequestForm.requested}
+            {!isProductOrdered
+              ? product.cta_label || en.products.itemRequestForm.request
+              : en.products.itemRequestForm.requested}
           </Btn>
         </Box>
       )}
-      <Dialog className="site-dialog" open={dialogOpen} fullWidth maxWidth="sm" onClose={() => setDialogOpen(false)}>
-        <DialogContent>
-          <Box>
-            <CardContent className="site-dialog__content">
-              <DynamicForm questions={product.questions} onSubmit={onSubmitDynamic} type="product" />
-            </CardContent>
-          </Box>
-        </DialogContent>
-      </Dialog>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
       <Backdrop sx={{ zIndex: 10000 }} open={isPending}>
         <CircularProgress />
       </Backdrop>
-      <Dialog className="site-dialog" open={open} onClose={() => setOpen(false)}>
+      <Dialog className="site-dialog" open={open} onClose={handleClose}>
         <DialogContent className="site-dialog__inner">
           <Box>
             <Typography align="center" className="site-dialog__title" variant="h3" component="h2">
@@ -288,7 +334,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               <Button
                 onClick={() => {
                   startTransition(async () => {
-                    router.push('/products');
+                    router.push(paths.root.products.getHref());
                   });
                 }}
                 fullWidth
@@ -300,8 +346,8 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               <Button
                 onClick={() => {
                   startTransition(async () => {
-                    await revalidatePathAction('/basket');
-                    router.push('/basket');
+                    await revalidatePathAction(paths.root.basket.getHref());
+                    router.push(paths.root.basket.getHref());
                   });
                 }}
                 className="button  button--black"

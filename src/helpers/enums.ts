@@ -33,8 +33,9 @@ export enum HomeModuleTypes {
 }
 
 export enum CookieName {
-  VipId = 'vipId',
-  FollowerCount = 'followers',
+  ProfileId = 'profileId',
+  SkipProfile = 'skip',
+  IsAgent = 'isAgent',
 }
 
 export enum QuestionType {
@@ -52,5 +53,4 @@ export enum QuestionType {
 export enum PostType {
   Opportunity = 'opportunity',
   Event = 'event',
-  Product = 'product',
 }

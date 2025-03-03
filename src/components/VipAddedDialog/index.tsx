@@ -5,6 +5,7 @@ import en from '@/helpers/lang';
 import '../../app/(auth)/on-boarding/style.scss';
 import './VipAddedDialog.scss';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { paths } from '@/helpers/paths';
 
 const VipAddedDialog = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const VipAddedDialog = () => {
   const handleContinue = async () => {
     setLoading(true);
     try {
-      router.push(isProfileEdit ? '/profile' : '/my-vips');
+      router.push(isProfileEdit ? paths.root.profile.getHref() : paths.root.myVips.getHref());
       router.refresh();
     } catch (error) {
       console.error(error);

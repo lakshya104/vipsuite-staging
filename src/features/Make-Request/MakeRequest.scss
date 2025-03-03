@@ -34,6 +34,14 @@
       @include mixins.fontSize(16);
     }
   }
+  &-title {
+    flex-direction: column;
+    flex-grow: 1;
+    @include mixins.flex(center, center);
+    p {
+      color: var(--color-textBlack-40);
+    }
+  }
   form {
     width: 100%;
     flex-direction: column;

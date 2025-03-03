@@ -41,7 +41,7 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
               </Typography>
             </Box>
           )}
-          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: he.decode(item?.title?.rendered) || '' }} />
+          <Typography variant="h2" dangerouslySetInnerHTML={{ __html: he.decode(item?.title?.rendered || '') || '' }} />
           <Typography variant="body2">
             <Typography component="span" sx={{ fontWeight: '500' }}>
               {en.events.date}

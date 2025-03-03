@@ -12,9 +12,9 @@ const Instance = axios.create({
 Instance.interceptors.request.use(
   async (config) => {
     try {
-      const { token, vipId } = await getAuthData();
+      const { token, profileId } = await getAuthData();
       if (token) config.headers.Authorization = 'Bearer ' + token;
-      if (vipId) config.headers['vip-profile-id'] = vipId;
+      if (profileId) config.headers['profile-id'] = profileId;
     } catch (error) {
       console.error('Error getting session:', error);
     }
@@ -49,6 +49,53 @@ Instance.interceptors.response.use(
   },
 );
 
+const InstanceWithTokenOnly = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
+  timeout: 20000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+InstanceWithTokenOnly.interceptors.request.use(
+  async (config) => {
+    try {
+      const { token } = await getAuthData();
+      if (token) config.headers.Authorization = 'Bearer ' + token;
+    } catch (error) {
+      console.error('Error getting session:', error);
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+InstanceWithTokenOnly.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.error(
+      'Unexpected server error :',
+      error?.message,
+      'error message :',
+      error?.response?.data?.message,
+      'error status code : ',
+      error?.response?.data?.code,
+    );
+    if (error.response) {
+      const message = error.response?.data?.message || 'An error occurred';
+      return Promise.reject(new Error(message));
+    } else if (error.request) {
+      console.error('No response received:', error?.request);
+      return Promise.reject(new Error('No response received from the server.'));
+    } else {
+      console.error('Error', error?.message);
+      return Promise.reject(new Error('An error occurred while setting up the request.'));
+    }
+  },
+);
+
 const InstanceWithoutHeaders = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
   timeout: 20000,
@@ -57,4 +104,4 @@ const InstanceWithoutHeaders = axios.create({
   },
 });
 
-export { Instance, InstanceWithoutHeaders };
+export { Instance, InstanceWithoutHeaders, InstanceWithTokenOnly };

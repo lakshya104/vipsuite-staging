@@ -5,11 +5,11 @@ const Endpoints = {
   vipSignup: '/wp/v2/signup/vip',
   agentSignup: '/wp/v2/signup/agent',
   brandSignup: '/wp/v2/signup/brand',
-  agentProfileUpdate: (agentId: number) => `/wp/v2/agent-profile/${agentId}`,
+  agentProfileUpdate: (agentId: number) => `/wp/v2/vip-profile/${agentId}`,
   getProfile: '/wp/v2/users/me',
   getBrands: '/wp/v2/brand-profiles',
   getDashboardContent: '/wp/v2/vip-profiles/dashboard-content',
-  getDashboard: '/wp/v2/vip-profiles/dashboard',
+  getDashboard: '/wp/v2/profiles/dashboard',
   getBrandDetails: (brandId: number, type?: PostType) => {
     if (type) {
       return `/wp/v2/brand-profiles/${brandId}?post_type=${type}`;
@@ -18,7 +18,7 @@ const Endpoints = {
     }
   },
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,
-  getBrandProductDetails: (productId: number) => `/wc/v3/products/${productId}`,
+  getBrandProductDetails: (oppId: number, productId: number) => `/wp/v2/opportunities/${oppId}/product/${productId}`,
   getProducts: `/wc/v3/products?page=1&per_page=99`,
   getSignupContent: '/wp/v2/signup-content',
   getVipEvents: (search?: string) => {
@@ -35,7 +35,8 @@ const Endpoints = {
   forgotPassword: '/wp/v2/forgot-password',
   resetPassword: '/wp/v2/reset-password',
   getAllOrders: (customerId: number, page: number) =>
-    `/wc/v3/orders?customer=${customerId}&page=${page}&_fields=meta_data,status,id,opportunity,event,line_items,date_created`,
+    // `/wc/v3/orders?customer=${customerId}&page=${page}&_fields=meta_data,status,id,opportunity,event,line_items,date_created`,
+    `/wc/v3/orders?customer=${customerId}&page=${page}`,
   getOrderById: (id: number) =>
     `/wc/v3/orders/${id}?_fields=meta_data,status,id,opportunity,line_items,date_created,location,is_feedback_provided`,
   getVipCart: '/wp/v2/vip-profiles/cart',
@@ -65,8 +66,8 @@ const Endpoints = {
   getWishlistItems: `/wp/v2/vip-profiles/wishlist`,
   addToWishlist: (postId: number) => `/wp/v2/vip-profiles/wishlist/${postId}`,
   getPageContent: (slug: string) => `/wp/v2/pages/?slug=${slug}`,
-  referVIP: '/wp/v2/vip-profiles/refer-vip',
-  makeRequest: '/wp/v2/vip-profiles/make-request',
+  referVIP: '/wp/v2/profiles/refer-vip',
+  makeRequest: '/wp/v2/profiles/make-request',
   vipSearch: (keyword: string) => `/wp/v2/vip-profiles/search?keyword=${keyword}`,
   getAllVip: `/wp/v2/agent/vip-profiles`,
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,

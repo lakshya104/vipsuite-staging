@@ -34,7 +34,6 @@
     }
   }
   p {
-    color: var(--color-textBlack-80);
     @media only screen and (max-width: 767px) {
       margin-bottom: mixins.rem(16);
       line-height: 1.38;
@@ -50,35 +49,48 @@
     &.highlight-text {
       margin: 0;
     }
+    &:not(.mui-yl23kv-MuiTypography-root, .Mui-error) {
+      color: var(--color-textBlack-80);
+    }
   }
   .product-size {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
     margin-bottom: mixins.rem(32);
     @media only screen and (min-width: 1200px) {
       padding-top: mixins.rem(6);
       overflow: hidden;
       @include mixins.flex;
       button {
-        align-self: flex-start;
+        align-self: left;
         flex: 1 0 0;
-        max-width: 30%;
       }
+    }
+    > .MuiBox-root {
+      width: 100%;
     }
     .MuiFormControl-root {
       margin: 0 0 mixins.rem(16);
       @media only screen and (min-width: 1200px) {
         margin: 0;
-        padding-right: mixins.rem(16);
+        // padding-right: mixins.rem(16);
         flex: 1 0 0;
-        max-width: 60%;
       }
     }
-    p {
-      text-align: right;
-    }
+    // p {
+    //   text-align: right;
+    // }
     label {
       &.MuiFormLabel-root {
         line-height: mixins.rem(16);
       }
+    }
+    &__select {
+      margin-bottom: mixins.rem(22);
+    }
+    &--request {
+      flex-direction: column;
     }
   }
   .page-title {
@@ -92,6 +104,9 @@
     @media only screen and (max-width: 767px) {
       text-align: center;
     }
+  }
+  .slick-dots {
+    max-width: mixins.rem(500);
   }
 }
 

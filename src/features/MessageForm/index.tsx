@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState, useTransition } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputForm from '@/components/InputForm/InputForm';
@@ -11,6 +12,8 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import './MessageForm.scss';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
+import { messageDetailsSchema } from './schema';
 
 interface FormValues {
   message: string;
@@ -29,11 +32,16 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    resolver: zodResolver(messageDetailsSchema),
+    defaultValues: {
+      message: '',
+    },
+  });
 
   useEffect(() => {
     async function revalidateInbox() {
-      await revalidatePathAction('/inbox');
+      await revalidatePathAction(paths.root.inbox.getHref());
     }
     revalidateInbox();
   }, []);
@@ -46,7 +54,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
           order_id: orderId,
         };
         const res = await SendMessage(orderId, payload);
-        await revalidatePathAction(`/messages/${orderId}`);
+        await revalidatePathAction(paths.root.messageDetails.getHref(orderId));
         setToasterType('success');
         openToaster(res?.message || en.messageDetail.successToaster);
         reset();
@@ -81,10 +89,6 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
           <Controller
             name="message"
             control={control}
-            defaultValue=""
-            rules={{
-              required: en.messageDetail.fieldErrMessage,
-            }}
             render={({ field }) => (
               <InputForm
                 {...field}

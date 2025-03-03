@@ -7,13 +7,15 @@ import UseToaster from '@/hooks/useToaster';
 import DialogConfirmBox from './Dialog/DialogConfirm';
 import revalidatePathAction from '@/libs/actions';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface DeleteItemFromCartBtnProps {
   productId: number;
   startTransition: typeof import('react').startTransition;
+  opportunityId: string;
 }
 
-const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ productId, startTransition }) => {
+const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ productId, startTransition, opportunityId }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
@@ -23,10 +25,11 @@ const DeleteItemFromCartBtn: React.FC<DeleteItemFromCartBtnProps> = ({ productId
   const removeProduct = async (productId: number) => {
     startTransition(async () => {
       try {
-        await RemoveVipCartItem(productId);
-        await revalidatePathAction('/basket');
+        const payload = { opportunity_id: opportunityId };
+        await RemoveVipCartItem(productId, payload);
+        await revalidatePathAction(paths.root.basket.getHref());
       } catch (error) {
-        openToaster('Error : ' + String(error));
+        openToaster(String(error));
       } finally {
         setOpenDialog(false);
       }

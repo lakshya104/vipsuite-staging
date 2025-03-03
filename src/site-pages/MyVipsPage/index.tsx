@@ -4,17 +4,31 @@ import ErrorHandler from '@/components/ErrorHandler';
 import MyVipsListing from '@/components/MyVipsListing';
 import { isEmpty } from 'lodash';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
-import { UserRole } from '@/helpers/enums';
+import { CookieName, UserRole } from '@/helpers/enums';
+import AgentHeader from '@/components/Header/AgentHeader';
+import { cookies } from 'next/headers';
+import en from '@/helpers/lang';
 
-const MyVipPage = async ({ isApplicationAcceptedShown }: { isApplicationAcceptedShown?: boolean }) => {
-  const [{ data: myVips, error }, session] = await Promise.all([GetAllVips(), GetSession()]);
-  if (error || !session) {
-    return <ErrorHandler error={error || 'Unable to get Session'} errMessage="Unable to show VIP list currently." />;
+const MyVipPage = async () => {
+  const [{ data: myVips, error }, session, cookieStore] = await Promise.all([GetAllVips(), GetSession(), cookies()]);
+  if (error) {
+    return <ErrorHandler error={error} errMessage={en.myVipsPage.errMessage} />;
   }
-  if (isEmpty(myVips) && !isApplicationAcceptedShown) {
+  const isSkipped = cookieStore.get(CookieName.SkipProfile);
+  if (isEmpty(myVips) && !isSkipped) {
     return <ApplicationAcceptedDialog name={session?.first_name} role={UserRole.Agent} />;
   }
-  return <MyVipsListing myVips={myVips} token={session?.token} />;
+  return (
+    <>
+      <AgentHeader token={session.token} />
+      <MyVipsListing
+        myVips={myVips}
+        token={session?.token}
+        agentId={session?.profile_id}
+        agentName={session?.first_name + ' ' + session?.last_name}
+      />
+    </>
+  );
 };
 
 export default MyVipPage;

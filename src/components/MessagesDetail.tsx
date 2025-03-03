@@ -8,6 +8,7 @@ import { calculateRelativeTime, extractDate } from '@/helpers/utils';
 import { ProgressBarLink } from './ProgressBar';
 import MessageForm from '@/features/MessageForm';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
 
 interface MessagesDetailProps {
   messageDetail: MessageDetails;
@@ -18,10 +19,10 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
     <>
       <Container>
         <Typography className="page-title" variant="h2" align="center">
-          <ProgressBarLink href={'/inbox'} aria-label="Back to All Messages">
+          <ProgressBarLink href={paths.root.inbox.getHref()} aria-label="Back to All Messages">
             <ArrowBackIcon />
           </ProgressBarLink>
-          {he.decode(messageDetail?.product_name)}
+          {he.decode(messageDetail?.product_name || '')}
         </Typography>
       </Container>
       <Box className="user-inbox order-details-page">

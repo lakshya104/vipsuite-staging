@@ -12,6 +12,7 @@ export interface ContactInfo {
 }
 
 export interface ACF {
+  brand_name?: string;
   city?: string;
   gender?: string;
   first_name: string;
@@ -61,7 +62,7 @@ export interface UserProfile {
   email?: string;
   name?: string;
   acf: ACF;
-  vip_profile_id?: number;
+  profile_id?: number;
   account_status?: string;
   role?: UserRole;
 }
@@ -73,10 +74,11 @@ export interface AuthToken {
 export type Session = {
   id: number;
   acf: ACF;
-  vip_profile_id: number;
+  profile_id: number;
   account_status: string;
   role: UserRole;
   email: string;
   token: string;
   first_name: string;
+  last_name: string;
 };

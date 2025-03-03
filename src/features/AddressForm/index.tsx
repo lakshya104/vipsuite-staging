@@ -13,6 +13,7 @@ import { addUpdateAddress } from '@/libs/api-manager/manager';
 import './AddressForm.scss';
 import revalidatePathAction from '@/libs/actions';
 import en from '@/helpers/lang';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 type FormFieldNames =
   | 'first_name'
@@ -54,14 +55,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
       await addUpdateAddress(data, addressId);
       if (search === 'order-journey') {
         if (isRequestedProduct) {
-          router.push('/basket?step=1&isRequestOnly=true');
+          router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isRequestOnly: 'true' }));
         } else {
-          router.push('/basket?step=1');
+          router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1 }));
         }
-        await revalidatePathAction('/basket?step=1');
+        await revalidatePathAction(withSearchParams(() => paths.root.basket.getHref(), { step: 1 }));
       } else {
-        await revalidatePathAction('/my-addresses');
-        router.push('/my-addresses');
+        await revalidatePathAction(paths.root.addresses.getHref());
+        router.push(paths.root.addresses.getHref());
       }
     } catch (error) {
       openToaster(String(error));

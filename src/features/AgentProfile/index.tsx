@@ -11,9 +11,10 @@ import { AgentEditProfileSchema, AgentEditProfileValues } from './types';
 import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { AgentProfileUpdate } from '@/libs/api-manager/manager';
-import { ACF } from '@/interfaces';
+import { ACF, AgentEditFormDataObject } from '@/interfaces';
 import revalidatePathAction from '@/libs/actions';
 import { isEmpty } from 'lodash';
+import { paths } from '@/helpers/paths';
 
 interface AgentEditProfileFormProps {
   profileDetails: ACF;
@@ -60,28 +61,28 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
     setError('');
     setIspending(true);
     try {
-      const allVipExamples = [
-        formData.examples_of_vip_managed,
-        ...(formData.vip_examples
-          ? formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== '')
-          : []),
-      ]
-        .filter(Boolean)
-        .join(', ');
+      const allVipExamples = formData.vip_examples
+        .filter((example) => example.value.trim() !== '')
+        .map((example) => ({
+          text: example.value.trim(),
+        }));
 
-      const formDataObj = new FormData();
-      formDataObj.append('first_name', formData.first_name || '');
-      formDataObj.append('last_name', formData.last_name || '');
-      formDataObj.append('phone', formData.phone || '');
-      formDataObj.append('company_name', formData.company_name || '');
-      formDataObj.append('examples_of_vip_managed', allVipExamples);
+      const formDataObj: AgentEditFormDataObject = {
+        acf: {
+          first_name: formData.first_name || '',
+          last_name: formData.last_name || '',
+          phone: formData.phone || '',
+          company_name: formData.company_name || '',
+          examples_of_vip_managed: allVipExamples,
+        },
+      };
       const response = await AgentProfileUpdate(agentId, formDataObj, token);
-      revalidatePathAction('/my-profile');
-      router.push('/my-profile');
+      await revalidatePathAction(paths.root.profile.getHref());
       if (response && response.error) {
         setError(`Error: ${response.error}`);
         setToasterOpen(true);
       }
+      router.push(paths.root.profile.getHref());
     } catch (error) {
       setError(error?.toString() || 'An unexpected error occurred'); //
       setToasterOpen(true);

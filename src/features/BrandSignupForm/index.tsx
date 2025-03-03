@@ -17,6 +17,7 @@ import { BrandSignUp, VerifyEmail } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
+import { paths } from '@/helpers/paths';
 
 interface BrandSignupFormProps {
   brandSignupOptions: string[];
@@ -61,7 +62,8 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
       try {
         const data = {
           brand_name: formData?.brand_name,
-          contact_name: formData?.contact_name,
+          first_name: formData?.first_name,
+          last_name: formData?.last_name,
           email: formData?.email,
           phone: formData?.phone,
           password: formData?.password,
@@ -283,7 +285,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
           Already have an account?{' '}
           <Link
-            href={'/login'}
+            href={paths.auth.login.getHref()}
             style={{
               textDecoration: 'underline',
               padding: 0,

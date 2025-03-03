@@ -5,8 +5,6 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { DeleteAddress } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
-import { revalidateTag } from '@/libs/actions';
-import TAGS from '@/libs/apiTags';
 
 interface DeleteAddressBtnProps {
   addressId: string;
@@ -31,7 +29,6 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ addressId, startTra
         openToaster(error?.toString() ?? 'Error deleting address');
       } finally {
         setOpenDialog(false);
-        await revalidateTag(TAGS.GET_ADDRESSES);
       }
     });
   };
