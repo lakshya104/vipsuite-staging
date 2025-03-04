@@ -43,7 +43,7 @@ export type AgentSignUpRequestBody = {
 export type RsvpFormValues = {
   post_type: string;
   rsvp_post: number;
-  is_pleases: string;
+  is_pleases?: string;
   questions?: Question[];
 };
 

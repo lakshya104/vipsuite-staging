@@ -13,6 +13,7 @@ export interface ContactInfo {
 
 export interface ACF {
   brand_name?: string;
+  type_of_business?: string;
   city?: string;
   gender?: string;
   first_name: string;

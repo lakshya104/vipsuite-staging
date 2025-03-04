@@ -52,7 +52,7 @@ const Partner: React.FC<PartnerProps> = ({ data }) => {
   const SliderComponent = Slider as unknown as React.ComponentType<any>;
 
   return (
-    data && (
+    logos && (
       <Box component="section" className="site-partner">
         <Box>
           <SliderComponent {...settings}>

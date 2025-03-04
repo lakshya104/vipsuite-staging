@@ -14,27 +14,30 @@ import { BrandProfileUpdate } from '@/libs/api-manager/manager';
 import { ACF, BrandEditFormDataObject } from '@/interfaces';
 import revalidatePathAction from '@/libs/actions';
 import { paths } from '@/helpers/paths';
+import { QuestionType } from '@/helpers/enums';
 
 interface BrandEditProfileFormProps {
   profileDetails: ACF;
   brandId: number;
+  brandSignupOptions: string[];
 }
 
-const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDetails, brandId }) => {
+const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDetails, brandId, brandSignupOptions }) => {
   const [isPending, setIspending] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const router = useRouter();
-  const initialVipExamples = profileDetails?.examples_of_vip_managed
-    ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
-    : [{ value: '' }];
+  const brandOptions = brandSignupOptions.map((option) => ({
+    value: option,
+    label: option,
+  }));
 
   const defaultValues = {
     first_name: profileDetails?.first_name || '',
     last_name: profileDetails?.last_name || '',
     phone: profileDetails?.phone || '',
     brand_name: profileDetails?.brand_name || '',
-    vip_examples: initialVipExamples,
+    type_of_business: profileDetails?.type_of_business || '',
   };
 
   const {
@@ -56,7 +59,7 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
           last_name: formData.last_name || '',
           phone: formData.phone || '',
           brand_name: formData.brand_name || '',
-          type_of_business: formData.type_of_business || [],
+          type_of_business: [formData.type_of_business || ''],
         },
       };
       const response = await BrandProfileUpdate(brandId, formDataObj);
@@ -67,7 +70,7 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
       }
       router.push(paths.root.profile.getHref());
     } catch (error) {
-      setError(error?.toString() || 'An unexpected error occurred'); //
+      setError(error?.toString() || 'An unexpected error occurred');
       setToasterOpen(true);
       setIspending(false);
     }
@@ -76,14 +79,14 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        {BrandEditProfileFields?.map(({ name, placeholder, autocomplete, type, label, options }) => (
+        {BrandEditProfileFields?.map(({ name, placeholder, autocomplete, type, label }) => (
           <Box key={name}>
-            {type === 'select' ? (
+            {type === QuestionType.Dropdown ? (
               <SelectBox
                 name={name}
                 control={control}
                 placeholder={placeholder}
-                options={options}
+                options={brandOptions}
                 label={label || 'select'}
                 errors={errors}
               />
@@ -104,11 +107,6 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
                 )}
               />
             )}
-            {/* {name === 'company_name' && (
-              <Box className="input-text company-name">
-                <Typography>Optional</Typography>
-              </Box>
-            )} */}
             {name === 'phone' && (
               <Box className="input-text">
                 <Typography>Including the country code with + sign</Typography>
@@ -116,27 +114,6 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
             )}
           </Box>
         ))}
-        {/* {fields?.map((field, index) => (
-          <Controller
-            key={field.id}
-            name={`vip_examples.${index}.value`}
-            control={control}
-            render={({ field }) => (
-              <InputForm
-                type={''}
-                {...field}
-                placeholder={`Example of VIP Managed`}
-                error={!!errors.vip_examples?.[index]?.value}
-                helperText={errors.vip_examples?.[index]?.value?.message}
-              />
-            )}
-          />
-        ))}
-        <Box sx={{ cursor: 'pointer', mt: isEmpty(fields) ? 3 : 0 }} onClick={addAnotherVip}>
-          <Box className="input-text">
-            <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
-          </Box>
-        </Box> */}
         <Button type="submit" disabled={isPending} className="button button--black" fullWidth>
           {isPending ? 'Loading...' : 'Continue'}
         </Button>

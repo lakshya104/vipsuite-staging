@@ -35,25 +35,35 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
     <Container>
       <Box className="order-product__items">
         {allOrders.map((order: Order) => {
-          if (order.id) {
+          if (order?.id) {
             const response = order?.meta_data.find((item) => item.key === 'response')?.value;
             const orderType =
-              order.status === 'lookbook-order' ? 'lookbookOrder' : order.status === 'rsvp-request' ? 'rsvp' : 'order';
+              order?.status === 'lookbook-order'
+                ? 'lookbookOrder'
+                : order?.status === 'rsvp-request'
+                  ? 'rsvp'
+                  : 'order';
             const orderTitle =
               orderType === 'lookbookOrder'
-                ? order.opportunity?.title
+                ? order?.opportunity?.title
                 : orderType === 'rsvp'
                   ? order.opportunity?.title
-                  : (first(order.line_items)?.parent_name ?? first(order.line_items)?.name);
+                  : orderType === 'order' && order?.opportunity && isEmpty(order?.line_items)
+                    ? order?.opportunity?.title
+                    : first(order?.line_items)?.parent_name || first(order?.line_items)?.name;
 
             const productImage =
               orderType === 'rsvp'
                 ? order?.opportunity?.image?.sizes?.medium
-                : orderType === 'order'
-                  ? first(order?.line_items)?.image?.src
-                  : orderType === 'lookbookOrder'
-                    ? order?.opportunity?.image?.sizes?.medium
-                    : DefaultImageFallback.Placeholder;
+                : orderType === 'order' && order?.opportunity && isEmpty(order?.line_items)
+                  ? order?.opportunity?.image?.sizes?.medium
+                  : orderType === 'order'
+                    ? first(order?.line_items)?.image?.src
+                    : orderType === 'lookbookOrder'
+                      ? order?.opportunity?.image?.sizes?.medium
+                      : DefaultImageFallback.Placeholder;
+            const isRelatedOpportunity = orderType === 'order' && !isEmpty(order?.line_items);
+
             return (
               <ProgressBarLink
                 href={withSearchParams(() => paths.root.orderDetails.getHref(order?.id), { page: currentPage })}
@@ -87,6 +97,11 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                           <Typography variant="body1">
                             {en.common.status}: {formatString(order?.status)}
                           </Typography>
+                          {isRelatedOpportunity && (
+                            <Typography variant="body1">
+                              {en.common.relatedOpportunity}: {he.decode(order?.opportunity?.title || '')}
+                            </Typography>
+                          )}
                         </>
                       )}
                     </Box>

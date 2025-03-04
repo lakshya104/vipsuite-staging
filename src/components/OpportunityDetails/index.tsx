@@ -1,12 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Box, CardContent, Typography, Dialog, DialogContent, Button, Grid2 } from '@mui/material';
+import { Box, CardContent, Typography, Button, Grid2, Backdrop, CircularProgress } from '@mui/material';
 import he from 'he';
 import OpportunityTabs from '@/components/OpportunityTabs';
 import './OpportunityDetails.scss';
 import './OpportunityTab.scss';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
-import OpportunityRSVP from '@/components/OpportunityRSVP';
 import ImageSlider from '@/components/Slider';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
@@ -18,30 +17,26 @@ import { DefaultImageFallback } from '@/helpers/enums';
 import en from '@/helpers/lang';
 import ShowHtml from '@/components/ShowHtml';
 import DynamicForm from '@/features/DynamicForm';
-import { Question } from '@/interfaces/events';
 import OpportunityProductCard from '@/components/DashboardCard/OpportunityProductCard';
 import { isNonEmptyString } from '@/helpers/utils';
+import { SendRsvp } from '@/libs/api-manager/manager';
+import revalidatePathAction from '@/libs/actions';
+import { paths } from '@/helpers/paths';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
 }
 
 const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [btnDisable, setBtnDisable] = useState<boolean>(false);
   const [toasterMessage, setToasterMessage] = useState<string>('');
-  const [questionPayload, setQuestionPayload] = useState<Question[]>([]);
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const images = opportunity?.acf?.web_detail_images
     ? opportunity?.acf?.web_detail_images?.map((item) => item?.sizes['vs-container'])
     : [opportunity.acf.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
 
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-  const handleConfirmationOpen = () => {
-    setDialogOpen(false);
-  };
   const handleToasterMessage = (type: 'error' | 'success', message?: string) => {
     setToasterType(type);
     if (type === 'success') {
@@ -70,6 +65,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmitDynamic = async (data: Record<string, any>) => {
+    setIsPending(true);
     const updatedPayload = await Promise.all(
       opportunity.acf.questions.map(async (field) => {
         const key = field?.title?.toLowerCase()?.replace(/[^a-z0-9]/g, '');
@@ -85,8 +81,41 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         };
       }),
     );
-    setQuestionPayload(updatedPayload);
-    setDialogOpen(true);
+    const rsvp = {
+      post_type: 'opportunity',
+      rsvp_post: opportunity.id,
+      ...(updatedPayload && { questions: updatedPayload }),
+    };
+    try {
+      const res = await SendRsvp(rsvp);
+      handleToasterMessage('success', res?.message);
+      setBtnDisable(true);
+    } catch (error) {
+      handleToasterMessage('error', String(error));
+      setBtnDisable(false);
+    } finally {
+      setIsPending(false);
+      await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
+    }
+  };
+
+  const onSubmitSimple = async () => {
+    setIsPending(true);
+    const rsvp = {
+      post_type: 'opportunity',
+      rsvp_post: opportunity.id,
+    };
+    try {
+      const res = await SendRsvp(rsvp);
+      handleToasterMessage('success', res?.message);
+      setBtnDisable(true);
+    } catch (error) {
+      handleToasterMessage('error', String(error));
+      setBtnDisable(false);
+    } finally {
+      setIsPending(false);
+      await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
+    }
   };
 
   return (
@@ -148,7 +177,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           onSubmit={onSubmitDynamic}
           ctaText={opportunity?.acf?.cta_label}
           ctaIfAlreadyOrdered={en.opportunities.opportunityRsvp.responded}
-          alreadyOrdered={opportunity?.acf?.is_rsvp}
+          alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
           noHeading={true}
         />
       ) : (
@@ -156,8 +185,8 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           <Button
             variant="contained"
             className="button button--black"
-            onClick={() => setDialogOpen(true)}
-            disabled={opportunity?.acf?.is_rsvp}
+            onClick={onSubmitSimple}
+            disabled={opportunity?.acf?.is_rsvp || btnDisable}
             style={{ marginBottom: '50px' }}
           >
             {opportunity?.acf?.is_rsvp
@@ -166,17 +195,9 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           </Button>
         </Box>
       )}
-      <Dialog className="site-dialog" open={dialogOpen} fullWidth maxWidth="sm" onClose={handleDialogClose}>
-        <DialogContent>
-          <OpportunityRSVP
-            onClose={handleDialogClose}
-            onConfirmation={handleConfirmationOpen}
-            opportunity={opportunity}
-            handleToasterMessage={handleToasterMessage}
-            updatedPayload={questionPayload}
-          />
-        </DialogContent>
-      </Dialog>
+      <Backdrop sx={{ color: '#fff', zIndex: 10000 }} open={isPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Toaster
         open={toasterOpen}
         setOpen={closeToaster}

@@ -47,31 +47,6 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
     setIsClearing(true);
   }, []);
 
-  const uniqueEvents: Event[] = [];
-  const mappedBrandIds = new Set();
-  const countMap: Record<number, number> = {};
-
-  eventsData.forEach((item) => {
-    const brandId = item.acf.brand_id;
-    if (brandId) {
-      countMap[brandId] = (countMap[brandId] || 0) + 1;
-    }
-  });
-
-  eventsData.forEach((item) => {
-    const brandId = item.acf.brand_id;
-    if (brandId) {
-      item.isBrandCard = countMap[brandId] >= 2;
-      if (!mappedBrandIds.has(brandId)) {
-        mappedBrandIds.add(brandId);
-        uniqueEvents.push(item);
-      }
-    } else {
-      item.isBrandCard = false;
-      uniqueEvents.push(item);
-    }
-  });
-
   const renderLoading = () => {
     return (
       <Grid2 container spacing={2}>
@@ -97,7 +72,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
       </Box>
       {isClearing ? (
         renderLoading()
-      ) : !isEmpty(uniqueEvents) ? (
+      ) : !isEmpty(eventsData) ? (
         <>
           {isPending && searchQuery ? (
             renderLoading()
@@ -107,17 +82,17 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
                 <Grid2 size={{ xs: 12 }}>
                   <Box width="100%">
                     <Typography variant="h3" component="h2" mb={1}>
-                      {uniqueEvents.length > 1
-                        ? `${uniqueEvents.length} ${en.events.results} "${debouncedSearchQuery}"`
-                        : `${uniqueEvents.length} ${en.events.singleResult} "${debouncedSearchQuery}"`}
+                      {eventsData.length > 1
+                        ? `${eventsData.length} ${en.events.results} "${debouncedSearchQuery}"`
+                        : `${eventsData.length} ${en.events.singleResult} "${debouncedSearchQuery}"`}
                     </Typography>
                   </Box>
                 </Grid2>
               </Grid2>
-              <EventsListing events={uniqueEvents} />
+              <EventsListing events={eventsData} />
             </>
           ) : (
-            <EventsListing events={uniqueEvents} />
+            <EventsListing events={eventsData} />
           )}
         </>
       ) : (

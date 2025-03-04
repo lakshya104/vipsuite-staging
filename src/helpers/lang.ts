@@ -11,6 +11,7 @@ const en = {
     yes: 'Yes',
     ok: 'OK',
     status: 'Status',
+    relatedOpportunity: 'From',
   },
   helperText: {
     noAccount: "Don't have an account?",

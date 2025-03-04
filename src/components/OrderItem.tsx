@@ -3,11 +3,14 @@ import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { LineItem } from '@/interfaces';
+import en from '@/helpers/lang';
 
 interface OrderItemProps {
   item: LineItem;
+  isRelatedOpportunity?: boolean;
+  title?: string;
 }
-const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ item, isRelatedOpportunity = false, title = '' }) => {
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>
       <Image
@@ -30,6 +33,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
               {attr?.display_key}: {attr?.display_value}
             </Typography>
           ))}
+        {isRelatedOpportunity && (
+          <Typography variant="body1">
+            {en.common.relatedOpportunity}: {title}
+          </Typography>
+        )}
       </Box>
     </Box>
   );

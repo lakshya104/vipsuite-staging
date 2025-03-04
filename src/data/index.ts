@@ -2,6 +2,7 @@ import { AgentEditProfileValues } from '@/features/AgentProfile/types';
 import { AgentSignupValues } from '@/features/AgentSignupForm/types';
 import { BrandEditProfileValues } from '@/features/BrandProfileForm/types';
 import { BrandSignupValues } from '@/features/BrandSignupForm/types';
+import { QuestionType } from '@/helpers/enums';
 import { paths } from '@/helpers/paths';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 
@@ -131,10 +132,10 @@ type AgentEditProfileFormField = {
 };
 
 export const AgentEditProfileFields: AgentEditProfileFormField[] = [
-  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
-  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
-  { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: 'text' },
-  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
+  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: QuestionType.Text },
+  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: QuestionType.Text },
+  { name: 'company_name', placeholder: 'Company Name', autocomplete: 'c-name', type: QuestionType.Text },
+  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: QuestionType.Text },
 ];
 
 type BrandEditProfileFormField = {
@@ -147,11 +148,17 @@ type BrandEditProfileFormField = {
 };
 
 export const BrandEditProfileFields: BrandEditProfileFormField[] = [
-  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: 'text' },
-  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: 'text' },
-  { name: 'brand_name', placeholder: 'Brand Name', autocomplete: 'b-name', type: 'text' },
-  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: 'tel' },
-  { name: 'type_of_business', placeholder: 'Type of Business', autocomplete: 'business', type: 'text' },
+  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: QuestionType.Text },
+  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: QuestionType.Text },
+  { name: 'brand_name', placeholder: 'Brand Name', autocomplete: 'b-name', type: QuestionType.Text },
+  { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: QuestionType.Text },
+  {
+    name: 'type_of_business',
+    placeholder: 'Type of Business',
+    autocomplete: 'business',
+    type: QuestionType.Dropdown,
+    label: 'Type of Business',
+  },
 ];
 
 export const contacts = [

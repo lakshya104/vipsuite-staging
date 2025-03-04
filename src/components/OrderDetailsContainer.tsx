@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
-import { filter, first } from 'lodash';
+import { filter, first, isEmpty } from 'lodash';
 import he from 'he';
 import FeedbackForm from '@/features/FeedbackForm';
 import { formatDate, formatEventDates, formatString } from '@/helpers/utils';
@@ -24,6 +24,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
       ? orderDetail?.meta_data.find((item) => item.key === 'response')?.value === 'interested'
       : true;
   const response = orderDetail?.meta_data.find((item) => item.key === 'response')?.value;
+  const isRelatedOpportunity = orderType === 'order' && !isEmpty(orderDetail?.line_items);
 
   return (
     <>
@@ -52,38 +53,47 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
       <Box className="order-product__items">
         {orderStatus !== 'lookbook' &&
           orderStatus !== 'rsvp' &&
-          orderDetail?.line_items.map((item) => <OrderItem key={item?.id} item={item} />)}
-        {(orderStatus === 'rsvp' || orderStatus === 'lookbook') && (
-          <Box className="order-product__item" display={'flex'}>
-            <Image
-              height={110}
-              width={110}
-              src={orderDetail?.opportunity?.image?.sizes?.medium || DefaultImageFallback.Placeholder}
-              alt={he.decode(orderDetail?.opportunity?.title || 'product-image')}
+          orderDetail?.line_items.map((item) => (
+            <OrderItem
+              key={item?.id}
+              item={item}
+              isRelatedOpportunity={isRelatedOpportunity}
+              title={he.decode(orderDetail?.opportunity?.title || '')}
             />
-            <Box>
-              <Typography gutterBottom variant="h2">
-                {he.decode(orderDetail?.opportunity?.title || '')}
-              </Typography>
-              {orderDetail?.opportunity?.start_date && (
-                <Typography variant="body1">
-                  {formatEventDates(orderDetail?.opportunity?.start_date, orderDetail?.opportunity?.end_date)}
+          ))}
+        {orderStatus === 'rsvp' ||
+          orderStatus === 'lookbook' ||
+          (orderStatus === 'product' && isEmpty(orderDetail?.line_items) && (
+            <Box className="order-product__item" display={'flex'}>
+              <Image
+                height={110}
+                width={110}
+                src={orderDetail?.opportunity?.image?.sizes?.medium || DefaultImageFallback.Placeholder}
+                alt={he.decode(orderDetail?.opportunity?.title || 'product-image')}
+              />
+              <Box>
+                <Typography gutterBottom variant="h2">
+                  {he.decode(orderDetail?.opportunity?.title || '')}
                 </Typography>
-              )}
-              {orderDetail?.opportunity?.location && (
-                <Typography variant="body1">
-                  {en.myOrders.location} {orderDetail?.opportunity?.location}
-                </Typography>
-              )}
-              {orderDetail?.status === 'lookbook-order' && (
-                <Typography variant="body1">
-                  {en.myOrders.description}{' '}
-                  {first(filter(orderDetail?.meta_data, (item) => item.key === 'lookbook_order_data'))?.value}
-                </Typography>
-              )}
+                {orderDetail?.opportunity?.start_date && (
+                  <Typography variant="body1">
+                    {formatEventDates(orderDetail?.opportunity?.start_date, orderDetail?.opportunity?.end_date)}
+                  </Typography>
+                )}
+                {orderDetail?.opportunity?.location && (
+                  <Typography variant="body1">
+                    {en.myOrders.location} {orderDetail?.opportunity?.location}
+                  </Typography>
+                )}
+                {orderDetail?.status === 'lookbook-order' && (
+                  <Typography variant="body1">
+                    {en.myOrders.description}{' '}
+                    {first(filter(orderDetail?.meta_data, (item) => item.key === 'lookbook_order_data'))?.value}
+                  </Typography>
+                )}
+              </Box>
             </Box>
-          </Box>
-        )}
+          ))}
       </Box>
       {!orderDetail?.is_feedback_provided && isInterested && (
         <FeedbackForm type={orderType} orderId={orderDetail?.id} />
