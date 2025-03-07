@@ -99,6 +99,7 @@
   &-product {
     display: flex;
     flex-direction: column;
+    position: relative;
     .dashboard-card {
       margin-bottom: mixins.rem(12);
     }
@@ -124,6 +125,9 @@
       button {
         width: 100%;
       }
+    }
+    .dashboard-card__item-featuredBox {
+      @include mixins.absolute(top 12px left 12px);
     }
   }
 }

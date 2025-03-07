@@ -60,9 +60,11 @@
       background: var(--color-white);
       padding: mixins.rem(4);
       border-radius: 50%;
-      margin-left: mixins.rem(8);
+      margin: 0;
+      margin-right: mixins.rem(8);
       width: mixins.rem(24);
       height: mixins.rem(24);
+      vertical-align: middle;
     }
   }
 }

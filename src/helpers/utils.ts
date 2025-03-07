@@ -4,6 +4,7 @@ import { Session } from '@/interfaces';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { z } from 'zod';
 import { Question } from '@/interfaces/events';
+import en from './lang';
 
 export function calculateAge(dateOfBirth: string | undefined): number {
   if (!dateOfBirth) return 0;
@@ -192,19 +193,19 @@ export const mapQuestionsToSchema = (questions: Question[]) => {
           case 'datetime':
           case 'time':
             acc[fieldName] = question.is_required
-              ? z.string().min(1, { message: 'This field is required' })
+              ? z.string().min(1, { message: en.common.fieldErrorMessage })
               : z.string().optional().or(z.literal(''));
             break;
 
           case 'checkboxes':
             acc[fieldName] = question.is_required
-              ? z.array(z.string()).min(1, { message: 'This field is required' })
+              ? z.array(z.string()).min(1, { message: en.common.fieldErrorMessage })
               : z.array(z.string().optional().or(z.literal('')));
             break;
 
           case 'file_upload':
             acc[fieldName] = question.is_required
-              ? z.instanceof(File).refine((val) => val, { message: 'This field is required' })
+              ? z.instanceof(File).refine((val) => val, { message: en.common.fieldErrorMessage })
               : z.union([z.instanceof(File), z.null(), z.string().optional()]);
             break;
 

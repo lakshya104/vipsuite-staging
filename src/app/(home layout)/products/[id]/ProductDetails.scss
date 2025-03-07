@@ -177,3 +177,23 @@
     @include mixins.fontSize(14);
   }
 }
+
+.opportunity-product__detail {
+  @include mixins.relative();
+  .featuredBox {
+    @include mixins.absolute(top 12px left 12px);
+  }
+  .featuredText {
+    background-color: var(--color-marble);
+    padding: mixins.rem(6) mixins.rem(10);
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    display: inline-block;
+    line-height: 1.4;
+    @include mixins.border-radius(3px);
+    @media only screen and (max-width: 767px) {
+      line-height: 1.4;
+      @include mixins.fontSize(10);
+    }
+  }
+}

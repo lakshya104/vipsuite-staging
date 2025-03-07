@@ -95,6 +95,10 @@ button.button {
   &--black {
     background-color: var(--color-textBlack);
     color: var(--color-white);
+    &:active {
+      background-color: var(--color-textBlack);
+      color: var(--color-white);
+    }
     &:hover {
       @media only screen and (min-width: 768px) {
         background-color: var(--color-marble);
@@ -105,6 +109,10 @@ button.button {
   &--white {
     color: var(--color-textBlack);
     background-color: var(--color-marble);
+    &:active {
+      color: var(--color-textBlack);
+      background-color: var(--color-marble);
+    }
     &:hover {
       @media only screen and (min-width: 768px) {
         background-color: var(--color-textBlack);
@@ -184,6 +192,10 @@ form {
     border-radius: mixins.rem(37.5) !important;
     border-color: var(--color-textBlack);
     @include mixins.fontSize(15);
+    .site-dialog & {
+      padding: mixins.rem(15) mixins.rem(20) mixins.rem(15) mixins.rem(24);
+      height: auto;
+    }
   }
   input {
     &:-webkit-autofill {
@@ -228,6 +240,9 @@ form {
   }
   .date-picker {
     button {
+      .site-dialog & {
+        margin-top: 0;
+      }
       margin-top: mixins.rem(-5);
       margin-right: 0;
       outline: 0 none;
@@ -436,9 +451,24 @@ div.site-dialog {
         padding: 0;
         margin-right: mixins.rem(9);
       }
+      .MuiRadioGroup-root {
+        margin-bottom: mixins.rem(16) !important;
+      }
       svg {
         width: mixins.rem(13);
         height: mixins.rem(13);
+      }
+    }
+    .form-radioBtn,
+    .form-checkbox {
+      &:has(.field-error) {
+        margin-bottom: mixins.rem(32);
+        label {
+          margin-bottom: 0;
+        }
+        .MuiRadioGroup-root {
+          margin-bottom: 0 !important;
+        }
       }
     }
   }
@@ -456,8 +486,10 @@ div.site-dialog {
   }
   button {
     width: 100%;
-    margin-top: -0.3125rem;
     margin-right: 0;
+    &.button.button--black {
+      margin-top: mixins.rem(32);
+    }
   }
   form {
     .Mui-error {
@@ -477,11 +509,6 @@ div.site-dialog {
 .MuiDialog-container {
   @media only screen and (max-width: 767px) {
     align-items: flex-end !important;
-  }
-  > .MuiPaper-root {
-    @media only screen and (max-width: 767px) {
-      // align-items: flex-end !important;
-    }
   }
 }
 .MuiPaper-elevation.MuiPopover-paper {
@@ -533,4 +560,12 @@ section {
       height: mixins.rem(11);
     }
   }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.MuiDateTimePickerToolbar-timeDigitsContainer {
+  align-items: center;
 }

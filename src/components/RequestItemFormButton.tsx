@@ -76,7 +76,7 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({ postId })
   return (
     <>
       <Box className="request-button">
-        <Button className="button" onClick={handleClickOpen}>
+        <Button className="button w-100" onClick={handleClickOpen}>
           {en.lookBookForm.btn}
         </Button>
       </Box>

@@ -20,7 +20,6 @@
     text-align: center;
     top: 0;
     z-index: 99;
-    padding: mixins.rem(10);
     img {
       max-width: mixins.rem(115);
       height: auto;
@@ -35,5 +34,16 @@
     padding: 0 mixins.rem(15) mixins.rem(56);
     @include mixins.flex(center);
     @include mixins.relative;
+  }
+  &__wrapper {
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 82.75rem;
+    .profile-builder__close {
+      button {
+        position: static;
+      }
+    }
   }
 }

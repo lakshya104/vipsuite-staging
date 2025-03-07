@@ -132,14 +132,30 @@ header.site-header {
     .white-logo {
       display: none;
     }
+    .logo-mobile {
+      display: none;
+    }
     @media only screen and (max-width: 991px) {
       @include mixins.align(true, true, absolute);
       a {
         max-width: mixins.rem(113);
         display: block;
-        height: mixins.rem(16);
         width: auto;
         overflow: hidden;
+        img {
+          display: none;
+          &.white-logo {
+            .background--dark & {
+              display: none;
+            }
+          }
+        }
+        .logo-mobile {
+          display: block;
+          .background--dark & {
+            display: block;
+          }
+        }
       }
     }
   }

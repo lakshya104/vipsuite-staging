@@ -25,7 +25,7 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
           {he.decode(messageDetail?.product_name || '')}
         </Typography>
       </Container>
-      <Box className="user-inbox order-details-page">
+      <Box className="user-inbox message-detail order-details-page">
         <Container>
           <Box className="order-details-page">
             <Box className="inbox_content">

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { Question } from '@/interfaces/events';
-import { mapQuestionsToSchema } from '@/helpers/utils';
+import { isNonEmptyString, mapQuestionsToSchema } from '@/helpers/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RenderQuestions from '@/components/RenderQuestions';
 
@@ -62,11 +62,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             questions={questions}
             noHeading={noHeading}
           />
-          <Box mt={2}>
-            <Button className="button button--black" type="submit" fullWidth disabled={alreadyOrdered}>
-              {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || 'Order Now'}
-            </Button>
-          </Box>
+          {isNonEmptyString(ctaText) && (
+            <Box mt={2}>
+              <Button className="button button--black" type="submit" fullWidth disabled={alreadyOrdered}>
+                {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || 'Order Now'}
+              </Button>
+            </Box>
+          )}
         </form>
       </Box>
     </Box>

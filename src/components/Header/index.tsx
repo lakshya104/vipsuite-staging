@@ -57,7 +57,13 @@ const Header: React.FC<HeaderPropr> = ({ menuItems }) => {
 
         <Box className="site-header__brand">
           <Link href={paths.landing.getHref()}>
-            <Image src="/Logo.svg" alt="The VIP Suite Site black logo" height={25} width={122} />
+            <Image
+              className="logo-mobile"
+              src="/logo-white-mobile.svg"
+              alt="The VIP Suite Site black logo"
+              height={25}
+              width={122}
+            />
             <Image
               className="white-logo"
               src="/LogoWhite.svg"

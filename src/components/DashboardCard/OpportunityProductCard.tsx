@@ -6,6 +6,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './Dashboard.scss';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 interface OpportunityProductCardProps {
   oppId: number;
@@ -13,9 +14,17 @@ interface OpportunityProductCardProps {
   name: string;
   description: string;
   image: string;
+  isRequestOnly: boolean;
 }
 
-const OpportunityProductCard: React.FC<OpportunityProductCardProps> = ({ oppId, id, description, image, name }) => {
+const OpportunityProductCard: React.FC<OpportunityProductCardProps> = ({
+  oppId,
+  id,
+  description,
+  image,
+  name,
+  isRequestOnly,
+}) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -41,6 +50,13 @@ const OpportunityProductCard: React.FC<OpportunityProductCardProps> = ({ oppId, 
         />
       </Box>
       <Box className="dashboard-card__item-featured dashboard-card__content">
+        {isRequestOnly && (
+          <Box className="dashboard-card__item-featuredBox">
+            <Typography className="dashboard-card__item-featuredText" variant="overline">
+              {en.products.requestOnly}
+            </Typography>
+          </Box>
+        )}
         {isClient && (
           <>
             {name && <Typography variant="h2" dangerouslySetInnerHTML={{ __html: name || '' }} />}

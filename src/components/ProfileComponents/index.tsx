@@ -10,6 +10,7 @@ import en from '@/helpers/lang';
 interface ProfileComponentProps {
   profileDetails: UserProfile;
   isAgent?: boolean;
+  isBrand?: boolean;
 }
 
 export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
@@ -86,8 +87,16 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   );
 };
 
-export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent }) => {
+export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent, isBrand }) => {
   const contactData = [
+    ...(isBrand
+      ? [
+          {
+            type: en.profilePage.profileTabs.contacts.contactPerson,
+            primary: get(profileDetails, 'acf.first_name', '') + ' ' + get(profileDetails, 'acf.last_name', ''),
+          },
+        ]
+      : []),
     {
       type: en.profilePage.profileTabs.contacts.email,
       primary: get(profileDetails, 'email', ''),
@@ -101,6 +110,14 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
           {
             type: en.profilePage.profileTabs.contacts.company,
             primary: get(profileDetails, 'acf.company_name', ''),
+          },
+        ]
+      : []),
+    ...(isBrand
+      ? [
+          {
+            type: en.profilePage.profileTabs.contacts.busineeType,
+            primary: get(profileDetails, 'acf.type_of_business', ''),
           },
         ]
       : []),
@@ -132,7 +149,7 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
               <Grid2 size={{ xs: 8 }}>
                 {item.primary && (
                   <Typography variant="body2">
-                    {item.primary} {item.type.includes('Contact') && '(Primary)'}
+                    {item.primary} {item.type.includes('Contact') && !isBrand && '(Primary)'}
                   </Typography>
                 )}
               </Grid2>

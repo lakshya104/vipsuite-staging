@@ -148,8 +148,8 @@ type BrandEditProfileFormField = {
 };
 
 export const BrandEditProfileFields: BrandEditProfileFormField[] = [
-  { name: 'first_name', placeholder: 'First Name', autocomplete: 'given-name', type: QuestionType.Text },
-  { name: 'last_name', placeholder: 'Last Name', autocomplete: 'family-name', type: QuestionType.Text },
+  { name: 'first_name', placeholder: 'Contact First Name', autocomplete: 'given-name', type: QuestionType.Text },
+  { name: 'last_name', placeholder: 'Contact Last Name', autocomplete: 'family-name', type: QuestionType.Text },
   { name: 'brand_name', placeholder: 'Brand Name', autocomplete: 'b-name', type: QuestionType.Text },
   { name: 'phone', placeholder: 'Phone Number', autocomplete: 'tel', type: QuestionType.Text },
   {

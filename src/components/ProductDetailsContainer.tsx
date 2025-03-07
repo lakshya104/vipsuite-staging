@@ -13,6 +13,7 @@ import RedeemBox from './RedeemBox';
 import HighEndItemMessage from './HighEndItemMessage';
 import ShowHtml from './ShowHtml';
 import { DefaultImageFallback } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface ProductsContainerProps {
   product: Product;
@@ -45,7 +46,10 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
           <ArrowBackBtn />
           {product?.name}
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+        <Box
+          className="opportunity-product__detail"
+          sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}
+        >
           <Box sx={{ position: 'relative', marginBottom: 4, width: { xs: '100%', md: '50%' } }}>
             {product?.gallery_images?.length > 1 ? (
               <SliderComponent {...settings}>
@@ -71,6 +75,13 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
               </SliderComponent>
             ) : (
               <Image src={productImage} alt={product?.name} height={500} width={500} />
+            )}
+            {isRequestOnly && (
+              <Box className="featuredBox">
+                <Typography className="featuredText" variant="overline">
+                  {en.products.requestOnly}
+                </Typography>
+              </Box>
             )}
           </Box>
           <Box sx={{ flex: 1 }}>

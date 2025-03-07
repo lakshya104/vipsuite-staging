@@ -62,6 +62,7 @@ interface OpportunityProduct {
   product_name: string;
   product_short_description: string;
   product_url: string;
+  is_request_only: boolean;
 }
 
 export interface FeaturedImage {

@@ -10,9 +10,10 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { InputTextAreaFormField } from '@/components/InputTextFormField';
 import { MakeRequestSubmit } from '@/libs/api-manager/manager';
+import en from '@/helpers/lang';
 
 const formSchema = z.object({
-  request_user_response: z.string().min(1, 'This field is required'),
+  request_user_response: z.string().min(1, en.common.fieldErrorMessage),
 });
 
 type FormValues = z.infer<typeof formSchema>;

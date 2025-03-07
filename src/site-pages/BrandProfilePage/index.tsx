@@ -26,7 +26,7 @@ const BrandProfilePage = async () => {
           style={{ borderRadius: '50%', marginTop: '10px' }}
         />
         <Typography variant="h5" component="h2" fontWeight={500} mb={1}>
-          {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
+          {profileDetails?.acf?.brand_name}
         </Typography>
         <ProgressBarLink href={paths.root.editBrandProfile.getHref()} className="button button--link">
           <span style={{ textDecoration: 'underline', fontWeight: '400' }}>Edit Profile</span>
@@ -34,7 +34,7 @@ const BrandProfilePage = async () => {
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', width: '80%', justifyContent: 'center' }}>
-          <ContactsComponent profileDetails={profileDetails} />
+          <ContactsComponent profileDetails={profileDetails} isBrand={true} />
         </Box>
       </Box>
     </>

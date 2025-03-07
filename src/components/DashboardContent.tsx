@@ -3,6 +3,8 @@ import { isEmpty, isUndefined } from 'lodash';
 import ReferCard from './ReferCard';
 import { DashboardContent, DynamicFormRequests } from '@/interfaces';
 import { Box } from '@mui/material';
+import { useUserInfoStore } from '@/store/useStore';
+import { UserRole } from '@/helpers/enums';
 
 interface DashboardContentProps {
   dashboardContent: DashboardContent;
@@ -15,16 +17,19 @@ const DashboardContentComponent: React.FC<DashboardContentProps> = ({
   showMakeRequest,
   formRequests,
 }) => {
+  const { userRoleStore } = useUserInfoStore();
   return (
     <Box className="gray-card gray-card--home" display="flex" justifyContent="space-between" gap={2.5}>
       {dashboardContent && (
         <>
-          <ReferCard
-            type="refer"
-            heading={dashboardContent?.rafer_vip_heading}
-            text={dashboardContent?.rafer_vip_short_description}
-            description={dashboardContent?.rafer_vip_description}
-          />
+          {userRoleStore === UserRole.Brand && (
+            <ReferCard
+              type="refer"
+              heading={dashboardContent?.refer_vip_heading}
+              text={dashboardContent?.refer_vip_short_description}
+              description={dashboardContent?.refer_vip_description}
+            />
+          )}
           {showMakeRequest && (
             <ReferCard
               type="make-request"

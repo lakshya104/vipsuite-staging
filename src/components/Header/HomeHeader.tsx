@@ -99,7 +99,13 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const pathname = usePathname();
   const router = useRouter();
   const menuItems =
-    role === UserRole.Vip ? vipMenuItems : role === UserRole.Brand ? [] : role === UserRole.Agent ? agentMenuItems : [];
+    role === UserRole.Vip
+      ? vipMenuItems
+      : role === UserRole.Brand
+        ? vipMenuItems
+        : role === UserRole.Agent
+          ? agentMenuItems
+          : [];
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const { clearAll } = useUserInfoStore();
@@ -125,6 +131,14 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
           <Box className="site-header__brand">
             <ProgressBarLink href={paths.root.home.getHref()} title={'THE VIP SUITE'}>
               <Image src="/Logo.svg" alt="The VIP Suite Site logo" height={25} width={122} priority />
+              <Image
+                className="logo-mobile"
+                src="/vipsblack.png"
+                alt="The VIP Suite Site logo mobile"
+                height={13}
+                width={114}
+                priority
+              />
             </ProgressBarLink>
           </Box>
 

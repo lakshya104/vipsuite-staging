@@ -50,11 +50,11 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
       <Box>
         <Button
           variant="contained"
-          className="button button--black"
+          className="button button--black w-100"
           disabled={event?.acf?.is_rsvp}
           onClick={handleDialogOpen}
         >
-          {event?.acf?.is_rsvp ? 'Already Responded' : 'RSVP'}
+          {event?.acf?.is_rsvp ? 'Responded' : 'RSVP'}
         </Button>
       </Box>
 

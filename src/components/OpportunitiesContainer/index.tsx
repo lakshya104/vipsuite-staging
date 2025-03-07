@@ -84,31 +84,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     }
   };
 
-  // const uniqueOpportunities: Opportunity[] = [];
-  // const mappedBrandIds = new Set();
-  // const countMap: Record<number, number> = {};
-
-  // opportunitiesData.forEach((item) => {
-  //   const brandId = item.acf.brand_id;
-  //   if (brandId) {
-  //     countMap[brandId] = (countMap[brandId] || 0) + 1;
-  //   }
-  // });
-
-  // opportunitiesData.forEach((item) => {
-  //   const brandId = item.acf.brand_id;
-  //   if (brandId) {
-  //     item.isBrandCard = countMap[brandId] >= 2;
-  //     if (!mappedBrandIds.has(brandId)) {
-  //       mappedBrandIds.add(brandId);
-  //       uniqueOpportunities.push(item);
-  //     }
-  //   } else {
-  //     item.isBrandCard = false;
-  //     uniqueOpportunities.push(item);
-  //   }
-  // });
-
   const clearFilter = () => {
     try {
       startTransition(() => {
@@ -199,6 +174,13 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           aria-label={en.opportunities.searchPlaceholder}
         />
       </Box>
+      {isEmpty(opportunitiesData) && isFilterApplied && (
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noOpportunityData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
+      )}
       {(isSearchPending && searchQuery) || isClearing ? (
         renderLoading()
       ) : debouncedSearchQuery ? (

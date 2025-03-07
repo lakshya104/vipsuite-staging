@@ -96,6 +96,7 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
                 control={control}
                 render={({ field }) => (
                   <InputForm
+                    label={placeholder}
                     {...field}
                     value={field.value}
                     placeholder={placeholder || ''}

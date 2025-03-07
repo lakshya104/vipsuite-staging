@@ -69,9 +69,15 @@
         background-color: var(--color-marble);
         color: var(--color-darkgray);
         border-color: var(--color-marble);
+        &:active {
+          background-color: var(--color-marble);
+          color: var(--color-darkgray);
+        }
         &:hover {
-          background-color: var(--color-darkgray);
-          color: var(--color-marble);
+          @media screen and (min-width: 768px) {
+            background-color: var(--color-darkgray);
+            color: var(--color-marble);
+          }
         }
       }
     }
@@ -92,9 +98,15 @@
       @media screen and (min-width: 600px) {
         padding: mixins.rem(14) mixins.rem(32) !important;
       }
+      &:active {
+        background-color: var(--color-darkgray);
+        color: var(--color-white);
+      }
       &:hover {
-        background-color: var(--color-marble);
-        color: var(--color-black);
+        @media screen and (min-width: 768px) {
+          background-color: var(--color-marble);
+          color: var(--color-black);
+        }
         border-color: var(--color-marble);
       }
     }
@@ -108,9 +120,15 @@
       color: var(--color-white);
       padding: mixins.rem(14) mixins.rem(32);
       border-color: var(--color-marble);
+      &:active {
+        background-color: var(--color-darkgray);
+        color: var(--color-white);
+      }
       &:hover {
-        background-color: var(--color-marble);
-        color: var(--color-black);
+        @media screen and (min-width: 768px) {
+          background-color: var(--color-marble);
+          color: var(--color-black);
+        }
         border-color: var(--color-marble);
       }
     }

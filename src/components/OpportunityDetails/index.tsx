@@ -167,6 +167,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
                 name={product?.product_name}
                 image={product?.product_image}
                 description={product?.product_short_description}
+                isRequestOnly={product?.is_request_only}
               />
             </Grid2>
           ))}
@@ -181,19 +182,19 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           noHeading={true}
         />
       ) : (
-        <Box>
-          <Button
-            variant="contained"
-            className="button button--black"
-            onClick={onSubmitSimple}
-            disabled={opportunity?.acf?.is_rsvp || btnDisable}
-            style={{ marginBottom: '50px' }}
-          >
-            {opportunity?.acf?.is_rsvp
-              ? en.opportunities.opportunityRsvp.responded
-              : isNonEmptyString(opportunity?.acf?.cta_label) && opportunity?.acf?.cta_label}
-          </Button>
-        </Box>
+        isNonEmptyString(opportunity?.acf?.cta_label) && (
+          <Box>
+            <Button
+              variant="contained"
+              className="button button--black w-100"
+              onClick={onSubmitSimple}
+              disabled={opportunity?.acf?.is_rsvp || btnDisable}
+              style={{ marginBottom: '50px' }}
+            >
+              {opportunity?.acf?.is_rsvp ? en.opportunities.opportunityRsvp.responded : opportunity?.acf?.cta_label}
+            </Button>
+          </Box>
+        )
       )}
       <Backdrop sx={{ color: '#fff', zIndex: 10000 }} open={isPending}>
         <CircularProgress color="inherit" />

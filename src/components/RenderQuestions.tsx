@@ -12,6 +12,7 @@ import { map } from 'lodash';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Control } from 'react-hook-form';
 import SelectBox from './SelectBox';
+import en from '@/helpers/lang';
 
 interface RenderQuestionsProps {
   questions: Question[];
@@ -234,7 +235,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
             />
             {errors[fieldName] && (
               <Typography className="field-error Mui-error" sx={{ mt: '-10px' }} color="error">
-                {'This field is required'}
+                {en.common.fieldErrorMessage}
               </Typography>
             )}
           </Box>

@@ -4,6 +4,7 @@ import * as z from 'zod';
 
 import { Product, FilterDropdown } from '@/interfaces/brand';
 import { getAttributes, getFilteredProductVariations } from '@/helpers/product';
+import en from '@/helpers/lang';
 
 export const useProductFilters = (product?: Product) => {
   const { product_attributes = [], product_variations: productVariations = [] } = product ?? {};
@@ -43,9 +44,9 @@ export const useProductFilters = (product?: Product) => {
       keys.reduce((acc, key) => {
         acc[key] = z
           .string({
-            required_error: 'This field is required',
+            required_error: en.common.fieldErrorMessage,
           })
-          .min(1, 'This field is required');
+          .min(1, en.common.fieldErrorMessage);
         return acc;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }, {} as any),

@@ -71,10 +71,10 @@ const OpportunitiesFilterModal: React.FC<OpportunitiesFilterModalProps> = ({
                   className="filter-modal__list-item"
                   title={
                     <Box className="filter-modal__list-icon">
-                      {category?.name}
                       {category?.emoji_url && (
                         <Image src={category?.emoji_url} alt={`${category?.name} icon`} width={24} height={24} />
                       )}
+                      <span>{category?.name}</span>
                     </Box>
                   }
                 />

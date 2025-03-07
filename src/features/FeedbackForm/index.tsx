@@ -204,9 +204,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                       <Typography textAlign="center">{fileName}</Typography>
                     </Box>
                   ) : errors.screenshot ? (
-                    <span style={{ color: '#d32f2f' }}>{en.feedbackForm.fieldErrorMessages.screesshot}</span>
+                    <span style={{ color: '#d32f2f' }}>{en.feedbackForm.fieldPlaceholders.screenshot}</span>
                   ) : (
-                    <span style={{ textTransform: 'capitalize' }}>{en.feedbackForm.fieldPlaceholders.screesshot}</span>
+                    <span style={{ textTransform: 'capitalize' }}>{en.feedbackForm.fieldPlaceholders.screenshot}</span>
                   )}
                   <input
                     type="file"

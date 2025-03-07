@@ -6,6 +6,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import en from '@/helpers/lang';
 
 interface FormDatePickerProps<T extends FieldValues> {
   name: Path<T>;
@@ -34,7 +35,7 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label, selectFut
               field: { clearable: true },
               textField: {
                 error: !!error,
-                helperText: error?.message && 'This field is required',
+                helperText: error?.message && en.common.fieldErrorMessage,
               },
             }}
           />
