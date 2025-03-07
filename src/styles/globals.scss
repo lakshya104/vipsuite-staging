@@ -86,8 +86,10 @@ button.button {
   @include mixins.fontSize(16);
   &:hover {
     box-shadow: none;
-    color: var(--color-textBlack);
-    background-color: var(--color-marble);
+    @media only screen and (min-width: 768px) {
+      color: var(--color-textBlack);
+      background-color: var(--color-marble);
+    }
   }
   + .button {
     margin-top: mixins.rem(15);
