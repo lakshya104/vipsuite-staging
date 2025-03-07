@@ -103,11 +103,11 @@
         color: var(--color-white);
       }
       &:hover {
+        border-color: var(--color-marble);
         @media screen and (min-width: 768px) {
           background-color: var(--color-marble);
           color: var(--color-black);
         }
-        border-color: var(--color-marble);
       }
     }
   }
@@ -125,11 +125,11 @@
         color: var(--color-white);
       }
       &:hover {
+        border-color: var(--color-marble);
         @media screen and (min-width: 768px) {
           background-color: var(--color-marble);
           color: var(--color-black);
         }
-        border-color: var(--color-marble);
       }
     }
     p {

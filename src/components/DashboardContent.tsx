@@ -22,7 +22,7 @@ const DashboardContentComponent: React.FC<DashboardContentProps> = ({
     <Box className="gray-card gray-card--home" display="flex" justifyContent="space-between" gap={2.5}>
       {dashboardContent && (
         <>
-          {userRoleStore === UserRole.Brand && (
+          {userRoleStore !== UserRole.Brand && (
             <ReferCard
               type="refer"
               heading={dashboardContent?.refer_vip_heading}
