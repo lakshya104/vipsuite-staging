@@ -176,7 +176,6 @@ const AgentSignupForm = () => {
                       autoFill={true}
                       value={field.value}
                       placeholder={placeholder || ''}
-                      label={placeholder}
                       type={name === 'password' && showPassword ? 'text' : type || 'text'}
                       error={!!errors[name]}
                       helperText={errors[name]?.message}

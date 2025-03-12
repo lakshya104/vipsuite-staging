@@ -3,6 +3,7 @@ import { GetProfileBuilderContent, GetProfile, GetSession } from '@/libs/api-man
 import ProfileBuilder from '@/features/VipProfileBuilder';
 import ErrorFallback from '@/components/ErrorFallback';
 import ErrorHandler from '@/components/ErrorHandler';
+import en from '@/helpers/lang';
 
 const VipProfileBuilderPage = async () => {
   const [
@@ -12,14 +13,11 @@ const VipProfileBuilderPage = async () => {
   ] = await Promise.all([GetSession(), GetProfileBuilderContent(), GetProfile()]);
   if (profileContentError || profileDetailsError) {
     return (
-      <ErrorHandler
-        error={profileContentError || profileDetailsError}
-        errMessage="Not able to edit Profile currently."
-      />
+      <ErrorHandler error={profileContentError || profileDetailsError} errMessage={en.vipProfileBuilder.errMessage} />
     );
   }
   if (!session.profile_id || !profileBuilderOptions) {
-    return <ErrorFallback errorMessage="Not able to edit Profile currently." />;
+    return <ErrorFallback errorMessage={en.vipProfileBuilder.errMessage} />;
   }
   return (
     <ProfileBuilder

@@ -11,6 +11,7 @@ import StoreUserDetails from '@/components/StoreUserDetails';
 import { getProfileId } from '@/helpers/utils';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
+import en from '@/helpers/lang';
 
 export default async function HomeSectionLayout({
   children,
@@ -32,10 +33,6 @@ export default async function HomeSectionLayout({
       return <VipPage />;
     }
 
-    // if (role === UserRole.Brand && !isSkipped) {
-    //   return <ApplicationAcceptedDialog name={first_name} role={UserRole.Brand} />;
-    // }
-
     return (
       <>
         <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={profileId} />
@@ -45,6 +42,6 @@ export default async function HomeSectionLayout({
       </>
     );
   } catch (error) {
-    return <ErrorHandler errMessage="Something Went Wrong" error={error} />;
+    return <ErrorHandler errMessage={en.common.somethingWentWrongMessage} error={error} />;
   }
 }

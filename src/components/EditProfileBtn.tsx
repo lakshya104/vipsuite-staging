@@ -1,22 +1,22 @@
 'use client';
 import React, { useTransition } from 'react';
 import { UserRole } from '@/helpers/enums';
-import { useEditVipIdStore } from '@/store/useStore';
+import { useEditVipIdStore, useUserInfoStore } from '@/store/useStore';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
 
 interface EditProfileBtnProps {
-  vipId: number | undefined;
-  role?: UserRole;
+  profileId: number | undefined;
 }
-const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ vipId, role }) => {
+const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ profileId }) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { userRoleStore } = useUserInfoStore();
   const { setVipId } = useEditVipIdStore();
   const editProfileLink =
-    role === UserRole.Vip
+    userRoleStore === UserRole.Vip
       ? withSearchParams(() => paths.root.vipProfileBuilder.getHref(), { 'profile-route': 'true' })
       : withSearchParams(() => paths.root.agentProfileBuilder.getHref(), {
           'profile-route': 'true',
@@ -25,8 +25,8 @@ const EditProfileBtn: React.FC<EditProfileBtnProps> = ({ vipId, role }) => {
 
   const handleClick = () => {
     startTransition(() => {
-      if (role === UserRole.Agent && vipId) {
-        setVipId(vipId.toString());
+      if (userRoleStore === UserRole.Agent && profileId) {
+        setVipId(profileId.toString());
       }
       router.push(editProfileLink);
     });

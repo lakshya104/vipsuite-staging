@@ -9,6 +9,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import { revalidateTag } from '@/libs/actions';
 import TAGS from '@/libs/apiTags';
+import en from '@/helpers/lang';
 
 const AnimatedBox = styled(Box)({
   position: 'absolute',
@@ -80,18 +81,18 @@ const FeedLikeIcon: React.FC<FeedLikeIconProps> = ({ isWishlisted, postId, type 
     try {
       if (!isWislist) {
         setToasterType('success');
-        openToaster('Item is added in wishlist successfully.');
+        openToaster(en.feedIcon.addItem);
         setIsWishlist(true);
         await AddToWishlist(postId);
       } else {
         setToasterType('info');
-        openToaster('Item is deleted from wishlist successfully.');
+        openToaster(en.feedIcon.deleteItem);
         setIsWishlist(false);
         await DeleteFromWishlist(postId);
       }
     } catch (error) {
       setToasterType('error');
-      openToaster(error?.toString() ?? 'Error updating wishlist');
+      openToaster(error?.toString() ?? en.feedIcon.updateError);
       setIsWishlist((prevLiked) => !prevLiked);
     } finally {
       await revalidateTags(type);

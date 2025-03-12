@@ -3,12 +3,13 @@ import { GetBrandProfile, GetSignupContent } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
 import BrandEditProfileForm from '@/features/BrandProfileForm';
 import { get } from 'lodash';
+import en from '@/helpers/lang';
 
 const BrandEditProfilePage = async () => {
   const [{ data: profileDetails, error }, signupContent] = await Promise.all([GetBrandProfile(), GetSignupContent()]);
   const brandSignupOptions = get(signupContent, 'business_options', ['']);
   if (error) {
-    return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
+    return <ErrorHandler error={error} errMessage={en.brandEditProfile.errMessage} />;
   }
   return (
     <BrandEditProfileForm

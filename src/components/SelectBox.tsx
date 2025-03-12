@@ -3,6 +3,7 @@ import React from 'react';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-form';
 import startsWith from 'lodash/startsWith';
+import en from '@/helpers/lang';
 
 type SelectBoxProps<T extends FieldValues> = {
   name: Path<T>;
@@ -54,7 +55,7 @@ const SelectBox = <T extends FieldValues>({
               onChange?.(event.target.value);
             }}
           >
-            {!onChange && <MenuItem value="">Select one</MenuItem>}
+            {!onChange && <MenuItem value="">{en.selectBox.selectOne}</MenuItem>}
             {options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
@@ -64,7 +65,7 @@ const SelectBox = <T extends FieldValues>({
         )}
       />
       {showFieldError && <FormHelperText>{errors[name]?.message as string}</FormHelperText>}
-      {showGenderError && !showFieldError && <FormHelperText>Please select gender of child</FormHelperText>}
+      {showGenderError && !showFieldError && <FormHelperText>{en.selectBox.genderOfChild}</FormHelperText>}
     </FormControl>
   );
 };

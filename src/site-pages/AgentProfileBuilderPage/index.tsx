@@ -6,6 +6,7 @@ import { GetProfileBuilderContent, GetSession } from '@/libs/api-manager/manager
 import { isUndefined } from 'lodash';
 import { UserRole } from '@/helpers/enums';
 import UnauthorizedMessage from '@/components/UnauthorizedMessage';
+import en from '@/helpers/lang';
 
 const AgentProfileBuilderPage = async () => {
   const [{ data: profileBuilderOptions, error }, session] = await Promise.all([
@@ -17,10 +18,10 @@ const AgentProfileBuilderPage = async () => {
     return <UnauthorizedMessage />;
   }
   if (error) {
-    return <ErrorHandler error={error} errMessage="Not able to edit Profile currently." />;
+    return <ErrorHandler error={error} errMessage={en.agentProfileBuilder.errMessage} />;
   }
   if (!profileBuilderOptions || isUndefined(profileBuilderOptions)) {
-    return <ErrorFallback errorMessage="Not able to edit Profile currently." />;
+    return <ErrorFallback errorMessage={en.agentProfileBuilder.errMessage} />;
   }
   return <AgentProfileBuilder profileBuilderOptions={profileBuilderOptions} token={token} />;
 };

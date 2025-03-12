@@ -44,7 +44,7 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
           {he.decode(event?.title?.rendered || '')}
         </Typography>
         <Typography variant="body1">
-          <Box component="strong">{en.events.date}</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -
+          <Box component="strong">{en.events.date}</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -{' '}
           {formatDateWithOrdinal(event?.acf?.event_end_date, true)}
         </Typography>
         <Typography variant="body1" paragraph>
@@ -83,7 +83,7 @@ interface EventContainerProps {
 }
 
 const EventContainer = ({ event }: EventContainerProps) => {
-  const eventImageUrl = event?.acf?.event_image?.sizes?.['vs-container'] || DefaultImageFallback.Placeholder;
+  const eventImageUrl = event?.acf?.event_image?.sizes?.['vs-container'] || DefaultImageFallback.LandscapePlaceholder;
   const brandLogo = event?.acf?.brand_logo?.url;
 
   return (
@@ -95,7 +95,14 @@ const EventContainer = ({ event }: EventContainerProps) => {
     >
       {brandLogo && (
         <Box className="brand-logo">
-          <Image src={brandLogo} alt="brand logo" fill sizes="(max-width: 1000px) 100vw, 1000px" />
+          <Image
+            src={brandLogo}
+            alt="brand logo"
+            fill
+            sizes="(max-width: 1000px) 100vw, 1000px"
+            placeholder="blur"
+            blurDataURL={DefaultImageFallback.LandscapePlaceholder}
+          />
         </Box>
       )}
     </Card>

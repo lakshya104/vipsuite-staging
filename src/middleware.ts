@@ -4,7 +4,7 @@ import { DEFAULT_LOGIN_REDIRECT, publicRoutes, authRoutes, apiAuthPrefix, protec
 export default auth((req) => {
   const { nextUrl } = req;
 
-  if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'production' && nextUrl.origin.includes('thevipsuite.co.uk')) {
     if (nextUrl.pathname === '/') {
       return;
     }

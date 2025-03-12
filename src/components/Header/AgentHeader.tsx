@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { AppBar, Toolbar, Box, Drawer, Typography, Backdrop, CircularProgress } from '@mui/material';
 import Image from 'next/image';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -10,7 +9,6 @@ import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
-import { useUserInfoStore } from '@/store/useStore';
 import { signOutAction } from '@/libs/actions';
 import { paths } from '@/helpers/paths';
 
@@ -22,21 +20,18 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const router = useRouter();
-  const { clearAll } = useUserInfoStore();
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
   const handleLogout = async () => {
-    setDrawerOpen(false);
-    startTransition(async () => {
-      try {
-        await Promise.all([LogOut(token), clearAll(), signOutAction()]);
-        router.push(paths.landing.getHref());
-      } catch (error) {
-        openToaster('Error during logging out. ' + error);
-      }
-    });
+    try {
+      setDrawerOpen(false);
+      startTransition(async () => {
+        await Promise.all([signOutAction(), LogOut(token)]);
+      });
+    } catch (error) {
+      openToaster('Error during logging out. ' + error);
+    }
   };
 
   return (
@@ -46,6 +41,14 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
           <Box className="site-header__brand">
             <ProgressBarLink href={paths.root.home.getHref()} title={'THE VIP SUITE'}>
               <Image src="/Logo.svg" alt="The VIP Suite Site logo" height={25} width={122} priority />
+              <Image
+                className="logo-mobile"
+                src="/vipsblack.png"
+                alt="The VIP Suite Site logo mobile"
+                height={13}
+                width={114}
+                priority
+              />
             </ProgressBarLink>
           </Box>
           <Box className="navbar-toggler" onClick={toggleDrawer(true)}>

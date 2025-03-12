@@ -371,3 +371,16 @@ export const ContactUsFormFields = [
   { name: 'company', placeholder: 'Company Name', label: 'Company Name', autocomplete: 'off', type: 'text' },
   { name: 'phone', label: 'Phone', placeholder: 'Phone', autocomplete: 'tel', type: 'tel' },
 ];
+
+export const agentStepOneFields = [
+  { name: 'first_name', label: 'First Name', type: 'text', placeholder: 'First Name' },
+  { name: 'last_name', label: 'Last Name', type: 'text', placeholder: 'Last Name' },
+  {
+    name: 'type_of_representation',
+    label: 'Type of Representation',
+    type: 'select',
+    placeholder: 'Type of Representation',
+  },
+  { name: 'instagram_handle', label: 'Instagram', type: 'text', placeholder: 'Instagram' },
+  { name: 'tiktok_handle', label: 'TikTok', type: 'text', placeholder: 'TikTok' },
+];

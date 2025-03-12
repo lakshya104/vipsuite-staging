@@ -225,7 +225,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
                           onChange(file);
                           setFileName(file.name);
                         } catch (error) {
-                          console.error('Error converting file to base64:', error);
+                          console.error(en.renderQuestions.errorconversion, error);
                         }
                       }
                     }}
@@ -249,7 +249,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
     <>
       {!noHeading && (
         <Typography variant="h6" gutterBottom>
-          Answer the following questions.
+          {en.renderQuestions.answerQuestion}
         </Typography>
       )}
       {questions.map((item) => renderForm(item))}

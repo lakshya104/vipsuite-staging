@@ -7,11 +7,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextFormField from '@/components/InputTextFormField';
 import SelectBox from '@/components/SelectBox';
 import CustomStepper from '@/components/CustomStepper';
-import { agentFields, AgentFormValues, formSchema } from './schema';
+import { AgentFormValues, formSchema } from './schema';
 import { CreateVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
 import { ACF, ProfileBuilderOptions } from '@/interfaces';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
+import { agentStepOneFields } from '@/data';
 
 export interface AgentProfileBuilderStepsProps {
   handleId?: (id: number) => void;
@@ -97,7 +98,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
           </Typography>
         </Box>
         <Box className="profile-builder__body">
-          {agentFields.map((field, index) => (
+          {agentStepOneFields.map((field, index) => (
             <Box key={index} mb={2}>
               {field.type === 'text' ? (
                 <InputTextFormField

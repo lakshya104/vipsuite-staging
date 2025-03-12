@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import en from '@/helpers/lang';
 
 interface ErrorFallbackProps {
   errorMessage: string;
@@ -56,10 +57,10 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ errorMessage, hideSubtext
               letterSpacing: '1px',
             }}
           >
-            Please try refreshing the page or come back later.
+            {en.errorFallback.refreshPage}
           </Typography>
           <Button className="button button--black" sx={{ marginTop: 3 }} onClick={() => window.location.reload()}>
-            Refresh
+            {en.errorFallback.refresh}
           </Button>
         </>
       )}

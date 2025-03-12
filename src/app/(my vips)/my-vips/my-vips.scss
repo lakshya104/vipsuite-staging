@@ -38,7 +38,7 @@
         @include mixins.absolute(right 0 top -2px);
         @media only screen and (max-width: 767px) {
           @include mixins.fontSize(12);
-          top: mixins.rem(-4);
+          top: mixins.rem(2);
         }
         svg {
           display: inline-block;
@@ -73,7 +73,6 @@
         margin-bottom: mixins.rem(6);
         line-height: 1.38;
         letter-spacing: -0.02em;
-        @include mixins.fontSize(14);
       }
     }
     p {
@@ -81,7 +80,6 @@
       @media only screen and (max-width: 767px) {
         line-height: 1.33;
         letter-spacing: -0.01em;
-        @include mixins.fontSize(12);
       }
     }
     button {

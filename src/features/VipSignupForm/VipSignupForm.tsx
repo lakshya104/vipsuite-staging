@@ -8,7 +8,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, Typography } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputForm from '../../components/InputForm/InputForm';
-import { VipSignupSchema, defaultValues } from '@/features/VipSignupForm/vipSignupTypes';
+import { defaultValues, VipSignupSchema } from '@/features/VipSignupForm/vipSignupTypes';
 import { VIPSignUpFormFields } from '@/data';
 import './VipSignupForm.scss';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
@@ -138,7 +138,7 @@ const VipSignupForm = () => {
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
-        {VIPSignUpFormFields.map(({ name, label, placeholder, autocomplete, type }) => (
+        {VIPSignUpFormFields.map(({ name, placeholder, autocomplete, type }) => (
           <Box key={name} className="signup__item">
             <Controller
               name={name}
@@ -150,7 +150,6 @@ const VipSignupForm = () => {
                     placeholder={placeholder}
                     value={field.value}
                     autoFill={true}
-                    label={label}
                     type={name === 'password' && showPassword ? 'text' : type}
                     error={!!errors[name]}
                     helperText={errors[name]?.message}

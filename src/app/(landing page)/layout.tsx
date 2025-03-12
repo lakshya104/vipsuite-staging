@@ -10,6 +10,7 @@ import HeaderTop from '@/components/HeaderTop';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
+import { headers } from 'next/headers';
 import ComingSoonPage from '@/site-pages/ComingSoonPage';
 
 export default async function LandingLayout({
@@ -17,7 +18,9 @@ export default async function LandingLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  if (process.env.NEXT_PUBLIC_NODE_ENV === 'production') {
+  const headersList = await headers();
+  const fullUrl = headersList.get('host') || '';
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'production' && fullUrl.includes('thevipsuite.co.uk')) {
     return <ComingSoonPage />;
   }
   const { data, error } = await GetWebsiteContent();

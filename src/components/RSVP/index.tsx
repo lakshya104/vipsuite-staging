@@ -172,7 +172,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
               {he.decode(event?.title?.rendered || '')}
             </Typography>
             <Typography variant="body1">
-              <Box component="strong">{en.events.date}</Box>
+              <Box component="strong">{en.events.date} </Box>
               {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
               {formatDateWithOrdinal(event.acf.event_end_date, true)}
             </Typography>

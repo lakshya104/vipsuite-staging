@@ -50,7 +50,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
       const results = await GetVipSearch(debouncedSearchQuery);
       setSearchResults(results);
     } catch (error) {
-      console.error('Error fetching search results:', error);
+      console.error(en.listEmptyMessage.searchError, error);
       setSearchResults([]);
     } finally {
       setIsPending(false);

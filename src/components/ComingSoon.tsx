@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Container, Box } from '@mui/material';
+import en from '@/helpers/lang';
 
 interface ComingSoonPageProps {
   page: string;
@@ -42,7 +43,7 @@ const ComingSoonPage: React.FC<ComingSoonPageProps> = ({ page }) => {
             color: 'black',
           }}
         >
-          <span style={{ textTransform: 'capitalize' }}>{page}</span> page is on its way. Stay tuned!
+          <span style={{ textTransform: 'capitalize' }}>{page}</span> {en.landingPage.comingSoon.stayTuned}
         </Typography>
       </Container>
     </Box>

@@ -5,6 +5,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { OpportunityDetails } from '@/interfaces/opportunitiesDetails';
+import { DefaultImageFallback } from '@/helpers/enums';
 
 interface SliderProps {
   images: string[];
@@ -44,7 +45,15 @@ const ImageSlider: React.FC<SliderProps> = ({ images }) => {
               borderRadius: 1,
             }}
           >
-            <Image style={{ objectFit: 'cover' }} priority src={src} alt={`Slide ${index + 1}`} fill />
+            <Image
+              style={{ objectFit: 'cover' }}
+              priority
+              src={src}
+              alt={`Slide ${index + 1}`}
+              fill
+              placeholder="blur"
+              blurDataURL={DefaultImageFallback.LandscapePlaceholder}
+            />
           </Box>
         ))}
       </SliderComponent>

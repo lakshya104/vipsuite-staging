@@ -4,6 +4,7 @@ import UseToaster from '@/hooks/useToaster';
 import DialogConfirmBox from './Dialog/DialogConfirm';
 import Toaster from './Toaster';
 import { RemoveAllVipCartItems } from '@/libs/api-manager/manager';
+import en from '@/helpers/lang';
 
 interface RemoveAllItemsBtnProps {
   startTransition: typeof import('react').startTransition;
@@ -30,14 +31,14 @@ const RemoveAllItemsBtn: React.FC<RemoveAllItemsBtnProps> = ({ startTransition }
   return (
     <>
       <Button color="error" className="button button--red" onClick={toggleDialog}>
-        Remove all items
+        {en.removeItemBtn.remove}
       </Button>
       <DialogConfirmBox
         open={openDialog}
         onClose={toggleDialog}
         onConfirm={() => removeProduct()}
-        title="Remove all items From Cart"
-        description="Are you sure you want to remove all items from the cart?"
+        title={en.removeItemBtn.title}
+        description={en.removeItemBtn.description}
       />
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
     </>

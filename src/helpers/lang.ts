@@ -13,6 +13,7 @@ const en = {
     status: 'Status',
     relatedOpportunity: 'From',
     fieldErrorMessage: 'This field is required',
+    featuredTag: 'Featured',
   },
   helperText: {
     noAccount: "Don't have an account?",
@@ -343,6 +344,7 @@ const en = {
     noContactDataMessage: 'Update Profile And Come Back',
     noSocialData: 'Social Handles',
     noAddressData: 'No Address Available',
+    searchError: 'Error fetching search results:',
   },
   landingForm: {
     placeholder: {
@@ -527,6 +529,7 @@ const en = {
       description: 'If you would like to be the first to know',
       placeholder: 'Please enter your email address',
       notify: 'Notify me',
+      stayTuned: 'page is on its way. Stay tuned!',
     },
   },
   footer: {
@@ -665,6 +668,66 @@ const en = {
     addError: 'Error while selecting Profile:',
     addText: 'Add',
     pageTitle: 'My VIPs',
+  },
+  vipProfileBuilder: {
+    errMessage: 'Not able to edit Profile currently.',
+  },
+  homePage: {
+    errMessage: 'Not able to show dashboard content currently.',
+  },
+  brandProfile: {
+    errMessage: 'Not able to show profile contents currently.',
+  },
+  brandEditProfile: {
+    errMessage: 'Not able to edit Profile currently.',
+  },
+  agentProfile: {
+    errMessage: 'Not able to show profile contents currently.',
+    errProfileMessage: 'Not able to show Profile currently.',
+  },
+  agentProfileBuilder: {
+    errMessage: 'Not able to edit Profile currently.',
+  },
+  myVips: {
+    message: 'Not able to show VIPs currently.',
+    errorMessage: 'Not able to show VIPs currently.',
+  },
+  unauthorizedMessage: {
+    message: 'You are not authorized to view this page.',
+  },
+  signOutButton: {
+    errorMessage: 'Error during logging out.',
+  },
+  selectBox: {
+    genderOfChild: 'Please select gender of child',
+    selectOne: 'Select one',
+  },
+  renderQuestions: {
+    errorconversion: 'Error converting file to base64:',
+    answerQuestion: 'Answer the following questions.',
+  },
+  removeItemBtn: {
+    remove: 'Remove all items',
+    title: 'Remove all items From Cart',
+    description: 'Are you sure you want to remove all items from the cart?',
+  },
+  feedIcon: {
+    addItem: 'Item is added in wishlist successfully.',
+    deleteItem: 'Item is deleted from wishlist successfully.',
+    updateError: 'Error updating wishlist',
+  },
+  errorToaster: {
+    errorMessage: 'Something unecpected occured',
+    userLogged: 'User must be logged in.',
+  },
+  errorFallback: {
+    refreshPage: 'Please try refreshing the page or come back later.',
+    refresh: 'Refresh',
+  },
+  deleteAddressBtn: {
+    errMessage: 'Error deleting address',
+    title: 'Delete Address',
+    description: 'Are you sure you want to delete the address?',
   },
 };
 

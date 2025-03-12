@@ -5,6 +5,7 @@ import Toaster from './Toaster';
 import { signOut } from 'next-auth/react';
 import ErrorFallback from './ErrorFallback';
 import { paths, withSearchParams } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 interface ErrorToasterProps {
   errorMessage: string;
@@ -13,7 +14,7 @@ interface ErrorToasterProps {
 }
 
 const ErrorToaster: React.FC<ErrorToasterProps> = ({
-  errorMessage = 'Something unecpected occured',
+  errorMessage = en.errorToaster.errorMessage,
   message,
   login = false,
 }) => {
@@ -24,7 +25,7 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
       signOut({
         callbackUrl: withSearchParams(() => paths.auth.login.getHref(), {
           'token-expired': 'true',
-          error: errorMessage || 'User must be logged in.',
+          error: errorMessage || en.errorToaster.userLogged,
         }),
       });
     } else if (errorMessage) {

@@ -17,6 +17,7 @@ import ApplicationRejectedDialog from '@/components/ApplicationRejectedDialog';
 import { Login } from '@/libs/api-manager/manager';
 import { UserRole } from '@/helpers/enums';
 import { paths } from '@/helpers/paths';
+import { useUserInfoStore } from '@/store/useStore';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -27,6 +28,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<UserRole | ''>('');
   const router = useRouter();
+  const { clearAll } = useUserInfoStore();
   const searchParams = useSearchParams();
   const isTokenExpired = searchParams.get('token-expired');
   const tokenExpiryError = searchParams.get('error');
@@ -34,8 +36,10 @@ const LoginForm = () => {
   useEffect(() => {
     const deleteCookies = async () => {
       await deleteVipCookies();
+      clearAll();
     };
     deleteCookies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -100,7 +104,6 @@ const LoginForm = () => {
       <TextField
         {...register('username')}
         placeholder="Email"
-        label="Email"
         type="text"
         error={!!errors.username}
         helperText={errors.username?.message}
@@ -111,7 +114,6 @@ const LoginForm = () => {
       <TextField
         {...register('password')}
         placeholder="Password"
-        label="Password"
         type={showPassword ? 'text' : 'password'}
         error={!!errors.password}
         helperText={errors.password?.message}

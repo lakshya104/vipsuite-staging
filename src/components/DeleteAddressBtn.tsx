@@ -5,6 +5,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { DeleteAddress } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
+import en from '@/helpers/lang';
 
 interface DeleteAddressBtnProps {
   addressId: string;
@@ -26,7 +27,7 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ addressId, startTra
         openToaster(res?.message);
       } catch (error) {
         setToasterType('error');
-        openToaster(error?.toString() ?? 'Error deleting address');
+        openToaster(error?.toString() ?? en.deleteAddressBtn.errMessage);
       } finally {
         setOpenDialog(false);
       }
@@ -40,8 +41,8 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ addressId, startTra
         open={openDialog}
         onClose={toggleDialog}
         onConfirm={() => deleteAddress(addressId)}
-        title="Delete Address"
-        description={'Are you sure you want to delete the address?'}
+        title={en.deleteAddressBtn.title}
+        description={en.deleteAddressBtn.description}
       />
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
     </>

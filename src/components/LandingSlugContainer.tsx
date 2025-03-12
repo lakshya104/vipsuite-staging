@@ -27,6 +27,8 @@ const LandingSlugContainer: React.FC<LandingSlugContainerProps> = ({ isDefaultHe
                   alt="Two smiling women"
                   width={1276}
                   height={682}
+                  placeholder="blur"
+                  blurDataURL={DefaultImageFallback.LandscapePlaceholder}
                 />
               </Box>
             </Box>

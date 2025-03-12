@@ -3,26 +3,24 @@ import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import { calculateAge } from '@/helpers/utils';
-import { GetProfile, GetSession } from '@/libs/api-manager/manager';
+import { GetProfile } from '@/libs/api-manager/manager';
 import EditProfileBtn from '@/components/EditProfileBtn';
 import { DefaultImageFallback } from '@/helpers/enums';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
 
 const ProfilePage = async () => {
-  const [{ data: profileDetails, error: profileDetailsError }, session] = await Promise.all([
-    GetProfile(),
-    GetSession(),
-  ]);
+  const { data: profileDetails, error: profileDetailsError } = await GetProfile();
   if (profileDetailsError) {
     return <ErrorHandler error={profileDetailsError} errMessage={en.profilePage.title} />;
   }
   const age = calculateAge(profileDetails?.acf?.date_of_birth);
+
   return (
     <>
       <Box className="user-profile__info" textAlign={'center'} mb={3}>
         <Image
-          src={DefaultImageFallback.PersonPlaceholder}
+          src={profileDetails?.acf?.instagram_profile_image_url || DefaultImageFallback.PersonPlaceholder}
           width={150}
           height={150}
           alt="User Avtar image"
@@ -34,7 +32,7 @@ const ProfilePage = async () => {
         <Typography variant="body2" mb={1}>
           {en.profilePage.age} {age} {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
         </Typography>
-        <EditProfileBtn vipId={profileDetails?.profile_id} role={session?.role} />
+        <EditProfileBtn profileId={profileDetails?.profile_id} />
       </Box>
       <Box>
         <ProfileTabs profileData={profileDetails} />

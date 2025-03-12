@@ -7,6 +7,7 @@ import { Backdrop, Box, Button, CircularProgress, IconButton, Typography } from 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import ErrorIcon from '@mui/icons-material/Error';
 import Btn from '@/components/Button/CommonBtn';
 import InputTextFormField from '@/components/InputTextFormField';
 import { OrderFeedback } from '@/libs/api-manager/manager';
@@ -188,7 +189,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                 <Button
                   sx={{ display: 'flex', flexDirection: 'column' }}
                   component="label"
-                  startIcon={!fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />}
+                  startIcon={
+                    !fileName && errors.screenshot ? (
+                      <ErrorIcon color="error" />
+                    ) : (
+                      !fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />
+                    )
+                  }
                 >
                   {fileName ? (
                     <Box
@@ -204,7 +211,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                       <Typography textAlign="center">{fileName}</Typography>
                     </Box>
                   ) : errors.screenshot ? (
-                    <span style={{ color: '#d32f2f' }}>{en.feedbackForm.fieldPlaceholders.screenshot}</span>
+                    <span style={{ color: '#d32f2f', textTransform: 'capitalize' }}>
+                      {en.feedbackForm.fieldPlaceholders.screenshot}
+                    </span>
                   ) : (
                     <span style={{ textTransform: 'capitalize' }}>{en.feedbackForm.fieldPlaceholders.screenshot}</span>
                   )}

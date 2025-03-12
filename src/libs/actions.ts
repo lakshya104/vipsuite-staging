@@ -9,6 +9,7 @@ import { GetSession } from './api-manager/manager';
 import { CookieName } from '@/helpers/enums';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { getProfileId } from '@/helpers/utils';
+import { redirect } from 'next/navigation';
 
 export const login = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -46,6 +47,7 @@ export const login = async (values: LoginFormValues) => {
 
 export const signOutAction = async () => {
   await signOut({ redirect: false });
+  redirect('/');
 };
 
 export async function revalidateTag(name: string) {

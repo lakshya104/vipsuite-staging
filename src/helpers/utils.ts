@@ -1,10 +1,15 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import { z } from 'zod';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { UserRole } from './enums';
 import { Session } from '@/interfaces';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { z } from 'zod';
 import { Question } from '@/interfaces/events';
 import en from './lang';
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 export function calculateAge(dateOfBirth: string | undefined): number {
   if (!dateOfBirth) return 0;
@@ -48,35 +53,35 @@ export function htmlToPlainText(html: string) {
 }
 
 export const formatDateWithOrdinal = (date: string | Date, withMonth: boolean): string => {
-  const momentDate = moment(date);
-  if (!momentDate.isValid()) {
+  const dayjsDate = dayjs(date);
+  if (!dayjsDate.isValid()) {
     return 'Invalid Date';
   }
-  const dayOfWeek = momentDate.format('dddd');
-  const dayOfMonth = momentDate.format('Do'); // This includes the ordinal
-  const month = momentDate.format('MMMM');
-  const foormattedDate = withMonth ? ` ${dayOfWeek} ${dayOfMonth} ${month}` : ` ${dayOfWeek} ${dayOfMonth}`;
-  return foormattedDate;
-};
 
-export const formatDateWithoutOrdinal = (date: string | Date): string => {
-  const momentDate = moment(date);
-  if (!momentDate.isValid()) {
-    return 'Invalid Date';
-  }
-  return momentDate.format('DD/MM/YYYY');
-};
+  const getOrdinal = (day: number): string => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  };
 
-export const formatDateWithOrdinalAndTime = (date: string | Date): string => {
-  const momentDate = moment(date);
-  if (!momentDate.isValid()) {
-    return 'Invalid Date';
-  }
-  const dayOfWeek = momentDate.format('dddd');
-  const dayOfMonth = momentDate.format('Do');
-  const month = momentDate.format('MMMM');
-  const time = momentDate.format('h:mma').toLowerCase();
-  return ` ${dayOfWeek} ${dayOfMonth} ${month} @ ${time}`;
+  const dayOfWeek = dayjsDate.format('dddd');
+  const dayOfMonth = dayjsDate.date();
+  const month = dayjsDate.format('MMMM');
+  const ordinal = getOrdinal(dayOfMonth);
+
+  const formattedDate = withMonth
+    ? `${dayOfWeek} ${dayOfMonth}${ordinal} ${month}`
+    : `${dayOfWeek} ${dayOfMonth}${ordinal}`;
+
+  return formattedDate;
 };
 
 export const wrapInParagraph = (content?: string): string => {
@@ -107,29 +112,46 @@ export const preprocessContent = (html: string | undefined) => {
 };
 
 export const formatDateWithMonth = (date: string | Date): string => {
-  const momentDate = moment(date);
-  if (!momentDate.isValid()) {
+  const dayjsDate = dayjs(date);
+  if (!dayjsDate.isValid()) {
     return 'Invalid Date';
   }
-  const dayOfMonth = momentDate.format('D');
-  const month = momentDate.format('MMM');
-  const year = momentDate.format('YYYY');
+  const dayOfMonth = dayjsDate.format('D');
+  const month = dayjsDate.format('MMM');
+  const year = dayjsDate.format('YYYY');
   return `${dayOfMonth} ${month} ${year}`;
 };
 
-export const formatEventDates = (date1: string, date2: string) => {
-  let formatedFinalDates = '';
-
-  const isSameMonth = moment(date1).isSame(date2, 'month');
-
-  const formattedDate1 = isSameMonth ? moment(date1).format('dddd Do') : moment(date1).format('dddd Do MMMM');
-
-  const formattedDate2 = moment(date2).format('dddd Do MMMM');
-
-  if (date1 && date2) {
-    formatedFinalDates = `${formattedDate1} - ${formattedDate2}`;
+export const formatEventDates = (date1?: string, date2?: string): string => {
+  if (!date1 || !date2) {
+    return '';
   }
-  return formatedFinalDates;
+
+  const getOrdinal = (day: number): string => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  };
+
+  const isSameMonth = dayjs(date1).isSame(dayjs(date2), 'month');
+  const day1 = dayjs(date1).date();
+  const day2 = dayjs(date2).date();
+
+  const formattedDate1 = isSameMonth
+    ? dayjs(date1).format(`dddd D[${getOrdinal(day1)}]`)
+    : dayjs(date1).format(`dddd D[${getOrdinal(day1)}] MMMM`);
+
+  const formattedDate2 = dayjs(date2).format(`dddd D[${getOrdinal(day2)}] MMMM`);
+
+  return `${formattedDate1} - ${formattedDate2}`;
 };
 
 export const formatString = (str: string) => {
@@ -223,17 +245,22 @@ export const mapQuestionsToSchema = (questions: Question[]) => {
 };
 
 export const timeAgo = (date: string) => {
-  return moment(date).fromNow();
+  return dayjs(date).fromNow();
 };
 
 export const extractDate = (timestamp: string) => {
-  return moment(timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS').format('DD/MM/YYYY');
+  return dayjs(timestamp).format('DD/MM/YYYY');
 };
 
 export const calculateRelativeTime = (date: string): string => {
-  return moment.utc(date).local().startOf('seconds').fromNow();
+  return dayjs.utc(date).local().startOf('second').fromNow();
 };
 
 export const isNonEmptyString = (str: string | undefined | null): boolean => {
   return typeof str === 'string' && str.trim().length > 0;
+};
+
+export const expiryDate = (time: number): string => {
+  const futureDate = dayjs().add(time, 'second');
+  return futureDate.format('YYYY-MM-DD');
 };

@@ -1,3 +1,4 @@
+import en from '@/helpers/lang';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
@@ -22,7 +23,7 @@ const UnauthorizedMessage = () => {
           letterSpacing: '2px',
         }}
       >
-        You are not authorized to view this page.
+        {en.unauthorizedMessage.message}
       </Typography>
     </Box>
   );

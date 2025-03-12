@@ -9,6 +9,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import './Dashboard.scss';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 interface DashboardCardProps {
   item: DashboardItem;
@@ -42,8 +43,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const postId = item?.id;
   const image = getImage(item);
   const featuredLabels = [
-    { condition: isEvent && item?.acf?.is_featured, text: 'Featured Event' },
-    { condition: isOpportunity && item?.acf?.is_featured, text: 'Featured Opportunity' },
+    { condition: isEvent && item?.acf?.is_featured, text: en.common.featuredTag },
+    { condition: isOpportunity && item?.acf?.is_featured, text: en.common.featuredTag },
   ];
   let href: string;
   switch (itemType) {

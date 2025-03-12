@@ -79,7 +79,6 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ handleStepChang
       <InputForm
         {...register('email')}
         placeholder="Email"
-        label="Email"
         type="email"
         error={!!errors.email}
         helperText={errors.email?.message}

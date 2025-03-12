@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useTransition } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   AppBar,
   Toolbar,
@@ -20,7 +20,6 @@ import { ProgressBarLink } from '../ProgressBar';
 import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
-import { useUserInfoStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
 import { signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
@@ -97,7 +96,6 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
-  const router = useRouter();
   const menuItems =
     role === UserRole.Vip
       ? vipMenuItems
@@ -108,20 +106,18 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
           : [];
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
-  const { clearAll } = useUserInfoStore();
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
   const handleLogout = async () => {
-    setDrawerOpen(false);
-    startTransition(async () => {
-      try {
-        await Promise.all([LogOut(token), clearAll(), signOutAction()]);
-        router.push(paths.landing.getHref());
-      } catch (error) {
-        openToaster('Error during logging out. ' + error);
-      }
-    });
+    try {
+      setDrawerOpen(false);
+      startTransition(async () => {
+        await Promise.all([signOutAction(), LogOut(token)]);
+      });
+    } catch (error) {
+      openToaster('Error during logging out. ' + error);
+    }
   };
 
   return (

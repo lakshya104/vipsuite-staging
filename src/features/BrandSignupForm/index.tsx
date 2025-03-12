@@ -169,7 +169,6 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                       placeholder={placeholder || ''}
                       autoFill={true}
                       value={field.value}
-                      label={label}
                       type={name === 'password' && showPassword ? 'text' : type || 'text'}
                       error={!!errors[name]}
                       helperText={errors[name]?.message}

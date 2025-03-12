@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { create } from 'zustand';
 import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
+import { persistNSync } from 'persist-and-sync';
 import { UserRole } from '@/helpers/enums';
 import { Question } from '@/interfaces/events';
 
@@ -148,3 +149,26 @@ export const useProductImageStore = create<ProductImageStore>((set) => ({
   setProductImage: (image) => set({ productImage: image }),
   clearProductImage: () => set({ productImage: null }),
 }));
+
+interface InstaInfoState {
+  instaInfo: { code: string; followers: string; picture: string; username: string; expires: number };
+  setInstaInfo: (info: { code: string; followers: string; picture: string; username: string; expires: number }) => void;
+  hydrated: boolean;
+  setHydrated: (value: boolean) => void;
+  clearAll: () => void;
+}
+
+export const useInstaInfo = create<InstaInfoState>()(
+  persistNSync(
+    (set) => ({
+      instaInfo: { code: '', followers: '', picture: '', username: '', expires: 0 },
+      setInstaInfo: (info) => set({ instaInfo: info }),
+      hydrated: false,
+      setHydrated: (value) => set({ hydrated: value }),
+      clearAll: () => set({ instaInfo: { code: '', followers: '', picture: '', username: '', expires: 0 } }),
+    }),
+    {
+      name: 'insta-info-storage',
+    },
+  ),
+);

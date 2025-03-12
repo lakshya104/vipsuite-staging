@@ -26,8 +26,8 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
   const productImage = product?.images?.[0]?.sizes?.['vs-container'] || DefaultImageFallback.Placeholder;
 
   const settings = {
-    dots: product.gallery_images.length > 1 && true,
-    infinite: product.gallery_images.length > 1,
+    dots: product?.gallery_images?.length > 1 && true,
+    infinite: product?.gallery_images?.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -65,16 +65,25 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
                     <Image
                       style={{ objectFit: 'cover' }}
                       priority
-                      src={src.sizes['vs-container']}
+                      src={src?.sizes['vs-container']}
                       alt={`Slide ${index + 1}`}
                       height={500}
                       width={500}
+                      placeholder="blur"
+                      blurDataURL={DefaultImageFallback.LandscapePlaceholder}
                     />
                   </Box>
                 ))}
               </SliderComponent>
             ) : (
-              <Image src={productImage} alt={product?.name} height={500} width={500} />
+              <Image
+                src={productImage}
+                alt={product?.name}
+                height={500}
+                width={500}
+                placeholder="blur"
+                blurDataURL={DefaultImageFallback.LandscapePlaceholder}
+              />
             )}
             {isRequestOnly && (
               <Box className="featuredBox">

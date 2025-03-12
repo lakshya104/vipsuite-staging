@@ -7,12 +7,13 @@ import { DefaultImageFallback } from '@/helpers/enums';
 import { GetAgentProfile, GetToken } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 const BrandProfilePage = async () => {
   const token = await GetToken();
   const { data: profileDetails, error } = await GetAgentProfile(token);
   if (error) {
-    return <ErrorHandler error={error} errMessage="Not able to show profile contents currently." />;
+    return <ErrorHandler error={error} errMessage={en.brandProfile.errMessage} />;
   }
 
   return (
