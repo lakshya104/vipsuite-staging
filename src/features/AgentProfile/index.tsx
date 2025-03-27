@@ -15,6 +15,7 @@ import { ACF, AgentEditFormDataObject } from '@/interfaces';
 import revalidatePathAction from '@/libs/actions';
 import { isEmpty } from 'lodash';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 interface AgentEditProfileFormProps {
   profileDetails: ACF;
@@ -84,7 +85,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
       }
       router.push(paths.root.profile.getHref());
     } catch (error) {
-      setError(error?.toString() || 'An unexpected error occurred'); //
+      setError(error?.toString() || en.signUpForm.unexpectedError); //
       setToasterOpen(true);
       setIspending(false);
     }
@@ -123,12 +124,12 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
             )}
             {name === 'company_name' && (
               <Box className="input-text company-name">
-                <Typography>Optional</Typography>
+                <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
             {name === 'phone' && (
               <Box className="input-text">
-                <Typography>Including the country code with + sign</Typography>
+                <Typography>{en.signUpForm.phoneCode}</Typography>
               </Box>
             )}
           </Box>
@@ -142,7 +143,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
               <InputForm
                 type={''}
                 {...field}
-                placeholder={`Example of VIP Managed`}
+                placeholder={en.signUpForm.vipExamples}
                 error={!!errors.vip_examples?.[index]?.value}
                 helperText={errors.vip_examples?.[index]?.value?.message}
               />
@@ -151,11 +152,11 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
         ))}
         <Box sx={{ cursor: 'pointer', mt: isEmpty(fields) ? 3 : 0 }} onClick={addAnotherVip}>
           <Box className="input-text">
-            <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
+            <Typography sx={{ textDecoration: 'underline' }}>{en.signUpForm.addVip}</Typography>
           </Box>
         </Box>
         <Button type="submit" disabled={isPending} className="button button--black" fullWidth>
-          {isPending ? 'Loading...' : 'Continue'}
+          {isPending ? en.signUpForm.loading : en.signUpForm.continue}
         </Button>
       </Box>
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />

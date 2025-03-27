@@ -18,6 +18,7 @@ import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 const AgentSignupForm = () => {
   const [error, setError] = useState<string>('');
@@ -56,7 +57,7 @@ const AgentSignupForm = () => {
   // eslint-disable-next-line no-unused-vars
   const onSubmit: (formData: AgentSignupValues) => Promise<void> = async (formData) => {
     if (!isCodeVerified) {
-      setError('Please verify your email first');
+      setError(en.signUpForm.verifyEmail);
       setToasterOpen(true);
     } else {
       setIsPending(true);
@@ -98,7 +99,7 @@ const AgentSignupForm = () => {
     } else if (typeof error === 'string') {
       setError(`Error: ${error}`);
     } else {
-      setError('Error: An unexpected error occurred during signup');
+      setError(`Error: ${en.signUpForm.errMessage}`);
     }
     setToasterOpen(true);
   };
@@ -114,7 +115,7 @@ const AgentSignupForm = () => {
         setCodeSent(true);
         setPreviousEmail(email);
       } else {
-        console.error('Email is undefined');
+        console.error(en.signUpForm.undefinedEmail);
       }
     } catch (error) {
       if (typeof error === 'string') setError(error);
@@ -131,7 +132,7 @@ const AgentSignupForm = () => {
       setIsCodeVerificationFailed(false);
       if (email) setVerifiedEmail(email);
     } else {
-      setError('Your OTP is incorrect, please try again');
+      setError(en.signUpForm.incorrectOtp);
       setIsCodeVerified(false);
       setIsCodeVerificationFailed(true);
     }
@@ -237,13 +238,13 @@ const AgentSignupForm = () => {
                             disabled={isVerificationLoading || !field.value || !isValidEmail(field.value.toString())}
                             className="button button--white"
                           >
-                            {isVerificationLoading ? 'Sending...' : 'Verify Email'}
+                            {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.emailVerify}
                           </Button>
                         )}
                         {isCodeSent && !isCodeVerified && (
                           <>
                             <InputForm
-                              placeholder="Enter OTP"
+                              placeholder={en.signUpForm.enterOtp}
                               type="number"
                               value={verificationCode}
                               error={!!error}
@@ -255,14 +256,14 @@ const AgentSignupForm = () => {
                               disabled={isVerificationLoading}
                               className="button button--white"
                             >
-                              Verify OTP
+                              {en.signUpForm.verifyOtp}
                             </Button>
                             <Button
                               onClick={() => handleEmailVerification(field.value.toString())}
                               disabled={isVerificationLoading}
                               className="button button--white"
                             >
-                              {isVerificationLoading ? 'Sending...' : 'Resend OTP'}
+                              {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.resendOtp}
                             </Button>
                           </>
                         )}
@@ -274,13 +275,13 @@ const AgentSignupForm = () => {
             )}
             {name === 'company_name' && (
               <Box className="input-text company-name">
-                <Typography>Optional</Typography>
+                <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
             {name === 'phone' && (
               <Box className="input-text">
-                <Typography>Including the country code with + sign</Typography>
-                <Typography>Optional</Typography>
+                <Typography>{en.signUpForm.phoneCode}</Typography>
+                <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
           </Box>
@@ -295,8 +296,8 @@ const AgentSignupForm = () => {
               <InputForm
                 type={''}
                 {...field}
-                placeholder={`Example of VIP Managed`}
-                label={`Example of VIP Managed`}
+                placeholder={en.signUpForm.vipExamples}
+                label={en.signUpForm.vipExamples}
                 error={!!errors.vip_examples?.[index]?.value}
                 helperText={errors.vip_examples?.[index]?.value?.message}
               />
@@ -305,7 +306,7 @@ const AgentSignupForm = () => {
         ))}
         <Box sx={{ cursor: 'pointer' }} onClick={addAnotherVip}>
           <Box className="input-text">
-            <Typography sx={{ textDecoration: 'underline' }}>Add Another Vip</Typography>
+            <Typography sx={{ textDecoration: 'underline' }}>{en.signUpForm.addVip}</Typography>
           </Box>
         </Box>
         <Button
@@ -314,10 +315,10 @@ const AgentSignupForm = () => {
           className="button button--white"
           fullWidth
         >
-          Continue
+          {en.signUpForm.continue}
         </Button>
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
-          Already have an account?{' '}
+          {en.signUpForm.alreadyAccount}{' '}
           <Link
             href={paths.auth.login.getHref()}
             style={{
@@ -327,7 +328,7 @@ const AgentSignupForm = () => {
               color: 'white',
             }}
           >
-            Login here
+            {en.signUpForm.login}
           </Link>
         </Typography>
       </Box>

@@ -20,7 +20,7 @@ const ProfilePage = async () => {
     <>
       <Box className="user-profile__info" textAlign={'center'} mb={3}>
         <Image
-          src={profileDetails?.acf?.instagram_profile_image_url || DefaultImageFallback.PersonPlaceholder}
+          src={profileDetails?.acf?.profile_image || DefaultImageFallback.PersonPlaceholder}
           width={150}
           height={150}
           alt="User Avtar image"

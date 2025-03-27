@@ -11,7 +11,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { getProfileId } from '@/helpers/utils';
 import { redirect } from 'next/navigation';
 
-export const login = async (values: LoginFormValues) => {
+export const loginServerAction = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: 'Invalid Fields!' };
@@ -47,7 +47,7 @@ export const login = async (values: LoginFormValues) => {
 
 export const signOutAction = async () => {
   await signOut({ redirect: false });
-  redirect('/');
+  redirect('/login');
 };
 
 export async function revalidateTag(name: string) {

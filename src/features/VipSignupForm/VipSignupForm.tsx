@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,10 +14,12 @@ import './VipSignupForm.scss';
 import { VipSignUpRequestBody } from '@/interfaces/signup';
 import Toaster from '@/components/Toaster';
 import { VerifyEmail, VipSignUp } from '@/libs/api-manager/manager';
-import { isValidEmail } from '@/helpers/utils';
+import { expiryDate, isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
 import { paths } from '@/helpers/paths';
+import { useInstaInfo } from '@/store/useStore';
+import en from '@/helpers/lang';
 
 const VipSignupForm = () => {
   const [error, setError] = useState<string>('');
@@ -33,6 +35,21 @@ const VipSignupForm = () => {
   const [previousEmail, setPreviousEmail] = useState<string>('');
   const [verifiedEmail, setVerifiedEmail] = useState<string>('');
   const [isVerificationLoading, setVerificationLoading] = useState<boolean>(false);
+  const { instaInfo, clearAll } = useInstaInfo();
+
+  useEffect(() => {
+    if (instaInfo.username) {
+      updateInstagramHandle(instaInfo.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instaInfo.username]);
+
+  const updateInstagramHandle = (username: string) => {
+    reset((prevValues) => ({
+      ...prevValues,
+      instagram_handle: username,
+    }));
+  };
 
   const {
     control,
@@ -44,6 +61,26 @@ const VipSignupForm = () => {
     defaultValues: defaultValues,
   });
 
+  const clearInstaInfo = useInstaInfo((state) => state.clearAll);
+  const hydrated = useInstaInfo((state) => state.hydrated);
+  const setHydrated = useInstaInfo((state) => state.setHydrated);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setHydrated(true);
+    }, 500);
+  }, [setHydrated]);
+
+  useEffect(() => {
+    if (hydrated) {
+      clearInstaInfo();
+    }
+  }, [hydrated, clearInstaInfo]);
+
+  const openInstagramAuth = () => {
+    window.open(process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL, 'InstagramAuth', 'width=600,height=600');
+  };
+
   const onSubmit = async (formData: VipSignUpRequestBody) => {
     if (!isCodeVerified) {
       setError('Please verify your email first');
@@ -52,14 +89,21 @@ const VipSignupForm = () => {
       setIsPending(true);
       setError('');
       try {
-        const response = await VipSignUp(formData);
-        setIsPending(true);
+        const updatedFormData = {
+          ...formData,
+          instagram_follower_count: instaInfo.followers,
+          instagram_access_token: instaInfo.code,
+          instagram_profile_image_url: instaInfo.picture,
+          instagram_token_expiry: expiryDate(instaInfo.expires),
+        };
+        const response = await VipSignUp(updatedFormData);
         if (response?.error) {
           setError(response.error);
           setToasterOpen(true);
         } else {
           setApplicationReviewDialogOpen(true);
           reset();
+          clearAll();
         }
       } catch (error) {
         handleError(error);
@@ -74,7 +118,7 @@ const VipSignupForm = () => {
     } else if (typeof error === 'string') {
       setError(error);
     } else {
-      setError('An unexpected error occurred during signup');
+      setError(en.signUpForm.errMessage);
     }
     setToasterOpen(true);
   };
@@ -90,7 +134,7 @@ const VipSignupForm = () => {
         setCodeSent(true);
         setPreviousEmail(email);
       } else {
-        console.error('Email is undefined');
+        console.error(en.signUpForm.emailError);
       }
     } catch (error) {
       if (typeof error === 'string') {
@@ -99,7 +143,7 @@ const VipSignupForm = () => {
         if (error instanceof Error) {
           setError(error.message);
         } else {
-          setError('An unexpected error occurred');
+          setError(en.signUpForm.unexpectedError);
         }
       }
       setToasterOpen(true);
@@ -115,7 +159,7 @@ const VipSignupForm = () => {
       setIsCodeVerificationFailed(false);
       if (email) setVerifiedEmail(email);
     } else {
-      setError('Your OTP is incorrect, please try again');
+      setError(en.signUpForm.incorrectOtp);
       setIsCodeVerified(false);
       setIsCodeVerificationFailed(true);
     }
@@ -133,6 +177,16 @@ const VipSignupForm = () => {
       setIsCodeVerificationFailed(false);
       setError('');
     }
+  };
+
+  const getInstagramButtonText = () => {
+    if (!hydrated) {
+      return en.signUpForm.loading;
+    }
+    if (instaInfo.code) {
+      return en.signUpForm.authorisedInstagram;
+    }
+    return en.signUpForm.authoriseInstagram;
   };
 
   return (
@@ -211,7 +265,7 @@ const VipSignupForm = () => {
                           disabled={isVerificationLoading || !field.value || !isValidEmail(field.value)}
                           className="button button--white"
                         >
-                          {isVerificationLoading ? 'Sending...' : 'Verify Email'}
+                          {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.emailVerify}
                         </Button>
                       )}
                       {isCodeSent && !isCodeVerified && (
@@ -236,7 +290,7 @@ const VipSignupForm = () => {
                             disabled={isVerificationLoading}
                             className="button button--white"
                           >
-                            {isVerificationLoading ? 'Sending...' : 'Resend OTP'}
+                            {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.resendOtp}
                           </Button>
                         </>
                       )}
@@ -247,14 +301,25 @@ const VipSignupForm = () => {
             />
             {name === 'secondary_email' && (
               <Box className="input-text">
-                <Typography>Add a PA or Staff Email</Typography>
-                <Typography>Optional</Typography>
+                <Typography>{en.signUpForm.addEmail}</Typography>
+                <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
             {name === 'phone' && (
               <Box className="input-text">
-                <Typography>Including the country code with + sign</Typography>
-                <Typography>Optional</Typography>
+                <Typography>{en.signUpForm.phoneCode}</Typography>
+                <Typography>{en.signUpForm.optional}</Typography>
+              </Box>
+            )}
+            {name === 'instagram_handle' && (
+              <Box className="verify-button">
+                <Button
+                  className="button button--white"
+                  disabled={!hydrated || !!instaInfo.code}
+                  onClick={openInstagramAuth}
+                >
+                  {getInstagramButtonText()}
+                </Button>
               </Box>
             )}
           </Box>
@@ -265,11 +330,11 @@ const VipSignupForm = () => {
           className="button button--white"
           fullWidth
         >
-          Continue
+          {en.signUpForm.continue}
         </Button>
 
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
-          Already have an account?{' '}
+          {en.signUpForm.alreadyAccount}{' '}
           <Link
             href={paths.auth.login.getHref()}
             style={{
@@ -279,7 +344,7 @@ const VipSignupForm = () => {
               color: 'white',
             }}
           >
-            Login here
+            {en.signUpForm.login}
           </Link>
         </Typography>
       </Box>

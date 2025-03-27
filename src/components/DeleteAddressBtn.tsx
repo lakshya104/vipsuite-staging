@@ -6,6 +6,8 @@ import { DeleteAddress } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import en from '@/helpers/lang';
+import revalidatePathAction from '@/libs/actions';
+import { paths } from '@/helpers/paths';
 
 interface DeleteAddressBtnProps {
   addressId: string;
@@ -25,6 +27,7 @@ const DeleteAddressBtn: React.FC<DeleteAddressBtnProps> = ({ addressId, startTra
         const res = await DeleteAddress(addressId);
         setToasterType('success');
         openToaster(res?.message);
+        await revalidatePathAction(paths.root.addresses.getHref());
       } catch (error) {
         setToasterType('error');
         openToaster(error?.toString() ?? en.deleteAddressBtn.errMessage);

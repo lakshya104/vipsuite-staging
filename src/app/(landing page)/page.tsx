@@ -1,34 +1,14 @@
-import React, { Suspense } from 'react';
-// import { Metadata } from 'next';
-import LandingPage from '@/site-pages/LandingPage';
-import LandingPageLoading from '@/site-pages/LandingPage/loading';
-
-// export async function generateMetadata(): Promise<Metadata> {
-//   try {
-//     return {
-//       title: 'Welcome to VIP Suite',
-//       description:
-//         'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today! Invite-only, private members portal for events, campaigns, gifting and more.',
-//       openGraph: {
-//         images: ['/img/maldives.png'],
-//       },
-//       twitter: {
-//         images: ['/img/maldives.png'],
-//       },
-//     };
-//   } catch {
-//     return {
-//       title: 'Welcome to VIP Suite',
-//       description:
-//         'Discover a wide range of products, services, and exclusive deals on our platform. Start exploring today! Invite-only, private members portal for events, campaigns, gifting and more.',
-//     };
-//   }
-// }
+import React from 'react';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import ComingSoonPage from '@/site-pages/ComingSoonPage';
 
 export default async function Page() {
-  return (
-    <Suspense fallback={<LandingPageLoading />}>
-      <LandingPage />
-    </Suspense>
-  );
+  const headersList = await headers();
+  const fullUrl = headersList.get('host') || '';
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'production' && fullUrl.includes('thevipsuite.co.uk')) {
+    return <ComingSoonPage />;
+  } else {
+    redirect('/login');
+  }
 }

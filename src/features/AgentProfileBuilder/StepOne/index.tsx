@@ -13,6 +13,7 @@ import { ACF, ProfileBuilderOptions } from '@/interfaces';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { agentStepOneFields } from '@/data';
+import en from '@/helpers/lang';
 
 export interface AgentProfileBuilderStepsProps {
   handleId?: (id: number) => void;
@@ -82,7 +83,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
       }
       onNext(updatedProfileDetail);
     } catch (error) {
-      openToaster('An error occurred while creating the VIP profile:' + error);
+      openToaster(en.profileBuilder.vipError + error);
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -94,7 +95,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
       <Box component="form" className="profile-builder__form" onSubmit={handleSubmit(onSubmit)}>
         <Box className="profile-builder__head">
           <Typography variant="h2" textAlign="center">
-            Add a VIP
+            {en.profileBuilder.addAVip}
           </Typography>
         </Box>
         <Box className="profile-builder__body">
@@ -136,10 +137,15 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
         </Box>
         <Box className="profile-builder__body">
           <Typography variant="h2" gutterBottom>
-            Avg. engagement for Paid posts
+            {en.profileBuilder.avgEngagement}
           </Typography>
-          <Typography mb={3}>Please include both Instagram & TikTok</Typography>
-          <InputTextFormField name="avg_engagement" placeholder="Avg. Engagement" errors={errors} control={control} />
+          <Typography mb={3}>{en.profileBuilder.includesocial}</Typography>
+          <InputTextFormField
+            name="avg_engagement"
+            placeholder={en.signUpForm.avgEngagement}
+            errors={errors}
+            control={control}
+          />
         </Box>
         <CustomStepper currentStep={1} totalSteps={6} onPrev={onPrev} />
       </Box>

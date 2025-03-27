@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, InputAdornment } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,39 +8,35 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import InputForm from '@/components/InputForm/InputForm';
 import Toaster from '@/components/Toaster';
-import DialogBox from '@/components/Dialog';
-import './ResetPasswordForm.scss';
-import { ResetPassword } from '@/libs/api-manager/manager';
+import './ResetPasswordLoginForm.scss';
+import { ResetPasswordWithLogin } from '@/libs/api-manager/manager';
 import { defaultValues, ResetPasswordFormValues, ResetPasswordSchema } from './schema';
 import UseToaster from '@/hooks/useToaster';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
+import { deleteVipCookies, loginServerAction } from '@/libs/actions';
+import { UserRole } from '@/helpers/enums';
+import { useUserInfoStore } from '@/store/useStore';
 
-interface ResetPasswordFormProps {
-  userMail: string;
-}
-
-const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ userMail }) => {
+const ResetPasswordLoginForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const router = useRouter();
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const userMail64String = searchParams.get('login');
+  const resetKey = searchParams.get('key');
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const { clearAll } = useUserInfoStore();
 
-  const dialogBoxContent = {
-    title: en.login.resetPassword.dialogTitle,
-    subTitle: en.login.resetPassword.subtitle,
-    description: en.login.resetPassword.description,
-    buttonText: en.login.resetPassword.buttonText,
-    isCrossIcon: true,
-  };
-
-  const handleDialogBoxDataChange = (open: boolean) => {
-    setIsDialogOpen(open);
-    setIsPending(true);
-    router.push(paths.auth.login.getHref());
-  };
+  useEffect(() => {
+    const deleteCookies = async () => {
+      await deleteVipCookies();
+      clearAll();
+    };
+    deleteCookies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     register,
@@ -52,36 +48,57 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ userMail }) => {
     defaultValues: defaultValues,
   });
 
+  useEffect(() => {
+    if (!userMail64String || !resetKey) {
+      openToaster(en.login.errorMessage.resetPassLogin);
+      const timeOut = setTimeout(() => {
+        router.push(paths.auth.login.getHref());
+      }, 1500);
+      return () => clearTimeout(timeOut);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onSubmit = async (values: ResetPasswordFormValues) => {
     setIsPending(true);
-    reset();
+    const userMail = atob(userMail64String ?? '');
     try {
-      const data = {
-        email: userMail,
-        code: Number(values.code),
+      const resetData = {
+        password_reset_key: resetKey ?? '',
+        email: userMail64String ?? '',
         password: values.password,
       };
-      await ResetPassword(data);
-      setIsDialogOpen(true);
+      const loginActionData = {
+        username: userMail,
+        password: values.password,
+      };
+      const userData = await ResetPasswordWithLogin(resetData);
+      if (userData) {
+        const data = await loginServerAction(loginActionData);
+        if (data?.error) {
+          const errorMessage = data.error;
+          console.error(errorMessage);
+          openToaster(errorMessage ?? en.login.loginError);
+          setIsPending(false);
+        } else {
+          if (userData.role === UserRole.Vip) {
+            router.push(paths.root.home.getHref());
+          } else if (userData.role === UserRole.Agent) {
+            router.push(paths.root.myVips.getHref());
+          } else {
+            router.push(paths.root.home.getHref());
+          }
+        }
+      }
     } catch (error) {
       openToaster(String(error));
-    } finally {
+      reset();
       setIsPending(false);
-      setShowNewPassword(false);
-      setShowRepeatPassword(false);
     }
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="forgot-password-form">
-      <InputForm
-        {...register('code')}
-        placeholder={en.common.resetCode}
-        type="text"
-        error={!!errors.code}
-        helperText={errors.code?.message}
-        autoComplete="one-time-code"
-      />
       <InputForm
         {...register('password')}
         placeholder={en.common.password}
@@ -145,7 +162,6 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ userMail }) => {
       <Button type="submit" disabled={isPending} fullWidth className="button button--white">
         {isPending ? en.login.resetPassword.saving : en.login.resetPassword.save}
       </Button>
-      <DialogBox isDialogOpen={isDialogOpen} onDataChange={handleDialogBoxDataChange} content={dialogBoxContent} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -154,4 +170,4 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ userMail }) => {
   );
 };
 
-export default ResetPasswordForm;
+export default ResetPasswordLoginForm;

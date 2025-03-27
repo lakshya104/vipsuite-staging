@@ -15,6 +15,7 @@ import { ACF, BrandEditFormDataObject } from '@/interfaces';
 import revalidatePathAction from '@/libs/actions';
 import { paths } from '@/helpers/paths';
 import { QuestionType } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface BrandEditProfileFormProps {
   profileDetails: ACF;
@@ -70,7 +71,7 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
       }
       router.push(paths.root.profile.getHref());
     } catch (error) {
-      setError(error?.toString() || 'An unexpected error occurred');
+      setError(error?.toString() || en.signUpForm.errMessage);
       setToasterOpen(true);
       setIspending(false);
     }
@@ -110,13 +111,13 @@ const BrandEditProfileForm: React.FC<BrandEditProfileFormProps> = ({ profileDeta
             )}
             {name === 'phone' && (
               <Box className="input-text">
-                <Typography>Including the country code with + sign</Typography>
+                <Typography>{en.signUpForm.phoneCode}</Typography>
               </Box>
             )}
           </Box>
         ))}
         <Button type="submit" disabled={isPending} className="button button--black" fullWidth>
-          {isPending ? 'Loading...' : 'Continue'}
+          {isPending ? en.signUpForm.loading : en.signUpForm.continue}
         </Button>
       </Box>
       <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />

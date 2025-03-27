@@ -12,6 +12,7 @@ import { ACF, ProfileBuilderStepsProps } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
+import en from '@/helpers/lang';
 
 const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
@@ -115,7 +116,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster(en.profileBuilder.steps.profileError + error);
     } finally {
       setIsLoading(false);
     }
@@ -141,16 +142,16 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
     >
       <Box className="profile-builder__search">
         <Typography variant="h2" textAlign="center">
-          What are you known for?
+          {en.profileBuilder.steps.knownFor}
         </Typography>
         <Typography variant="h3" textAlign="center">
-          Select a maximum of 3 to continue
+          {en.profileBuilder.steps.maxInterest}
         </Typography>
         <SearchBar
           searchTerm={searchTerm}
           handleChange={handleChange}
           handleClear={handleClear}
-          placeholder="Search for an attribute"
+          placeholder={en.profileBuilder.steps.search}
         />
       </Box>
 
@@ -173,7 +174,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
               />
             ))
           ) : (
-            <Typography textAlign="center">No results found</Typography>
+            <Typography textAlign="center">{en.profileBuilder.steps.noResults}</Typography>
           )}
         </Box>
       </FormGroup>
@@ -189,7 +190,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
       {watchInterests?.includes('Content Creator') && contentTypes.length > 0 && (
         <>
           <Typography variant="h6" textAlign="center" mb={4}>
-            Type of content you create
+            {en.profileBuilder.steps.typeOfContent}
           </Typography>
           <FormGroup>
             <Box width="100%" className="form-checkbox-group">
@@ -217,7 +218,7 @@ const Step1Form: React.FC<ProfileBuilderStepsProps> = ({
             </Box>
             {errors.type_of_content_create && (
               <Typography color="error" textAlign="center">
-                Please select an option
+                {en.profileBuilder.steps.selectOption}
               </Typography>
             )}
           </FormGroup>

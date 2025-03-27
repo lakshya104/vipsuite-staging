@@ -18,6 +18,7 @@ import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 interface BrandSignupFormProps {
   brandSignupOptions: string[];
@@ -54,7 +55,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
 
   const onSubmit = async (formData: BrandSignupValues) => {
     if (!isCodeVerified) {
-      setError('Please verify your email first');
+      setError(en.signUpForm.verifyEmail);
       setToasterOpen(true);
     } else {
       setIsPending(true);
@@ -91,7 +92,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
     } else if (typeof error === 'string') {
       setError(`Error: ${error}`);
     } else {
-      setError('Error: An unexpected error occurred during signup');
+      setError(`Error: ${en.signUpForm.errMessage}`);
     }
     setToasterOpen(true);
   };
@@ -107,7 +108,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
         setCodeSent(true);
         setPreviousEmail(email);
       } else {
-        console.error('Email is undefined');
+        console.error(en.signUpForm.undefinedEmail);
       }
     } catch (error) {
       if (typeof error === 'string') setError(error);
@@ -124,7 +125,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
       setIsCodeVerificationFailed(false);
       if (email) setVerifiedEmail(email);
     } else {
-      setError('Your OTP is incorrect, please try again');
+      setError(en.signUpForm.incorrectOtp);
       setIsCodeVerified(false);
       setIsCodeVerificationFailed(true);
     }
@@ -230,13 +231,13 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                             disabled={isVerificationLoading || !field.value || !isValidEmail(field.value.toString())}
                             className="button button--white"
                           >
-                            {isVerificationLoading ? 'Sending...' : 'Verify Email'}
+                            {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.emailVerify}
                           </Button>
                         )}
                         {isCodeSent && !isCodeVerified && (
                           <>
                             <InputForm
-                              placeholder="Enter OTP"
+                              placeholder={en.signUpForm.enterOtp}
                               type="number"
                               value={verificationCode}
                               error={!!error}
@@ -248,14 +249,14 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                               disabled={isVerificationLoading}
                               className="button button--white"
                             >
-                              Verify OTP
+                              {en.signUpForm.verifyOtp}
                             </Button>
                             <Button
                               onClick={() => handleEmailVerification(field.value.toString())}
                               disabled={isVerificationLoading}
                               className="button button--white"
                             >
-                              {isVerificationLoading ? 'Sending...' : 'Resend OTP'}
+                              {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.resendOtp}
                             </Button>
                           </>
                         )}
@@ -267,8 +268,8 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
             )}
             {name === 'phone' && (
               <Box className="input-text">
-                <Typography>Including the country code with + sign</Typography>
-                <Typography>Optional</Typography>
+                <Typography>{en.signUpForm.phoneCode}</Typography>
+                <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
           </Box>
@@ -279,10 +280,10 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
           className="button button--white"
           fullWidth
         >
-          Continue
+          {en.signUpForm.continue}
         </Button>
         <Typography sx={{ fontSize: '0.8rem', my: 4 }} className="onboarding__text">
-          Already have an account?{' '}
+          {en.signUpForm.alreadyAccount}{' '}
           <Link
             href={paths.auth.login.getHref()}
             style={{
@@ -292,7 +293,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
               color: 'white',
             }}
           >
-            Login here
+            {en.signUpForm.login}
           </Link>
         </Typography>
       </Box>

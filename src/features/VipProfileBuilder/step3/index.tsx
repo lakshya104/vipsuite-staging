@@ -15,6 +15,7 @@ import { UpdateProfile } from '@/libs/api-manager/manager';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { QuestionType } from '@/helpers/enums';
+import en from '@/helpers/lang';
 
 interface FormField {
   name: keyof Step3FormValues;
@@ -221,7 +222,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
       await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster(en.profileBuilder.steps.profileError + error);
     } finally {
       setIsLoading(false);
     }
@@ -258,7 +259,7 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step1-form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
-          Your Details
+          {en.profileBuilder.steps.details}
         </Typography>
       </Box>
       {vipStep3formFields.map((field) => {
@@ -324,12 +325,12 @@ const Step3Form: React.FC<ProfileBuilderStepsProps> = ({
                 <InputTextFormField {...commonProps} placeholder={field.placeholder} />
                 {field.name === 'pets' && !petsValue && (
                   <Box className="input-text">
-                    <Typography>Separate with commas</Typography>
+                    <Typography>{en.profileBuilder.steps.commaSeparation}</Typography>
                   </Box>
                 )}
                 {field.name === 'homePostcode' && !homePostcodeValue && (
                   <Box className="input-text">
-                    <Typography>You can enter the first part only e.g. EC1</Typography>
+                    <Typography>{en.profileBuilder.steps.enterFirstPart}</Typography>
                   </Box>
                 )}
               </Box>

@@ -10,7 +10,7 @@ import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { signOutAction } from '@/libs/actions';
-import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 interface AgentHeaderProps {
   token: string;
@@ -27,7 +27,8 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
     try {
       setDrawerOpen(false);
       startTransition(async () => {
-        await Promise.all([signOutAction(), LogOut(token)]);
+        await signOutAction();
+        await LogOut(token);
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);
@@ -39,7 +40,7 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
       <AppBar className="site-header site-header__logged" position="sticky">
         <Toolbar className="site-header__wrapper site-header">
           <Box className="site-header__brand">
-            <ProgressBarLink href={paths.root.home.getHref()} title={'THE VIP SUITE'}>
+            <ProgressBarLink href={''} title={'THE VIP SUITE'}>
               <Image src="/Logo.svg" alt="The VIP Suite Site logo" height={25} width={122} priority />
               <Image
                 className="logo-mobile"
@@ -57,7 +58,7 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
           <Drawer className="drawer-menu" anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
             <Box className="drawer-menu__wrapper" role="presentation">
               <Box className="drawer-menu__header">
-                <ProgressBarLink href={paths.root.home.getHref()} title={'THE VIP SUITE'} className="logo">
+                <ProgressBarLink href={''} title={'THE VIP SUITE'} className="logo">
                   <Image src="/vipsblack.png" alt="The VIP Suite Site logo" height={13} width={114} priority />
                 </ProgressBarLink>
                 <CloseIcon onClick={toggleDrawer(false)} />
@@ -66,7 +67,7 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
                 <Box className="drawer-menu__item" onClick={handleLogout}>
                   <Box>
                     <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
-                    <Typography variant="body1">Sign Out</Typography>
+                    <Typography variant="body1">{en.common.signOut}</Typography>
                   </Box>
                   <ChevronRightIcon />
                 </Box>

@@ -34,9 +34,7 @@ const Endpoints = {
   createProfile: '/wp/v2/vip-profile',
   forgotPassword: '/wp/v2/forgot-password',
   resetPassword: '/wp/v2/reset-password',
-  getAllOrders: (customerId: number, page: number) =>
-    // `/wc/v3/orders?customer=${customerId}&page=${page}&_fields=meta_data,status,id,opportunity,event,line_items,date_created`,
-    `/wc/v3/orders?customer=${customerId}&page=${page}`,
+  getAllOrders: (customerId: number, page: number) => `/wc/v3/orders?customer=${customerId}&page=${page}`,
   getOrderById: (id: number) =>
     `/wc/v3/orders/${id}?_fields=meta_data,status,id,opportunity,line_items,date_created,location,is_feedback_provided`,
   getVipCart: '/wp/v2/vip-profiles/cart',
@@ -63,7 +61,6 @@ const Endpoints = {
   getVipOpportunityDetails: (id: number) => `/wp/v2/opportunities/${id}?_fields=id,title,acf`,
   orderFeedback: (orderNumber: number) => `/wp/v2/vip-profiles/orders/${orderNumber}/feedback`,
   eventFeedback: (eventId: number) => `/wp/v2/vip-profiles/events/${eventId}/feedback`,
-  getWishlistItems: `/wp/v2/vip-profiles/wishlist`,
   addToWishlist: (postId: number) => `/wp/v2/vip-profiles/wishlist/${postId}`,
   getPageContent: (slug: string) => `/wp/v2/pages/?slug=${slug}`,
   referVIP: '/wp/v2/profiles/refer-vip',
@@ -81,6 +78,7 @@ const Endpoints = {
   sendMessage: (id: number) => `/wp/v2/vip-profiles/orders/${id}/messages`,
   getWebsiteContent: `/wp/v2/website-content`,
   getComingSoonData: `/wp/v2/coming-soon-content`,
+  resetPasswordWithLogin: '/wp/v2/user-password-reset',
 };
 
 export { Endpoints };

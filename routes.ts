@@ -3,6 +3,7 @@ export const publicRoutes = ['/', '/comingsoon'];
 export const authRoutes = [
   '/login',
   '/forgot-password',
+  '/reset-password',
   '/on-boarding',
   '/signup/vip',
   '/signup/agent',

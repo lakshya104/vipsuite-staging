@@ -6,17 +6,18 @@ import './ProductList.scss';
 import { GetBrandProducts } from '@/libs/api-manager/manager';
 import { BrandProduct } from '@/interfaces/brand';
 import ErrorFallback from '@/components/ErrorFallback';
+import en from '@/helpers/lang';
 
 interface ProductListProps {
   brandId: number;
 }
 const ProductList: React.FC<ProductListProps> = async ({ brandId }) => {
   if (!brandId) {
-    return <ErrorFallback errorMessage="Brand Id is invalid." />;
+    return <ErrorFallback errorMessage={en.products.invalidBrandId} />;
   }
   const brandProducts = await GetBrandProducts(brandId);
   if (!brandProducts || isEmpty(brandProducts)) {
-    return <ErrorFallback errorMessage="No products available for this brand" hideSubtext={true} />;
+    return <ErrorFallback errorMessage={en.products.noProducts} hideSubtext={true} />;
   }
   return (
     <Box className="product-listing">

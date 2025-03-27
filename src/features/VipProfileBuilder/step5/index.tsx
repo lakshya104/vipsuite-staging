@@ -25,6 +25,7 @@ import revalidatePathAction from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import { paths } from '@/helpers/paths';
 import VipAddedDialog from '@/components/VipAddedDialog';
+import en from '@/helpers/lang';
 
 const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
   profileBuilderOptions,
@@ -103,7 +104,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
         router.push(paths.root.home.getHref());
       }
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster(en.profileBuilder.steps.profileError + error);
       setIsLoading(false);
     }
   };
@@ -118,16 +119,16 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
       >
         <Box className="profile-builder__search">
           <Typography variant="h2" textAlign="center">
-            Your Interests
+            {en.profileBuilder.steps.interests}
           </Typography>
           <Typography variant="h3" textAlign="center">
-            Select a maximum of 3 to continue
+            {en.profileBuilder.steps.maxInterest}
           </Typography>
           <SearchBar
             searchTerm={searchTerm}
             handleChange={handleChange}
             handleClear={handleClear}
-            placeholder="Search for an attribute"
+            placeholder={en.profileBuilder.steps.search}
           />
         </Box>
         <FormGroup className="profile-builder__form-group">
@@ -154,7 +155,7 @@ const Step5Form: React.FC<ProfileBuilderStepsProps> = ({
                 />
               ))
             ) : (
-              <Typography textAlign="center">No results found</Typography>
+              <Typography textAlign="center">{en.profileBuilder.steps.noResults}</Typography>
             )}
           </Box>
         </FormGroup>

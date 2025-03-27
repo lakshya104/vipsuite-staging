@@ -479,18 +479,6 @@ export const GetVipRsvpEvents = async () => {
   }
 };
 
-export const GetVipWishlistItems = async () => {
-  try {
-    const response = await Instance.get(Endpoints.getWishlistItems);
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch wishlisted items');
-  }
-};
-
 export const GetAddresses = async () => {
   try {
     const response = await Instance.get(Endpoints.getAddresses);
@@ -778,5 +766,24 @@ export const GetBrandProfile = async () => {
     return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };
+  }
+};
+
+export const ResetPasswordWithLogin = async ({
+  password_reset_key,
+  email,
+  password,
+}: {
+  password_reset_key: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await Instance.post(Endpoints.resetPasswordWithLogin, { password_reset_key, email, password });
+    return response.data;
+  } catch (error) {
+    console.error('Error during resetting password:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Error during resetting password';
+    throw new Error(errorMessage);
   }
 };

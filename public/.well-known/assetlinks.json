@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.vip_app",
+      "sha256_cert_fingerprints": [
+        "DF:30:DC:32:F6:2C:7D:EA:62:4F:BF:47:4B:F7:0B:9F:CC:B9:7D:AF:EF:84:28:D9:2F:58:5A:21:88:C1:2F:5D"
+      ]
+    }
+  }
+]

@@ -70,7 +70,7 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ title, description, type, clo
       }, 1500);
     } catch (error) {
       setToasterType('error');
-      openToaster('Error during submitting the form. ' + error);
+      openToaster(en.makeRequest.formError + error);
     } finally {
       setIsPending(false);
     }
@@ -81,7 +81,7 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ title, description, type, clo
       <Box className="bg-textBlack gray-card__details" pb={5}>
         <Box className="gray-card__details-inner">
           <Typography variant="h2" align="center">
-            {title || ' Make a Request'}
+            {en.makeRequest.title}
           </Typography>
           <Typography component="p" align="center">
             {description}
@@ -91,12 +91,12 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ title, description, type, clo
               <InputTextAreaFormField
                 name="request_user_response"
                 control={control}
-                placeholder="Enter your request ..."
+                placeholder={en.makeRequest.enterRequest}
                 errors={errors}
               />
             </Box>
             <Btn look="dark-filled" disabled={isPending} className="button button--white" width="100%" type="submit">
-              {isPending ? 'Submitting' : 'Submit'}
+              {isPending ? en.makeRequest.submitting : en.makeRequest.submit}
             </Btn>
           </form>
         </Box>

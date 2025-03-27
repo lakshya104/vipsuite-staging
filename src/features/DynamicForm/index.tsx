@@ -5,6 +5,7 @@ import { Question } from '@/interfaces/events';
 import { isNonEmptyString, mapQuestionsToSchema } from '@/helpers/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RenderQuestions from '@/components/RenderQuestions';
+import en from '@/helpers/lang';
 
 interface DynamicFormProps {
   questions: Question[];
@@ -65,7 +66,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           {isNonEmptyString(ctaText) && (
             <Box mt={2}>
               <Button className="button button--black" type="submit" fullWidth disabled={alreadyOrdered}>
-                {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || 'Order Now'}
+                {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || en.common.orderNow}
               </Button>
             </Box>
           )}

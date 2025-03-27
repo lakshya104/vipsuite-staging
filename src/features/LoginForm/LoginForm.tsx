@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { deleteVipCookies, login } from '@/libs/actions';
+import { deleteVipCookies, loginServerAction } from '@/libs/actions';
 import { LoginFormValues, LoginSchema } from './loginTypes';
 import './LoginForm.scss';
 import Toaster from '@/components/Toaster';
@@ -44,7 +44,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (isTokenExpired) {
-      setError(tokenExpiryError || 'User must be logged in.');
+      setError(tokenExpiryError || en.login.userLogin);
       setToasterOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,7 +67,7 @@ const LoginForm = () => {
     setToasterOpen(false);
     startTransition(async () => {
       try {
-        const [data, userData] = await Promise.all([login(values), Login(values)]);
+        const [data, userData] = await Promise.all([loginServerAction(values), Login(values)]);
         setUserRole(userData?.role);
         if (data && data.error) {
           const errorMessage = data.error;
@@ -79,7 +79,7 @@ const LoginForm = () => {
             reset();
           } else {
             console.error(errorMessage);
-            setError(errorMessage || 'An error occurred during login');
+            setError(errorMessage || en.login.loginError);
             setToasterOpen(true);
           }
         } else {
@@ -103,7 +103,7 @@ const LoginForm = () => {
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="login-form">
       <TextField
         {...register('username')}
-        placeholder="Email"
+        placeholder={en.common.email}
         type="text"
         error={!!errors.username}
         helperText={errors.username?.message}
@@ -113,7 +113,7 @@ const LoginForm = () => {
 
       <TextField
         {...register('password')}
-        placeholder="Password"
+        placeholder={en.common.password}
         type={showPassword ? 'text' : 'password'}
         error={!!errors.password}
         helperText={errors.password?.message}

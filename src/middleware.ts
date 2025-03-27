@@ -32,7 +32,7 @@ export default auth((req) => {
       return Response.redirect(new URL('/home', nextUrl));
     }
     if (!isLoggedIn && isProtectedRoute) {
-      return Response.redirect(new URL('/', nextUrl));
+      return Response.redirect(new URL('/login', nextUrl));
     }
 
     return;

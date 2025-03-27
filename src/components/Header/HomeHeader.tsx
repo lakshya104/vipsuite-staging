@@ -24,6 +24,7 @@ import { UserRole } from '@/helpers/enums';
 import { signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
+import en from '@/helpers/lang';
 
 const vipMenuItems = [
   {
@@ -65,7 +66,7 @@ const agentMenuItems = [
     href: paths.root.basket.getHref(),
   },
   {
-    label: 'VIP Addresses',
+    label: 'My Addresses',
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: paths.root.addresses.getHref(),
   },
@@ -113,7 +114,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
     try {
       setDrawerOpen(false);
       startTransition(async () => {
-        await Promise.all([signOutAction(), LogOut(token)]);
+        await signOutAction();
+        await LogOut(token);
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);
@@ -200,7 +202,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
                 <Box className="drawer-menu__item" onClick={handleLogout}>
                   <Box>
                     <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
-                    <Typography variant="body1">Sign Out</Typography>
+                    <Typography variant="body1">{en.common.signOut}</Typography>
                   </Box>
                   <ChevronRightIcon />
                 </Box>

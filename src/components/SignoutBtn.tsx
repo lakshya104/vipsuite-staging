@@ -17,7 +17,8 @@ const SignoutBtn: React.FC<SignoutBtnProps> = ({ token }) => {
   const handleLogout = async () => {
     try {
       startTransition(async () => {
-        await Promise.all([signOutAction(), LogOut(token)]);
+        await signOutAction();
+        await LogOut(token);
       });
     } catch (error) {
       openToaster(en.signOutButton.errorMessage + error);
@@ -27,7 +28,7 @@ const SignoutBtn: React.FC<SignoutBtnProps> = ({ token }) => {
     <>
       <Typography variant="body1">
         <Button onClick={handleLogout} className="button button--sign-out">
-          Sign Out
+          {en.common.signOut}
         </Button>
       </Typography>
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>

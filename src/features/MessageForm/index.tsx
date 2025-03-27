@@ -59,7 +59,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
         openToaster(res?.message || en.messageDetail.successToaster);
         reset();
       } catch (error) {
-        console.error('Failed to send message:', error);
+        console.error(en.messageDetail.mesageFailed, error);
         setToasterType('error');
         openToaster(error?.toString() || en.messageDetail.errToaster);
       }

@@ -217,7 +217,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               sx={{ fontWeight: 500, color: 'rgb(27, 27, 27) !important', mb: 1, fontSize: '1rem !important' }}
               gutterBottom
             >
-              Select variant
+              {en.products.selectVariant}
             </Typography>
           )}
           {!isProductOrdered &&

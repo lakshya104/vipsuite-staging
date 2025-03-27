@@ -21,6 +21,7 @@ import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
+import en from '@/helpers/lang';
 
 const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, id, isAgent }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -114,7 +115,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
       await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
     } catch (error) {
-      openToaster('Error during profile update. ' + error);
+      openToaster(en.profileBuilder.steps.profileError + error);
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +125,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
-          Additional Contacts
+          {en.profileBuilder.steps.addContacts}
         </Typography>
       </Box>
       {contacts.map(({ section, description, name }) => (

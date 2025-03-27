@@ -11,6 +11,7 @@ import './ReferVip.scss';
 import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { ReferaVIP } from '@/libs/api-manager/manager';
+import en from '@/helpers/lang';
 
 type FormValues = z.infer<typeof ReferVipSchema>;
 
@@ -48,7 +49,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ description, closeDialog })
       }, 1500);
     } catch (error) {
       setToasterType('error');
-      openToaster('Error during submit the form. ' + error);
+      openToaster(en.referVip.formError + error);
     } finally {
       setIsPending(false);
     }
@@ -59,7 +60,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ description, closeDialog })
       <Box component="main" className="bg-textBlack gray-card__details">
         <Box className="gray-card__details-inner">
           <Typography variant="h2" align="center">
-            Refer a VIP
+            {en.referVip.title}
           </Typography>
           <Typography component="p" align="center">
             {description}
@@ -79,7 +80,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ description, closeDialog })
               </Box>
             ))}
             <Button type="submit" disabled={isPending} className="button button--white" fullWidth>
-              {isPending ? 'Submitting' : 'Continue'}
+              {isPending ? en.referVip.submitting : en.referVip.continue}
             </Button>
           </Box>
         </Box>
