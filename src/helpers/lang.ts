@@ -14,6 +14,7 @@ const en = {
     relatedOpportunity: 'From',
     fieldErrorMessage: 'This field is required',
     featuredTag: 'Featured',
+    future: 'Future dates are not allowed',
     signOut: 'Sign Out',
     orderNow: 'Order Now',
     email: 'Email',

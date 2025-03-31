@@ -21,26 +21,30 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label, selectFut
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            disableFuture={selectFutureDate ? false : true}
-            className="date-picker"
-            label={label && label}
-            format="DD/MM/YYYY"
-            maxDate={selectFutureDate ? undefined : yesterday}
-            value={value ? dayjs(value as string) : null}
-            onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : '')}
-            slotProps={{
-              field: { clearable: true },
-              textField: {
-                error: !!error,
-                helperText: error?.message && en.common.fieldErrorMessage,
-              },
-            }}
-          />
-        </LocalizationProvider>
-      )}
+      render={({ field: { onChange, value }, fieldState: { error } }) => {
+        const isFutureDate = value && dayjs(value).isAfter(yesterday);
+        const showFutureDateError = !selectFutureDate && isFutureDate;
+        return (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              disableFuture={selectFutureDate ? false : true}
+              className="date-picker"
+              label={label && label}
+              format="DD/MM/YYYY"
+              maxDate={selectFutureDate ? undefined : yesterday}
+              value={value ? dayjs(value as string) : null}
+              onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : '')}
+              slotProps={{
+                field: { clearable: true },
+                textField: {
+                  error: !!error || showFutureDateError,
+                  helperText: showFutureDateError ? en.common.future : error?.message && en.common.fieldErrorMessage,
+                },
+              }}
+            />
+          </LocalizationProvider>
+        );
+      }}
     />
   );
 };
