@@ -1,5 +1,5 @@
 import React from 'react';
-import { map } from 'lodash';
+import { map, partition } from 'lodash';
 import { Grid2 } from '@mui/material';
 import { Opportunity } from '@/interfaces/opportunities';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -10,10 +10,15 @@ interface OpportunitiesListingProps {
 }
 
 const OpportunitiesListing: React.FC<OpportunitiesListingProps> = ({ opportunities }) => {
+  const [featuredOpportunities, nonFeaturedOpportunities] = partition(
+    opportunities,
+    (opportunity) => opportunity?.acf?.is_featured,
+  );
+  const sortedOpportunities = [...featuredOpportunities, ...nonFeaturedOpportunities];
   return (
     <>
       <Grid2 container spacing={2} sx={{ mb: 5 }}>
-        {map(opportunities, (opportunity) => {
+        {map(sortedOpportunities, (opportunity) => {
           const image =
             opportunity?.acf?.featured_image?.sizes?.['vs-container-half'] || DefaultImageFallback.Placeholder;
           return (
