@@ -33,6 +33,13 @@
       width: 100%;
     }
   }
+  .MuiSelect-root {
+    + p {
+      &.Mui-error {
+        margin-top: mixins.rem(7);
+      }
+    }
+  }
   p {
     @media only screen and (max-width: 767px) {
       margin-bottom: mixins.rem(16);
@@ -51,6 +58,10 @@
     }
     &:not(.mui-yl23kv-MuiTypography-root, .Mui-error) {
       color: var(--color-textBlack-80);
+    }
+    &.Mui-error {
+      margin-bottom: 0;
+      @include mixins.fontSize(12);
     }
   }
   .product-size {
