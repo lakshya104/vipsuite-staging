@@ -129,9 +129,6 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       </Box>
       {opportunity?.acf?.show_description ? (
         <Box>
-          <Typography variant="h3" sx={{ my: 2 }}>
-            {en.opportunities.description}
-          </Typography>
           <ShowHtml text={opportunity?.acf?.description} />
         </Box>
       ) : (
@@ -156,7 +153,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       {opportunity?.acf?.grouped_products ? (
         <>
           <Typography variant="h2" sx={{ mb: 2 }}>
-            Products
+            {en.opportunities.productHeading}
           </Typography>
           <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
             {opportunity?.acf?.grouped_products.map((product) => (

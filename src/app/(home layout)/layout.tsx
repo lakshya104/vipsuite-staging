@@ -36,7 +36,7 @@ export default async function HomeSectionLayout({
     return (
       <>
         <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={profileId} />
-        <HomeHeader role={role} token={token} />
+        <HomeHeader role={role} />
         <ProgressProvider color="black"> {children}</ProgressProvider>
         <HomeFooter role={role} />
       </>

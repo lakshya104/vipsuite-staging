@@ -7,7 +7,7 @@ import AgentHeader from '@/components/Header/AgentHeader';
 export default function Loading() {
   return (
     <>
-      <AgentHeader token={'token'} />
+      <AgentHeader />
       <Box className="my-vips-page">
         <Container>
           <Box className="my-vips-page__head">

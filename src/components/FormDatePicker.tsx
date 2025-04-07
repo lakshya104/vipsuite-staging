@@ -39,6 +39,7 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label, selectFut
                 textField: {
                   error: !!error || showFutureDateError,
                   helperText: showFutureDateError ? en.common.future : error?.message && en.common.fieldErrorMessage,
+                  inputProps: { readOnly: true },
                 },
               }}
             />
@@ -51,19 +52,12 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label, selectFut
 
 export default FormDatePicker;
 
-interface FormDateTimePickerProps<T extends FieldValues> {
-  name: Path<T>;
-  control: Control<T>;
-  label?: string;
-  selectFutureDate?: boolean;
-}
-
 export const FormDateTimePicker = <T extends FieldValues>({
   name,
   control,
   label,
   selectFutureDate,
-}: FormDateTimePickerProps<T>) => {
+}: FormDatePickerProps<T>) => {
   const yesterday = dayjs().subtract(1, 'day');
 
   return (
@@ -85,6 +79,7 @@ export const FormDateTimePicker = <T extends FieldValues>({
               textField: {
                 error: !!error,
                 helperText: error?.message,
+                inputProps: { readOnly: true },
               },
             }}
           />
@@ -94,13 +89,7 @@ export const FormDateTimePicker = <T extends FieldValues>({
   );
 };
 
-interface FormTimePickerProps<T extends FieldValues> {
-  name: Path<T>;
-  control: Control<T>;
-  label?: string;
-}
-
-export const FormTimePicker = <T extends FieldValues>({ name, control, label }: FormTimePickerProps<T>) => {
+export const FormTimePicker = <T extends FieldValues>({ name, control, label }: FormDatePickerProps<T>) => {
   return (
     <Controller
       name={name}
@@ -113,9 +102,11 @@ export const FormTimePicker = <T extends FieldValues>({ name, control, label }: 
             value={value ? dayjs(value, 'HH:mm:ss') : null}
             onChange={(newValue) => onChange(newValue ? newValue.format('HH:mm:ss') : '')}
             slotProps={{
+              field: { clearable: true },
               textField: {
                 error: !!error,
                 helperText: error?.message,
+                inputProps: { readOnly: true },
               },
             }}
           />

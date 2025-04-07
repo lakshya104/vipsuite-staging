@@ -18,7 +18,7 @@ export default async function BrandLayout({
   }
   return (
     <>
-      <HomeHeader role={UserRole.Brand} token={session.token} />
+      <HomeHeader role={UserRole.Brand} />
       <ProgressProvider color="black"> {children}</ProgressProvider>
       <HomeFooter role={UserRole.Brand} />
     </>

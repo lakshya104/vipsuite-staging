@@ -20,10 +20,9 @@ const MyVipPage = async () => {
   }
   return (
     <>
-      <AgentHeader token={session.token} />
+      <AgentHeader />
       <MyVipsListing
         myVips={myVips}
-        token={session?.token}
         agentId={session?.profile_id}
         agentName={session?.first_name + ' ' + session?.last_name}
       />

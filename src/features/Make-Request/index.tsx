@@ -81,7 +81,7 @@ const MakeRequest: React.FC<MakeRequestProps> = ({ title, description, type, clo
       <Box className="bg-textBlack gray-card__details" pb={5}>
         <Box className="gray-card__details-inner">
           <Typography variant="h2" align="center">
-            {en.makeRequest.title}
+            {title || en.makeRequest.title}
           </Typography>
           <Typography component="p" align="center">
             {description}

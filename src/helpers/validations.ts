@@ -117,7 +117,18 @@ export const typeOfContentValidation = z
   .array(z.string())
   .min(1, { message: 'Please select one content creation type' });
 
-export const dateOfBirthValidation = z.string().min(1, { message: en.profileBuilder.yourDetails.errorMessage.dob });
+export const dateOfBirthValidation = z
+  .string()
+  .min(1, { message: en.profileBuilder.yourDetails.errorMessage.dob })
+  .refine(
+    (value) => {
+      if (!value) return false;
+      const today = new Date();
+      const selectedDate = new Date(value);
+      return selectedDate <= today;
+    },
+    { message: en.common.future },
+  );
 
 export const birthplaceValidation = z
   .string()
@@ -134,7 +145,18 @@ export const numberOfChildrenValidation = z
   .min(1, { message: en.profileBuilder.yourDetails.errorMessage.child });
 
 export const ageOfChildValidation = z.array(
-  z.string().min(1, { message: en.profileBuilder.yourDetails.errorMessage.ageOfChild }),
+  z
+    .string()
+    .min(1, { message: en.profileBuilder.yourDetails.errorMessage.ageOfChild })
+    .refine(
+      (value) => {
+        if (!value) return false;
+        const today = new Date();
+        const selectedDate = new Date(value);
+        return selectedDate <= today;
+      },
+      { message: en.common.future },
+    ),
 );
 
 export const genderOfChildValidation = z.array(

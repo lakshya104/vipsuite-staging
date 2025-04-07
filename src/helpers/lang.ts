@@ -395,6 +395,7 @@ const en = {
   opportunities: {
     clearFilter: 'Clear Filter',
     featuredTag: 'Featured',
+    productHeading: 'Products',
     searchPlaceholder: 'Search for opportunities...',
     results: 'Results for',
     singleResult: 'Result for',

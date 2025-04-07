@@ -89,10 +89,9 @@ const agentMenuItems = [
 
 interface HomeHeaderProps {
   role?: UserRole;
-  token: string;
 }
 
-const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
+const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -114,8 +113,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role, token }) => {
     try {
       setDrawerOpen(false);
       startTransition(async () => {
+        await LogOut();
         await signOutAction();
-        await LogOut(token);
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);

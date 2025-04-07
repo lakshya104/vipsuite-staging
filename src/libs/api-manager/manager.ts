@@ -448,17 +448,9 @@ export const SendRsvp = async (data: RsvpFormValues) => {
   }
 };
 
-export const LogOut = async (token: string) => {
+export const LogOut = async () => {
   try {
-    const response = await InstanceWithoutHeaders.post(
-      Endpoints.logOut,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    const response = await InstanceWithTokenOnly.post(Endpoints.logOut);
     return response.data;
   } catch (error) {
     console.error('Error during signing out:', error);

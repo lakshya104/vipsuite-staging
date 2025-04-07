@@ -30,7 +30,8 @@ const ProfilePage = async () => {
           {profileDetails?.acf?.first_name} {profileDetails?.acf?.last_name}
         </Typography>
         <Typography variant="body2" mb={1}>
-          {en.profilePage.age} {age} {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
+          {profileDetails?.acf?.date_of_birth && en.profilePage.age + ' ' + age}{' '}
+          {profileDetails?.acf?.gender && <>| {profileDetails?.acf?.gender}</>}
         </Typography>
         <EditProfileBtn profileId={profileDetails?.profile_id} />
       </Box>

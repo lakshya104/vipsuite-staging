@@ -11,17 +11,16 @@ import { UserRole } from '@/helpers/enums';
 interface ProfileReviewDialogProps {
   role: UserRole;
   onClose?: () => void;
-  token?: string;
 }
 
-const ProfileReviewDialog: React.FC<ProfileReviewDialogProps> = ({ role, onClose, token }) => {
+const ProfileReviewDialog: React.FC<ProfileReviewDialogProps> = ({ role, onClose }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleReviewDialogChange = async () => {
     setLoading(true);
     try {
-      if (role === UserRole.Vip && token) {
-        await LogOut(token);
+      if (role === UserRole.Vip) {
+        await LogOut();
         signOut({ callbackUrl: '/', redirect: true });
       } else {
         if (onClose) onClose();

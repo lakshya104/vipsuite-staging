@@ -18,10 +18,9 @@ interface MyVipCardProps {
   tiktokFollowers: string;
   link: string;
   vipId: string;
-  token: string;
 }
 
-const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link, tiktokFollowers, vipId, token }) => {
+const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link, tiktokFollowers, vipId }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState<boolean>(false);
@@ -58,7 +57,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({ image, name, instaFollowers, link
         content={vipRejectedBoxContent}
       />
       <Dialog open={reviewDialogOpen} fullScreen aria-labelledby="form-dialog-title">
-        <ProfileReviewDialog role={UserRole.Agent} onClose={() => setReviewDialogOpen(false)} token={token} />
+        <ProfileReviewDialog role={UserRole.Agent} onClose={() => setReviewDialogOpen(false)} />
       </Dialog>
     </>
   );

@@ -12,11 +12,7 @@ import Toaster from '../Toaster';
 import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
 
-interface AgentHeaderProps {
-  token: string;
-}
-
-const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
+const AgentHeader = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
@@ -27,8 +23,8 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ token }) => {
     try {
       setDrawerOpen(false);
       startTransition(async () => {
+        await LogOut();
         await signOutAction();
-        await LogOut(token);
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);

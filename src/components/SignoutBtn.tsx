@@ -7,18 +7,14 @@ import Toaster from './Toaster';
 import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
 
-interface SignoutBtnProps {
-  token: string;
-}
-
-const SignoutBtn: React.FC<SignoutBtnProps> = ({ token }) => {
+const SignoutBtn = () => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const handleLogout = async () => {
     try {
       startTransition(async () => {
+        await LogOut();
         await signOutAction();
-        await LogOut(token);
       });
     } catch (error) {
       openToaster(en.signOutButton.errorMessage + error);

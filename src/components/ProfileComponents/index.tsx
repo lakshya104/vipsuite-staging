@@ -88,6 +88,8 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent, isBrand }) => {
+  console.log({ profileDetails }, get(profileDetails, 'acf.secondary_email', ''));
+
   const contactData = [
     ...(isBrand
       ? [
@@ -100,6 +102,7 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
     {
       type: en.profilePage.profileTabs.contacts.email,
       primary: get(profileDetails, 'email', ''),
+      secondary: get(profileDetails, 'acf.secondary_email', ''),
     },
     {
       type: isAgent ? en.profilePage.profileTabs.contacts.agentPhone : en.profilePage.profileTabs.contacts.phone,
@@ -123,7 +126,7 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
       : []),
   ];
 
-  const filteredContactData = contactData.filter((contact) => contact.primary);
+  const filteredContactData = contactData.filter((contact) => contact.primary || contact.secondary);
   if (filteredContactData.length === 0) {
     return (
       <ErrorFallback
@@ -149,9 +152,10 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
               <Grid2 size={{ xs: 8 }}>
                 {item.primary && (
                   <Typography variant="body2">
-                    {item.primary} {item.type.includes('Contact') && !isBrand && '(Primary)'}
+                    {item.primary} {item?.secondary && '(Primary)'}
                   </Typography>
                 )}
+                {item.secondary && <Typography variant="body2">{item.secondary} (Secondary)</Typography>}
               </Grid2>
             </Grid2>
           </Paper>

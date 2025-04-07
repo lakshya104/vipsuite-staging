@@ -16,12 +16,11 @@ import { createIsAgentCookie, createVipIdCookie } from '@/libs/actions';
 
 interface MyVipsListingProps {
   myVips: MyVips[];
-  token: string;
   agentId: number;
   agentName: string;
 }
 
-const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token, agentId, agentName }) => {
+const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, agentId, agentName }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState<boolean>(false);
   const renderVips = () => {
@@ -55,7 +54,6 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, token, agentId, a
             const name = `${item?.first_name} ${item?.last_name}`;
             return (
               <MyVipCard
-                token={token}
                 vipId={String(item?.profile_id)}
                 key={item?.profile_id}
                 name={name}

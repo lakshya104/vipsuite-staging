@@ -18,7 +18,7 @@ export default async function AgentSectionLayout({
   }
   return (
     <>
-      <HomeHeader role={role} token={session.token} />
+      <HomeHeader role={role} />
       <ProgressProvider color="black"> {children}</ProgressProvider>
       <HomeFooter role={role} />
     </>

@@ -271,15 +271,17 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               />
             </Box>
           )}
-          <Button
-            className="button button--black"
-            sx={{ marginTop: { xs: '10px', md: '40px' } }}
-            type="submit"
-            fullWidth
-            disabled={isProductOrdered}
-          >
-            {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
-          </Button>
+          {product?.cta_label && (
+            <Button
+              className="button button--black"
+              sx={{ marginTop: { xs: '10px', md: '40px' } }}
+              type="submit"
+              fullWidth
+              disabled={isProductOrdered}
+            >
+              {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
+            </Button>
+          )}
         </Box>
       )}
       {product?.type === 'simple' && (
@@ -305,19 +307,19 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               />
             </Box>
           )}
-          <Btn
-            look="dark-filled"
-            className="button button--black"
-            style={{ marginTop: '40px' }}
-            width="100%"
-            fullWidth
-            type="submit"
-            disabled={isProductOrdered}
-          >
-            {!isProductOrdered
-              ? product.cta_label || en.products.itemRequestForm.request
-              : en.products.itemRequestForm.requested}
-          </Btn>
+          {product?.cta_label && (
+            <Btn
+              look="dark-filled"
+              className="button button--black"
+              style={{ marginTop: '40px' }}
+              width="100%"
+              fullWidth
+              type="submit"
+              disabled={isProductOrdered}
+            >
+              {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
+            </Btn>
+          )}
         </Box>
       )}
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />

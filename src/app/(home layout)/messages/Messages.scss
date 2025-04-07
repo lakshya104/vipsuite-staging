@@ -38,6 +38,7 @@
   @media only screen and (max-width: 767px) {
     line-height: 1.07;
     letter-spacing: -0.03em;
+    padding-left: mixins.rem(30);
     @include mixins.fontSize(14);
   }
   a {
