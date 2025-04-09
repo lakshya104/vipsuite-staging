@@ -92,7 +92,7 @@ const RedeemBox: React.FC<RedeemBoxProps> = ({ fetchOffers }) => {
                   p={1.5}
                   sx={{ backgroundColor: '#F0F0E5', borderRadius: '8px' }}
                 >
-                  <Typography variant="body1" fontWeight={600}>
+                  <Typography variant="body1" fontWeight={600} sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                     {visibleItems[coupon.id] ? coupon?.acf?.coupon_code : en.redeemBox.placeholder}
                   </Typography>
                   <Button

@@ -97,6 +97,11 @@
     border: mixins.rem(1) solid var(--color-textBlack);
     @include mixins.border-radius(10px);
     @include mixins.flex(center, center);
+    span {
+      &:not(.MuiButton-startIcon) {
+        font-weight: 400;
+      }
+    }
   }
   .button {
     padding-top: mixins.rem(9);

@@ -173,6 +173,10 @@ button.button {
       max-width: mixins.rem(300);
     }
   }
+  input[type="text"]::selection {
+    background: #000000;
+    color: #ffffff;
+  }
 }
 
 form {

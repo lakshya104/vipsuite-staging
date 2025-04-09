@@ -110,6 +110,7 @@
       background: none;
       h2 {
         margin-bottom: mixins.rem(10);
+        @include mixins.fontSize(24);
       }
       p {
         overflow: hidden;
