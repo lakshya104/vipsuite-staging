@@ -151,7 +151,7 @@ export const useProductImageStore = create<ProductImageStore>((set) => ({
 }));
 
 interface InstaInfoState {
-  instaInfo: { code: string; followers: string; picture: string; username: string; expires: number };
+  instaInfo: { code: string; followers: string; picture: string; username: string; expires: number | null };
   setInstaInfo: (info: { code: string; followers: string; picture: string; username: string; expires: number }) => void;
   hydrated: boolean;
   setHydrated: (value: boolean) => void;
@@ -161,14 +161,52 @@ interface InstaInfoState {
 export const useInstaInfo = create<InstaInfoState>()(
   persistNSync(
     (set) => ({
-      instaInfo: { code: '', followers: '', picture: '', username: '', expires: 0 },
+      instaInfo: { code: '', followers: '', picture: '', username: '', expires: null },
       setInstaInfo: (info) => set({ instaInfo: info }),
       hydrated: false,
       setHydrated: (value) => set({ hydrated: value }),
-      clearAll: () => set({ instaInfo: { code: '', followers: '', picture: '', username: '', expires: 0 } }),
+      clearAll: () => set({ instaInfo: { code: '', followers: '', picture: '', username: '', expires: null } }),
     }),
     {
       name: 'insta-info-storage',
+    },
+  ),
+);
+
+interface TiktokInfoState {
+  tiktokInfo: {
+    code: string;
+    followers: string;
+    picture: string;
+    username: string;
+    expires: number;
+    refreshCode: string;
+  };
+  setTiktokInfo: (info: {
+    code: string;
+    followers: string;
+    picture: string;
+    username: string;
+    expires: number;
+    refreshCode: string;
+  }) => void;
+  hydrated: boolean;
+  setHydrated: (value: boolean) => void;
+  clearAll: () => void;
+}
+
+export const useTiktokInfo = create<TiktokInfoState>()(
+  persistNSync(
+    (set) => ({
+      tiktokInfo: { code: '', followers: '', picture: '', username: '', expires: 0, refreshCode: '' },
+      setTiktokInfo: (info) => set({ tiktokInfo: info }),
+      hydrated: false,
+      setHydrated: (value) => set({ hydrated: value }),
+      clearAll: () =>
+        set({ tiktokInfo: { code: '', followers: '', picture: '', username: '', expires: 0, refreshCode: '' } }),
+    }),
+    {
+      name: 'tiktok-info-storage',
     },
   ),
 );

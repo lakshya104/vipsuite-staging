@@ -18,7 +18,7 @@ import { expiryDate, isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
 import { paths } from '@/helpers/paths';
-import { useInstaInfo } from '@/store/useStore';
+import { useInstaInfo, useTiktokInfo } from '@/store/useStore';
 import en from '@/helpers/lang';
 
 const VipSignupForm = () => {
@@ -35,7 +35,8 @@ const VipSignupForm = () => {
   const [previousEmail, setPreviousEmail] = useState<string>('');
   const [verifiedEmail, setVerifiedEmail] = useState<string>('');
   const [isVerificationLoading, setVerificationLoading] = useState<boolean>(false);
-  const { instaInfo, clearAll } = useInstaInfo();
+  const { instaInfo, clearAll: clearInstaData } = useInstaInfo();
+  const { tiktokInfo, clearAll: clearTiktokData } = useTiktokInfo();
 
   useEffect(() => {
     if (instaInfo.username) {
@@ -51,6 +52,20 @@ const VipSignupForm = () => {
     }));
   };
 
+  useEffect(() => {
+    if (tiktokInfo.username) {
+      updateTiktokHandle(tiktokInfo.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tiktokInfo.username]);
+
+  const updateTiktokHandle = (username: string) => {
+    reset((prevValues) => ({
+      ...prevValues,
+      tiktok_handle: username,
+    }));
+  };
+
   const {
     control,
     handleSubmit,
@@ -62,23 +77,49 @@ const VipSignupForm = () => {
   });
 
   const clearInstaInfo = useInstaInfo((state) => state.clearAll);
-  const hydrated = useInstaInfo((state) => state.hydrated);
-  const setHydrated = useInstaInfo((state) => state.setHydrated);
+  const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
+  const instaHydrated = useInstaInfo((state) => state.hydrated);
+  const tiktokHydrated = useTiktokInfo((state) => state.hydrated);
+  const hydrated = instaHydrated && tiktokHydrated;
+  const setInstaHydrated = useInstaInfo((state) => state.setHydrated);
+  const setTiktokHydrated = useTiktokInfo((state) => state.setHydrated);
 
   useEffect(() => {
     setTimeout(() => {
-      setHydrated(true);
+      setInstaHydrated(true);
+      setTiktokHydrated(true);
     }, 500);
-  }, [setHydrated]);
+  }, [setInstaHydrated, setTiktokHydrated]);
 
   useEffect(() => {
     if (hydrated) {
       clearInstaInfo();
+      clearTiktokInfo();
     }
-  }, [hydrated, clearInstaInfo]);
+  }, [hydrated, clearInstaInfo, clearTiktokInfo]);
 
   const openInstagramAuth = () => {
-    window.open(process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL, 'InstagramAuth', 'width=600,height=600');
+    const width = 600;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    window.open(
+      process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL,
+      'InstagramAuth',
+      `width=${width},height=${height},left=${left},top=${top}`,
+    );
+  };
+
+  const openTikTokAuth = () => {
+    const width = 600;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    window.open(
+      `https://www.tiktok.com/v2/auth/authorize/?client_key=${process.env.NEXT_PUBLIC_TIKTOK_CLIENT_ID}&response_type=code&scope=user.info.basic,user.info.stats&redirect_uri=${process.env.NEXT_PUBLIC_TIKTOK_CALLBACK_URL}`,
+      'TikTokAuth',
+      `width=${width},height=${height},left=${left},top=${top}`,
+    );
   };
 
   const onSubmit = async (formData: VipSignUpRequestBody) => {
@@ -95,6 +136,9 @@ const VipSignupForm = () => {
           instagram_access_token: instaInfo.code,
           instagram_profile_image_url: instaInfo.picture,
           instagram_token_expiry: expiryDate(instaInfo.expires),
+          tiktok_follower_count: tiktokInfo.followers,
+          tiktok_access_token: tiktokInfo.code,
+          tiktok_refresh_token: tiktokInfo.refreshCode,
         };
         const response = await VipSignUp(updatedFormData);
         if (response?.error) {
@@ -103,7 +147,8 @@ const VipSignupForm = () => {
         } else {
           setApplicationReviewDialogOpen(true);
           reset();
-          clearAll();
+          clearInstaData();
+          clearTiktokData();
         }
       } catch (error) {
         handleError(error);
@@ -187,6 +232,16 @@ const VipSignupForm = () => {
       return en.signUpForm.authorisedInstagram;
     }
     return en.signUpForm.authoriseInstagram;
+  };
+
+  const getTikTokText = () => {
+    if (!hydrated) {
+      return en.signUpForm.loading;
+    }
+    if (tiktokInfo.code) {
+      return en.signUpForm.authorisedTiktok;
+    }
+    return en.signUpForm.authoriseTiktok;
   };
 
   return (
@@ -319,6 +374,17 @@ const VipSignupForm = () => {
                   onClick={openInstagramAuth}
                 >
                   {getInstagramButtonText()}
+                </Button>
+              </Box>
+            )}
+            {name === 'tiktok_handle' && (
+              <Box className="verify-button">
+                <Button
+                  className="button button--white"
+                  disabled={!hydrated || !!tiktokInfo.code}
+                  onClick={openTikTokAuth}
+                >
+                  {getTikTokText()}
                 </Button>
               </Box>
             )}

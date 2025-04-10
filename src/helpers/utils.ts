@@ -260,7 +260,8 @@ export const isNonEmptyString = (str: string | undefined | null): boolean => {
   return typeof str === 'string' && str.trim().length > 0;
 };
 
-export const expiryDate = (time: number): string => {
+export const expiryDate = (time: number | null): string => {
+  if (!time) return '';
   const futureDate = dayjs().add(time, 'second');
   return futureDate.format('YYYY-MM-DD');
 };

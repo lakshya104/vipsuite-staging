@@ -770,6 +770,8 @@ const en = {
     loading: 'Loading...',
     authorisedInstagram: 'Instagram authorized',
     authoriseInstagram: 'Authorise Instagram',
+    authoriseTiktok: 'Authorise TikTok',
+    authorisedTiktok: 'TikTok authorized',
     sending: 'Sending...',
     emailVerify: 'Verify Email',
     resendOtp: 'Resend OTP',
