@@ -84,6 +84,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     const rsvp = {
       post_type: 'opportunity',
       rsvp_post: opportunity.id,
+      is_pleases: 'interested',
       ...(updatedPayload && { questions: updatedPayload }),
     };
     try {
