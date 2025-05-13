@@ -27,6 +27,7 @@ interface CartItem {
   variation: Variation[];
   questions?: Question[];
   opportunity_id: string;
+  opportunity_name: string;
 }
 interface Variation {
   attribute: string;

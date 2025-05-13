@@ -644,6 +644,16 @@ export const VerifyEmail = async (email: string) => {
     throw new Error(errorMessage);
   }
 };
+export const VerifyEmailCode = async (email: string, code: string) => {
+  try {
+    const response = await Instance.post(Endpoints.verifyEmailCode, { email, code });
+    return response.data;
+  } catch (error) {
+    console.error('Error verifying code:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending verification code';
+    throw new Error(errorMessage);
+  }
+};
 
 export const GetOpportunityCategory = async () => {
   try {

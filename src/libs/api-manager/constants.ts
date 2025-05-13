@@ -69,6 +69,7 @@ const Endpoints = {
   getAllVip: `/wp/v2/agent/vip-profiles`,
   getMenuItems: `/wp/v2/nav-menu-items?menu_slug=primary-menu`,
   verifyEmail: '/wp/v2/email-verification-code',
+  verifyEmailCode: '/wp/v2/verify-email-code',
   getOpportunityCategory: 'wp/v2/opportunity-category',
   getFormId: (tag: string) => `/wp/v2/website-content?_fields=${tag}`,
   submitLandingPageForm: (id: string) => `/contact-form-7/v1/contact-forms/${id}/feedback`,

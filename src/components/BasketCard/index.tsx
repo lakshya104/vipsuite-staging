@@ -74,6 +74,9 @@ const BasketCard: React.FC<BasketCardProps> = ({
                     <Typography gutterBottom variant="h2">
                       {he.decode(product?.name || '')}
                     </Typography>
+                    <Typography gutterBottom sx={{ fontSize: 14 }} variant="body1">
+                      From : {he.decode(product?.opportunity_name || '')}
+                    </Typography>
                     <Typography variant="body1">{he.decode(product?.brand_name || '')}</Typography>
                     <Box mb={0.5}>
                       {product?.type === 'variation' &&

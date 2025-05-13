@@ -13,7 +13,7 @@ import './BrandSignupForm.scss';
 import { BrandSignupSchema, BrandSignupValues, defaultValues } from './types';
 import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
-import { BrandSignUp, VerifyEmail } from '@/libs/api-manager/manager';
+import { BrandSignUp, VerifyEmail, VerifyEmailCode } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
@@ -31,13 +31,15 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>('');
-  const [apiResponseCode, setApiResponseCode] = useState<number | null>(null);
   const [isCodeSent, setCodeSent] = useState<boolean>(false);
   const [isCodeVerified, setIsCodeVerified] = useState<boolean>(false);
   const [isCodeVerificationFailed, setIsCodeVerificationFailed] = useState<boolean>(false);
   const [previousEmail, setPreviousEmail] = useState<string>('');
   const [verifiedEmail, setVerifiedEmail] = useState<string>('');
   const [isVerificationLoading, setVerificationLoading] = useState<boolean>(false);
+  const [isResending, setIsResending] = useState<boolean>(false);
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+
   const brandOptions = brandSignupOptions.map((option) => ({
     value: option,
     label: option,
@@ -87,6 +89,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   };
 
   const handleError = (error: unknown) => {
+    setToasterType('error');
     if (error instanceof Error) {
       setError(`Error: ${error.message}`);
     } else if (typeof error === 'string') {
@@ -103,31 +106,53 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
       setVerificationLoading(true);
       if (email) {
         setVerificationCode('');
-        const response = await VerifyEmail(email);
-        setApiResponseCode(response.verification_code);
+        await VerifyEmail(email);
+        setToasterType('success');
+        setToasterOpen(true);
+        setError('OTP has been sent to your email');
         setCodeSent(true);
         setPreviousEmail(email);
       } else {
-        console.error(en.signUpForm.undefinedEmail);
+        setToasterType('error');
+        console.error(en.signUpForm.emailError);
       }
     } catch (error) {
-      if (typeof error === 'string') setError(error);
+      if (typeof error === 'string') {
+        setToasterType('error');
+        setError(error);
+      } else {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(en.signUpForm.unexpectedError);
+        }
+      }
       setToasterOpen(true);
     } finally {
       setVerificationLoading(false);
     }
   };
 
-  const handleCodeVerification = (email: string | undefined) => {
-    if (apiResponseCode === Number(verificationCode)) {
-      setError('');
-      setIsCodeVerified(true);
-      setIsCodeVerificationFailed(false);
-      if (email) setVerifiedEmail(email);
-    } else {
-      setError(en.signUpForm.incorrectOtp);
-      setIsCodeVerified(false);
-      setIsCodeVerificationFailed(true);
+  const handleCodeVerification = async (email: string | undefined) => {
+    if (email) {
+      try {
+        setVerificationLoading(true);
+        await VerifyEmailCode(email, verificationCode);
+        setToasterType('success');
+        setToasterOpen(true);
+        setError('Email verified successfully');
+        setIsCodeVerified(true);
+        setIsCodeVerificationFailed(false);
+        setVerifiedEmail(email);
+      } catch (error) {
+        setToasterType('error');
+        setError(error instanceof Error ? error.message : en.signUpForm.incorrectOtp);
+        setToasterOpen(true);
+        setIsCodeVerified(false);
+        setIsCodeVerificationFailed(true);
+      } finally {
+        setVerificationLoading(false);
+      }
     }
   };
 
@@ -240,23 +265,36 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
                               placeholder={en.signUpForm.enterOtp}
                               type="number"
                               value={verificationCode}
-                              error={!!error}
-                              helperText={error}
-                              onChange={(e) => setVerificationCode(e.target.value)}
+                              error={toasterType !== 'success' && !!error}
+                              helperText={toasterType !== 'success' ? error : ' '}
+                              onChange={(e) => {
+                                setVerificationCode(e.target.value);
+                                setError('');
+                              }}
                             />
                             <Button
-                              onClick={() => handleCodeVerification(field.value.toString())}
+                              onClick={() => {
+                                if (!isVerificationLoading && !isCodeVerified) {
+                                  handleCodeVerification(field.value.toString());
+                                }
+                              }}
                               disabled={isVerificationLoading}
                               className="button button--white"
                             >
-                              {en.signUpForm.verifyOtp}
+                              {isVerificationLoading && !isResending ? 'Verifying...' : en.signUpForm.verifyOtp}
                             </Button>
                             <Button
-                              onClick={() => handleEmailVerification(field.value.toString())}
-                              disabled={isVerificationLoading}
+                              onClick={async () => {
+                                if (!isResending) {
+                                  setIsResending(true);
+                                  await handleEmailVerification(field.value.toString());
+                                  setIsResending(false);
+                                }
+                              }}
+                              disabled={isResending || isVerificationLoading}
                               className="button button--white"
                             >
-                              {isVerificationLoading ? en.signUpForm.sending : en.signUpForm.resendOtp}
+                              {isResending ? 'Resending...' : en.signUpForm.resendOtp}
                             </Button>
                           </>
                         )}
@@ -297,7 +335,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
           </Link>
         </Typography>
       </Box>
-      <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity="error" />
+      <Toaster open={toasterOpen} setOpen={setToasterOpen} message={error} severity={toasterType} />
       <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
