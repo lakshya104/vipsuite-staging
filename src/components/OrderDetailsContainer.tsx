@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { filter, first, isEmpty } from 'lodash';
 import he from 'he';
 import FeedbackForm from '@/features/FeedbackForm';
-import { formatDate, formatEventDates, formatString } from '@/helpers/utils';
+import { formatDate, formatString } from '@/helpers/utils';
 import OrderItem from './OrderItem';
 import { Order } from '@/interfaces';
 import { DefaultImageFallback } from '@/helpers/enums';
@@ -77,14 +77,19 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               <Typography gutterBottom variant="h2">
                 {he.decode(orderDetail?.opportunity?.title || '')}
               </Typography>
-              {orderDetail?.opportunity?.start_date && (
+              {(orderDetail?.opportunity?.start_date || orderDetail?.opportunity?.end_date) && (
                 <Typography variant="body1">
-                  {formatEventDates(orderDetail?.opportunity?.start_date, orderDetail?.opportunity?.end_date)}
+                  <Typography component="span">Date: </Typography>
+                  <>
+                    {orderDetail?.opportunity?.start_date && orderDetail.opportunity.start_date}
+                    {orderDetail?.opportunity?.start_date && orderDetail?.opportunity?.end_date && ' - '}
+                    {orderDetail?.opportunity?.end_date && orderDetail.opportunity.end_date}
+                  </>
                 </Typography>
               )}
-              {orderDetail?.opportunity?.location && (
+              {orderDetail?.opportunity?.location && orderDetail.opportunity.location.trim() !== '' && (
                 <Typography variant="body1">
-                  {en.myOrders.location} {orderDetail?.opportunity?.location}
+                  {en.myOrders.location} {orderDetail.opportunity.location}
                 </Typography>
               )}
               {orderDetail?.status === 'lookbook-order' && (

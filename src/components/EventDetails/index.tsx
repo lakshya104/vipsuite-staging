@@ -5,7 +5,7 @@ import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
-import { formatDateWithOrdinal } from '@/helpers/utils';
+// import { formatDateWithOrdinal } from '@/helpers/utils';
 import { DefaultImageFallback } from '@/helpers/enums';
 import ArrowBackBtn from '../ArrowBackBtn';
 import ReferCard from '../ReferCard';
@@ -44,11 +44,21 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
           {he.decode(event?.title?.rendered || '')}
         </Typography>
         <Typography variant="body1">
-          <Box component="strong">{en.events.date}</Box> {formatDateWithOrdinal(event?.acf?.event_start_date, false)} -{' '}
-          {formatDateWithOrdinal(event?.acf?.event_end_date, true)}
+          {event?.acf?.event_start_date || event?.acf?.event_end_date ? (
+            <>
+              <Box component="strong">{en.events.date}</Box>{' '}
+              {event?.acf?.event_start_date && event.acf.event_start_date}
+              {event?.acf?.event_start_date && event?.acf?.event_end_date && ' - '}
+              {event?.acf?.event_end_date && event.acf.event_end_date}
+            </>
+          ) : null}
         </Typography>
         <Typography variant="body1" paragraph>
-          <Box component="strong">{en.events.location}</Box> {event?.acf?.event_location}
+          {event?.acf?.event_location && event?.acf?.event_location.trim() !== '' && (
+            <>
+              <Box component="strong">{en.events.location}</Box> {event.acf.event_location}
+            </>
+          )}
         </Typography>
         <Typography variant="h6" component="h3" gutterBottom>
           {en.events.overview}

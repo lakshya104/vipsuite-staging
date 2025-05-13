@@ -101,6 +101,7 @@ export interface EventDetails {
     lookbook_description: string;
     lookbook_pdf: string;
     show_offers: boolean;
+    show_rsvp_button?: boolean;
   };
   is_wishlisted?: boolean;
 }

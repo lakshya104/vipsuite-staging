@@ -6,7 +6,7 @@ import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
-import { formatDateWithOrdinal } from '@/helpers/utils';
+// import { formatDateWithOrdinal } from '@/helpers/utils';
 import revalidatePathAction from '@/libs/actions';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
@@ -171,14 +171,21 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
             <Typography variant="h2" gutterBottom>
               {he.decode(event?.title?.rendered || '')}
             </Typography>
-            <Typography variant="body1">
-              <Box component="strong">{en.events.date} </Box>
-              {formatDateWithOrdinal(event.acf.event_start_date, false)} -{' '}
-              {formatDateWithOrdinal(event.acf.event_end_date, true)}
-            </Typography>
-            <Typography variant="body1" paragraph>
-              <Box component="strong">{en.events.location}</Box> {event.acf.event_location}
-            </Typography>
+            {(event?.acf?.event_start_date || event?.acf?.event_end_date) && (
+              <Typography variant="body1">
+                <Box component="strong">{en.events.date} </Box>
+                <>
+                  {event?.acf?.event_start_date && event.acf.event_start_date}
+                  {event?.acf?.event_start_date && event?.acf?.event_end_date && ' - '}
+                  {event?.acf?.event_end_date && event.acf.event_end_date}
+                </>
+              </Typography>
+            )}
+            {event?.acf?.event_location && event.acf.event_location.trim() !== '' && (
+              <Typography variant="body1" paragraph>
+                <Box component="strong">{en.events.location}</Box> {event.acf.event_location}
+              </Typography>
+            )}
             <Box mt={2}>
               <Button
                 onClick={

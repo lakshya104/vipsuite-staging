@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { first, isUndefined } from 'lodash';
 import he from 'he';
-import { formatEventDates } from '@/helpers/utils';
+// import { formatEventDates } from '@/helpers/utils';
 import { ProgressBarLink } from '../ProgressBar';
 import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import './Dashboard.scss';
@@ -112,18 +112,26 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
           {isClient && <Typography variant="h2" dangerouslySetInnerHTML={{ __html: postTitle || '' }} />}
           {isEvent && (
             <>
-              <Typography variant="body2">
-                <Typography component="span" fontWeight={500}>
-                  Date:
-                </Typography>{' '}
-                {formatEventDates(item?.acf?.event_start_date, item?.acf?.event_end_date)}
-              </Typography>
-              <Typography variant="body2">
-                <Typography component="span" fontWeight={500}>
-                  Location:
-                </Typography>{' '}
-                {item?.acf?.event_location}
-              </Typography>
+              {(item?.acf?.event_start_date || item?.acf?.event_end_date) && (
+                <Typography variant="body2">
+                  <Typography component="span" sx={{ fontWeight: '500' }}>
+                    {en.events.date}
+                  </Typography>{' '}
+                  <>
+                    {item?.acf?.event_start_date && item.acf.event_start_date}
+                    {item?.acf?.event_start_date && item?.acf?.event_end_date && ' - '}
+                    {item?.acf?.event_end_date && item.acf.event_end_date}
+                  </>
+                </Typography>
+              )}
+              {item?.acf?.event_location && item.acf.event_location.trim() !== '' && (
+                <Typography variant="body2">
+                  <Typography component="span" fontWeight={500}>
+                    Location:
+                  </Typography>{' '}
+                  {item.acf.event_location}
+                </Typography>
+              )}
             </>
           )}
         </Box>

@@ -153,27 +153,42 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       {opportunity?.acf?.show_offers && <RedeemBox fetchOffers={opportunity?.acf?.show_offers} />}
       {opportunity?.acf?.grouped_products ? (
         <>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            {en.opportunities.productHeading}
-          </Typography>
-          <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-            {opportunity?.acf?.grouped_products.map((product) => (
-              <Grid2
-                className="landing-product__item opportunity-product"
-                size={{ xs: 12, sm: 6, lg: 4 }}
-                key={product?.product_id}
-              >
-                <OpportunityProductCard
-                  oppId={opportunity?.id}
-                  id={product?.product_id}
-                  name={product?.product_name}
-                  image={product?.product_image}
-                  description={product?.product_short_description}
-                  isRequestOnly={product?.is_request_only}
-                />
+          {opportunity?.acf?.questions && (
+            <DynamicForm
+              questions={opportunity.acf.questions}
+              onSubmit={onSubmitDynamic}
+              ctaText={opportunity?.acf?.cta_label}
+              ctaIfAlreadyOrdered={en.opportunities.opportunityRsvp.responded}
+              alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
+              noHeading={true}
+              showCta={!!opportunity?.acf?.grouped_products?.length}
+            />
+          )}
+          {opportunity?.acf?.grouped_products?.length > 0 && (
+            <>
+              <Typography variant="h2" sx={{ mb: 2, mt: 2.5 }}>
+                {en.opportunities.productHeading}
+              </Typography>
+              <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+                {opportunity?.acf?.grouped_products.map((product) => (
+                  <Grid2
+                    className="landing-product__item opportunity-product"
+                    size={{ xs: 12, sm: 6, lg: 4 }}
+                    key={product?.product_id}
+                  >
+                    <OpportunityProductCard
+                      oppId={opportunity?.id}
+                      id={product?.product_id}
+                      name={product?.product_name}
+                      image={product?.product_image}
+                      description={product?.product_short_description}
+                      isRequestOnly={product?.is_request_only}
+                    />
+                  </Grid2>
+                ))}
               </Grid2>
-            ))}
-          </Grid2>
+            </>
+          )}
         </>
       ) : opportunity?.acf?.questions ? (
         <DynamicForm

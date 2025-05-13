@@ -16,6 +16,7 @@ interface DynamicFormProps {
   ctaIfAlreadyOrdered?: string;
   alreadyOrdered?: boolean;
   noHeading?: boolean;
+  showCta?: boolean;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
@@ -25,6 +26,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   alreadyOrdered,
   ctaIfAlreadyOrdered,
   noHeading = false,
+  showCta,
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const formSchema = mapQuestionsToSchema(questions);
@@ -65,9 +67,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           />
           {isNonEmptyString(ctaText) && (
             <Box mt={2}>
-              <Button className="button button--black" type="submit" fullWidth disabled={alreadyOrdered}>
-                {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || en.common.orderNow}
-              </Button>
+              {showCta ? (
+                ''
+              ) : (
+                <Button className="button button--black" type="submit" fullWidth disabled={alreadyOrdered}>
+                  {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || en.common.orderNow}
+                </Button>
+              )}
             </Box>
           )}
         </form>

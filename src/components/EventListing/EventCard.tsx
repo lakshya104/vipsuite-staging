@@ -4,7 +4,7 @@ import { Box, Card, CardContent, Typography } from '@mui/material';
 import he from 'he';
 import { Event } from '@/interfaces/events';
 import { ProgressBarLink } from '../ProgressBar';
-import { formatEventDates } from '@/helpers/utils';
+// import { formatEventDates } from '@/helpers/utils';
 import { DefaultImageFallback, PostType } from '@/helpers/enums';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
@@ -42,18 +42,26 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
             </Box>
           )}
           <Typography variant="h2" dangerouslySetInnerHTML={{ __html: he.decode(item?.title?.rendered || '') || '' }} />
-          <Typography variant="body2">
-            <Typography component="span" sx={{ fontWeight: '500' }}>
-              {en.events.date}
-            </Typography>{' '}
-            {formatEventDates(item?.acf?.event_start_date, item?.acf?.event_end_date)}
-          </Typography>
-          <Typography variant="body2">
-            <Typography component="span" sx={{ fontWeight: '500' }}>
-              {en.events.location}
-            </Typography>{' '}
-            {item?.acf?.event_location}
-          </Typography>
+          {(item?.acf?.event_start_date || item?.acf?.event_end_date) && (
+            <Typography variant="body2">
+              <Typography component="span" sx={{ fontWeight: '500' }}>
+                {en.events.date}
+              </Typography>{' '}
+              <>
+                {item?.acf?.event_start_date && item.acf.event_start_date}
+                {item?.acf?.event_start_date && item?.acf?.event_end_date && ' - '}
+                {item?.acf?.event_end_date && item.acf.event_end_date}
+              </>
+            </Typography>
+          )}
+          {item?.acf?.event_location && item.acf.event_location.trim() !== '' && (
+            <Typography variant="body2">
+              <Typography component="span" sx={{ fontWeight: '500' }}>
+                {en.events.location}
+              </Typography>{' '}
+              {item.acf.event_location}
+            </Typography>
+          )}
         </CardContent>
       </Card>
     </ProgressBarLink>
