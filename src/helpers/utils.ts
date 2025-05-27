@@ -2,9 +2,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import { z } from 'zod';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { UserRole } from './enums';
-import { Session } from '@/interfaces';
 import { Question } from '@/interfaces/events';
 import en from './lang';
 
@@ -163,13 +160,13 @@ export const formatString = (str: string) => {
   }
 };
 
-export const getProfileId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number | null => {
-  return role === UserRole.Vip || role === UserRole.Brand
-    ? Number(session?.profile_id)
-    : userId?.value
-      ? Number(userId?.value)
-      : Number(session?.profile_id);
-};
+// export const getProfileId = (role: UserRole, userId: RequestCookie | undefined, session: Session): number | null => {
+//   return role === UserRole.Vip || role === UserRole.Brand
+//     ? Number(session?.profile_id)
+//     : userId?.value
+//       ? Number(userId?.value)
+//       : Number(session?.profile_id);
+// };
 
 export const getRelativePath = (url: string) => {
   try {

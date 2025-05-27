@@ -292,6 +292,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
     <>
       {product.type === 'variable' && (
         <Box
+          sx={{ maxWidth: '600px' }}
           component="form"
           onSubmit={handleSubmit((data) => {
             onSubmit(data);

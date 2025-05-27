@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Backdrop, CircularProgress, Dialog } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { createIsAgentCookie, createVipIdCookie } from '@/libs/actions';
 import { MessageDialogBox } from './Dialog';
 import { UserRole } from '@/helpers/enums';
 import { vipRejectedBoxContent } from '@/data';
@@ -40,8 +39,6 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
     try {
       if (!is_referenced) {
         setLoading(true);
-        await createIsAgentCookie('false');
-        await createVipIdCookie(vipId);
         setVipId(vipId);
         router.push(link);
       }

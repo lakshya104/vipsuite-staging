@@ -1,6 +1,7 @@
 import React from 'react';
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, ListItemText } from '@mui/material';
 import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-form';
+import CheckIcon from '@mui/icons-material/Check';
 
 type MultiSelectBoxProps<T extends FieldValues> = {
   name: Path<T>;
@@ -40,15 +41,46 @@ const MultiSelectBox = <T extends FieldValues>({
             onClose={(event) => {
               event.preventDefault();
             }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  '& .MuiMenuItem-root.Mui-selected': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.23)',
+                    },
+                  },
+                },
+              },
+            }}
+            renderValue={(selected) => {
+              const selectedLabels =
+                options
+                  ?.filter((option) => (selected as string[]).includes(option.value))
+                  .map((option) => option.label) || [];
+              return selectedLabels.join(', ');
+            }}
           >
             <MenuItem disabled value="">
               {placeholder ? placeholder : 'Select multiple'}
             </MenuItem>
-            {options?.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {options?.map((option) => {
+              const isSelected = ((field.value || []) as string[]).includes(option.value);
+              return (
+                <MenuItem key={option.value} value={option.value}>
+                  <ListItemText primary={option.label} />
+                  {isSelected && (
+                    <CheckIcon
+                      sx={{
+                        marginLeft: 'auto',
+                        color: 'primary.main',
+                        fontSize: '1.2rem',
+                      }}
+                    />
+                  )}
+                </MenuItem>
+              );
+            })}
           </Select>
         )}
       />
