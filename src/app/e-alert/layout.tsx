@@ -10,7 +10,6 @@ export default function RootLayout({
     const userAgent = navigator.userAgent;
     const isAndroid = /android/i.test(userAgent);
     const isiOS = /iPad|iPhone|iPod/.test(userAgent);
-    console.log({ userAgent, isAndroid, isiOS });
 
     const timer = setTimeout(() => {
       if (isAndroid) {

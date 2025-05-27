@@ -30,6 +30,7 @@ export interface MessageArray {
   read_by_customer: 0 | 1;
   product_name: string;
   product_image: string;
+  order_created_for?: string;
   last_updated: {
     date: string;
     timezone: string;

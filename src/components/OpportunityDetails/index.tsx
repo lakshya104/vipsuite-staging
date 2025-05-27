@@ -13,29 +13,67 @@ import ArrowBackBtn from '@/components/ArrowBackBtn';
 import ReferCard from '@/components/ReferCard';
 import RequestItemFormButton from '@/components/RequestItemFormButton';
 import RedeemBox from '@/components/RedeemBox';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, UserRole } from '@/helpers/enums';
 import en from '@/helpers/lang';
 import ShowHtml from '@/components/ShowHtml';
 import DynamicForm from '@/features/DynamicForm';
 import OpportunityProductCard from '@/components/DashboardCard/OpportunityProductCard';
 import { isNonEmptyString } from '@/helpers/utils';
-import { SendRsvp } from '@/libs/api-manager/manager';
+import { GetAllVips, SendRsvp } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
 import { paths } from '@/helpers/paths';
+import { AgentVipsPayload, VipApiResponse, VipOptions } from '@/interfaces';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { isEmpty } from 'lodash';
+import VipOrderForm from '../VipOrderForm';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
+  userRole: UserRole;
 }
 
-const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity }) => {
+const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity, userRole }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
   const [toasterMessage, setToasterMessage] = useState<string>('');
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
   const images = opportunity?.acf?.web_detail_images
     ? opportunity?.acf?.web_detail_images?.map((item) => item?.sizes['vs-container'])
     : [opportunity.acf.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
+  const showVipOptions = userRole === UserRole.Agent && isEmpty(opportunity?.acf?.grouped_products);
+  const [vipsLoading, setVipsLoading] = useState<boolean>(showVipOptions ? true : false);
+  const [vipSchemas, setVipSchemas] = useState(() =>
+    !showVipOptions
+      ? {
+          profileId: z.array(z.string()),
+          profileName: z.string(),
+        }
+      : {
+          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+        },
+  );
+  const vipSchema = z.object({
+    vip_profile_ids: vipSchemas.profileId,
+    vip_profile_names: vipSchemas.profileName,
+  });
+  const {
+    handleSubmit,
+    control,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(vipSchema),
+    defaultValues: {
+      vip_profile_ids: [],
+      vip_profile_names: '',
+    },
+  });
 
   const handleToasterMessage = (type: 'error' | 'success', message?: string) => {
     setToasterType(type);
@@ -45,6 +83,27 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       setToasterMessage(message ?? en.opportunities.toasterMessage.error);
     }
   };
+
+  useEffect(() => {
+    const fetchAgentVips = async () => {
+      if (!showVipOptions) return;
+      setVipsLoading(true);
+      try {
+        const response = await GetAllVips();
+        setVipOptions(
+          response.data.map((vip: VipApiResponse) => ({
+            value: vip?.profile_id ? vip?.profile_id.toString() : null,
+            label: vip?.first_name + ' ' + vip?.last_name,
+          })),
+        );
+      } catch (error) {
+        console.error('Error fetching agent VIPs:', error);
+      } finally {
+        setVipsLoading(false);
+      }
+    };
+    fetchAgentVips();
+  }, [showVipOptions]);
 
   useEffect(() => {
     if (toasterMessage) openToaster(toasterMessage);
@@ -64,7 +123,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmitDynamic = async (data: Record<string, any>) => {
+  const onSubmitDynamic = async (data: Record<string, any>, payloadWithVipData?: AgentVipsPayload) => {
     setIsPending(true);
     const updatedPayload = await Promise.all(
       opportunity.acf.questions.map(async (field) => {
@@ -86,6 +145,8 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       rsvp_post: opportunity.id,
       is_pleases: 'interested',
       ...(updatedPayload && { questions: updatedPayload }),
+      ...(showVipOptions && payloadWithVipData),
+      order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
     };
     try {
       const res = await SendRsvp(rsvp);
@@ -97,14 +158,28 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     } finally {
       setIsPending(false);
       await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
+      setVipSchemas({
+        profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+        profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+      });
     }
   };
 
-  const onSubmitSimple = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmitSimple = async (data: any) => {
+    const payloadWithVipData = {
+      ...(showVipOptions && {
+        ...(!isEmpty(data?.vip_profile_ids) && { vip_profile_ids: data.vip_profile_ids.join(',') }),
+        ...(data?.vip_profile_names && { vip_profile_names: data.vip_profile_names }),
+      }),
+    };
+
     setIsPending(true);
     const rsvp = {
       post_type: 'opportunity',
       rsvp_post: opportunity.id,
+      ...(showVipOptions && payloadWithVipData),
+      order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
     };
     try {
       const res = await SendRsvp(rsvp);
@@ -116,7 +191,16 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     } finally {
       setIsPending(false);
       await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
+      setVipSchemas({
+        profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+        profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+      });
+      reset();
     }
+  };
+
+  const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
+    setVipSchemas(schemas);
   };
 
   return (
@@ -147,7 +231,12 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
               type="lookbook"
             />
           </Box>
-          <RequestItemFormButton postId={opportunity?.id} />
+          <RequestItemFormButton
+            postId={opportunity?.id}
+            isUserAgent={showVipOptions}
+            vipOptions={vipOptions}
+            vipsLoading={vipsLoading}
+          />
         </>
       )}
       {opportunity?.acf?.show_offers && <RedeemBox fetchOffers={opportunity?.acf?.show_offers} />}
@@ -162,6 +251,9 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
               alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
               noHeading={true}
               showCta={!!opportunity?.acf?.grouped_products?.length}
+              vipsLoading={vipsLoading}
+              vipOptions={vipOptions}
+              isUserAgent={showVipOptions}
             />
           )}
           {opportunity?.acf?.grouped_products?.length > 0 && (
@@ -198,16 +290,29 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           ctaIfAlreadyOrdered={en.opportunities.opportunityRsvp.responded}
           alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
           noHeading={true}
+          vipsLoading={vipsLoading}
+          vipOptions={vipOptions}
+          isUserAgent={showVipOptions}
         />
       ) : (
         isNonEmptyString(opportunity?.acf?.cta_label) && (
-          <Box>
+          <Box component="form" onSubmit={handleSubmit(onSubmitSimple)} className="product-size">
+            {showVipOptions && (
+              <VipOrderForm
+                clearErrors={clearErrors}
+                control={control}
+                errors={errors}
+                handleVipSchemas={handleVipSchemas}
+                vipOptions={vipOptions}
+                vipsLoading={vipsLoading}
+              />
+            )}
             <Button
               variant="contained"
               className="button button--black w-100"
-              onClick={onSubmitSimple}
-              disabled={opportunity?.acf?.is_rsvp || btnDisable}
+              disabled={opportunity?.acf?.is_rsvp || btnDisable || vipsLoading}
               style={{ marginBottom: '50px' }}
+              type="submit"
             >
               {opportunity?.acf?.is_rsvp ? en.opportunities.opportunityRsvp.responded : opportunity?.acf?.cta_label}
             </Button>

@@ -168,7 +168,7 @@ export const getProfileId = (role: UserRole, userId: RequestCookie | undefined, 
     ? Number(session?.profile_id)
     : userId?.value
       ? Number(userId?.value)
-      : null;
+      : Number(session?.profile_id);
 };
 
 export const getRelativePath = (url: string) => {

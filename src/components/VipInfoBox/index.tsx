@@ -12,6 +12,7 @@ interface VipInfoBoxProps {
   tiktokFollowers?: string;
   handleClick: () => void;
   isAgentCard?: boolean;
+  is_referenced?: boolean;
 }
 
 const VipInfoBox: React.FC<VipInfoBoxProps> = ({
@@ -21,17 +22,27 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   tiktokFollowers,
   handleClick,
   isAgentCard,
+  is_referenced,
 }) => {
   const itemImage = image || DefaultImageFallback.PersonPlaceholder;
 
   return (
-    <Box className={`vipInfoBox`} onClick={() => handleClick()}>
+    <Box
+      className={`vipInfoBox`}
+      onClick={() => handleClick()}
+      sx={{
+        opacity: is_referenced ? 0.5 : 1,
+        ':hover': {
+          cursor: is_referenced ? 'default' : 'pointer',
+        },
+      }}
+    >
       <Box className="imageContainer">
         <Image src={itemImage} width={100} height={100} alt={name} className="profileImage" />
         <Box className="info">
           <Box className="editProfileContainer">
             <Typography variant="body1" className="name" gutterBottom>
-              {name}
+              {name} {is_referenced ? '(Referenced Profile)' : ''}
             </Typography>
           </Box>
           {!isAgentCard && (
@@ -60,7 +71,11 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
           )}
         </Box>
       </Box>
-      <IconButton>
+      <IconButton
+        sx={{
+          pointerEvents: is_referenced ? 'none' : 'auto',
+        }}
+      >
         <ArrowForwardIosIcon className="arrowIcon" />
       </IconButton>
     </Box>

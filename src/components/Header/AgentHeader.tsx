@@ -36,7 +36,7 @@ const AgentHeader = () => {
       <AppBar className="site-header site-header__logged" position="sticky">
         <Toolbar className="site-header__wrapper site-header">
           <Box className="site-header__brand">
-            <ProgressBarLink href={''} title={'THE VIP SUITE'}>
+            <ProgressBarLink href={'/home'} title={'THE VIP SUITE'}>
               <Image src="/Logo.svg" alt="The VIP Suite Site logo" height={25} width={122} priority />
               <Image
                 className="logo-mobile"

@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, useState, useTransition } from 'react';
+import React, { Fragment, useEffect, useState, useTransition } from 'react';
 import { Backdrop, Box, Button, CircularProgress, Dialog, DialogContent, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -8,7 +8,7 @@ import Btn from '@/components/Button/CommonBtn';
 import SelectBox from '@/components/SelectBox';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Product } from '@/interfaces/brand';
-import { AddItemToCart } from '@/libs/api-manager/manager';
+import { AddItemToCart, GetAllVips } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useProductFilters } from '@/hooks/useProductFilters';
@@ -19,14 +19,19 @@ import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
 import RenderQuestions from '@/components/RenderQuestions';
 import { mapQuestionsToSchema } from '@/helpers/utils';
+import { z } from 'zod';
+import { AgentVipsPayload, VipApiResponse, VipOptions } from '@/interfaces';
+import { UserRole } from '@/helpers/enums';
+import VipOrderForm from '@/components/VipOrderForm';
 
 interface ItemRequestFormProps {
   product: Product;
   isRequestOnly: boolean;
   children: React.ReactNode;
+  isUserAgent: boolean;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnly, children }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnly, children, isUserAgent }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [productId, setProductId] = useState<number>(product.id);
   const [openESignModel, setOpenESignModel] = useState<boolean>(false);
@@ -35,12 +40,63 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
   const { product_ordered: isProductOrdered = false } = product;
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const { dropdowns, onChangeDropDown, getSelectedProductVariation, formSchema } = useProductFilters(product);
-  const { setRequestProductId, setQuestions, setRequestESign, setOpportunityId, clearAllRequestStore } =
-    useRequestOnlyStore();
+  const {
+    setRequestProductId,
+    setQuestions,
+    setRequestESign,
+    setOpportunityId,
+    setAgentVipInfo,
+    clearAllRequestStore,
+  } = useRequestOnlyStore();
   const isHighEndItem = product?.is_high_end_item;
   const [fileName, setFileName] = useState<string | null>(null);
+  const [vipsLoading, setVipsLoading] = useState<boolean>(isUserAgent ? true : false);
+  const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
+  const [vipSchemas, setVipSchemas] = useState(() =>
+    !isUserAgent
+      ? {
+          profileId: z.array(z.string()),
+          profileName: z.string(),
+        }
+      : {
+          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+        },
+  );
+  const vipSchema = z.object({
+    vip_profile_ids: vipSchemas.profileId,
+    vip_profile_names: vipSchemas.profileName,
+  });
   const questionFormSchema = mapQuestionsToSchema(product?.questions);
-  const combinedSchema = questionFormSchema ? formSchema.merge(questionFormSchema) : formSchema;
+  let combinedSchema = formSchema;
+  if (isUserAgent) {
+    combinedSchema = combinedSchema.merge(vipSchema);
+  }
+  if (product?.questions && questionFormSchema) {
+    combinedSchema = combinedSchema.merge(questionFormSchema);
+  }
+
+  useEffect(() => {
+    const fetchAgentVips = async () => {
+      if (!isUserAgent) return;
+      setVipsLoading(true);
+      try {
+        const response = await GetAllVips();
+        setVipOptions(
+          response.data.map((vip: VipApiResponse) => ({
+            value: vip?.profile_id ? vip?.profile_id.toString() : null,
+            label: vip?.first_name + ' ' + vip?.last_name,
+          })),
+        );
+      } catch (error) {
+        console.error('Error fetching agent VIPs:', error);
+      } finally {
+        setVipsLoading(false);
+      }
+    };
+    fetchAgentVips();
+  }, [isUserAgent]);
+
   const {
     handleSubmit,
     control,
@@ -56,22 +112,32 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
           (acc, question) => {
             const fieldName = question.title.toLowerCase().replace(/[^a-z0-9]/g, '');
             acc[fieldName] = question.input_type === 'checkboxes' ? [] : '';
+            acc['vip_profile_ids'] = [];
+            acc['vip_profile_names'] = '';
             return acc;
           },
           {} as Record<string, unknown>,
         )) ||
+      (isUserAgent &&
+        !product?.questions && {
+          vip_profile_ids: [],
+          vip_profile_names: '',
+        }) ||
       {},
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createOrder = async (item: any, updatedPayload?: any) => {
+  const createOrder = async (item: any, payloadWithQuestionsData?: any, payloadWithVipData?: AgentVipsPayload) => {
     startTransition(async () => {
       try {
         if (isRequestOnly) {
           clearAllRequestStore();
+          if (isUserAgent && payloadWithVipData) {
+            setAgentVipInfo(payloadWithVipData);
+          }
           setOpportunityId(product.opportunity_id);
           if (!isEmpty(product?.questions)) {
-            setQuestions(updatedPayload);
+            setQuestions(payloadWithQuestionsData);
           }
           if (product?.type === 'variable') {
             setProductId(item.id);
@@ -87,7 +153,12 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
           }
         } else {
           if (isEmpty(product?.questions)) {
-            const addToCart = await AddItemToCart(item?.id, { opportunity_id: product?.opportunity_id });
+            const payload = {
+              opportunity_id: product?.opportunity_id,
+              ...(isUserAgent && payloadWithVipData),
+              order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+            };
+            const addToCart = await AddItemToCart(item?.id, payload);
             await revalidatePathAction(paths.root.basket.getHref());
             if (addToCart && addToCart.code === 'permission_denied') {
               openToaster(addToCart.message?.toString());
@@ -99,8 +170,10 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
             try {
               const payload = {
                 product_id: item?.id,
-                questions: updatedPayload,
+                questions: payloadWithQuestionsData,
                 opportunity_id: product?.opportunity_id,
+                ...(isUserAgent && payloadWithVipData),
+                order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
               };
               const addToCart = await AddItemToCart(item.id, payload);
               await revalidatePathAction(paths.root.basket.getHref());
@@ -179,7 +252,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
-    const updatedPayload =
+    const payloadWithQuestionsData =
       product?.questions &&
       (await Promise.all(
         product?.questions.map(async (field) => {
@@ -196,8 +269,23 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
           };
         }),
       ));
+
+    const payloadWithVipData = {
+      ...(isUserAgent && {
+        ...(!isEmpty(data?.vip_profile_ids) && { vip_profile_ids: data.vip_profile_ids.join(',') }),
+        ...(data?.vip_profile_names && { vip_profile_names: data.vip_profile_names }),
+      }),
+    };
     const prepareItem = getProductData();
-    await createOrder(prepareItem, updatedPayload);
+    await createOrder(prepareItem, payloadWithQuestionsData, payloadWithVipData);
+    setVipSchemas({
+      profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+      profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+    });
+  };
+
+  const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
+    setVipSchemas(schemas);
   };
 
   return (
@@ -271,13 +359,23 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               />
             </Box>
           )}
+          {isUserAgent && (
+            <VipOrderForm
+              clearErrors={clearErrors}
+              control={control}
+              errors={errors}
+              handleVipSchemas={handleVipSchemas}
+              vipOptions={vipOptions}
+              vipsLoading={vipsLoading}
+            />
+          )}
           {product?.cta_label && (
             <Button
               className="button button--black"
               sx={{ marginTop: { xs: '10px', md: '40px' } }}
               type="submit"
               fullWidth
-              disabled={isProductOrdered}
+              disabled={isProductOrdered || vipsLoading}
             >
               {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
             </Button>
@@ -307,6 +405,16 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               />
             </Box>
           )}
+          {isUserAgent && (
+            <VipOrderForm
+              clearErrors={clearErrors}
+              control={control}
+              errors={errors}
+              handleVipSchemas={handleVipSchemas}
+              vipOptions={vipOptions}
+              vipsLoading={vipsLoading}
+            />
+          )}
           {product?.cta_label && (
             <Btn
               look="dark-filled"
@@ -315,7 +423,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               width="100%"
               fullWidth
               type="submit"
-              disabled={isProductOrdered}
+              disabled={isProductOrdered || vipsLoading}
             >
               {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
             </Btn>
@@ -336,7 +444,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
               <Button
                 onClick={() => {
                   startTransition(async () => {
-                    router.push(paths.root.products.getHref());
+                    router.push(paths.root.opportunities.getHref());
                   });
                 }}
                 fullWidth

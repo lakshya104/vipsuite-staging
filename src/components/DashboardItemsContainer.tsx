@@ -16,7 +16,7 @@ interface DashboardItemsContainerProps {
 }
 
 const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashboardData }) => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<DashboardItem[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);

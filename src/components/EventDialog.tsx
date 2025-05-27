@@ -8,16 +8,56 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
+import { VipOptions } from '@/interfaces';
+import OrderEventButton from './OrderEventButton';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import VipOrderForm from './VipOrderForm';
+import { isEmpty } from 'lodash';
 
 interface EventsDialogProps {
   event: EventDetails;
+  isUserAgent: boolean;
+  vipsLoading: boolean;
+  vipOptions: VipOptions[];
 }
-const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
+
+const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOptions, vipsLoading }) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [confirmationOpen, setConfirmationOpen] = useState<boolean>(false);
   const router = useRouter();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
+  const [vipPayloadData, setVipPayloadData] = useState({});
+  const [vipSchemas, setVipSchemas] = useState(() =>
+    !isUserAgent
+      ? {
+          profileId: z.array(z.string()),
+          profileName: z.string(),
+        }
+      : {
+          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+        },
+  );
+  const vipSchema = z.object({
+    vip_profile_ids: vipSchemas.profileId,
+    vip_profile_names: vipSchemas.profileName,
+  });
+  const {
+    handleSubmit,
+    control,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(vipSchema),
+    defaultValues: {
+      vip_profile_ids: [],
+      vip_profile_names: '',
+    },
+  });
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => {
@@ -45,25 +85,59 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
     openToaster(message);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (data: any) => {
+    const payloadWithVipData = {
+      ...(isUserAgent && {
+        ...(!isEmpty(data?.vip_profile_ids) && { vip_profile_ids: data.vip_profile_ids.join(',') }),
+        ...(data?.vip_profile_names && { vip_profile_names: data.vip_profile_names }),
+      }),
+    };
+    setVipPayloadData(payloadWithVipData);
+    handleDialogOpen();
+    reset();
+    setVipSchemas({
+      profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
+      profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
+    });
+  };
+
+  const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
+    setVipSchemas(schemas);
+  };
+
   return (
     <>
       {event?.acf?.show_rsvp_button ? (
-        <Box>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} className="product-size">
+          {isUserAgent && (
+            <VipOrderForm
+              clearErrors={clearErrors}
+              control={control}
+              errors={errors}
+              handleVipSchemas={handleVipSchemas}
+              vipOptions={vipOptions}
+              vipsLoading={vipsLoading}
+            />
+          )}
           <Button
             variant="contained"
             className="button button--black w-100"
-            disabled={event?.acf?.is_rsvp}
-            onClick={handleDialogOpen}
+            type="submit"
+            disabled={event?.acf?.is_rsvp || vipsLoading}
           >
             {event?.acf?.is_rsvp ? 'Responded' : 'RSVP'}
           </Button>
         </Box>
       ) : (
-        <Box>
-          <Button variant="contained" className="button button--black w-100">
-            Order Now
-          </Button>
-        </Box>
+        <OrderEventButton
+          disabled={!!event?.acf?.is_rsvp}
+          isUserAgent={isUserAgent}
+          vipsLoading={vipsLoading}
+          eventId={event?.id}
+          handleToasterMessage={handleToasterMessage}
+          vipOptions={vipOptions}
+        />
       )}
 
       <Dialog className="site-dialog" open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
@@ -73,6 +147,8 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event }) => {
             event={event}
             onConfirmation={handleConfirmationOpen}
             handleToasterMessage={handleToasterMessage}
+            vipPayloadData={vipPayloadData}
+            isUserAgent={isUserAgent}
           />
         </DialogContent>
       </Dialog>

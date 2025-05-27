@@ -3,13 +3,15 @@ import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import he from 'he';
 import { DefaultImageFallback } from '@/helpers/enums';
+import { isNonEmptyString } from '@/helpers/utils';
 
 interface MessageLinkProps {
   title: string;
   imageLink: string;
+  orderedFor?: string;
 }
 
-const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title }) => {
+const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title, orderedFor }) => {
   return (
     <Box display="flex" alignItems="center">
       <Image
@@ -21,7 +23,16 @@ const MessageLink: React.FC<MessageLinkProps> = ({ imageLink, title }) => {
           marginRight: 12,
         }}
       />
-      <Typography variant="h6">{he.decode(title || '')}</Typography>
+      <Box>
+        <Typography gutterBottom variant="h6">
+          {he.decode(title || '')}
+        </Typography>
+        {isNonEmptyString(orderedFor) && (
+          <Typography gutterBottom variant="body1">
+            Ordered For: {orderedFor}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };

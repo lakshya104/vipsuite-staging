@@ -1,24 +1,52 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { Box, Card, Typography } from '@mui/material';
 import Image from 'next/image';
 import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import EventsDialog from '../EventDialog';
 import './EventDetails.scss';
-// import { formatDateWithOrdinal } from '@/helpers/utils';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, UserRole } from '@/helpers/enums';
 import ArrowBackBtn from '../ArrowBackBtn';
 import ReferCard from '../ReferCard';
 import RequestItemFormButton from '../RequestItemFormButton';
 import RedeemBox from '../RedeemBox';
 import en from '@/helpers/lang';
 import ShowHtml from '../ShowHtml';
+import { GetAllVips } from '@/libs/api-manager/manager';
+import { VipApiResponse, VipOptions } from '@/interfaces';
 
 interface EventDetailsCardProps {
   event: EventDetails;
+  userRole: UserRole;
 }
 
-const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
+const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, userRole }) => {
+  const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
+  const isUserAgent = userRole === UserRole.Agent;
+  const [vipsLoading, setVipsLoading] = useState<boolean>(isUserAgent ? true : false);
+
+  useEffect(() => {
+    const fetchAgentVips = async () => {
+      if (!isUserAgent) return;
+      setVipsLoading(true);
+      try {
+        const response = await GetAllVips();
+        setVipOptions(
+          response.data.map((vip: VipApiResponse) => ({
+            value: vip?.profile_id ? vip?.profile_id.toString() : null,
+            label: vip?.first_name + ' ' + vip?.last_name,
+          })),
+        );
+      } catch (error) {
+        console.error('Error fetching agent VIPs:', error);
+      } finally {
+        setVipsLoading(false);
+      }
+    };
+    fetchAgentVips();
+  }, [isUserAgent]);
+
   return (
     <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
@@ -79,11 +107,16 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event }) => {
               type="lookbook"
             />
           </Box>
-          <RequestItemFormButton postId={event?.id} />
+          <RequestItemFormButton
+            postId={event?.id}
+            isUserAgent={isUserAgent}
+            vipOptions={vipOptions}
+            vipsLoading={vipsLoading}
+          />
         </>
       )}
       {event?.acf?.show_offers && <RedeemBox fetchOffers={event?.acf?.show_offers} />}
-      <EventsDialog event={event} />
+      <EventsDialog event={event} isUserAgent={isUserAgent} vipOptions={vipOptions} vipsLoading={vipsLoading} />
     </Box>
   );
 };

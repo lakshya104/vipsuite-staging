@@ -50,7 +50,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
     try {
       const response: UserProfile = await GetEditVipProfile(token, profileId);
       setIsLoading(true);
-      if (isProfileEdit) {
+      if (isProfileEdit || isEditVip) {
         setStep(1);
       } else if (size(response.acf.look_feel_of_socials) > 0) {
         setStep(6);

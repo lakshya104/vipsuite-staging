@@ -3,7 +3,6 @@ import { getAuthData } from '../actions';
 
 const Instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
-  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -51,7 +50,6 @@ Instance.interceptors.response.use(
 
 const InstanceWithTokenOnly = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
-  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -98,7 +96,6 @@ InstanceWithTokenOnly.interceptors.response.use(
 
 const InstanceWithoutHeaders = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
-  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },

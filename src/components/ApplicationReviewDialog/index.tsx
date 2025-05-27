@@ -15,10 +15,10 @@ const ApplicationReviewDialog: React.FC<ApplicationReviewDialogProps> = ({ isBra
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleReviewDialogChange = async () => {
+  const handleReviewDialogChange = () => {
     setLoading(true);
     try {
-      await router.push(paths.landing.getHref());
+      router.push(paths.landing.getHref());
     } catch (error) {
       console.error(error);
       setLoading(false);

@@ -14,6 +14,9 @@ export default async function Page() {
   const [cookieStore, session] = await Promise.all([cookies(), GetSession()]);
   const isBrand = session?.role === UserRole.Brand;
   const isAgentRoute = cookieStore.get(CookieName.IsAgent)?.value;
+  const userId = cookieStore.get(CookieName.ProfileId);
+  const isAgent = session?.role === UserRole.Agent;
+  const showAgentProfile = isAgentRoute === 'true' || (isAgent && !userId);
   return (
     <Box className="user-profile">
       <Container>
@@ -21,7 +24,7 @@ export default async function Page() {
           {en.profilePage.title}
         </Typography>
         <Suspense fallback={<ProfilePageLoading />}>
-          {isBrand ? <BrandProfilePage /> : isAgentRoute === 'true' ? <AgentProfilePage /> : <ProfilePage />}
+          {isBrand ? <BrandProfilePage /> : showAgentProfile ? <AgentProfilePage /> : <ProfilePage />}
         </Suspense>
       </Container>
     </Box>

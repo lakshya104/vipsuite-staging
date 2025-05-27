@@ -28,6 +28,8 @@ interface CartItem {
   questions?: Question[];
   opportunity_id: string;
   opportunity_name: string;
+  vip_profile_ids?: string;
+  vip_profile_names?: string;
 }
 interface Variation {
   attribute: string;

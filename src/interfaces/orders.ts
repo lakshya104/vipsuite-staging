@@ -69,6 +69,7 @@ export interface Order {
       sizes: ImageSizes;
     };
   };
+  order_created_for: string;
 }
 
 interface Address {

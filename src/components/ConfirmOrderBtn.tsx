@@ -10,7 +10,7 @@ import Toaster from './Toaster';
 import { useLookbookOrder, useProductImageStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
 import { revalidateAllData } from '@/libs/actions';
 import FullScreenDialog from './FullScreenDialog';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, UserRole } from '@/helpers/enums';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
 
@@ -18,7 +18,6 @@ interface ConfirmOrderBtnProps {
   selectedAddress: Address | null;
   cartData: Cart;
   startTransition: typeof import('react').startTransition;
-  vipId: number;
   signatureData: string;
 }
 
@@ -35,7 +34,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
   const postId = searchParams.get('postId');
-  const { lookbookDescription, clearLookbookDescription } = useLookbookOrder();
+  const { lookbookDescription, clearLookbookDescription, agentVipInfo: agentVipLookbookInfo } = useLookbookOrder();
   const {
     requestProductId,
     opportunityId,
@@ -44,10 +43,12 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     questions: requestOnlyQuestions,
     clearRequestESign,
     requestESign,
+    agentVipInfo,
   } = useRequestOnlyStore();
   const { productImage } = useProductImageStore();
-  const { userEmailStore } = useUserInfoStore();
+  const { userEmailStore, userRoleStore } = useUserInfoStore();
   const cartItems = get(cartData, 'items', []);
+  const isUserAgent = userRoleStore === UserRole.Agent;
 
   const dialogBoxContent = {
     title:
@@ -80,6 +81,11 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     ...(isRequestedProduct && { status: 'request-only' }),
     ...(isLookbookOrder && { status: 'lookbook-order' }),
     ...(isLookbookOrder && {
+      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+      ...(isUserAgent && {
+        vip_profile_ids: agentVipLookbookInfo?.vip_profile_ids || null,
+        vip_profile_names: agentVipLookbookInfo?.vip_profile_names || null,
+      }),
       meta_data: [
         {
           key: 'lookbook_order_data',
@@ -116,13 +122,23 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
               quantity: 1,
               questions: requestOnlyQuestions,
               opportunity_id: opportunityId,
+              order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+              ...(isUserAgent && {
+                vip_profile_ids: agentVipInfo?.vip_profile_ids || null,
+                vip_profile_names: agentVipInfo?.vip_profile_names || null,
+              }),
             },
           ]
         : map(cartData.items, (item) => ({
             product_id: item.id,
             quantity: 1,
             opportunity_id: item.opportunity_id,
+            order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
             ...(item.questions ? { questions: item.questions } : {}),
+            ...(isUserAgent && {
+              vip_profile_ids: item?.vip_profile_ids || null,
+              vip_profile_names: item?.vip_profile_names || null,
+            }),
           })),
     }),
     shipping_lines: [

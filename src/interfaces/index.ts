@@ -11,3 +11,4 @@ export * from './dashboard';
 export * from './vips';
 export * from './apiDataBody';
 export * from './messages';
+export * from './agentVips';

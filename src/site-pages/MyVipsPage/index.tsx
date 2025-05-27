@@ -21,11 +21,7 @@ const MyVipPage = async () => {
   return (
     <>
       <AgentHeader />
-      <MyVipsListing
-        myVips={myVips}
-        agentId={session?.profile_id}
-        agentName={session?.first_name + ' ' + session?.last_name}
-      />
+      <MyVipsListing myVips={myVips} />
     </>
   );
 };

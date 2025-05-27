@@ -5,8 +5,8 @@ import Image from 'next/image';
 import he from 'he';
 import { Order } from '@/interfaces';
 import { ProgressBarLink } from './ProgressBar';
-import { formatDate, formatString } from '@/helpers/utils';
-import { first, isEmpty } from 'lodash';
+import { formatDate, formatString, isNonEmptyString } from '@/helpers/utils';
+import { first, isEmpty, map } from 'lodash';
 import ErrorFallback from './ErrorFallback';
 import CustomPagination from './CustomPagination';
 import './CustomStepper/CustomStepper.scss';
@@ -34,7 +34,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
   return (
     <Container>
       <Box className="order-product__items">
-        {allOrders.map((order: Order) => {
+        {map(allOrders, (order: Order) => {
           if (order?.id) {
             const response = order?.meta_data.find((item) => item.key === 'response')?.value;
             const orderType =
@@ -103,6 +103,11 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                             </Typography>
                           )}
                         </>
+                      )}
+                      {isNonEmptyString(order?.order_created_for) && (
+                        <Typography gutterBottom variant="body1">
+                          Ordered For: {order.order_created_for}
+                        </Typography>
                       )}
                     </Box>
                   </Box>

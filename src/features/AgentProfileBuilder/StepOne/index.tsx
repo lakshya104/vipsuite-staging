@@ -14,6 +14,10 @@ import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { agentStepOneFields } from '@/data';
 import en from '@/helpers/lang';
+import { MessageDialogBox } from '@/components/Dialog';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { paths } from '@/helpers/paths';
+import revalidatePathAction from '@/libs/actions';
 
 export interface AgentProfileBuilderStepsProps {
   handleId?: (id: number) => void;
@@ -31,8 +35,13 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
   profileDetail,
   id,
 }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState<string>('');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const searchParams = useSearchParams();
+  const isEditVip = searchParams.get('edit');
 
   const {
     handleSubmit,
@@ -50,41 +59,45 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
     },
   });
 
+  const handleDialogClose = async () => {
+    setOpenDialog(false);
+    await revalidatePathAction(paths.root.myVips.getHref());
+    router.push(paths.root.myVips.getHref());
+  };
+
   const onSubmit = async (data: AgentFormValues) => {
     setIsLoading(true);
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        type_of_representation: data.type_of_representation,
-        avg_engagement: data.avg_engagement,
-        instagram_handle: data.instagram_handle,
-        tiktok_handle: data.tiktok_handle,
+        ...data,
       };
+
       const profile = {
         title: `${data.first_name} ${data.last_name}`,
-        acf: {
-          first_name: data.first_name,
-          last_name: data.last_name,
-          type_of_representation: data.type_of_representation,
-          avg_engagement: data.avg_engagement,
-          instagram_handle: data.instagram_handle,
-          tiktok_handle: data.tiktok_handle,
-        },
+        acf: { ...data },
       };
+
       if (id) {
         await UpdateProfile(id, profile);
       } else {
         const response = await CreateVipProfile(profile);
-        if (handleId) {
+
+        if (response?.code === 'duplicate_profile') {
+          setOpenDialog(true);
+          setErrMsg(response.message || '');
+          return false;
+        }
+
+        if (response?.id && handleId) {
           handleId(response.id);
         }
       }
+
       onNext(updatedProfileDetail);
-    } catch (error) {
-      openToaster(en.profileBuilder.vipError + error);
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      openToaster(`${en.profileBuilder.vipError} ${err}`);
     } finally {
       setIsLoading(false);
     }
@@ -95,7 +108,7 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
       <Box component="form" className="profile-builder__form" onSubmit={handleSubmit(onSubmit)}>
         <Box className="profile-builder__head">
           <Typography variant="h2" textAlign="center">
-            {en.profileBuilder.addAVip}
+            {isEditVip ? en.profileBuilder.editVip : en.profileBuilder.addAVip}
           </Typography>
         </Box>
         <Box className="profile-builder__body">
@@ -153,6 +166,15 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
         <CircularProgress color="inherit" />
       </Backdrop>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <MessageDialogBox
+        isDialogOpen={openDialog}
+        onClose={handleDialogClose}
+        content={{
+          title: 'Alert',
+          description: errMsg,
+          buttonText: 'Proceed',
+        }}
+      />
     </>
   );
 };

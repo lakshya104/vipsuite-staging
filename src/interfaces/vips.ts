@@ -8,4 +8,5 @@ export interface MyVips {
   profile_status: ProfileStatus;
   instagram_follower_count: string;
   tiktok_follower_count: string;
+  referenced?: boolean;
 }

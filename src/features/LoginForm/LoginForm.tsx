@@ -83,13 +83,7 @@ const LoginForm = () => {
             setToasterOpen(true);
           }
         } else {
-          if (userData?.role === UserRole.Vip) {
-            router.push(paths.root.home.getHref());
-          } else if (userData?.role === UserRole.Agent) {
-            router.push(paths.root.myVips.getHref());
-          } else {
-            router.push(paths.root.home.getHref());
-          }
+          router.push(paths.root.home.getHref());
         }
       } catch (error) {
         console.error(error);

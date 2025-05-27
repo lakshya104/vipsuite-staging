@@ -17,8 +17,10 @@ import en from '@/helpers/lang';
 
 interface ProductsContainerProps {
   product: Product;
+  isUserAgent: boolean;
 }
-const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
+
+const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAgent }) => {
   const isRequestOnly = product?.acf?.is_request_only || false;
   const showOffers =
     get(find(product?.meta_data, { key: 'show_offers' }), 'value') === '1' || product?.acf?.show_offers || false;
@@ -102,7 +104,7 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product }) => {
             </Typography>
             {isHighEndItem && <HighEndItemMessage />}
             <ShowHtml text={product?.description} />
-            <ItemRequestForm product={product} isRequestOnly={isRequestOnly}>
+            <ItemRequestForm product={product} isRequestOnly={isRequestOnly} isUserAgent={isUserAgent}>
               {showOffers && <RedeemBox fetchOffers={showOffers} />}
             </ItemRequestForm>
           </Box>

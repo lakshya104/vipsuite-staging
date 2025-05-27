@@ -260,6 +260,7 @@ const en = {
     errorMessage: 'Error during profile update. ',
     vipError: 'An error occurred while creating the VIP profile:',
     addAVip: 'Add a VIP',
+    editVip: 'Edit VIP',
     avgEngagement: 'Avg. engagement for Paid posts',
     includesocial: 'Include both Instagram & TikTok',
     steps: {

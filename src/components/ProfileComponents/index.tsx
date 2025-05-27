@@ -88,8 +88,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent, isBrand }) => {
-  console.log({ profileDetails }, get(profileDetails, 'acf.secondary_email', ''));
-
   const contactData = [
     ...(isBrand
       ? [

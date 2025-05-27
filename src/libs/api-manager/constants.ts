@@ -80,6 +80,7 @@ const Endpoints = {
   getWebsiteContent: `/wp/v2/website-content`,
   getComingSoonData: `/wp/v2/coming-soon-content`,
   resetPasswordWithLogin: '/wp/v2/user-password-reset',
+  lastLogin: '/wp/v2/last-login-at',
 };
 
 export { Endpoints };

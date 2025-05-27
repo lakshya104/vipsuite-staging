@@ -6,7 +6,7 @@ import MessageLink from '../MessageLink';
 import './Messages.scss';
 import { MessageArray } from '@/interfaces';
 import { calculateRelativeTime } from '@/helpers/utils';
-import { isEmpty } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
@@ -28,7 +28,7 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
 
   return (
     <Box className="message__items">
-      {messageData.map((message) => (
+      {map(messageData, (message) => (
         <Link prefetch={false} href={paths.root.messageDetails.getHref(message?.order_id)} key={message?.order_id}>
           <Box
             className="message__item"
@@ -40,7 +40,11 @@ const Messages: React.FC<MessagesProps> = ({ messageData }) => {
             borderBottom="1px solid #E0E0E0"
           >
             <Box>
-              <MessageLink title={message?.product_name} imageLink={message?.product_image} />
+              <MessageLink
+                title={message?.product_name}
+                imageLink={message?.product_image}
+                orderedFor={message?.order_created_for}
+              />
               <Typography
                 variant="body1"
                 pt={2}

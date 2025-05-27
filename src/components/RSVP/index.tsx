@@ -6,11 +6,11 @@ import he from 'he';
 import { EventDetails } from '@/interfaces/events';
 import { defaultValues, RsvpFormSchema, RsvpFormValues } from './RsvpTypes';
 import { SendRsvp } from '@/libs/api-manager/manager';
-// import { formatDateWithOrdinal } from '@/helpers/utils';
 import revalidatePathAction from '@/libs/actions';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
 import DynamicForm from '@/features/DynamicForm';
+import { UserRole } from '@/helpers/enums';
 
 interface RSVPProps {
   onClose: () => void;
@@ -18,14 +18,19 @@ interface RSVPProps {
   event: EventDetails;
   // eslint-disable-next-line no-unused-vars
   handleToasterMessage: (type: 'error' | 'success', message: string) => void;
+  vipPayloadData: {
+    [key: string]: string;
+  };
+  isUserAgent: boolean;
 }
 
-const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage }) => {
+const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage, isUserAgent, vipPayloadData }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [formState, setFormState] = useState({
     showForm: false,
     showReasonField: false,
   });
+
   const [reasonText, setReasonText] = useState<string>('');
   const { handleSubmit, setValue } = useForm<RsvpFormValues>({
     defaultValues: defaultValues,
@@ -40,7 +45,10 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
         rsvp_post: event.id,
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
         reason: reasonText,
+        ...(isUserAgent && vipPayloadData),
+        order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
       };
+
       try {
         const res = await SendRsvp(rsvp);
         handleToasterMessage('success', res?.message);
@@ -58,7 +66,8 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       post_type: 'event',
       rsvp_post: event.id,
       is_pleases: 'interested',
-      // ...(updatedPayload && { questions: updatedPayload }),
+      ...(isUserAgent && vipPayloadData),
+      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
     };
     try {
       const res = await SendRsvp(rsvp);
@@ -117,6 +126,8 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       rsvp_post: event.id,
       is_pleases: 'interested',
       ...(updatedPayload && { questions: updatedPayload }),
+      ...(isUserAgent && vipPayloadData),
+      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
     };
     try {
       const res = await SendRsvp(rsvp);

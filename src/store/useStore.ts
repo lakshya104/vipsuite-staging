@@ -5,6 +5,7 @@ import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
 import { persistNSync } from 'persist-and-sync';
 import { UserRole } from '@/helpers/enums';
 import { Question } from '@/interfaces/events';
+import { AgentVipsPayload } from '@/interfaces';
 
 interface OrderState {
   orderCount: number;
@@ -20,16 +21,24 @@ export const useOrderStore = create<OrderState>((set) => ({
 
 interface LookbookOrderState {
   lookbookDescription: string;
+  agentVipInfo: AgentVipsPayload | null;
+  setAgentVipInfo: (info: AgentVipsPayload) => void;
+  clearAgentVipInfo: () => void;
   setLookbookDescription: (description: string) => void;
   clearLookbookDescription: () => void;
+  clearLookbookData: () => void;
 }
 
 export const useLookbookOrder = create<LookbookOrderState>()(
   persist(
     (set) => ({
       lookbookDescription: '',
+      agentVipInfo: null,
+      setAgentVipInfo: (info) => set({ agentVipInfo: info }),
+      clearAgentVipInfo: () => set({ agentVipInfo: null }),
       setLookbookDescription: (description) => set({ lookbookDescription: description }),
       clearLookbookDescription: () => set({ lookbookDescription: '' }),
+      clearLookbookData: () => set({ lookbookDescription: '', agentVipInfo: null }),
     }),
     {
       name: 'look-book-storage',
@@ -43,6 +52,9 @@ interface RequestOnlyState {
   questions: Question[];
   requestESign: string | null;
   opportunityId: string;
+  agentVipInfo: AgentVipsPayload | null;
+  setAgentVipInfo: (info: AgentVipsPayload) => void;
+  clearAgentVipInfo: () => void;
   setOpportunityId: (id: string) => void;
   clearOpportunityId: () => void;
   setRequestESign: (sign: string) => void;
@@ -61,6 +73,9 @@ export const useRequestOnlyStore = create<RequestOnlyState>()(
       questions: [],
       requestESign: '',
       opportunityId: '',
+      agentVipInfo: null,
+      setAgentVipInfo: (info) => set({ agentVipInfo: info }),
+      clearAgentVipInfo: () => set({ agentVipInfo: null }),
       setOpportunityId: (id) => set({ opportunityId: id }),
       clearOpportunityId: () => set({ opportunityId: '' }),
       setRequestESign: (sign) => set({ requestESign: sign }),
@@ -69,7 +84,8 @@ export const useRequestOnlyStore = create<RequestOnlyState>()(
       clearRequestProductId: () => set({ requestProductId: null }),
       setQuestions: (questions) => set({ questions }),
       clearQuestions: () => set({ questions: [] }),
-      clearAllRequestStore: () => set({ requestProductId: null, questions: [], requestESign: null, opportunityId: '' }),
+      clearAllRequestStore: () =>
+        set({ requestProductId: null, questions: [], requestESign: null, opportunityId: '', agentVipInfo: null }),
     }),
     {
       name: 'request-only-storage',
@@ -208,5 +224,29 @@ export const useTiktokInfo = create<TiktokInfoState>()(
     {
       name: 'tiktok-info-storage',
     },
+  ),
+);
+
+interface UserStatusState {
+  lastUpdateTime: number;
+  setLastUpdateTime: (time: number) => void;
+  shouldUpdate: (cooldownMinutes?: number) => boolean;
+}
+
+export const useUserStatusStore = create<UserStatusState>()(
+  persist(
+    (set, get) => ({
+      lastUpdateTime: 0,
+      setLastUpdateTime: (time) => set({ lastUpdateTime: time }),
+      shouldUpdate: (cooldownMinutes = 5) => {
+        const now = Date.now();
+        const lastUpdate = get().lastUpdateTime;
+        return now - lastUpdate >= cooldownMinutes * 60 * 1000;
+      },
+    }),
+    {
+      name: 'user-status-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    } as PersistOptions<UserStatusState>,
   ),
 );

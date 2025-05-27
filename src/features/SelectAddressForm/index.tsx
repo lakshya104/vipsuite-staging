@@ -7,7 +7,6 @@ import ConfirmOrderBtn from '@/components/ConfirmOrderBtn';
 import { Address, Cart } from '@/interfaces';
 import { ProgressBarLink } from '@/components/ProgressBar';
 import ErrorFallback from '@/components/ErrorFallback';
-import { useUserInfoStore } from '@/store/useStore';
 import { useSearchParams } from 'next/navigation';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
@@ -28,7 +27,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   signatureData,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const { vipIdStore } = useUserInfoStore();
   const searchParams = useSearchParams();
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const handleAddressChange = (address: Address) => {
@@ -72,7 +70,6 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
               selectedAddress={selectedAddress}
               cartData={cartData}
               startTransition={startTransition}
-              vipId={vipIdStore}
               signatureData={signatureData}
             />
           </Box>

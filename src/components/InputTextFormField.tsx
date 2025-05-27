@@ -10,6 +10,7 @@ interface InputTextFormFieldProps<T extends FieldValues> {
   errors: FieldErrors<T>;
   noLabel?: boolean;
   autoFill?: boolean;
+  onValueChange?: (value: string) => void;
 }
 
 const InputTextFormField = <T extends FieldValues>({
@@ -19,6 +20,7 @@ const InputTextFormField = <T extends FieldValues>({
   errors,
   noLabel,
   autoFill = false,
+  onValueChange,
 }: InputTextFormFieldProps<T>) => {
   const [fieldHasValue, setFieldHasValue] = useState(autoFill ? false : true);
 
@@ -30,6 +32,7 @@ const InputTextFormField = <T extends FieldValues>({
         const _onChange = (e: { target: { value: string } }) => {
           onChange(e.target.value);
           setFieldHasValue(e.target.value !== '');
+          onValueChange?.(e.target.value);
         };
         const makeAnimationStartHandler =
           (stateSetter: (autofilled: boolean) => void) =>

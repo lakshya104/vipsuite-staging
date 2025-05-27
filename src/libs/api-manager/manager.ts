@@ -312,7 +312,7 @@ export const UpdateProfile = async (id: number, profile: UserProfile) => {
 
 export const CreateVipProfile = async (profile: UserProfile) => {
   try {
-    const response = await InstanceWithTokenOnly.post(Endpoints.createProfile, profile);
+    const response = await Instance.post(Endpoints.createProfile, profile);
     return response.data;
   } catch (error) {
     console.error('Error during creating profile:', error);
@@ -526,7 +526,14 @@ export const OrderFeedback = async (orderNumber: number, data: OrderFeedbackData
 
 export const AddItemToCart = async (
   id: number,
-  payload?: { product_id?: number; questions?: Question[]; opportunity_id: string },
+  payload?: {
+    product_id?: number;
+    questions?: Question[];
+    opportunity_id: string;
+    vip_profile_ids?: string;
+    vip_profile_names?: string;
+    order_by?: string;
+  },
 ) => {
   try {
     const addItemResponse = await Instance.post(Endpoints.addItemToCart(id), payload);
@@ -786,6 +793,17 @@ export const ResetPasswordWithLogin = async ({
   } catch (error) {
     console.error('Error during resetting password:', error);
     const errorMessage = error instanceof Error ? error.message : 'Error during resetting password';
+    throw new Error(errorMessage);
+  }
+};
+
+export const LastLogin = async () => {
+  try {
+    const response = await InstanceWithTokenOnly.post(Endpoints.lastLogin);
+    return response.data;
+  } catch (error) {
+    console.error('Error during updating status:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Error during updating status';
     throw new Error(errorMessage);
   }
 };

@@ -6,7 +6,6 @@ import HomeFooter from '@/components/HomeFooter';
 import { GetSession } from '@/libs/api-manager/manager';
 import { CookieName, UserRole } from '@/helpers/enums';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
-import VipPage from '../(my vips)/my-vips/page';
 import StoreUserDetails from '@/components/StoreUserDetails';
 import { getProfileId } from '@/helpers/utils';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
@@ -27,10 +26,6 @@ export default async function HomeSectionLayout({
 
     if (role === UserRole.Vip && isEmpty(acf?.known_for) && !isSkipped) {
       return <ApplicationAcceptedDialog name={first_name} role={UserRole.Vip} />;
-    }
-
-    if (role === UserRole.Agent && (!userId || userId?.value === undefined)) {
-      return <VipPage />;
     }
 
     return (

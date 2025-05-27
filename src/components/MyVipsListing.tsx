@@ -1,28 +1,20 @@
 'use client';
-import React, { useState } from 'react';
-import { Backdrop, Box, CircularProgress, Container, Typography } from '@mui/material';
+import React from 'react';
+import { Box, Container, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useRouter } from 'next/navigation';
 import MyVipCard from './MyVipCard';
 import { MyVips } from '@/interfaces';
 import { ProgressBarLink } from './ProgressBar';
 import { isEmpty } from 'lodash';
 import ErrorFallback from './ErrorFallback';
 import en from '@/helpers/lang';
-import { paths } from '@/helpers/paths';
-import VipInfoBox from './VipInfoBox';
-import { DefaultImageFallback } from '@/helpers/enums';
-import { createIsAgentCookie, createVipIdCookie } from '@/libs/actions';
+import { paths, withSearchParams } from '@/helpers/paths';
 
 interface MyVipsListingProps {
   myVips: MyVips[];
-  agentId: number;
-  agentName: string;
 }
 
-const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, agentId, agentName }) => {
-  const router = useRouter();
-  const [isLoading, setLoading] = useState<boolean>(false);
+const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
   const renderVips = () => {
     if (isEmpty(myVips) || !Array.isArray(myVips)) {
       return (
@@ -50,7 +42,9 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, agentId, agentNam
       return (
         <Box>
           {sortedVips.map((item) => {
-            const link = paths.root.home.getHref();
+            const link = withSearchParams(() => paths.root.agentProfileBuilder.getHref(), {
+              edit: 'true',
+            });
             const name = `${item?.first_name} ${item?.last_name}`;
             return (
               <MyVipCard
@@ -61,23 +55,12 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, agentId, agentNam
                 link={link}
                 instaFollowers={item?.instagram_follower_count}
                 tiktokFollowers={item?.tiktok_follower_count}
+                is_referenced={item?.referenced}
               />
             );
           })}
         </Box>
       );
-    }
-  };
-
-  const handleClick = async () => {
-    setLoading(true);
-    try {
-      await createIsAgentCookie('true');
-      await createVipIdCookie(agentId.toString());
-      router.push(paths.root.home.getHref());
-    } catch (error) {
-      console.error(en.myVipsPage.addError, error);
-      setLoading(false);
     }
   };
 
@@ -93,17 +76,8 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips, agentId, agentNam
             {en.myVipsPage.pageTitle}
           </Typography>
         </Box>
-        <VipInfoBox
-          image={DefaultImageFallback.PersonPlaceholder}
-          name={`Me (${agentName})`}
-          handleClick={handleClick}
-          isAgentCard={true}
-        />
         {renderVips()}
       </Container>
-      <Backdrop sx={{ color: 'white', zIndex: 10000 }} open={isLoading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </Box>
   );
 };
