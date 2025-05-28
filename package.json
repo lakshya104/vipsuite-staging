@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "generate:assetlinks": "node scripts/generateAssetlinks.js",
+    "dev": "next dev",
+    "generate:assetlinks": "node scripts/generateAssetlinks.js && node scripts/generateAppleAppSiteAssociation.js",
     "build": "yarn generate:assetlinks && next build",
     "start": "next start",
     "lint": "next lint --no-cache",

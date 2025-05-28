@@ -127,7 +127,7 @@ const en = {
     welcomeTxt: 'Welcome',
     welcomePara: 'You are now welcome to create an account. Please continue to complete your profile.',
     continue: 'Continue',
-    agentWelcomePara: 'As an agent, explore new opportunities.',
+    agentWelcomePara: 'You have been accepted as an Agent! Please add profiles of the VIPs you manage.',
   },
   customBrandAcceptedScreen: {
     acceptedTxt: 'Welcome!',

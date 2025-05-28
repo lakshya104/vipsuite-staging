@@ -3,14 +3,17 @@
     "apps": [],
     "details": [
       {
-        "appID": "KLT4AKNXLR.co.uk.thevipsuite.staging",
-        "paths": [
-        "*"
+        "appID": "KLT4AKNXLR.co.uk.thevipsuite.predev",
+        "components": [
+          {
+            "/": "/reset-password",
+            "query": {
+              "tnxref": "?*",
+              "status": "?*"
+            }
+          }
         ]
       }
     ]
   }
 }
-
-
-

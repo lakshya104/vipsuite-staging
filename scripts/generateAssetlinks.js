@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const packageName = process.env.NEXT_PUBLIC_ANDROID_PACKAGE_NAME || 'com.vip.app';
+const packageName = process.env.NEXT_PUBLIC_APP_PACKAGE_NAME || 'com.vip.app';
 
 const assetlinks = [
   {

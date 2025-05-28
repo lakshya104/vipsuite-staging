@@ -58,7 +58,11 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
               {name}
             </Typography>
             <Typography variant="body1">
-              {role === UserRole.Brand ? en.customBrandAcceptedScreen.welcomePara : en.customAcceptedScreen.welcomePara}
+              {role === UserRole.Brand
+                ? en.customBrandAcceptedScreen.welcomePara
+                : UserRole.Agent
+                  ? en.customAcceptedScreen.agentWelcomePara
+                  : en.customAcceptedScreen.welcomePara}
             </Typography>
           </Box>
           <Box className="onboarding__page-links">
