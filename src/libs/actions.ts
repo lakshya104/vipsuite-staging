@@ -65,7 +65,7 @@ export async function createSkipCookie() {
   (await cookies()).set(CookieName.SkipProfile, 'true');
 }
 export async function deleteVipCookies() {
-  await Promise.all([(await cookies()).delete(CookieName.ProfileId)]);
+  await Promise.all([(await cookies()).delete(CookieName.SkipProfile)]);
 }
 
 export async function getVipIdCookie() {

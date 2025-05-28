@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { isEmpty } from 'lodash';
 import HomeHeader from '@/components/Header/HomeHeader';
 import HomeFooter from '@/components/HomeFooter';
-import { GetSession } from '@/libs/api-manager/manager';
+import { GetAllVips, GetSession } from '@/libs/api-manager/manager';
 import { CookieName, UserRole } from '@/helpers/enums';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
 import StoreUserDetails from '@/components/StoreUserDetails';
@@ -17,12 +17,15 @@ export default async function HomeSectionLayout({
   children: React.ReactNode;
 }>) {
   try {
-    const [session, cookieStore] = await Promise.all([GetSession(), cookies()]);
+    const [{ data: myVips }, session, cookieStore] = await Promise.all([GetAllVips(), GetSession(), cookies()]);
     const isSkipped = cookieStore.get(CookieName.SkipProfile);
     const { role, acf, first_name, token, email, profile_id } = session ?? {};
 
     if (role === UserRole.Vip && isEmpty(acf?.known_for) && !isSkipped) {
       return <ApplicationAcceptedDialog name={first_name} role={UserRole.Vip} />;
+    }
+    if (role === UserRole.Agent && isEmpty(myVips) && !isSkipped) {
+      return <ApplicationAcceptedDialog name={session?.first_name} role={UserRole.Agent} />;
     }
 
     return (
