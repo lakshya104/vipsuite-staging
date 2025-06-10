@@ -14,7 +14,8 @@ export const formSchema = z.object({
   type_of_representation: typeOfRepresentationValidation,
   instagram_handle: instagramValidation,
   tiktok_handle: tiktokValidation,
-  avg_engagement: averageEngagementValidation,
+  avg_engagement_instagram: averageEngagementValidation,
+  avg_engagement_tiktok: averageEngagementValidation,
 });
 
 export type AgentFormValues = z.infer<typeof formSchema>;

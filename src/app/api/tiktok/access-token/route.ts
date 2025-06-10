@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     const accessToken = tokenData.access_token;
     const refreshToken = tokenData.refresh_token;
-    const expiresIn = tokenData.expires_in;
+    const expiresIn = tokenData.refresh_expires_in;
 
     const profileInfoUrl = 'https://open.tiktokapis.com/v2/user/info/?fields=display_name,avatar_url,follower_count';
     const profileInfoResponse = await fetch(profileInfoUrl, {

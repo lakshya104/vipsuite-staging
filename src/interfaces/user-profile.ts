@@ -23,7 +23,8 @@ export interface ACF {
   email?: string;
   company_name?: string;
   type_of_representation?: string;
-  avg_engagement?: string | null;
+  avg_engagement_instagram?: string | null;
+  avg_engagement_tiktok?: string | null;
   instagram_handle?: string;
   tiktok_handle?: string;
   known_for?: string[];

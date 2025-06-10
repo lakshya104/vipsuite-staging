@@ -30,14 +30,14 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
     eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
-    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly || false,
+    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly || true,
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
-    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly || false,
+    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly || true,
     commercialOpportunitiesEmail: profileDetail.commercial_opportunities_contacts?.email || '',
     commercialOpportunitiesSecondaryEmail: profileDetail.commercial_opportunities_contacts?.secondary_email || '',
     commercialOpportunitiesContactMeDirectly:
-      profileDetail.commercial_opportunities_contacts?.contact_me_directly || false,
+      profileDetail.commercial_opportunities_contacts?.contact_me_directly || true,
   };
 
   const {

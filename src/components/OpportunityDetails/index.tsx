@@ -86,7 +86,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
 
   useEffect(() => {
     const fetchAgentVips = async () => {
-      if (!showVipOptions) return;
+      if (!showVipOptions && !opportunity?.acf?.is_lookbook_available) return;
       setVipsLoading(true);
       try {
         const response = await GetAllVips();
@@ -103,7 +103,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       }
     };
     fetchAgentVips();
-  }, [showVipOptions]);
+  }, [showVipOptions, opportunity?.acf?.is_lookbook_available]);
 
   useEffect(() => {
     if (toasterMessage) openToaster(toasterMessage);
@@ -233,7 +233,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           </Box>
           <RequestItemFormButton
             postId={opportunity?.id}
-            isUserAgent={showVipOptions}
+            isUserAgent={userRole === UserRole.Agent}
             vipOptions={vipOptions}
             vipsLoading={vipsLoading}
           />

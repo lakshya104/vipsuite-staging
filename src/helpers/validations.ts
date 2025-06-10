@@ -53,9 +53,13 @@ export const lastNameValidation = z
     message: en.signup.errorMessage.lastNameRequired,
   });
 
-export const instagramValidation = z.string().min(1, { message: en.signup.errorMessage.instagramRequired });
+export const instagramValidationRequired = z.string().min(1, { message: en.signup.errorMessage.instagramRequired });
 
-export const tiktokValidation = z.string().min(1, { message: en.signup.errorMessage.tiktokRequired });
+export const tiktokValidationRequired = z.string().min(1, { message: en.signup.errorMessage.tiktokRequired });
+
+export const instagramValidation = z.string().optional().or(z.literal(''));
+
+export const tiktokValidation = z.string().optional().or(z.literal(''));
 
 export const codeValidation = z.string().min(1, { message: en.signup.errorMessage.code });
 
@@ -87,9 +91,7 @@ export const typeOfRepresentationValidation = z
   .string()
   .min(1, { message: en.profileBuilder.addVip.errorMessage.representationType });
 
-export const averageEngagementValidation = z
-  .string()
-  .min(1, { message: en.profileBuilder.addVip.errorMessage.engagement });
+export const averageEngagementValidation = z.string().optional().or(z.literal(''));
 
 export const typeOfBusinessValidation = z.string().min(2, {
   message: en.signup.errorMessage.typeOfBusiness,

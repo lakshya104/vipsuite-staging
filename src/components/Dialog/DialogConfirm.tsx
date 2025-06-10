@@ -9,9 +9,10 @@ interface DialogBoxProps {
   onConfirm: () => void;
   title: string;
   description?: string;
+  confirmText?: string;
 }
 
-const DialogConfirmBox: React.FC<DialogBoxProps> = ({ open, onClose, onConfirm, title, description }) => {
+const DialogConfirmBox: React.FC<DialogBoxProps> = ({ open, onClose, onConfirm, title, description, confirmText }) => {
   const handleClose = () => {
     onClose();
   };
@@ -43,7 +44,7 @@ const DialogConfirmBox: React.FC<DialogBoxProps> = ({ open, onClose, onConfirm, 
             No
           </Btn>
           <Btn onClick={handleConfirm} look="dark-filled" width="100%">
-            Yes
+            {confirmText || 'Yes'}
           </Btn>
         </DialogActions>
       </Box>

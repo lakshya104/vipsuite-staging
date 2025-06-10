@@ -38,6 +38,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
   const searchParams = useSearchParams();
   const search = searchParams.get('route');
   const isRequestedProduct = searchParams.get('isRequestOnly');
+  const isLookbookOrder = searchParams.get('isLookbook');
+  const postId = searchParams.get('postId');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   const {
@@ -56,6 +58,13 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
       if (search === 'order-journey') {
         if (isRequestedProduct) {
           router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isRequestOnly: 'true' }));
+        }
+        if (isLookbookOrder) {
+          if (postId) {
+            router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isLookbook: 'true', postId }));
+          } else {
+            router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isLookbook: 'true' }));
+          }
         } else {
           router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1 }));
         }

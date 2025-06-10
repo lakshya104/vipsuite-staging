@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react';
 import ErrorFallback from './ErrorFallback';
 import { paths, withSearchParams } from '@/helpers/paths';
 import en from '@/helpers/lang';
+import { signOutAction } from '@/libs/actions';
 
 interface ErrorToasterProps {
   errorMessage: string;
@@ -21,13 +22,17 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   useEffect(() => {
-    if (login) {
+    const signOutUser = async () => {
       signOut({
         callbackUrl: withSearchParams(() => paths.auth.login.getHref(), {
           'token-expired': 'true',
           error: errorMessage || en.errorToaster.userLogged,
         }),
       });
+      await signOutAction();
+    };
+    if (login) {
+      signOutUser();
     } else if (errorMessage) {
       openToaster(errorMessage);
     }

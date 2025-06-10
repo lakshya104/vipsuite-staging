@@ -17,7 +17,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
 import { ProgressBarLink } from '../ProgressBar';
-import { LogOut } from '@/libs/api-manager/manager';
+import { LogOut, DeleteAccount } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { UserRole } from '@/helpers/enums';
@@ -25,6 +25,7 @@ import { signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
+import DialogConfirmBox from '../Dialog/DialogConfirm';
 
 const vipMenuItems = [
   {
@@ -37,21 +38,21 @@ const vipMenuItems = [
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: paths.root.addresses.getHref(),
   },
-  {
-    label: 'Login & Security',
-    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.loginSecurity.getHref(),
-  },
-  {
-    label: 'Contact',
-    icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.contact.getHref(),
-  },
-  {
-    label: 'Help & FAQs',
-    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.contact.getHref(),
-  },
+  // {
+  //   label: 'Login & Security',
+  //   icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
+  //   href: paths.root.loginSecurity.getHref(),
+  // },
+  // {
+  //   label: 'Contact',
+  //   icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
+  //   href: paths.root.contact.getHref(),
+  // },
+  // {
+  //   label: 'Help & FAQs',
+  //   icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
+  //   href: paths.root.contact.getHref(),
+  // },
 ];
 
 const agentMenuItems = [
@@ -70,21 +71,21 @@ const agentMenuItems = [
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: paths.root.addresses.getHref(),
   },
-  {
-    label: 'Login & Security',
-    icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.loginSecurity.getHref(),
-  },
-  {
-    label: 'Contact',
-    icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.contact.getHref(),
-  },
-  {
-    label: 'Help & FAQs',
-    icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.helpFaq.getHref(),
-  },
+  // {
+  //   label: 'Login & Security',
+  //   icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
+  //   href: paths.root.loginSecurity.getHref(),
+  // },
+  // {
+  //   label: 'Contact',
+  //   icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
+  //   href: paths.root.contact.getHref(),
+  // },
+  // {
+  //   label: 'Help & FAQs',
+  //   icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
+  //   href: paths.root.helpFaq.getHref(),
+  // },
 ];
 
 interface HomeHeaderProps {
@@ -95,6 +96,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('error');
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const pathname = usePathname();
   const menuItems =
     role === UserRole.Vip
@@ -118,6 +121,27 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);
+    }
+  };
+
+  const toggleDialog = () => {
+    setOpenDialog((prev) => !prev);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setDrawerOpen(false);
+      startTransition(async () => {
+        const response = await DeleteAccount();
+        setToasterType('success');
+        openToaster(response.message || 'Account deleted successfully');
+        setTimeout(async () => {
+          await signOutAction();
+        }, 2000);
+      });
+    } catch (error) {
+      setToasterType('error');
+      openToaster('Error during delete the account ' + error);
     }
   };
 
@@ -198,6 +222,13 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                     </Box>
                   </ProgressBarLink>
                 ))}
+                <Box className="drawer-menu__item" onClick={toggleDialog}>
+                  <Box>
+                    <Image src="/img/delete.png" alt="Logo" width={20} height={20} />
+                    <Typography variant="body1">{en.common.deleteAccount}</Typography>
+                  </Box>
+                  <ChevronRightIcon />
+                </Box>
                 <Box className="drawer-menu__item" onClick={handleLogout}>
                   <Box>
                     <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
@@ -213,7 +244,15 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
+      <DialogConfirmBox
+        open={openDialog}
+        onClose={toggleDialog}
+        onConfirm={() => handleDeleteAccount()}
+        title={en.common.deleteAccount}
+        description={en.common.deleteAccountMessage}
+        confirmText={en.common.delete}
+      />
     </>
   );
 };

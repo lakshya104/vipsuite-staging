@@ -34,7 +34,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
   const postId = searchParams.get('postId');
-  const { lookbookDescription, clearLookbookDescription, agentVipInfo: agentVipLookbookInfo } = useLookbookOrder();
+  const { lookbookDescription, agentVipInfo: agentVipLookbookInfo, clearLookbookData } = useLookbookOrder();
   const {
     requestProductId,
     opportunityId,
@@ -152,7 +152,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
 
   const handleCreateOrder = async () => {
     startTransition(async () => {
-      if (!isLookbookOrder && isEmpty(orderDetails.line_items)) {
+      if ((!isLookbookOrder && isEmpty(orderDetails.line_items)) || (isLookbookOrder && !lookbookDescription)) {
         openToaster(en.selectAddress.emptyError);
         setTimeout(() => {
           router.push(paths.root.home.getHref());
@@ -178,7 +178,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
           }
           await revalidateAllData();
           setIsDialogOpen(true);
-          clearLookbookDescription();
+          clearLookbookData();
           clearRequestProductId();
           clearQuestions();
           clearRequestESign();

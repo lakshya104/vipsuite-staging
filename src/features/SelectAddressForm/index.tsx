@@ -29,12 +29,18 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const searchParams = useSearchParams();
   const isRequestedProduct = searchParams.get('isRequestOnly');
+  const isLookbookOrder = searchParams.get('isLookbook');
+  const postId = searchParams.get('postId');
   const handleAddressChange = (address: Address) => {
     setSelectedAddress((prevAdd) => (prevAdd === address ? null : address));
   };
   const href = isRequestedProduct
     ? withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey', isRequestOnly: 'true' })
-    : withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey' });
+    : isLookbookOrder && postId
+      ? withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey', isLookbook: 'true', postId })
+      : isLookbookOrder
+        ? withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey', isLookbook: 'true' })
+        : withSearchParams(() => paths.root.addAddress.getHref(), { route: 'order-journey' });
   return (
     <Fragment>
       <Box className="address-page__head">

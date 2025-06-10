@@ -459,6 +459,17 @@ export const LogOut = async () => {
   }
 };
 
+export const DeleteAccount = async () => {
+  try {
+    const response = await InstanceWithTokenOnly.delete(Endpoints.DeleteAccount);
+    return response.data;
+  } catch (error) {
+    console.error('Error during Delete Account:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during delete account';
+    throw new Error(errorMessage);
+  }
+};
+
 export const GetVipRsvpEvents = async () => {
   try {
     const response = await Instance.get(Endpoints.getVipRsvpEvents);

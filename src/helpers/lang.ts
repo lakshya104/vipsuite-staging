@@ -21,6 +21,9 @@ const en = {
     password: 'Password',
     resetCode: 'Reset Code',
     repeatPassword: 'Repeat Password',
+    delete: 'Yes, Delete',
+    deleteAccount: 'Delete Account',
+    deleteAccountMessage: 'Are you sure you want to delete your account?',
   },
   helperText: {
     noAccount: "Don't have an account?",
@@ -262,7 +265,7 @@ const en = {
     addAVip: 'Add a VIP',
     editVip: 'Edit VIP',
     avgEngagement: 'Avg. engagement for Paid posts',
-    includesocial: 'Include both Instagram & TikTok',
+    includesocial: 'Please include both Instagram & TikTok',
     steps: {
       profileError: 'Error during profile update. ',
       interests: 'Your Interests',
@@ -787,7 +790,8 @@ const en = {
     undefinedEmail: 'Email is undefined',
     verifyOtp: 'Verify OTP',
     vipExamples: 'Example of VIP Managed ',
-    avgEngagement: 'Avg. Engagement',
+    avgEngagementInsta: 'Avg. Instagram Engagement',
+    avgEngagementTikTok: 'Avg. TikTok Engagement',
     enterOtp: 'Enter OTP',
   },
   referVip: {

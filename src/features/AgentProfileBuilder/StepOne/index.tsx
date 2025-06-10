@@ -55,7 +55,8 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
       type_of_representation: profileDetail.type_of_representation || '',
       instagram_handle: profileDetail.instagram_handle || '',
       tiktok_handle: profileDetail.tiktok_handle || '',
-      avg_engagement: profileDetail.avg_engagement || '',
+      avg_engagement_instagram: profileDetail.avg_engagement_instagram || '',
+      avg_engagement_tiktok: profileDetail.avg_engagement_tiktok || '',
     },
   });
 
@@ -154,8 +155,14 @@ const StepOne: React.FC<AgentProfileBuilderStepsProps> = ({
           </Typography>
           <Typography mb={3}>{en.profileBuilder.includesocial}</Typography>
           <InputTextFormField
-            name="avg_engagement"
-            placeholder={en.signUpForm.avgEngagement}
+            name="avg_engagement_instagram"
+            placeholder={en.signUpForm.avgEngagementInsta}
+            errors={errors}
+            control={control}
+          />
+          <InputTextFormField
+            name="avg_engagement_tiktok"
+            placeholder={en.signUpForm.avgEngagementTikTok}
             errors={errors}
             control={control}
           />

@@ -64,7 +64,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ profileBuilder
         setStep(4);
       } else if (!isEmpty(response.acf.known_for)) {
         setStep(3);
-      } else if (response.acf.avg_engagement) {
+      } else if (response.acf.type_of_representation) {
         setStep(2);
       }
       setIsLoading(false);

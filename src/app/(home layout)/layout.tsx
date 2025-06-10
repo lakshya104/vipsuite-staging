@@ -17,15 +17,18 @@ export default async function HomeSectionLayout({
   children: React.ReactNode;
 }>) {
   try {
-    const [{ data: myVips }, session, cookieStore] = await Promise.all([GetAllVips(), GetSession(), cookies()]);
+    const [session, cookieStore] = await Promise.all([GetSession(), cookies()]);
     const isSkipped = cookieStore.get(CookieName.SkipProfile);
     const { role, acf, first_name, token, email, profile_id } = session ?? {};
 
     if (role === UserRole.Vip && isEmpty(acf?.known_for) && !isSkipped) {
       return <ApplicationAcceptedDialog name={first_name} role={UserRole.Vip} />;
     }
-    if (role === UserRole.Agent && isEmpty(myVips) && !isSkipped) {
-      return <ApplicationAcceptedDialog name={session?.first_name} role={UserRole.Agent} />;
+    if (role === UserRole.Agent) {
+      const { data: myVips } = await GetAllVips();
+      if (isEmpty(myVips) && !isSkipped) {
+        return <ApplicationAcceptedDialog name={session?.first_name} role={UserRole.Agent} />;
+      }
     }
 
     return (
