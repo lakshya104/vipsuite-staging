@@ -9,6 +9,7 @@ import { SendRsvp } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
 import { paths } from '@/helpers/paths';
 import { z } from 'zod';
+import { vipInitialSchema, vipOptionalSchema } from '@/interfaces';
 
 interface OrderEventButtonProps {
   isUserAgent: boolean;
@@ -29,17 +30,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
   disabled,
 }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [vipSchemas, setVipSchemas] = useState(() =>
-    !isUserAgent
-      ? {
-          profileId: z.array(z.string()),
-          profileName: z.string(),
-        }
-      : {
-          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-        },
-  );
+  const [vipSchemas, setVipSchemas] = useState(() => (!isUserAgent ? vipOptionalSchema : vipInitialSchema));
   const vipSchema = z.object({
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
@@ -81,10 +72,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
       handleToasterMessage('error', String(error));
     } finally {
       await revalidatePathAction(paths.root.eventDetails.getHref(eventId));
-      setVipSchemas({
-        profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-        profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-      });
+      setVipSchemas(vipInitialSchema);
       reset();
       setIsPending(false);
     }

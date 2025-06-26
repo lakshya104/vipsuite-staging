@@ -20,7 +20,7 @@ import { paths, withSearchParams } from '@/helpers/paths';
 import RenderQuestions from '@/components/RenderQuestions';
 import { mapQuestionsToSchema } from '@/helpers/utils';
 import { z } from 'zod';
-import { AgentVipsPayload, VipApiResponse, VipOptions } from '@/interfaces';
+import { AgentVipsPayload, VipApiResponse, vipInitialSchema, vipOptionalSchema, VipOptions } from '@/interfaces';
 import { UserRole } from '@/helpers/enums';
 import VipOrderForm from '@/components/VipOrderForm';
 
@@ -52,17 +52,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
   const [fileName, setFileName] = useState<string | null>(null);
   const [vipsLoading, setVipsLoading] = useState<boolean>(isUserAgent ? true : false);
   const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
-  const [vipSchemas, setVipSchemas] = useState(() =>
-    !isUserAgent
-      ? {
-          profileId: z.array(z.string()),
-          profileName: z.string(),
-        }
-      : {
-          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-        },
-  );
+  const [vipSchemas, setVipSchemas] = useState(() => (!isUserAgent ? vipOptionalSchema : vipInitialSchema));
   const vipSchema = z.object({
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
@@ -278,10 +268,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
     };
     const prepareItem = getProductData();
     await createOrder(prepareItem, payloadWithQuestionsData, payloadWithVipData);
-    setVipSchemas({
-      profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-      profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-    });
+    setVipSchemas(vipInitialSchema);
   };
 
   const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
@@ -290,147 +277,103 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
 
   return (
     <>
-      {product.type === 'variable' && (
-        <Box
-          sx={{ maxWidth: '600px' }}
-          component="form"
-          onSubmit={handleSubmit((data) => {
-            onSubmit(data);
-            reset();
-            setFileName(null);
-          })}
-          className="product-size"
-        >
-          {!isProductOrdered && (
-            <Typography
-              sx={{ fontWeight: 500, color: 'rgb(27, 27, 27) !important', mb: 1, fontSize: '1rem !important' }}
-              gutterBottom
-            >
-              {en.products.selectVariant}
-            </Typography>
-          )}
-          {!isProductOrdered &&
-            dropdowns.map((dropdown, index) => {
-              const firstItem = first(dropdown)!;
-              const name = firstItem.name;
-              const options = dropdown.map(({ label, option }) => {
-                return {
-                  label,
-                  value: option,
-                };
-              });
-              return (
-                <Box key={firstItem.slug} className="product-size__select">
-                  <Fragment>
-                    <SelectBox
-                      name={name}
-                      control={control}
-                      placeholder={`Select ${name}`}
-                      options={options}
-                      label={`Select ${name}`}
-                      errors={errors}
-                      onChange={(value) => {
-                        clearErrors(name);
-                        for (let i = index + 1; i < dropdowns.length; ++i) {
-                          const firstItem = first(dropdowns[i])!;
-                          const name = firstItem.name;
-                          setValue(name, undefined);
-                        }
+      <Box
+        sx={{ maxWidth: '600px' }}
+        component="form"
+        onSubmit={handleSubmit((data) => {
+          onSubmit(data);
+          reset();
+          setFileName(null);
+        })}
+        className="product-size product-size--request"
+      >
+        {product?.type === 'variable' && (
+          <>
+            {!isProductOrdered && (
+              <Typography
+                sx={{ fontWeight: 500, color: 'rgb(27, 27, 27) !important', mb: 1, fontSize: '1rem !important' }}
+                gutterBottom
+              >
+                {en.products.selectVariant}
+              </Typography>
+            )}
+            {!isProductOrdered &&
+              dropdowns.map((dropdown, index) => {
+                const firstItem = first(dropdown)!;
+                const name = firstItem.name;
+                const options = dropdown.map(({ label, option }) => {
+                  return {
+                    label,
+                    value: option,
+                  };
+                });
+                return (
+                  <Box key={firstItem.slug} className="product-size__select">
+                    <Fragment>
+                      <SelectBox
+                        name={name}
+                        control={control}
+                        placeholder={`Select ${name}`}
+                        options={options}
+                        label={`Select ${name}`}
+                        errors={errors}
+                        onChange={(value) => {
+                          clearErrors(name);
+                          for (let i = index + 1; i < dropdowns.length; ++i) {
+                            const firstItem = first(dropdowns[i])!;
+                            const name = firstItem.name;
+                            setValue(name, undefined);
+                          }
 
-                        const selectedFilter = dropdown.find((item) => item.option === value);
-                        if (selectedFilter) {
-                          onChangeDropDown(selectedFilter, index);
-                        }
-                      }}
-                    />
-                  </Fragment>
-                </Box>
-              );
-            })}
-          {children}
-          {product?.questions && (
-            <Box className="site-dialog__content">
-              <RenderQuestions
-                noHeading={true}
-                questions={product?.questions}
-                control={control}
-                errors={errors}
-                fileName={fileName}
-                setFileName={setFileName}
-              />
-            </Box>
-          )}
-          {isUserAgent && (
-            <VipOrderForm
-              clearErrors={clearErrors}
+                          const selectedFilter = dropdown.find((item) => item.option === value);
+                          if (selectedFilter) {
+                            onChangeDropDown(selectedFilter, index);
+                          }
+                        }}
+                      />
+                    </Fragment>
+                  </Box>
+                );
+              })}
+          </>
+        )}
+        {children}
+        {product?.questions && (
+          <Box className="site-dialog__content">
+            <RenderQuestions
+              noHeading={true}
+              questions={product?.questions}
               control={control}
               errors={errors}
-              handleVipSchemas={handleVipSchemas}
-              vipOptions={vipOptions}
-              vipsLoading={vipsLoading}
+              fileName={fileName}
+              setFileName={setFileName}
             />
-          )}
-          {product?.cta_label && (
-            <Button
-              className="button button--black"
-              sx={{ marginTop: { xs: '10px', md: '40px' } }}
-              type="submit"
-              fullWidth
-              disabled={isProductOrdered || vipsLoading}
-            >
-              {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
-            </Button>
-          )}
-        </Box>
-      )}
-      {product?.type === 'simple' && (
-        <Box
-          component="form"
-          onSubmit={handleSubmit((data) => {
-            onSubmit(data);
-            reset();
-            setFileName(null);
-          })}
-          className="product-size product-size--request"
-        >
-          {children}
-          {product?.questions && (
-            <Box className="site-dialog__content">
-              <RenderQuestions
-                noHeading={true}
-                questions={product?.questions}
-                control={control}
-                errors={errors}
-                fileName={fileName}
-                setFileName={setFileName}
-              />
-            </Box>
-          )}
-          {isUserAgent && (
-            <VipOrderForm
-              clearErrors={clearErrors}
-              control={control}
-              errors={errors}
-              handleVipSchemas={handleVipSchemas}
-              vipOptions={vipOptions}
-              vipsLoading={vipsLoading}
-            />
-          )}
-          {product?.cta_label && (
-            <Btn
-              look="dark-filled"
-              className="button button--black"
-              style={{ marginTop: '40px' }}
-              width="100%"
-              fullWidth
-              type="submit"
-              disabled={isProductOrdered || vipsLoading}
-            >
-              {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
-            </Btn>
-          )}
-        </Box>
-      )}
+          </Box>
+        )}
+        {isUserAgent && (
+          <VipOrderForm
+            clearErrors={clearErrors}
+            control={control}
+            errors={errors}
+            handleVipSchemas={handleVipSchemas}
+            vipOptions={vipOptions}
+            vipsLoading={vipsLoading}
+          />
+        )}
+        {product?.cta_label && (
+          <Btn
+            look="dark-filled"
+            className="button button--black"
+            style={{ marginTop: '40px' }}
+            width="100%"
+            fullWidth
+            type="submit"
+            disabled={isProductOrdered || vipsLoading}
+          >
+            {!isProductOrdered ? product.cta_label : en.products.itemRequestForm.requested}
+          </Btn>
+        )}
+      </Box>
       <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
       <Backdrop sx={{ zIndex: 10000 }} open={isPending}>
         <CircularProgress />

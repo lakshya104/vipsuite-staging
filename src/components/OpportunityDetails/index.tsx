@@ -1,5 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { isEmpty, map } from 'lodash';
 import { Box, CardContent, Typography, Button, Grid2, Backdrop, CircularProgress } from '@mui/material';
 import he from 'he';
 import OpportunityTabs from '@/components/OpportunityTabs';
@@ -20,13 +25,15 @@ import DynamicForm from '@/features/DynamicForm';
 import OpportunityProductCard from '@/components/DashboardCard/OpportunityProductCard';
 import { isNonEmptyString } from '@/helpers/utils';
 import { GetAllVips, SendRsvp } from '@/libs/api-manager/manager';
-import revalidatePathAction from '@/libs/actions';
-import { paths } from '@/helpers/paths';
-import { AgentVipsPayload, VipApiResponse, VipOptions } from '@/interfaces';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { isEmpty } from 'lodash';
+import { paths, withSearchParams } from '@/helpers/paths';
+import {
+  AgentVipsPayload,
+  RsvpFormValues,
+  VipApiResponse,
+  vipInitialSchema,
+  vipOptionalSchema,
+  VipOptions,
+} from '@/interfaces';
 import VipOrderForm from '../VipOrderForm';
 
 interface OpportunityDetailsCardProps {
@@ -35,6 +42,7 @@ interface OpportunityDetailsCardProps {
 }
 
 const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportunity, userRole }) => {
+  const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
   const [toasterMessage, setToasterMessage] = useState<string>('');
@@ -42,21 +50,13 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
   const images = opportunity?.acf?.web_detail_images
-    ? opportunity?.acf?.web_detail_images?.map((item) => item?.sizes['vs-container'])
+    ? opportunity?.acf?.web_detail_images?.map(
+        (item) => item?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder,
+      )
     : [opportunity.acf.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
   const showVipOptions = userRole === UserRole.Agent && isEmpty(opportunity?.acf?.grouped_products);
   const [vipsLoading, setVipsLoading] = useState<boolean>(showVipOptions ? true : false);
-  const [vipSchemas, setVipSchemas] = useState(() =>
-    !showVipOptions
-      ? {
-          profileId: z.array(z.string()),
-          profileName: z.string(),
-        }
-      : {
-          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-        },
-  );
+  const [vipSchemas, setVipSchemas] = useState(() => (!showVipOptions ? vipOptionalSchema : vipInitialSchema));
   const vipSchema = z.object({
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
@@ -91,8 +91,8 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       try {
         const response = await GetAllVips();
         setVipOptions(
-          response.data.map((vip: VipApiResponse) => ({
-            value: vip?.profile_id ? vip?.profile_id.toString() : null,
+          map(response.data, (vip: VipApiResponse) => ({
+            value: vip?.profile_id?.toString() || '',
             label: vip?.first_name + ' ' + vip?.last_name,
           })),
         );
@@ -122,6 +122,24 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     });
   };
 
+  const handleForm = async (data: RsvpFormValues) => {
+    if (!(userRole === UserRole.Agent)) setBtnDisable(true);
+    try {
+      const res = await SendRsvp(data);
+      handleToasterMessage('success', res?.message);
+      setTimeout(() => {
+        router.push(withSearchParams(() => paths.root.inbox.getHref(), { isOrderTab: 'true' }));
+      }, 1500);
+    } catch (error) {
+      handleToasterMessage('error', String(error));
+      setBtnDisable(false);
+    } finally {
+      setIsPending(false);
+      setVipSchemas(vipInitialSchema);
+      reset();
+    }
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmitDynamic = async (data: Record<string, any>, payloadWithVipData?: AgentVipsPayload) => {
     setIsPending(true);
@@ -148,59 +166,95 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       ...(showVipOptions && payloadWithVipData),
       order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
     };
-    try {
-      const res = await SendRsvp(rsvp);
-      handleToasterMessage('success', res?.message);
-      setBtnDisable(true);
-    } catch (error) {
-      handleToasterMessage('error', String(error));
-      setBtnDisable(false);
-    } finally {
-      setIsPending(false);
-      await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
-      setVipSchemas({
-        profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-        profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-      });
-    }
+    await handleForm(rsvp);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmitSimple = async (data: any) => {
+    setIsPending(true);
     const payloadWithVipData = {
       ...(showVipOptions && {
         ...(!isEmpty(data?.vip_profile_ids) && { vip_profile_ids: data.vip_profile_ids.join(',') }),
         ...(data?.vip_profile_names && { vip_profile_names: data.vip_profile_names }),
       }),
     };
-
-    setIsPending(true);
     const rsvp = {
       post_type: 'opportunity',
       rsvp_post: opportunity.id,
       ...(showVipOptions && payloadWithVipData),
       order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
     };
-    try {
-      const res = await SendRsvp(rsvp);
-      handleToasterMessage('success', res?.message);
-      setBtnDisable(true);
-    } catch (error) {
-      handleToasterMessage('error', String(error));
-      setBtnDisable(false);
-    } finally {
-      setIsPending(false);
-      await revalidatePathAction(paths.root.eventDetails.getHref(opportunity?.id));
-      setVipSchemas({
-        profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-        profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-      });
-      reset();
-    }
+    await handleForm(rsvp);
   };
 
   const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
     setVipSchemas(schemas);
+  };
+
+  const renderDynamicForm = () => {
+    return (
+      <DynamicForm
+        questions={opportunity.acf.questions}
+        onSubmit={onSubmitDynamic}
+        ctaText={opportunity?.acf?.cta_label}
+        ctaIfAlreadyOrdered={en.opportunities.opportunityRsvp.responded}
+        alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
+        noHeading={true}
+        showCta={!!opportunity?.acf?.grouped_products?.length}
+        vipsLoading={vipsLoading}
+        vipOptions={vipOptions}
+        isUserAgent={showVipOptions}
+      />
+    );
+  };
+
+  const renderLookBook = () => {
+    return (
+      <>
+        <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
+          <ReferCard
+            heading={opportunity?.acf?.lookbook_heading}
+            text={opportunity?.acf?.lookbook_description}
+            href={opportunity?.acf?.lookbook_pdf}
+            type="lookbook"
+          />
+        </Box>
+        <RequestItemFormButton
+          postId={opportunity?.id}
+          isUserAgent={userRole === UserRole.Agent}
+          vipOptions={vipOptions}
+          vipsLoading={vipsLoading}
+        />
+      </>
+    );
+  };
+
+  const renderGroupedProducts = () => {
+    return (
+      <>
+        <Typography variant="h2" sx={{ mb: 2, mt: 2.5 }}>
+          {en.opportunities.productHeading}
+        </Typography>
+        <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
+          {opportunity?.acf?.grouped_products.map((product) => (
+            <Grid2
+              className="landing-product__item opportunity-product"
+              size={{ xs: 12, sm: 6, lg: 4 }}
+              key={product?.product_id}
+            >
+              <OpportunityProductCard
+                oppId={opportunity?.id}
+                id={product?.product_id}
+                name={product?.product_name}
+                image={product?.product_image}
+                description={product?.product_short_description}
+                isRequestOnly={product?.is_request_only}
+              />
+            </Grid2>
+          ))}
+        </Grid2>
+      </>
+    );
   };
 
   return (
@@ -221,79 +275,15 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
           <OpportunityTabs opportunity={opportunity} />
         </CardContent>
       )}
-      {opportunity?.acf?.is_lookbook_available && (
-        <>
-          <Box className="gray-card" display={'flex'} justifyContent={'space-between'} gap={2.5}>
-            <ReferCard
-              heading={opportunity?.acf?.lookbook_heading}
-              text={opportunity?.acf?.lookbook_description}
-              href={opportunity?.acf?.lookbook_pdf}
-              type="lookbook"
-            />
-          </Box>
-          <RequestItemFormButton
-            postId={opportunity?.id}
-            isUserAgent={userRole === UserRole.Agent}
-            vipOptions={vipOptions}
-            vipsLoading={vipsLoading}
-          />
-        </>
-      )}
+      {opportunity?.acf?.is_lookbook_available && renderLookBook()}
       {opportunity?.acf?.show_offers && <RedeemBox fetchOffers={opportunity?.acf?.show_offers} />}
       {opportunity?.acf?.grouped_products ? (
         <>
-          {opportunity?.acf?.questions && (
-            <DynamicForm
-              questions={opportunity.acf.questions}
-              onSubmit={onSubmitDynamic}
-              ctaText={opportunity?.acf?.cta_label}
-              ctaIfAlreadyOrdered={en.opportunities.opportunityRsvp.responded}
-              alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
-              noHeading={true}
-              showCta={!!opportunity?.acf?.grouped_products?.length}
-              vipsLoading={vipsLoading}
-              vipOptions={vipOptions}
-              isUserAgent={showVipOptions}
-            />
-          )}
-          {opportunity?.acf?.grouped_products?.length > 0 && (
-            <>
-              <Typography variant="h2" sx={{ mb: 2, mt: 2.5 }}>
-                {en.opportunities.productHeading}
-              </Typography>
-              <Grid2 className="landing-product" container spacing={2} sx={{ mb: 5 }}>
-                {opportunity?.acf?.grouped_products.map((product) => (
-                  <Grid2
-                    className="landing-product__item opportunity-product"
-                    size={{ xs: 12, sm: 6, lg: 4 }}
-                    key={product?.product_id}
-                  >
-                    <OpportunityProductCard
-                      oppId={opportunity?.id}
-                      id={product?.product_id}
-                      name={product?.product_name}
-                      image={product?.product_image}
-                      description={product?.product_short_description}
-                      isRequestOnly={product?.is_request_only}
-                    />
-                  </Grid2>
-                ))}
-              </Grid2>
-            </>
-          )}
+          {opportunity?.acf?.questions && renderDynamicForm()}
+          {!isEmpty(opportunity?.acf?.grouped_products) && renderGroupedProducts()}
         </>
       ) : opportunity?.acf?.questions ? (
-        <DynamicForm
-          questions={opportunity.acf.questions}
-          onSubmit={onSubmitDynamic}
-          ctaText={opportunity?.acf?.cta_label}
-          ctaIfAlreadyOrdered={en.opportunities.opportunityRsvp.responded}
-          alreadyOrdered={opportunity?.acf?.is_rsvp || btnDisable}
-          noHeading={true}
-          vipsLoading={vipsLoading}
-          vipOptions={vipOptions}
-          isUserAgent={showVipOptions}
-        />
+        renderDynamicForm()
       ) : (
         isNonEmptyString(opportunity?.acf?.cta_label) && (
           <Box component="form" onSubmit={handleSubmit(onSubmitSimple)} className="product-size">

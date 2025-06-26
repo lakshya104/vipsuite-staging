@@ -62,8 +62,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     description:
       isRequestedProduct || isLookbookOrder ? en.selectAddress.dialog.requestDesc : en.selectAddress.dialog.orderDesc,
     image: isRequestedProduct || isLookbookOrder ? undefined : productImage || DefaultImageFallback.Placeholder,
-    buttonText:
-      isRequestedProduct || isLookbookOrder ? en.selectAddress.dialog.reqBtn : en.selectAddress.dialog.orderBtn,
+    buttonText: en.selectAddress.dialog.orderBtn,
   };
 
   const address = {
@@ -199,17 +198,10 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
       <FullScreenDialog
         isOpen={isDialogOpen}
         onClose={() => {
-          if (isRequestedProduct || isLookbookOrder) {
-            startTransition(() => {
-              router.push(paths.root.home.getHref());
-              setIsDialogOpen(false);
-            });
-          } else {
-            startTransition(() => {
-              router.push(withSearchParams(() => paths.root.inbox.getHref(), { isOrderTab: 'true' }));
-              setIsDialogOpen(false);
-            });
-          }
+          startTransition(() => {
+            router.push(withSearchParams(() => paths.root.inbox.getHref(), { isOrderTab: 'true' }));
+            setIsDialogOpen(false);
+          });
         }}
         content={dialogBoxContent}
       />

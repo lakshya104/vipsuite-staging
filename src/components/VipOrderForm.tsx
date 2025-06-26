@@ -4,6 +4,7 @@ import { Box, Typography, Skeleton } from '@mui/material';
 import { z } from 'zod';
 import MultiSelectBox from './MultiSelectBox';
 import InputTextFormField from './InputTextFormField';
+import { vipInitialSchema, vipOptionalSchema } from '@/interfaces';
 
 interface VipOption {
   label: string;
@@ -68,10 +69,7 @@ const VipOrderForm: React.FC<VipOrderFormProps> = ({
                 profileName: z.string(),
               });
             } else {
-              handleVipSchemas({
-                profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-                profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-              });
+              handleVipSchemas(vipInitialSchema);
             }
           }}
         />
@@ -89,15 +87,9 @@ const VipOrderForm: React.FC<VipOrderFormProps> = ({
           onValueChange={(value) => {
             if (value && value.length > 0) {
               clearErrors('vip_profile_ids');
-              handleVipSchemas({
-                profileId: z.array(z.string()),
-                profileName: z.string(),
-              });
+              handleVipSchemas(vipOptionalSchema);
             } else {
-              handleVipSchemas({
-                profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-                profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-              });
+              handleVipSchemas(vipInitialSchema);
             }
           }}
         />

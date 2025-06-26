@@ -6,7 +6,7 @@ import { isNonEmptyString, mapQuestionsToSchema } from '@/helpers/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RenderQuestions from '@/components/RenderQuestions';
 import en from '@/helpers/lang';
-import { AgentVipsPayload, VipOptions } from '@/interfaces';
+import { AgentVipsPayload, vipInitialSchema, vipOptionalSchema, VipOptions } from '@/interfaces';
 import { z } from 'zod';
 import { isEmpty } from 'lodash';
 import VipOrderForm from '@/components/VipOrderForm';
@@ -39,17 +39,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   isUserAgent = false,
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
-  const [vipSchemas, setVipSchemas] = useState(() =>
-    !isUserAgent
-      ? {
-          profileId: z.array(z.string()),
-          profileName: z.string(),
-        }
-      : {
-          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-        },
-  );
+  const [vipSchemas, setVipSchemas] = useState(() => (!isUserAgent ? vipOptionalSchema : vipInitialSchema));
   const vipSchema = z.object({
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
@@ -104,10 +94,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             };
             onSubmit(data, payloadWithVipData);
             reset();
-            setVipSchemas({
-              profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-              profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-            });
+            setVipSchemas(vipInitialSchema);
             setFileName(null);
           })}
         >
@@ -134,7 +121,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
               {showCta ? (
                 ''
               ) : (
-                <Button className="button button--black" type="submit" fullWidth disabled={alreadyOrdered}>
+                <Button
+                  className="button button--black"
+                  type="submit"
+                  fullWidth
+                  disabled={alreadyOrdered || vipsLoading}
+                >
                   {alreadyOrdered ? ctaIfAlreadyOrdered : ctaText || en.common.orderNow}
                 </Button>
               )}

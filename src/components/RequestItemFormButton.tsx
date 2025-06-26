@@ -22,7 +22,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
-import { VipOptions } from '@/interfaces';
+import { vipInitialSchema, vipOptionalSchema, VipOptions } from '@/interfaces';
 import VipOrderForm from './VipOrderForm';
 import { isEmpty, isUndefined } from 'lodash';
 
@@ -48,17 +48,7 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [vipSchemas, setVipSchemas] = useState(() =>
-    !isUserAgent
-      ? {
-          profileId: z.array(z.string()),
-          profileName: z.string(),
-        }
-      : {
-          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-        },
-  );
+  const [vipSchemas, setVipSchemas] = useState(() => (!isUserAgent ? vipOptionalSchema : vipInitialSchema));
   const vipSchema = z.object({
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
@@ -120,10 +110,7 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({
       openToaster(String(error));
     } finally {
       reset();
-      setVipSchemas({
-        profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-        profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-      });
+      setVipSchemas(vipInitialSchema);
     }
   };
 
@@ -143,6 +130,15 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
+              <Typography variant="body1" fontWeight="500" sx={{ mb: 2 }}>
+                {en.lookBookForm.description}
+              </Typography>
+              <InputTextAreaFormField
+                name="itemName"
+                control={control}
+                placeholder={en.lookBookForm.placeholder}
+                errors={errors}
+              />
               {isUserAgent && (
                 <VipOrderForm
                   clearErrors={clearErrors}
@@ -153,15 +149,6 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({
                   vipsLoading={vipsLoading}
                 />
               )}
-              <Typography variant="body1" fontWeight="500" sx={{ mb: 2 }}>
-                {en.lookBookForm.description}
-              </Typography>
-              <InputTextAreaFormField
-                name="itemName"
-                control={control}
-                placeholder={en.lookBookForm.placeholder}
-                errors={errors}
-              />
             </Box>
             <DialogActions>
               <Btn look="dark-filled" width="100%" type="submit" disabled={isPending || vipsLoading}>
