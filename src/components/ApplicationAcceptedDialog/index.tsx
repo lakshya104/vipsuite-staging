@@ -60,7 +60,7 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
             <Typography variant="body1">
               {role === UserRole.Brand
                 ? en.customBrandAcceptedScreen.welcomePara
-                : UserRole.Agent === UserRole.Agent
+                : role === UserRole.Agent
                   ? en.customAcceptedScreen.agentWelcomePara
                   : en.customAcceptedScreen.welcomePara}
             </Typography>
