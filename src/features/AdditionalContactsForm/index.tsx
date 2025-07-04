@@ -1,44 +1,77 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  Box,
-  Typography,
-  TextField,
-  Backdrop,
-  CircularProgress,
-  Checkbox,
-  FormControlLabel,
-  FormControl,
-  FormHelperText,
-} from '@mui/material';
+import { Box, Typography, TextField, Checkbox, FormControlLabel, FormControl, FormHelperText } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormValues, vipStep2Schema } from './schema';
-import { contacts } from '@/data';
-import CustomStepper from '@/components/CustomStepper';
-import '../ProfileBuilder.scss';
-import { ProfileBuilderStepsProps, ACF } from '@/interfaces';
+import { FormValues, additionalContactsFormSchema } from './schema';
+import './ProfileBuilder.scss';
+import { ACF, AdditionalContactContent } from '@/interfaces';
 import { UpdateProfile } from '@/libs/api-manager/manager';
-import UseToaster from '@/hooks/useToaster';
-import Toaster from '@/components/Toaster';
 import en from '@/helpers/lang';
+import DynamicCustomStepper from '@/components/CustomStepper/DynamicCustomStepper';
 
-const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, onPrev, id, isAgent }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+interface AdditionalContactsProps {
+  profileDetail: ACF;
+  // eslint-disable-next-line no-unused-vars
+  onNext: (profileDetail: ACF) => void;
+  id: number;
+  nextSectionNumber: () => void;
+  prevSectionNumber: () => void;
+  sectionNumber: number;
+  totalSteps: number;
+  // eslint-disable-next-line no-unused-vars
+  handleLoading: (bool: boolean) => void;
+  // eslint-disable-next-line no-unused-vars
+  openToaster: (message?: string, onClose?: () => void) => void;
+  sectionDetails: {
+    additionalContactContent: AdditionalContactContent;
+    sectionTitle: string;
+    sectionDescription?: string;
+  };
+}
 
+const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
+  profileDetail,
+  onNext,
+  id,
+  sectionNumber,
+  nextSectionNumber,
+  prevSectionNumber,
+  totalSteps,
+  handleLoading,
+  openToaster,
+  sectionDetails,
+}) => {
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
     eventsSecondaryEmail: profileDetail.event_contacts?.secondary_email || '',
-    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly || true,
+    eventsContactMeDirectly: profileDetail.event_contacts?.contact_me_directly ?? true,
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
-    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly || true,
+    stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly ?? true,
     commercialOpportunitiesEmail: profileDetail.commercial_opportunities_contacts?.email || '',
     commercialOpportunitiesSecondaryEmail: profileDetail.commercial_opportunities_contacts?.secondary_email || '',
     commercialOpportunitiesContactMeDirectly:
-      profileDetail.commercial_opportunities_contacts?.contact_me_directly || true,
+      profileDetail.commercial_opportunities_contacts?.contact_me_directly ?? true,
   };
+  const { additionalContactContent, sectionTitle, sectionDescription } = sectionDetails;
+  const contacts = [
+    {
+      section: additionalContactContent?.events_field_label,
+      name: 'events',
+      description: additionalContactContent?.events_field_description,
+    },
+    {
+      section: additionalContactContent?.stylist_field_label,
+      name: 'stylist',
+      description: additionalContactContent?.stylist_field_description,
+    },
+    {
+      section: additionalContactContent?.gifting_field_label,
+      name: 'commercialOpportunities',
+      description: additionalContactContent?.gifting_field_description,
+    },
+  ];
 
   const {
     register,
@@ -47,7 +80,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     clearErrors,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(vipStep2Schema),
+    resolver: zodResolver(additionalContactsFormSchema),
     defaultValues: defaultValues,
   });
 
@@ -82,7 +115,7 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
   };
 
   const onSubmit = async (data: FormValues) => {
-    setIsLoading(true);
+    handleLoading(true);
     try {
       const updatedProfileDetail: ACF = {
         ...profileDetail,
@@ -114,10 +147,14 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
       };
       await UpdateProfile(id, profile);
       onNext(updatedProfileDetail);
+      if (sectionNumber < totalSteps - 1) {
+        nextSectionNumber();
+        handleLoading(false);
+      }
     } catch (error) {
       openToaster(en.profileBuilder.steps.profileError + error);
     } finally {
-      setIsLoading(false);
+      handleLoading(false);
     }
   };
 
@@ -125,8 +162,13 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
     <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
       <Box className="profile-builder__head">
         <Typography variant="h2" textAlign="center">
-          {en.profileBuilder.steps.addContacts}
+          {sectionTitle}
         </Typography>
+        {sectionDescription && (
+          <Typography variant="body1" textAlign="center">
+            {sectionDescription}
+          </Typography>
+        )}
       </Box>
       {contacts.map(({ section, description, name }) => (
         <Box className="profile-builder__form-row" key={section}>
@@ -183,13 +225,13 @@ const Step2Form: React.FC<ProfileBuilderStepsProps> = ({ profileDetail, onNext, 
           </FormControl>
         </Box>
       ))}
-      <CustomStepper currentStep={isAgent ? 3 : 2} totalSteps={isAgent ? 6 : 5} onPrev={onPrev} />
-      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isLoading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <DynamicCustomStepper
+        handleSectionChange={prevSectionNumber}
+        sectionNumber={sectionNumber}
+        totalSteps={totalSteps}
+      />
     </Box>
   );
 };
 
-export default Step2Form;
+export default AdditionalContactsForm;

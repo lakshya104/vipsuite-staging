@@ -2,7 +2,6 @@ import React from 'react';
 import { GetAllVips } from '@/libs/api-manager/manager';
 import ErrorHandler from '@/components/ErrorHandler';
 import MyVipsListing from '@/components/MyVipsListing';
-import AgentHeader from '@/components/Header/AgentHeader';
 import en from '@/helpers/lang';
 
 const MyVipPage = async () => {
@@ -10,13 +9,7 @@ const MyVipPage = async () => {
   if (error) {
     return <ErrorHandler error={error} errMessage={en.myVipsPage.errMessage} />;
   }
-
-  return (
-    <>
-      <AgentHeader />
-      <MyVipsListing myVips={myVips} />
-    </>
-  );
+  return <MyVipsListing myVips={myVips} />;
 };
 
 export default MyVipPage;

@@ -126,6 +126,7 @@ const VipSignupForm = () => {
   const onSubmit = async (formData: VipSignUpRequestBody) => {
     if (!isCodeVerified) {
       setError('Please verify your email first');
+      setToasterType('error');
       setToasterOpen(true);
     } else {
       setIsPending(true);

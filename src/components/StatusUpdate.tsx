@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useLayoutEffect } from 'react';
-import { LastLogin } from '@/libs/api-manager/manager';
-import { useUserStatusStore } from '@/store/useStore';
+import { GetMessageCount, LastLogin } from '@/libs/api-manager/manager';
+import { useMessageCountStore, useUserStatusStore } from '@/store/useStore';
 
 const StatusUpdate = () => {
   const { shouldUpdate, setLastUpdateTime } = useUserStatusStore();
+  const { setMessageCount } = useMessageCountStore();
 
   const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
@@ -14,9 +15,11 @@ const StatusUpdate = () => {
         console.log('Skipping status update - within cooldown period');
         return;
       }
-
       try {
-        await LastLogin();
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        const [_, count] = await Promise.all([LastLogin(), GetMessageCount()]);
+        setMessageCount(count.data['message-count'] || 0);
+        console.log('Message count updated:', count.data['message-count']);
         const now = Date.now();
         setLastUpdateTime(now);
         console.log('Status updated at:', new Date(now).toLocaleTimeString());

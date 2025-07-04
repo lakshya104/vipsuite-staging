@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const vipStep2Schema = z
+export const additionalContactsFormSchema = z
   .object({
     eventsEmail: z.string().email('Invalid email address').or(z.literal('')),
     eventsSecondaryEmail: z.string().email('Invalid email address').optional().or(z.literal('')),
@@ -34,4 +34,4 @@ export const vipStep2Schema = z
     },
   );
 
-export type FormValues = z.infer<typeof vipStep2Schema>;
+export type FormValues = z.infer<typeof additionalContactsFormSchema>;

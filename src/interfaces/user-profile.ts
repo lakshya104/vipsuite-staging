@@ -27,34 +27,20 @@ export interface ACF {
   avg_engagement_tiktok?: string | null;
   instagram_handle?: string;
   tiktok_handle?: string;
-  known_for?: string[];
   event_contacts?: ContactInfo;
   stylist_contacts?: ContactInfo;
   commercial_opportunities_contacts?: ContactInfo;
   contact_me_directly?: boolean;
   date_of_birth?: string;
-  birth_place?: string;
-  nationality?: string | null;
-  ethnicity?: string | null;
   number_of_children?: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   examples_of_vip_managed?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   child_info?: any;
-  pets?: string;
-  home_post_code?: string;
-  habits?: string[];
-  sports_play?: string | null;
-  other_sports?: string;
-  sports_follow?: string | null;
-  skills?: string | null;
-  look_feel_of_socials?: string | null;
-  interests?: string[];
   associated_brands?: boolean;
   secondary_email?: string | null;
   phone?: string;
   profile_status?: string;
-  type_of_content_create?: string[];
   instagram_follower_count?: number;
   tiktok_follower_count?: number;
 }
@@ -83,4 +69,5 @@ export type Session = {
   token: string;
   first_name: string;
   last_name: string;
+  is_profile_builder_progressed?: string;
 };

@@ -461,7 +461,7 @@ export const LogOut = async () => {
 
 export const DeleteAccount = async () => {
   try {
-    const response = await InstanceWithTokenOnly.delete(Endpoints.DeleteAccount);
+    const response = await InstanceWithTokenOnly.delete(Endpoints.deleteAccount);
     return response.data;
   } catch (error) {
     console.error('Error during Delete Account:', error);
@@ -598,7 +598,7 @@ export const DeleteFromWishlist = async (postId: number) => {
   }
 };
 
-export const ReferaVIP = async (data: { email: string; instagram_handle: string; tiktok_handle: string }) => {
+export const ReferaVIP = async (data: { email: string; instagram_handle?: string; tiktok_handle?: string }) => {
   try {
     const response = await Instance.post(Endpoints.referVIP, data);
     return response.data;
@@ -816,5 +816,23 @@ export const LastLogin = async () => {
     console.error('Error during updating status:', error);
     const errorMessage = error instanceof Error ? error.message : 'Error during updating status';
     throw new Error(errorMessage);
+  }
+};
+
+export const GetProfileBuilder = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getProfileBuilder);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const GetMessageCount = async () => {
+  try {
+    const response = await Instance.get(Endpoints.getMessageCount);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
   }
 };

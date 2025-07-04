@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputForm from '@/components/InputForm/InputForm';
-import { SendMessage } from '@/libs/api-manager/manager';
+import { GetMessageCount, SendMessage } from '@/libs/api-manager/manager';
 import revalidatePathAction from '@/libs/actions';
 import { Backdrop, CircularProgress } from '@mui/material';
 import UseToaster from '@/hooks/useToaster';
@@ -14,6 +14,7 @@ import './MessageForm.scss';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
 import { messageDetailsSchema } from './schema';
+import { useMessageCountStore } from '@/store/useStore';
 
 interface FormValues {
   message: string;
@@ -27,6 +28,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const { setMessageCount } = useMessageCountStore();
   const {
     control,
     handleSubmit,
@@ -42,9 +44,11 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
   useEffect(() => {
     async function revalidateInbox() {
       await revalidatePathAction(paths.root.inbox.getHref());
+      const count = await GetMessageCount();
+      setMessageCount(count.data['message-count'] || 0);
     }
     revalidateInbox();
-  }, []);
+  }, [setMessageCount]);
 
   const onSubmit = async (data: FormValues) => {
     startTransition(async () => {

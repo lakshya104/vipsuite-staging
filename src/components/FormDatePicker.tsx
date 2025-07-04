@@ -5,7 +5,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import en from '@/helpers/lang';
 
 interface FormDatePickerProps<T extends FieldValues> {
@@ -13,14 +13,22 @@ interface FormDatePickerProps<T extends FieldValues> {
   control: Control<T>;
   label?: string;
   selectFutureDate?: boolean;
+  rules?: RegisterOptions<T, Path<T>>;
 }
 
-const FormDatePicker = <T extends FieldValues>({ name, control, label, selectFutureDate }: FormDatePickerProps<T>) => {
+const FormDatePicker = <T extends FieldValues>({
+  name,
+  control,
+  label,
+  selectFutureDate,
+  rules,
+}: FormDatePickerProps<T>) => {
   const yesterday = dayjs().subtract(1, 'day');
   return (
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         const isFutureDate = value && dayjs(value).isAfter(yesterday);
         const showFutureDateError = !selectFutureDate && isFutureDate;
@@ -40,6 +48,9 @@ const FormDatePicker = <T extends FieldValues>({ name, control, label, selectFut
                   error: !!error || showFutureDateError,
                   helperText: showFutureDateError ? en.common.future : error?.message && en.common.fieldErrorMessage,
                   inputProps: { readOnly: true },
+                  FormHelperTextProps: {
+                    sx: { mt: 0 },
+                  },
                 },
               }}
             />

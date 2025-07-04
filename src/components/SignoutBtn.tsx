@@ -6,15 +6,18 @@ import { LogOut } from '@/libs/api-manager/manager';
 import Toaster from './Toaster';
 import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
+import { useUserStatusStore } from '@/store/useStore';
 
 const SignoutBtn = () => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const { clearAll } = useUserStatusStore();
   const handleLogout = async () => {
     try {
       startTransition(async () => {
         await LogOut();
         await signOutAction();
+        clearAll();
       });
     } catch (error) {
       openToaster(en.signOutButton.errorMessage + error);

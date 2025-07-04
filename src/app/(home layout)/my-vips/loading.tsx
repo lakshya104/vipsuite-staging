@@ -2,12 +2,10 @@ import React from 'react';
 import MyVipsPageLoading from '@/site-pages/MyVipsPage/loading';
 import { Box, Container, Skeleton } from '@mui/material';
 import './my-vips.scss';
-import AgentHeader from '@/components/Header/AgentHeader';
 
 export default function Loading() {
   return (
     <>
-      <AgentHeader />
       <Box className="my-vips-page">
         <Container>
           <Box className="my-vips-page__head">

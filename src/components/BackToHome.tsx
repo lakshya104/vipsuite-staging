@@ -13,7 +13,7 @@ interface BackToHomeProps {
 
 const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
   const [isPending, startTransition] = useTransition();
-  const { clearVipId } = useEditVipIdStore();
+  const { clearVipIdStore } = useEditVipIdStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const isProfileEdit = searchParams.get('profile-route');
@@ -32,7 +32,7 @@ const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
         await createSkipCookie();
       }
       router.push(redirectPath);
-      clearVipId();
+      clearVipIdStore();
     });
   };
 

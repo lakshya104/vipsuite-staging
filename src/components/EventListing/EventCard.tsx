@@ -43,7 +43,7 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
           )}
           <Typography variant="h2" dangerouslySetInnerHTML={{ __html: he.decode(item?.title?.rendered || '') || '' }} />
           {(item?.acf?.event_start_date || item?.acf?.event_end_date) && (
-            <Typography variant="body2">
+            <Typography variant="body2" color="white !important">
               <Typography component="span" sx={{ fontWeight: '500' }}>
                 {en.events.date}
               </Typography>{' '}
@@ -55,7 +55,7 @@ const EventCard: React.FC<EventCardProps> = ({ item }) => {
             </Typography>
           )}
           {item?.acf?.event_location && item.acf.event_location.trim() !== '' && (
-            <Typography variant="body2">
+            <Typography variant="body2" color="white !important">
               <Typography component="span" sx={{ fontWeight: '500' }}>
                 {en.events.location}
               </Typography>{' '}

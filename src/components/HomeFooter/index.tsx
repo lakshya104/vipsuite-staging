@@ -8,6 +8,7 @@ import { ProgressBarLink } from '../ProgressBar';
 import './HomeFooter.scss';
 import { UserRole } from '@/helpers/enums';
 import { brandFooterItems, vipFooterItems } from '@/data';
+import { useMessageCountStore } from '@/store/useStore';
 
 interface HomeFooterProps {
   role: UserRole;
@@ -15,6 +16,7 @@ interface HomeFooterProps {
 
 const HomeFooter: React.FC<HomeFooterProps> = ({ role }) => {
   const pathname = usePathname();
+  const { messageCount } = useMessageCountStore();
 
   const footerItems = role === UserRole.Brand ? brandFooterItems : vipFooterItems;
   return (
@@ -26,8 +28,9 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ role }) => {
             <ProgressBarLink href={item.href}>
               <Box className="footer-menu__icon">
                 <Image src={isActive ? item.srcselected : item.src} alt={item.alt} width={24} height={24} />
-                {/* {orderCount !== 0 && item.label === 'My Orders' && <span className="label">{orderCount}</span>} */}
-                {/* {(item.label === 'Inbox' || item.label === 'My Orders') && <span className="label">{orderCount}</span>} */}
+                {(item.label === 'Inbox' || item.label === 'My Orders') && (
+                  <span className="label">{messageCount}</span>
+                )}
               </Box>
               <Typography variant="caption">{item.label}</Typography>
             </ProgressBarLink>

@@ -20,9 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           last_name: user?.last_name,
           profile_id: user?.profile_id,
           token: user?.token,
-          acf: {
-            known_for: user?.acf?.known_for,
-          },
+          is_profile_builder_progressed: user?.is_profile_builder_progressed,
         };
         token.user = userData;
       }

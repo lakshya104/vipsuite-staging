@@ -16,6 +16,7 @@ type SelectBoxProps<T extends FieldValues> = {
   clearErrors?: (name?: Path<T>) => void;
   numberOfChildren?: string;
   onChange?: (value: string) => void;
+  value?: string;
 };
 
 const SelectBox = <T extends FieldValues>({
@@ -27,6 +28,7 @@ const SelectBox = <T extends FieldValues>({
   getValues,
   clearErrors,
   onChange,
+  value,
 }: SelectBoxProps<T>) => {
   const hasValue = getValues ? !!getValues(name) : false;
   const hasFieldError = !!errors[name];
@@ -45,7 +47,7 @@ const SelectBox = <T extends FieldValues>({
           <Select
             {...field}
             label={label}
-            value={field.value || ''}
+            value={value ? value : field.value || ''}
             inputProps={{ 'aria-label': label }}
             onChange={(event) => {
               field.onChange(event);

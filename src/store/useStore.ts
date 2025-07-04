@@ -7,17 +7,23 @@ import { UserRole } from '@/helpers/enums';
 import { Question } from '@/interfaces/events';
 import { AgentVipsPayload } from '@/interfaces';
 
-interface OrderState {
-  orderCount: number;
-  increaseOrderCount: () => void;
-  setOrderCount: (count: number) => void;
+interface MessageCountState {
+  messageCount: number;
+  setMessageCount: (count: number) => void;
 }
 
-export const useOrderStore = create<OrderState>((set) => ({
-  orderCount: 0,
-  increaseOrderCount: () => set((state) => ({ orderCount: state.orderCount + 1 })),
-  setOrderCount: (count) => set({ orderCount: count }),
-}));
+export const useMessageCountStore = create<MessageCountState>()(
+  persist(
+    (set) => ({
+      messageCount: 0,
+      setMessageCount: (count) => set({ messageCount: count }),
+    }),
+    {
+      name: 'order-store',
+      storage: createJSONStorage(() => sessionStorage),
+    } as PersistOptions<MessageCountState>,
+  ),
+);
 
 interface LookbookOrderState {
   lookbookDescription: string;
@@ -136,16 +142,20 @@ export const useUserInfoStore = create<UserInfoState>()(
 
 interface EditVipIdState {
   editVipId: string | null;
+  shouldVipEdit: boolean;
+  setShouldVipEdit: (bool: boolean) => void;
   setVipId: (id: string) => void;
-  clearVipId: () => void;
+  clearVipIdStore: () => void;
 }
 
 export const useEditVipIdStore = create<EditVipIdState>()(
   persist(
     (set) => ({
       editVipId: null,
+      shouldVipEdit: false,
+      setShouldVipEdit: (bool) => set({ shouldVipEdit: bool }),
       setVipId: (id) => set({ editVipId: id }),
-      clearVipId: () => set({ editVipId: null }),
+      clearVipIdStore: () => set({ editVipId: null, shouldVipEdit: false }),
     }),
     {
       name: 'vip-id-storage',
@@ -231,6 +241,7 @@ interface UserStatusState {
   lastUpdateTime: number;
   setLastUpdateTime: (time: number) => void;
   shouldUpdate: (cooldownMinutes?: number) => boolean;
+  clearAll: () => void;
 }
 
 export const useUserStatusStore = create<UserStatusState>()(
@@ -242,6 +253,9 @@ export const useUserStatusStore = create<UserStatusState>()(
         const now = Date.now();
         const lastUpdate = get().lastUpdateTime;
         return now - lastUpdate >= cooldownMinutes * 60 * 1000;
+      },
+      clearAll: () => {
+        useUserStatusStore.persist.clearStorage();
       },
     }),
     {

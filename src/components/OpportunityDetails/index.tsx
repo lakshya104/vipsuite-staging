@@ -181,6 +181,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     const rsvp = {
       post_type: 'opportunity',
       rsvp_post: opportunity.id,
+      is_pleases: 'interested',
       ...(showVipOptions && payloadWithVipData),
       order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
     };

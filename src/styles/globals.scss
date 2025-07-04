@@ -576,3 +576,19 @@ section {
 .MuiDateTimePickerToolbar-timeDigitsContainer {
   align-items: center;
 }
+
+.age-button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: mixins.rem(16);
+  margin-top: mixins.rem(-30);
+  @include mixins.flex($justify-content: space-between, $align-items: center);
+  button {
+    margin: 0;
+    padding: 0;
+    text-decoration: underline;
+    text-transform: capitalize;
+  }
+}

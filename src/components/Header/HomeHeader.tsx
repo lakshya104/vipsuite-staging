@@ -26,6 +26,7 @@ import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
 import DialogConfirmBox from '../Dialog/DialogConfirm';
+import { useMessageCountStore, useUserStatusStore } from '@/store/useStore';
 
 const vipMenuItems = [
   {
@@ -38,21 +39,6 @@ const vipMenuItems = [
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: paths.root.addresses.getHref(),
   },
-  // {
-  //   label: 'Login & Security',
-  //   icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-  //   href: paths.root.loginSecurity.getHref(),
-  // },
-  // {
-  //   label: 'Contact',
-  //   icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
-  //   href: paths.root.contact.getHref(),
-  // },
-  // {
-  //   label: 'Help & FAQs',
-  //   icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
-  //   href: paths.root.contact.getHref(),
-  // },
 ];
 
 const agentMenuItems = [
@@ -71,21 +57,6 @@ const agentMenuItems = [
     icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
     href: paths.root.addresses.getHref(),
   },
-  // {
-  //   label: 'Login & Security',
-  //   icon: <Image src="/img/security.svg" alt="Logo" width={20} height={20} />,
-  //   href: paths.root.loginSecurity.getHref(),
-  // },
-  // {
-  //   label: 'Contact',
-  //   icon: <Image src="/img/contact.svg" alt="Logo" width={20} height={20} />,
-  //   href: paths.root.contact.getHref(),
-  // },
-  // {
-  //   label: 'Help & FAQs',
-  //   icon: <Image src="/img/faq.svg" alt="Logo" width={20} height={20} />,
-  //   href: paths.root.helpFaq.getHref(),
-  // },
 ];
 
 interface HomeHeaderProps {
@@ -99,6 +70,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('error');
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const pathname = usePathname();
+  const { messageCount } = useMessageCountStore();
+  const { clearAll } = useUserStatusStore();
   const menuItems =
     role === UserRole.Vip
       ? vipMenuItems
@@ -118,6 +91,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       startTransition(async () => {
         await LogOut();
         await signOutAction();
+        clearAll();
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);
@@ -192,6 +166,37 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                   >
                     <ProgressBarLink href={link.href} title={link.label}>
                       {link.label}
+                      {link.label === 'Inbox' && (
+                        <Box
+                          sx={{
+                            display: 'inline-block',
+                            position: 'relative',
+                            marginLeft: '4px',
+                            verticalAlign: 'top',
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-12px',
+                              background: 'red',
+                              color: 'white',
+                              borderRadius: '50%',
+                              minWidth: '18px',
+                              height: '18px',
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: '0 5px',
+                              zIndex: 1,
+                            }}
+                          >
+                            {messageCount > 99 ? '99+' : messageCount}
+                          </Box>
+                        </Box>
+                      )}
                     </ProgressBarLink>
                   </MenuItem>
                 );

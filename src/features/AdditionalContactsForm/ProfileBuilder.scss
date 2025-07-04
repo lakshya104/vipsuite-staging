@@ -85,7 +85,7 @@
         &:has(.Mui-checked) {
           background-color: var(--color-textBlack);
           border-color: var(--color-textBlack);
-          color: var(--color-white) !important;
+          color: var(--color-white);
         }
       }
       .MuiCheckbox-root {
