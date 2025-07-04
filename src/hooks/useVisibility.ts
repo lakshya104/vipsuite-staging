@@ -16,9 +16,11 @@ export function useVisibility(section: Section, values: any) {
       const needed = q.custom_conditional_logic.question_values.split(',');
       return Array.isArray(parentVal) ? parentVal.some((v) => needed.includes(v)) : needed.includes(parentVal);
     }
-    section.questions.forEach((q) => {
-      vis[q.unique_id] = check(q);
-    });
+    if (isArray(section.questions)) {
+      section.questions.forEach((q) => {
+        vis[q.unique_id] = check(q);
+      });
+    }
     return vis;
   }, [section, values]);
 }

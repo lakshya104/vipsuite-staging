@@ -21,7 +21,7 @@ export default async function HomeSectionLayout({
     const isSkipped = cookieStore.get(CookieName.SkipProfile);
     const { role, is_profile_builder_progressed, first_name, token, email, profile_id } = session ?? {};
 
-    if (role === UserRole.Vip && is_profile_builder_progressed !== '1' && !isSkipped) {
+    if (role === UserRole.Vip && is_profile_builder_progressed !== 1 && !isSkipped) {
       return <ApplicationAcceptedDialog name={first_name} role={UserRole.Vip} />;
     }
     if (role === UserRole.Agent) {

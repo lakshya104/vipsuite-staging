@@ -69,5 +69,5 @@ export type Session = {
   token: string;
   first_name: string;
   last_name: string;
-  is_profile_builder_progressed?: string;
+  is_profile_builder_progressed?: number;
 };
