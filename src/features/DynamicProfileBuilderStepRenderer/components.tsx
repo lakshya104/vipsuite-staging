@@ -242,6 +242,7 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
             return (
               <>
                 <SelectBox
+                  showSelectOne={true}
                   {...commonProps}
                   options={map(choices, (choice) => ({
                     value: choice.text,
@@ -257,7 +258,7 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
                     }
                   }}
                   label={title}
-                  errors={field.value && !field.value.includes('Other') ? errors : {}}
+                  errors={!isOtherSelected ? errors : {}}
                 />
                 {displayValue === 'Other' && (
                   <TextField

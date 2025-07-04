@@ -17,6 +17,7 @@ type SelectBoxProps<T extends FieldValues> = {
   numberOfChildren?: string;
   onChange?: (value: string) => void;
   value?: string;
+  showSelectOne?: boolean;
 };
 
 const SelectBox = <T extends FieldValues>({
@@ -29,6 +30,7 @@ const SelectBox = <T extends FieldValues>({
   clearErrors,
   onChange,
   value,
+  showSelectOne,
 }: SelectBoxProps<T>) => {
   const hasValue = getValues ? !!getValues(name) : false;
   const hasFieldError = !!errors[name];
@@ -57,7 +59,7 @@ const SelectBox = <T extends FieldValues>({
               onChange?.(event.target.value);
             }}
           >
-            {!onChange && <MenuItem value="">{en.selectBox.selectOne}</MenuItem>}
+            {(!onChange || showSelectOne) && <MenuItem value="">{en.selectBox.selectOne}</MenuItem>}
             {options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
