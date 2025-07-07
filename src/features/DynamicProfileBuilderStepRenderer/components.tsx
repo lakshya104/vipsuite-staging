@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
 import { find, isArray, isEmpty, isString, map, some } from 'lodash';
-import { Box, Checkbox, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  ListItemText,
+  MenuItem,
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 import SelectBox from '@/components/SelectBox';
 import { ProfileQuestionType, Question } from '@/interfaces';
+import { ChildDob } from '.';
 
 interface RenderSingleSelectInputProps {
   id: string;
@@ -295,5 +310,163 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
       label={title}
       errors={errors}
     />
+  );
+};
+
+interface RenderCityDropDownProps {
+  id: string;
+  title: string;
+  relatedParentId: string;
+  control: Control<FieldValues>;
+  helperText?: string;
+  setValue: import('react-hook-form').UseFormSetValue<FieldValues>;
+  parentCountry: string | string[] | ChildDob[];
+  options: string[];
+  isDisabled: boolean;
+  placeholder: string;
+}
+
+export const RenderCityDropDown: React.FC<RenderCityDropDownProps> = ({
+  id,
+  title,
+  relatedParentId,
+  helperText,
+  control,
+  setValue,
+  parentCountry,
+  options,
+  isDisabled,
+  placeholder,
+}) => {
+  const prevParentCountryRef = useRef(parentCountry);
+  useEffect(() => {
+    // Only clear city if parent country was previously set and now cleared
+    if (relatedParentId && !parentCountry && prevParentCountryRef.current) {
+      setValue(id, null);
+    }
+    prevParentCountryRef.current = parentCountry;
+  }, [parentCountry, id, relatedParentId, setValue]);
+
+  const otherOption = useMemo(() => {
+    return options.find((option) => option.toLowerCase() === 'other');
+  }, [options]);
+
+  return (
+    <Box key={id}>
+      <Controller
+        name={id}
+        control={control}
+        render={({ field: controllerField, fieldState }) => {
+          const value = controllerField.value;
+
+          const isOtherSelected = isString(value) && (value.toLowerCase() === 'other' || value.startsWith('Other: '));
+          const displayValue = isOtherSelected ? otherOption : value;
+          const otherTextValue =
+            isOtherSelected && isString(value) ? (value.startsWith('Other: ') ? value.replace('Other: ', '') : '') : '';
+
+          return (
+            <FormControl fullWidth error={!!fieldState.error} sx={{ marginBottom: '0 !important' }}>
+              <Autocomplete
+                className="profile-builder__nationality"
+                sx={{ mb: '18px !important' }}
+                options={options.map((opt: string) => ({ value: opt, label: opt }))}
+                getOptionLabel={(option) => (typeof option === 'string' ? option : option.label)}
+                value={
+                  options
+                    .map((opt: string) => ({ value: opt, label: opt }))
+                    .find((option: { value: string; label: string }) => option.value === displayValue) || null
+                }
+                onChange={(_, newValue) => {
+                  if (newValue?.value.toLowerCase() === 'other') {
+                    // Set to "Other: " to trigger the text field
+                    controllerField.onChange('Other: ');
+                  } else {
+                    controllerField.onChange(newValue?.value || '');
+                  }
+                }}
+                disabled={isDisabled}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={title}
+                    error={!!fieldState.error && !fieldState.error.message?.includes('other')}
+                    placeholder={placeholder}
+                    sx={{
+                      cursor: isDisabled ? 'not-allowed !important' : 'pointer !important',
+                      opacity: isDisabled ? 0.7 : 1,
+                    }}
+                  />
+                )}
+                renderOption={(props, option, index) => {
+                  const isSelected = controllerField.value === option.value;
+                  return (
+                    <MenuItem {...props} key={`${option.value}${index}`} value={option.value}>
+                      <ListItemText primary={option.label} key={`${index}${option.value}`} />
+                      {isSelected && (
+                        <CheckIcon
+                          sx={{
+                            marginLeft: 'auto',
+                            color: 'primary.main',
+                            fontSize: '1.2rem',
+                          }}
+                        />
+                      )}
+                    </MenuItem>
+                  );
+                }}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                clearOnEscape
+                PaperComponent={(props) => (
+                  <Paper
+                    {...props}
+                    sx={{
+                      backgroundColor: '#fffff7',
+                      boxShadow:
+                        '0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)',
+                    }}
+                  />
+                )}
+              />
+
+              <FormHelperText
+                sx={{
+                  mb: 3,
+                  mt: -6,
+                  color: fieldState.error ? 'error.main' : 'text.secondary',
+                }}
+              >
+                {fieldState.error && !fieldState.error.message?.includes('other')
+                  ? fieldState.error.message
+                  : helperText}
+              </FormHelperText>
+              {fieldState.error && (
+                <FormHelperText
+                  sx={{
+                    mb: 2,
+                    mt: -2.8,
+                    color: 'text.secondary',
+                  }}
+                >
+                  {helperText}
+                </FormHelperText>
+              )}
+              {isOtherSelected && (
+                <TextField
+                  fullWidth
+                  value={otherTextValue}
+                  onChange={(e) => {
+                    controllerField.onChange(`Other: ${e.target.value}`);
+                  }}
+                  label={`Other ${title}`}
+                  sx={{ mt: 2 }}
+                  error={!!fieldState.error}
+                  helperText={!!fieldState.error && 'Please specify the other option'}
+                />
+              )}
+            </FormControl>
+          );
+        }}
+      />
+    </Box>
   );
 };

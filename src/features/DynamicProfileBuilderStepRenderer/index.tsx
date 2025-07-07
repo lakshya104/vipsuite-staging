@@ -23,7 +23,13 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { paths } from '@/helpers/paths';
-import { RenderDropDown, renderHeading, RenderMultiSelectInput, RenderSingleSelectInput } from './components';
+import {
+  RenderCityDropDown,
+  RenderDropDown,
+  renderHeading,
+  RenderMultiSelectInput,
+  RenderSingleSelectInput,
+} from './components';
 import { useVisibility } from '@/hooks/useVisibility';
 import { createDynamicResolver } from '@/hooks/useDynamicResolver';
 import AdditionalContactsForm from '../AdditionalContactsForm';
@@ -72,6 +78,11 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     : (profileBuilderSections?.sections[sectionNumber] as Section);
   const dobStaticField = useMemo<Question>(() => dobField, []);
   const totalSteps = isAgent ? agentSections.length : profileBuilderSections?.sections.length || 0;
+  const { uk_countries, us_countries, eu_countries, other_countries, uk_cities, eu_cities, us_cities, other_cities } =
+    profileBuilderSections;
+
+  const countryOptions = sortBy([...uk_countries, ...us_countries, ...eu_countries, ...other_countries]);
+  const allCityOptions = sortBy([...uk_cities, ...us_cities, ...eu_cities, ...other_cities]);
 
   useEffect(() => {
     if (section.specific_section_type === SectionType.YourDetails) {
@@ -91,7 +102,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     setValue,
   } = useForm<Record<string, string | string[] | ChildDob[] | null>>({
     mode: 'onChange',
-    defaultValues: createDynamicResolver(section, localProfileDetail),
+    defaultValues: createDynamicResolver(section, localProfileDetail, allCityOptions),
   });
   const formValues = watch();
   const prevFormValuesRef = useRef(formValues);
@@ -136,7 +147,8 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   }, [visibleQuestions, section.questions, setValue, formValues]);
 
   useEffect(() => {
-    reset(createDynamicResolver(section, localProfileDetail));
+    reset(createDynamicResolver(section, localProfileDetail, allCityOptions));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionNumber, section, reset, localProfileDetail]);
 
   useEffect(() => {
@@ -225,12 +237,14 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   });
 
   useEffect(() => {
-    if (isEmpty(fields) && kidsAgeQuestion?.unique_id) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      append({ date_of_birth: '' } as any);
+    if (kidsAgeQuestion?.unique_id) {
+      const profileKids = localProfileDetail?.[kidsAgeQuestion.unique_id as keyof ACF];
+      if (isEmpty(fields) && isEmpty(profileKids)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        append({ date_of_birth: '' } as any);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formValues]);
+  }, [kidsAgeQuestion, localProfileDetail, fields, append]);
 
   const handleAddChild = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -240,12 +254,6 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   const handleRemoveChild = (index: number) => {
     remove(index);
   };
-
-  const { uk_countries, us_countries, eu_countries, other_countries, uk_cities, eu_cities, us_cities, other_cities } =
-    profileBuilderSections;
-
-  const countryOptions = sortBy([...uk_countries, ...us_countries, ...eu_countries, ...other_countries]);
-  const allCityOptions = sortBy([...uk_cities, ...us_cities, ...eu_cities, ...other_cities]);
 
   const onSubmit = async (data: Record<string, string | string[] | ChildDob[] | null>) => {
     setSubmitted(true);
@@ -497,13 +505,17 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
               }
               return (
                 <Box key={id}>
-                  <AutoCompleteSelector
+                  <RenderCityDropDown
+                    control={control}
+                    id={id}
+                    isDisabled={!parentCountry && !!relatedParentId}
                     options={relatedParentId ? sortBy(cityOptions) : allCityOptions}
-                    helperText={helperText}
-                    {...commonProps}
-                    label={title}
-                    disabled={!parentCountry && !!relatedParentId}
+                    parentCountry={parentCountry}
                     placeholder={!parentCountry && relatedParentId ? 'Select country first' : 'Search for a city'}
+                    relatedParentId={relatedParentId}
+                    setValue={setValue}
+                    title={title}
+                    helperText={helperText}
                   />
                 </Box>
               );
