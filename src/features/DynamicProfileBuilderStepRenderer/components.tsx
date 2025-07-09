@@ -108,7 +108,8 @@ export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
         const value: string[] = isArray(field.value) ? (field.value as string[]) : [];
         const isMaxReached = maxChoices !== undefined && value.length >= maxChoices;
         const otherOption = find(options, (opt) => opt.text.toLowerCase() === 'other');
-        const isOtherSelected = otherOption && value.includes('Other');
+        const isOtherSelected =
+          otherOption && value.some((val) => typeof val === 'string' && val.toLowerCase() === 'other');
         // Find the custom "Other" value if it exists
         const otherTextValue = value.find((val) => val.startsWith('Other: '))?.replace('Other: ', '') || '';
         return (
@@ -156,7 +157,7 @@ export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
                       }
                       label={choice.text}
                     />
-                    {choice.text === 'Other' && isOtherSelected && (
+                    {choice.text.toLowerCase() === 'other' && isOtherSelected && (
                       <Box sx={{ mt: 1, p: '0px !important' }}>
                         <TextField
                           sx={{
@@ -243,7 +244,7 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
     name: id,
     control,
   };
-  const hasOtherOption = some(choices, (choice) => choice.text === 'Other');
+  const hasOtherOption = some(choices, (choice) => choice.text.toLowerCase() === 'other');
   if (hasOtherOption) {
     return (
       <Box key={id}>
@@ -251,9 +252,14 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
           name={id}
           control={control}
           render={({ field }) => {
-            const isOtherSelected = isString(field.value) && field.value.startsWith('Other: ');
-            const displayValue = isOtherSelected ? 'Other' : field.value;
-            const otherTextValue = isOtherSelected && isString(field.value) ? field.value.replace('Other: ', '') : '';
+            const isOtherSelected =
+              isString(field.value) &&
+              (field.value.toLowerCase() === 'other' || field.value.toLowerCase().startsWith('other:'));
+            const otherTextChoice = find(choices, (c) => c.text.toLowerCase() === 'other')?.text || 'Other';
+            const displayValue = isOtherSelected ? otherTextChoice : field.value;
+            const otherTextValue =
+              isOtherSelected && isString(field.value) ? field.value.split(':').slice(1).join(':').trim() : '';
+
             return (
               <>
                 <SelectBox
@@ -264,10 +270,9 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
                     label: choice.text,
                   }))}
                   value={displayValue as string}
-                  onChange={(e) => {
-                    const value = e;
-                    if (value.includes('Other')) {
-                      field.onChange('Other: ');
+                  onChange={(value) => {
+                    if (value.toLowerCase() === 'other') {
+                      field.onChange(`${otherTextChoice}: `);
                     } else {
                       field.onChange(value);
                     }
@@ -275,12 +280,12 @@ export const RenderDropDown: React.FC<RenderDropDownProps> = ({ question, contro
                   label={title}
                   errors={!isOtherSelected ? errors : {}}
                 />
-                {displayValue === 'Other' && (
+                {isOtherSelected && (
                   <TextField
                     fullWidth
                     value={otherTextValue}
                     onChange={(e) => {
-                      field.onChange(`Other: ${e.target.value}`);
+                      field.onChange(`${otherTextChoice}: ${e.target.value}`);
                     }}
                     label={`Other ${title}`}
                     sx={{ mt: 2 }}

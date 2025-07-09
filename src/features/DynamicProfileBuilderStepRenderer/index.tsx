@@ -271,16 +271,18 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
           };
         }
         if (
-          (isArray(value) && value.some((val) => isString(val) && val === 'Other')) ||
-          (isString(value) && value?.startsWith('Other'))
+          (isArray(value) && value.some((val) => isString(val) && val.trim().toLowerCase() === 'other')) ||
+          (isString(value) && value.trim().toLowerCase() === 'other')
         ) {
-          let hasOtherText;
+          let hasOtherText = false;
           if (isArray(value)) {
-            hasOtherText = value.some(
-              (val) => isString(val) && val.startsWith('Other: ') && val.replace('Other: ', '').trim() !== '',
-            );
+            hasOtherText =
+              value.some(
+                (val) =>
+                  isString(val) && val.trim().toLowerCase().startsWith('other:') && val.split(':')[1]?.trim() !== '',
+              ) || value.length > 1;
           } else if (isString(value)) {
-            hasOtherText = value.startsWith('Other: ') && value.replace('Other: ', '').trim() !== '';
+            hasOtherText = value.trim().toLowerCase().startsWith('other:') && value.split(':')[1]?.trim() !== '';
           }
           if (!hasOtherText) {
             errorsToSet[q.unique_id] = {
@@ -301,24 +303,22 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     }
     const transformedData = Object.fromEntries(
       map(Object.entries(data), ([key, value]) => {
-        // Handle dropdown "Other" values
-        if (isString(value) && value.startsWith('Other: ')) {
-          const otherValue = value.replace('Other: ', '');
-          // Only include if not empty
-          return [key, otherValue.trim() !== '' ? otherValue : null];
+        if (isString(value) && value.toLowerCase().startsWith('other:')) {
+          const otherValue = value.split(':').slice(1).join(':').trim();
+          return [key, otherValue !== '' ? otherValue : null];
         }
-        // Handle multi-select values
+
         if (Array.isArray(value)) {
           const transformedValues = filter(value, (val) => {
             if (typeof val === 'string') {
-              return val.trim() !== '' && val !== 'Other';
+              return val.trim() !== '' && val.toLowerCase() !== 'other';
             }
             return true;
           })
             .map((val) => {
-              if (typeof val === 'string' && val.startsWith('Other: ')) {
-                const otherValue = val.replace('Other: ', '');
-                return otherValue.trim() !== '' ? otherValue : null;
+              if (typeof val === 'string' && val.toLowerCase().startsWith('other:')) {
+                const otherValue = val.split(':').slice(1).join(':').trim();
+                return otherValue !== '' ? otherValue : null;
               }
               return val;
             })
@@ -328,8 +328,8 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
         if (isString(value) && value.trim() === '') {
           return [key, null];
         }
+
         return [key, value];
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
       }),
     );
     const updatedProfile = { ...localProfileDetail, ...transformedData };
@@ -509,7 +509,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
                     control={control}
                     id={id}
                     isDisabled={!parentCountry && !!relatedParentId}
-                    options={relatedParentId ? sortBy(cityOptions) : allCityOptions}
+                    options={relatedParentId ? cityOptions : allCityOptions}
                     parentCountry={parentCountry}
                     placeholder={!parentCountry && relatedParentId ? 'Select country first' : 'Search for a city'}
                     relatedParentId={relatedParentId}
