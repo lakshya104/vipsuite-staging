@@ -1,20 +1,20 @@
 'use client';
 import React, { useState } from 'react';
 import { Box, Button, Dialog, DialogContent, DialogActions, Typography } from '@mui/material';
-import RSVP from './RSVP';
 import { EventDetails } from '@/interfaces/events';
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { isEmpty } from 'lodash';
+import RSVP from './RSVP';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
-import { VipOptions } from '@/interfaces';
+import { vipInitialSchema, vipOptionalSchema, VipOptions } from '@/interfaces';
 import OrderEventButton from './OrderEventButton';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import VipOrderForm from './VipOrderForm';
-import { isEmpty } from 'lodash';
 
 interface EventsDialogProps {
   event: EventDetails;
@@ -30,17 +30,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [toasterType, setToasterType] = useState<string>('');
   const [vipPayloadData, setVipPayloadData] = useState({});
-  const [vipSchemas, setVipSchemas] = useState(() =>
-    !isUserAgent
-      ? {
-          profileId: z.array(z.string()),
-          profileName: z.string(),
-        }
-      : {
-          profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-          profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-        },
-  );
+  const [vipSchemas, setVipSchemas] = useState(() => (!isUserAgent ? vipOptionalSchema : vipInitialSchema));
   const vipSchema = z.object({
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
@@ -93,15 +83,15 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
         ...(data?.vip_profile_names && { vip_profile_names: data.vip_profile_names }),
       }),
     };
-    setVipPayloadData(payloadWithVipData);
+    if (isUserAgent) {
+      setVipPayloadData(payloadWithVipData);
+      reset();
+      setVipSchemas(vipInitialSchema);
+    }
     handleDialogOpen();
-    reset();
-    setVipSchemas({
-      profileId: z.array(z.string()).min(1, 'Please select at least one VIP or enter a name'),
-      profileName: z.string().min(1, 'Please select at least one VIP or enter a name'),
-    });
   };
 
+  console.log({ dialogOpen, isUserAgent });
   const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
     setVipSchemas(schemas);
   };

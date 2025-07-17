@@ -72,6 +72,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const pathname = usePathname();
   const { messageCount } = useMessageCountStore();
   const { clearAll } = useUserStatusStore();
+  const { setMessageCount } = useMessageCountStore();
   const menuItems =
     role === UserRole.Vip
       ? vipMenuItems
@@ -91,6 +92,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       startTransition(async () => {
         await LogOut();
         await signOutAction();
+        setMessageCount(0);
         clearAll();
       });
     } catch (error) {

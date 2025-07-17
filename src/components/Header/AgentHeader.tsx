@@ -11,6 +11,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
+import { useMessageCountStore } from '@/store/useStore';
 
 const AgentHeader = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -19,12 +20,14 @@ const AgentHeader = () => {
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
+  const { setMessageCount } = useMessageCountStore();
   const handleLogout = async () => {
     try {
       setDrawerOpen(false);
       startTransition(async () => {
         await LogOut();
         await signOutAction();
+        setMessageCount(0);
       });
     } catch (error) {
       openToaster('Error during logging out. ' + error);
