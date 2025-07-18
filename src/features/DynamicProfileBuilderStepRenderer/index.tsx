@@ -239,12 +239,12 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   useEffect(() => {
     if (kidsAgeQuestion?.unique_id) {
       const profileKids = localProfileDetail?.[kidsAgeQuestion.unique_id as keyof ACF];
-      if (isEmpty(fields) && isEmpty(profileKids)) {
+      if (isEmpty(fields) && isEmpty(profileKids) && visibleQuestions[kidsAgeQuestion.unique_id]) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         append({ date_of_birth: '' } as any);
       }
     }
-  }, [kidsAgeQuestion, localProfileDetail, fields, append]);
+  }, [kidsAgeQuestion, localProfileDetail, fields, append, visibleQuestions]);
 
   const handleAddChild = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -253,6 +253,11 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
 
   const handleRemoveChild = (index: number) => {
     remove(index);
+  };
+
+  const getInputTypeFromId = (id: string): ProfileQuestionType | undefined => {
+    const question = find(section.questions, (q) => q.unique_id === id);
+    return question ? question.input_type : undefined;
   };
 
   const onSubmit = async (data: Record<string, string | string[] | ChildDob[] | null>) => {
@@ -323,7 +328,11 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
               return val;
             })
             .filter((val) => val !== null);
-          return [key, transformedValues.length > 0 ? transformedValues : null];
+          const inputType = getInputTypeFromId(key);
+          return [
+            key,
+            transformedValues.length > 0 ? transformedValues : inputType === ProfileQuestionType.KidsAge ? [] : null,
+          ];
         }
         if (isString(value) && value.trim() === '') {
           return [key, null];

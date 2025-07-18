@@ -85,7 +85,7 @@ export function createDynamicResolver(section: Section, profileDetail: ACF, allC
         ) {
           acc[q.unique_id] = '';
         } else if (q.input_type === ProfileQuestionType.KidsAge) {
-          acc[q.unique_id] = [{ date_of_birth: '' }];
+          acc[q.unique_id] = [];
         } else if (q.input_type === ProfileQuestionType.Radio) {
           acc[q.unique_id] = null;
         } else {
