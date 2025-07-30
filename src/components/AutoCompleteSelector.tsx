@@ -12,6 +12,7 @@ interface AutoCompleteSelectorProps {
   helperText?: string;
   disabled?: boolean;
   placeholder?: string;
+  countryCodeOptions?: { label: string; value: string }[];
 }
 
 const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
@@ -22,6 +23,7 @@ const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
   helperText,
   disabled,
   placeholder,
+  countryCodeOptions,
 }) => {
   return (
     <Controller
@@ -32,12 +34,18 @@ const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
           <Autocomplete
             className="profile-builder__nationality"
             sx={{ mb: '18px !important' }}
-            options={options.map((opt: string) => ({ value: opt, label: opt }))}
+            options={
+              countryCodeOptions ? countryCodeOptions : options.map((opt: string) => ({ value: opt, label: opt }))
+            }
             getOptionLabel={(option) => (typeof option === 'string' ? option : option.label)}
             value={
-              options
-                .map((opt: string) => ({ value: opt, label: opt }))
-                .find((option: { value: string; label: string }) => option.value === controllerField.value) || null
+              countryCodeOptions
+                ? countryCodeOptions.find(
+                    (option: { value: string; label: string }) => option.value === controllerField.value,
+                  ) || null
+                : options
+                    .map((opt: string) => ({ value: opt, label: opt }))
+                    .find((option: { value: string; label: string }) => option.value === controllerField.value) || null
             }
             onChange={(_, newValue) => controllerField.onChange(newValue?.value || '')}
             disabled={disabled}
@@ -87,7 +95,7 @@ const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
           <FormHelperText
             sx={{
               mb: 3,
-              mt: -6,
+              mt: countryCodeOptions ? -3.5 : -6,
               color: fieldState.error ? 'error.main' : 'text.secondary',
             }}
           >

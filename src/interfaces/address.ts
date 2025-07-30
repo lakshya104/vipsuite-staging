@@ -24,3 +24,8 @@ export interface AddressInput {
   country: string;
   phone?: string;
 }
+
+export interface ShippingCountry {
+  code: string;
+  name: string;
+}

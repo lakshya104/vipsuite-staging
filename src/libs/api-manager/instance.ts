@@ -101,4 +101,30 @@ const InstanceWithoutHeaders = axios.create({
   },
 });
 
+InstanceWithoutHeaders.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.error(
+      'Unexpected server error :',
+      error?.message,
+      'error message :',
+      error?.response?.data?.message,
+      'error status code : ',
+      error?.response?.data?.code,
+    );
+    if (error.response) {
+      const message = error.response?.data?.message || 'An error occurred';
+      return Promise.reject(new Error(message));
+    } else if (error.request) {
+      console.error('No response received:', error?.request);
+      return Promise.reject(new Error('No response received from the server.'));
+    } else {
+      console.error('Error', error?.message);
+      return Promise.reject(new Error('An error occurred while setting up the request.'));
+    }
+  },
+);
+
 export { Instance, InstanceWithoutHeaders, InstanceWithTokenOnly };

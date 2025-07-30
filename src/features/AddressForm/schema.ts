@@ -11,6 +11,7 @@ import {
   homePostcodeValidation,
   stateValidation,
 } from '@/helpers/validations';
+import { QuestionType } from '@/helpers/enums';
 
 export const formSchema = z.object({
   first_name: firstNameValidation,
@@ -31,37 +32,46 @@ export const addNewAddressField = [
   {
     name: 'first_name',
     placeholder: 'First Name',
+    type: QuestionType.Text,
   },
   {
     name: 'last_name',
     placeholder: 'Last Name',
+    type: QuestionType.Text,
   },
   {
     name: 'address_line_1',
     placeholder: 'Address Line 1',
+    type: QuestionType.Text,
   },
   {
     name: 'address_line_2',
     placeholder: 'Address Line 2',
+    type: QuestionType.Text,
   },
   {
     name: 'city',
     placeholder: 'City',
+    type: QuestionType.Text,
   },
   {
     name: 'postcode',
     placeholder: 'Postcode',
+    type: QuestionType.Text,
   },
   {
     name: 'state',
     placeholder: 'State',
+    type: QuestionType.Text,
   },
   {
     name: 'country',
     placeholder: 'Country',
+    type: QuestionType.Dropdown,
   },
   {
     name: 'phone',
     placeholder: 'Phone',
+    type: QuestionType.Text,
   },
 ];

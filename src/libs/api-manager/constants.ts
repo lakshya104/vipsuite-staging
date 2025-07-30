@@ -84,6 +84,7 @@ const Endpoints = {
   deleteAccount: '/wp/v2/delete-user',
   getProfileBuilder: '/wp/v2/profile-builder-questions',
   getMessageCount: '/wp/v2/vip-profiles/orders/unread-messages-count',
+  getCountries: '/wp/v2/shipping-countries',
 };
 
 export { Endpoints };

@@ -144,11 +144,26 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
         {isClearing ? (
           renderLoading()
         ) : (
-          <ErrorFallback
-            errorMessage={en.listEmptyMessage.noOpportunityData}
-            hideSubtext={true}
-            subtext={en.listEmptyMessage.noData}
-          />
+          <>
+            {debouncedSearchQuery && (
+              <Grid2 container mb={2.5}>
+                <Grid2 size={{ xs: 12 }}>
+                  <Box width="100%">
+                    <Typography variant="h3" component="h2" mb={1}>
+                      {opportunitiesData.length > 1
+                        ? `${opportunitiesData.length} ${en.opportunities.results} "${debouncedSearchQuery}"`
+                        : `${opportunitiesData.length} ${en.opportunities.singleResult} "${debouncedSearchQuery}"`}
+                    </Typography>
+                  </Box>
+                </Grid2>
+              </Grid2>
+            )}
+            <ErrorFallback
+              errorMessage={en.listEmptyMessage.noOpportunityData}
+              hideSubtext={true}
+              subtext={en.listEmptyMessage.noData}
+            />
+          </>
         )}
       </>
     );
@@ -174,13 +189,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
           aria-label={en.opportunities.searchPlaceholder}
         />
       </Box>
-      {isEmpty(opportunitiesData) && isFilterApplied && (
-        <ErrorFallback
-          errorMessage={en.listEmptyMessage.noOpportunityData}
-          hideSubtext={true}
-          subtext={en.listEmptyMessage.noData}
-        />
-      )}
       {(isSearchPending && searchQuery) || isClearing ? (
         renderLoading()
       ) : debouncedSearchQuery ? (
@@ -200,6 +208,13 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
         </>
       ) : (
         <OpportunitiesListing opportunities={opportunitiesData} />
+      )}
+      {isEmpty(opportunitiesData) && isFilterApplied && !isClearing && (
+        <ErrorFallback
+          errorMessage={en.listEmptyMessage.noOpportunityData}
+          hideSubtext={true}
+          subtext={en.listEmptyMessage.noData}
+        />
       )}
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />

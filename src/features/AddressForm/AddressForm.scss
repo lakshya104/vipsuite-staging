@@ -34,3 +34,16 @@
     }
   }
 }
+
+.profile-builder {
+  &__nationality {
+    .MuiAutocomplete-inputRoot {
+      padding: 0 !important;
+      input[type='text'] {
+        height: auto;
+        padding: mixins.rem(13) 1.25rem 0.9375rem 1.5rem;
+        padding-right: 2rem;
+      }
+    }
+  }
+}

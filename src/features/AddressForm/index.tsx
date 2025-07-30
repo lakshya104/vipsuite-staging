@@ -14,6 +14,9 @@ import './AddressForm.scss';
 import revalidatePathAction from '@/libs/actions';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
+import { ShippingCountry } from '@/interfaces';
+import { QuestionType } from '@/helpers/enums';
+import AutoCompleteSelector from '@/components/AutoCompleteSelector';
 
 type FormFieldNames =
   | 'first_name'
@@ -30,9 +33,10 @@ type FormFieldNames =
 interface AddressFormProps {
   defaultValues: AddAddressFormValue;
   addressId?: string;
+  shippingCountries: ShippingCountry[];
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) => {
+const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shippingCountries }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
@@ -41,7 +45,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
   const isLookbookOrder = searchParams.get('isLookbook');
   const postId = searchParams.get('postId');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-
+  const countryOptions = shippingCountries?.map((country) => ({
+    label: country.name,
+    value: country.code,
+  }));
   const {
     handleSubmit,
     control,
@@ -89,15 +96,25 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId }) =
           </Typography>
         </Box>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">
-          {addNewAddressField.map(({ name, placeholder }) => (
-            <Box key={name} width="100%">
-              <InputTextFormField
-                name={name as FormFieldNames}
-                placeholder={placeholder}
-                control={control}
-                errors={errors}
-                autoFill={addressId ? false : true}
-              />
+          {addNewAddressField.map(({ name, placeholder, type }, index) => (
+            <Box key={name + index} width="100%">
+              {type === QuestionType.Text ? (
+                <InputTextFormField
+                  name={name as FormFieldNames}
+                  placeholder={placeholder}
+                  control={control}
+                  errors={errors}
+                  autoFill={addressId ? false : true}
+                />
+              ) : (
+                <AutoCompleteSelector
+                  countryCodeOptions={countryOptions}
+                  options={[]}
+                  control={control}
+                  name="country"
+                  label={placeholder}
+                />
+              )}
               {name === 'phone' && (
                 <Box className="input-text">
                   <Typography>{en.helperText.phone}</Typography>

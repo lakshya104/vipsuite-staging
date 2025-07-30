@@ -1,5 +1,8 @@
 import React from 'react';
 import AddressForm from '@/features/AddressForm';
+import { GetShippingCountries } from '@/libs/api-manager/manager';
+import ErrorHandler from '@/components/ErrorHandler';
+import en from '@/helpers/lang';
 
 const AddAddressPage = async () => {
   const defaultValues = {
@@ -14,8 +17,11 @@ const AddAddressPage = async () => {
     postcode: '',
     company: '',
   };
-
-  return <AddressForm defaultValues={defaultValues} />;
+  const { data, error } = await GetShippingCountries();
+  if (error) {
+    return <ErrorHandler error={error} errMessage={en.address.editErrorMessage} />;
+  }
+  return <AddressForm defaultValues={defaultValues} shippingCountries={data?.countries} />;
 };
 
 export default AddAddressPage;

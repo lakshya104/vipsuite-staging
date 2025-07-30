@@ -48,7 +48,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
       setMessageCount(count.data['message-count'] || 0);
     }
     revalidateInbox();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = async (data: FormValues) => {

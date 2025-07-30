@@ -836,3 +836,12 @@ export const GetMessageCount = async () => {
     return { data: null, error };
   }
 };
+
+export const GetShippingCountries = async () => {
+  try {
+    const response = await InstanceWithoutHeaders.get(Endpoints.getCountries);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
