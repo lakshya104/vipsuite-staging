@@ -1,7 +1,7 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import { isEmpty } from 'lodash';
-import HomeHeader from '@/components/Header/HomeHeader';
+import HomeHeader from '@/components/Header';
 import HomeFooter from '@/components/HomeFooter';
 import { GetAllVips, GetSession } from '@/libs/api-manager/manager';
 import { CookieName, UserRole } from '@/helpers/enums';

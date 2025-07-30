@@ -91,7 +91,6 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
     handleDialogOpen();
   };
 
-  console.log({ dialogOpen, isUserAgent });
   const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {
     setVipSchemas(schemas);
   };

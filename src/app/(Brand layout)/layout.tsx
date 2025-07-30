@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeHeader from '@/components/Header/HomeHeader';
+import HomeHeader from '@/components/Header';
 import HomeFooter from '@/components/HomeFooter';
 import { GetSession } from '@/libs/api-manager/manager';
 import ProgressProvider from '@/libs/providers/ProgressProvider';

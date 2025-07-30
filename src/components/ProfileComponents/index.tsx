@@ -1,11 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useState, useTransition } from 'react';
 import { get } from 'lodash';
 import { formatDateWithMonth } from '@/helpers/utils';
 import { UserProfile } from '@/interfaces';
-import { Grid2, Paper, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Grid2, Paper, Typography } from '@mui/material';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
+import { DeleteAccount } from '@/libs/api-manager/manager';
+import { signOutAction } from '@/libs/actions';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '../Toaster';
+import DialogConfirmBox from '../Dialog/DialogConfirm';
 
 interface ProfileComponentProps {
   profileDetails: UserProfile;
@@ -65,6 +70,16 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     { platform: en.profilePage.profileTabs.social.tikTok, handle: get(profileDetails, 'acf.tiktok_handle', '') },
   ];
   const filteredSocialData = socialData.filter((data) => data.handle !== '');
+  if (filteredSocialData.length === 0) {
+    return (
+      <ErrorFallback
+        halfHeight={true}
+        errorMessage={en.listEmptyMessage.noSocialData}
+        hideSubtext={true}
+        subtext={en.listEmptyMessage.noContactDataMessage}
+      />
+    );
+  }
   return (
     <Grid2 container>
       {filteredSocialData.map((item, index) => (
@@ -88,6 +103,11 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent, isBrand }) => {
+  const [isPending, startTransition] = useTransition();
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('error');
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+
   const contactData = [
     ...(isBrand
       ? [
@@ -136,6 +156,26 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
     );
   }
 
+  const toggleDialog = () => {
+    setOpenDialog((prev) => !prev);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      startTransition(async () => {
+        const response = await DeleteAccount();
+        setToasterType('success');
+        openToaster(response.message || en.profilePage.profileTabs.contacts.successAccountDelete);
+        setTimeout(async () => {
+          await signOutAction();
+        }, 2000);
+      });
+    } catch (error) {
+      setToasterType('error');
+      openToaster(en.profilePage.profileTabs.contacts.deletAccountError + error);
+    }
+  };
+
   return (
     <Grid2 className="user-profile__wrapper" container>
       {filteredContactData.map((item, index) => (
@@ -153,12 +193,38 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
                     {item.primary} {item?.secondary && '(Primary)'}
                   </Typography>
                 )}
-                {item.secondary && <Typography variant="body2">{item.secondary} (Secondary)</Typography>}
+                {item.secondary && (
+                  <Typography variant="body2">
+                    {item.secondary} ({en.profilePage.profileTabs.contacts.secondary})
+                  </Typography>
+                )}
               </Grid2>
             </Grid2>
           </Paper>
         </Grid2>
       ))}
+      <Box alignItems="center" width="100%">
+        <Typography
+          variant="body1"
+          className="user-profile__delete-account"
+          onClick={toggleDialog}
+          sx={{ cursor: 'pointer', fontWeight: 400, textAlign: 'center', textDecoration: 'underline', mt: 2 }}
+        >
+          {en.profilePage.profileTabs.contacts.deleteAccount}
+        </Typography>
+      </Box>
+      <DialogConfirmBox
+        open={openDialog}
+        onClose={toggleDialog}
+        onConfirm={() => handleDeleteAccount()}
+        title={en.common.deleteAccount}
+        description={en.common.deleteAccountMessage}
+        confirmText={en.common.delete}
+      />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
+      <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Grid2>
   );
 };
