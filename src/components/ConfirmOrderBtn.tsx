@@ -177,12 +177,13 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
           }
           await revalidateAllData();
           setIsDialogOpen(true);
+        } catch (error) {
+          openToaster(error?.toString() ?? en.selectAddress.orderError);
+        } finally {
           clearLookbookData();
           clearRequestProductId();
           clearQuestions();
           clearRequestESign();
-        } catch (error) {
-          openToaster(error?.toString() ?? en.selectAddress.orderError);
         }
       }
     });
