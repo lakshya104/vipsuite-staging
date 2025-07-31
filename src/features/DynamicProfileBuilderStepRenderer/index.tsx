@@ -344,6 +344,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     const updatedProfile = { ...localProfileDetail, ...transformedData };
     setLocalProfileDetail(updatedProfile);
     const profile = {
+      title: localProfileDetail.first_name + ' ' + localProfileDetail.last_name,
       acf: {
         first_name: localProfileDetail.first_name,
         last_name: localProfileDetail.last_name,
@@ -357,7 +358,11 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
       } else {
         const profileWithTitle = {
           title: transformedData.first_name + ' ' + transformedData.last_name,
-          ...profile,
+          acf: {
+            first_name: localProfileDetail.first_name,
+            last_name: localProfileDetail.last_name,
+            ...transformedData,
+          },
         };
         const response = await CreateVipProfile(profileWithTitle);
         if (response?.code === 'duplicate_profile') {
