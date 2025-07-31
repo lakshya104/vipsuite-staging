@@ -118,10 +118,10 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const createOrder = async (item: any, payloadWithQuestionsData?: any, payloadWithVipData?: AgentVipsPayload) => {
+    clearAllRequestStore();
     startTransition(async () => {
       try {
         if (isRequestOnly) {
-          clearAllRequestStore();
           if (isUserAgent && payloadWithVipData) {
             setAgentVipInfo(payloadWithVipData);
           }

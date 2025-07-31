@@ -1,17 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
-  Modal,
-} from '@mui/material';
+import { Box, Button, CircularProgress, IconButton, ImageList, Modal } from '@mui/material';
 import { DefaultImageFallback } from '@/helpers/enums';
 import en from '@/helpers/lang';
 
@@ -50,35 +40,40 @@ const OpportunitiesFilterModal: React.FC<OpportunitiesFilterModalProps> = ({
         {categories.length > 0 ? (
           <ImageList cols={2} gap={16} sx={{ mt: 4 }}>
             {categories.map((category) => (
-              <ImageListItem
+              <Box
                 className="filter-modal__image-list"
                 key={category?.id}
                 sx={{
                   cursor: 'pointer',
-                  border: selectedCategoryId === category?.id ? '1px solid gray' : '1px solid transparent',
+                  minHeight: { xs: '80px', md: '100px' },
+                  border: selectedCategoryId === category?.id ? '2px solid black' : '1px solid rgba(223,225,227,255)',
                 }}
                 onClick={() => handleFilter(category.id)}
               >
-                <Image
-                  height={200}
-                  width={200}
-                  src={category?.url ?? DefaultImageFallback.Placeholder}
-                  alt={category?.name}
-                  loading="lazy"
-                />
-                {selectedCategoryId === category?.id && <CheckCircleIcon className="filter-modal__circle-icon" />}
-                <ImageListItemBar
-                  className="filter-modal__list-item"
-                  title={
-                    <Box className="filter-modal__list-icon">
-                      {category?.emoji_url && (
-                        <Image src={category?.emoji_url} alt={`${category?.name} icon`} width={24} height={24} />
-                      )}
-                      <span>{category?.name}</span>
-                    </Box>
-                  }
-                />
-              </ImageListItem>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    bgcolor: selectedCategoryId === category?.id ? '#babab8' : '#EBEBE3',
+                    height: '100%',
+                    justifyContent: 'center',
+                    gap: 5,
+                  }}
+                >
+                  <Box className="filter-modal__list-icon">
+                    {category?.emoji_url && (
+                      <Image
+                        src={category?.emoji_url || DefaultImageFallback.Placeholder}
+                        alt={`${category?.name} icon`}
+                        width={30}
+                        height={30}
+                      />
+                    )}
+                    <span>{category?.name}</span>
+                  </Box>
+                </Box>
+              </Box>
             ))}
           </ImageList>
         ) : (
