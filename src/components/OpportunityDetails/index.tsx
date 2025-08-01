@@ -18,7 +18,7 @@ import ArrowBackBtn from '@/components/ArrowBackBtn';
 import ReferCard from '@/components/ReferCard';
 import RequestItemFormButton from '@/components/RequestItemFormButton';
 import RedeemBox from '@/components/RedeemBox';
-import { DefaultImageFallback, UserRole } from '@/helpers/enums';
+import { DefaultImageFallback, QuestionType, UserRole } from '@/helpers/enums';
 import en from '@/helpers/lang';
 import ShowHtml from '@/components/ShowHtml';
 import DynamicForm from '@/features/DynamicForm';
@@ -86,7 +86,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
 
   useEffect(() => {
     const fetchAgentVips = async () => {
-      if (!showVipOptions && !opportunity?.acf?.is_lookbook_available) return;
+      if (!showVipOptions || (!showVipOptions && !opportunity?.acf?.is_lookbook_available)) return;
       setVipsLoading(true);
       try {
         const response = await GetAllVips();
@@ -144,10 +144,10 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const onSubmitDynamic = async (data: Record<string, any>, payloadWithVipData?: AgentVipsPayload) => {
     setIsPending(true);
     const updatedPayload = await Promise.all(
-      opportunity.acf.questions.map(async (field) => {
+      opportunity?.acf?.questions.map(async (field) => {
         const key = field?.title?.toLowerCase()?.replace(/[^a-z0-9]/g, '');
         let answer;
-        if (field?.input_type === 'file_upload' && field?.is_required) {
+        if (field?.input_type === QuestionType.FileUpload && field?.is_required) {
           answer = await convertToBase64(data[key]);
         } else {
           answer = data[key];

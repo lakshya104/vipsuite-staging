@@ -734,7 +734,7 @@ const en = {
     errorMessage: 'Not able to show VIPs currently.',
   },
   unauthorizedMessage: {
-    message: 'You are not authorized to view this page.',
+    message: 'You are not authorized to view this page!',
   },
   signOutButton: {
     errorMessage: 'Error during logging out.',
@@ -764,6 +764,9 @@ const en = {
   errorFallback: {
     refreshPage: 'Please try refreshing the page or come back later.',
     refresh: 'Refresh',
+    goBack: 'Go Back',
+    404: '404 - Page Not Found!',
+    notAvailable: 'This page is currently not available.',
   },
   deleteAddressBtn: {
     errMessage: 'Error deleting address',

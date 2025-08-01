@@ -13,13 +13,12 @@ export default async function AgentSectionLayout({
 }>) {
   const session = await GetSession();
   const role = session?.role;
-  if (session?.role !== UserRole.Agent) {
-    return <UnauthorizedMessage />;
-  }
   return (
     <>
       <HomeHeader role={role} />
-      <ProgressProvider color="black"> {children}</ProgressProvider>
+      <ProgressProvider color="black">
+        {session?.role !== UserRole.Agent ? <UnauthorizedMessage /> : children}
+      </ProgressProvider>
       <HomeFooter role={role} />
     </>
   );

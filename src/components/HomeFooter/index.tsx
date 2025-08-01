@@ -11,10 +11,10 @@ import { brandFooterItems, vipFooterItems } from '@/data';
 import { useMessageCountStore } from '@/store/useStore';
 
 interface HomeFooterProps {
-  role: UserRole;
+  role?: UserRole;
 }
 
-const HomeFooter: React.FC<HomeFooterProps> = ({ role }) => {
+const HomeFooter: React.FC<HomeFooterProps> = ({ role = UserRole.Vip }) => {
   const pathname = usePathname();
   const { messageCount } = useMessageCountStore();
 

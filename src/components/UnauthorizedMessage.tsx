@@ -1,8 +1,11 @@
-import en from '@/helpers/lang';
-import { Box, Typography } from '@mui/material';
+'use client';
 import React from 'react';
+import { useRouter } from 'next/navigation';
+import { Box, Button, Typography } from '@mui/material';
+import en from '@/helpers/lang';
 
 const UnauthorizedMessage = () => {
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -15,16 +18,18 @@ const UnauthorizedMessage = () => {
       }}
     >
       <Typography
-        variant={'h6'}
+        variant="h4"
         align="center"
         sx={{
           color: 'black',
           fontWeight: '500',
-          letterSpacing: '2px',
         }}
       >
         {en.unauthorizedMessage.message}
       </Typography>
+      <Button className="button button--black" sx={{ marginTop: 3 }} onClick={() => router.back()}>
+        {en.errorFallback.goBack}
+      </Button>
     </Box>
   );
 };

@@ -40,10 +40,10 @@ Instance.interceptors.response.use(
       return Promise.reject(new Error(message));
     } else if (error.request) {
       console.error('No response received:', error?.request);
-      return Promise.reject(new Error('No response received from the server.', error?.request));
+      return Promise.reject(new Error('No response received from the server.'));
     } else {
       console.error('Error', error?.message);
-      return Promise.reject(new Error('An error occurred while setting up the request.', error?.message));
+      return Promise.reject(new Error('An error occurred while setting up the request.'));
     }
   },
 );
