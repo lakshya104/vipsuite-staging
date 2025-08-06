@@ -10,6 +10,7 @@ export interface Address {
   state: string;
   country: string;
   phone: string;
+  country_code: string;
 }
 
 export interface AddressInput {

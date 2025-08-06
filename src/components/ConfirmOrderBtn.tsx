@@ -73,7 +73,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     city: selectedAddress?.city,
     state: selectedAddress?.state,
     postcode: selectedAddress?.postcode,
-    country: selectedAddress?.country,
+    country: selectedAddress?.country_code,
   };
 
   const orderDetails = {
