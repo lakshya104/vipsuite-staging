@@ -1,4 +1,4 @@
-interface MessageObject {
+export interface MessageObject {
   id: number;
   date_created: {
     date: string;

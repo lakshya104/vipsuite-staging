@@ -1,7 +1,7 @@
 import React from 'react';
 import ErrorHandler from '@/components/ErrorHandler';
 import { GetMessageDetails } from '@/libs/api-manager/manager';
-import MessagesDetail from '@/components/MessagesDetail';
+import MessagesDetail from '@/components/MessageDetail';
 import en from '@/helpers/lang';
 
 interface MessageDetailPageProps {

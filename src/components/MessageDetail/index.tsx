@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import he from 'he';
-import './InboxHeader/InboxHeader.scss';
-import { MessageDetails } from '@/interfaces';
+import './MessageDetail.scss';
+import { MessageDetails, MessageObject } from '@/interfaces';
 import { calculateRelativeTime, extractDate } from '@/helpers/utils';
-import { ProgressBarLink } from './ProgressBar';
+import { ProgressBarLink } from '../ProgressBar';
 import MessageForm from '@/features/MessageForm';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
@@ -29,7 +29,7 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
         <Container>
           <Box className="order-details-page">
             <Box className="inbox_content">
-              {messageDetail.messages.map((message) => (
+              {messageDetail.messages.map((message: MessageObject) => (
                 <Fragment key={message?.id}>
                   <Typography variant="body1">{message?.content}</Typography>
                   <Typography className="inbox__date">

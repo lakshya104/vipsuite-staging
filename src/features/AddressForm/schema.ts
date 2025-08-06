@@ -26,7 +26,19 @@ export const formSchema = z.object({
   company: companyValidation,
 });
 
-export type AddAddressFormValue = z.infer<typeof formSchema>;
+export type AddAddressFormValue = {
+  first_name: string;
+  last_name: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  postcode: string;
+  state: string;
+  country: string;
+  phone: string;
+  company?: string | undefined;
+  country_code?: string;
+};
 
 export const addNewAddressField = [
   {

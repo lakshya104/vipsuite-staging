@@ -17,6 +17,7 @@ import { paths, withSearchParams } from '@/helpers/paths';
 import { ShippingCountry } from '@/interfaces';
 import { QuestionType } from '@/helpers/enums';
 import AutoCompleteSelector from '@/components/AutoCompleteSelector';
+import { isNonEmptyString } from '@/helpers/utils';
 
 type FormFieldNames =
   | 'first_name'
@@ -55,7 +56,18 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
     formState: { errors },
   } = useForm<AddAddressFormValue>({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultValues,
+    defaultValues: {
+      first_name: defaultValues.first_name || '',
+      last_name: defaultValues.last_name || '',
+      address_line_1: defaultValues.address_line_1 || '',
+      address_line_2: defaultValues.address_line_2 || '',
+      city: defaultValues.city || '',
+      postcode: defaultValues.postcode || '',
+      state: defaultValues.state || '',
+      country: defaultValues.country_code || '',
+      phone: defaultValues.phone || '',
+      company: defaultValues.company || '',
+    },
   });
 
   const onSubmit = async (data: AddAddressFormValue) => {
@@ -92,7 +104,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
       <Container>
         <Box className="address-form__head">
           <Typography className="page-title" variant="h2" align="center" component="h1">
-            {defaultValues.first_name.length > 0 ? en.address.edit : en.address.add} {en.address.addresses}
+            {isNonEmptyString(defaultValues?.first_name) ? en.address.edit : en.address.add} {en.address.addresses}
           </Typography>
         </Box>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className="profile-builder__form">

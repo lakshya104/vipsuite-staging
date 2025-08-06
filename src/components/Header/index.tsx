@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useTransition } from 'react';
+import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   AppBar,
@@ -46,16 +46,7 @@ const agentMenuItems = [
     icon: <Image src="/img/star.svg" alt="Logo" width={20} height={20} />,
     href: paths.root.myVips.getHref(),
   },
-  {
-    label: 'Basket',
-    icon: <Image src="/img/basket.png" alt="Logo" width={20} height={20} priority />,
-    href: paths.root.basket.getHref(),
-  },
-  {
-    label: 'My Addresses',
-    icon: <Image src="/img/address.svg" alt="Logo" width={20} height={20} />,
-    href: paths.root.addresses.getHref(),
-  },
+  ...vipMenuItems,
 ];
 
 interface HomeHeaderProps {
@@ -64,36 +55,31 @@ interface HomeHeaderProps {
 
 const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
   const { messageCount } = useMessageCountStore();
   const { clearAll } = useUserStatusStore();
   const { setMessageCount } = useMessageCountStore();
-  const menuItems =
-    role === UserRole.Vip
-      ? vipMenuItems
-      : role === UserRole.Brand
-        ? vipMenuItems
-        : role === UserRole.Agent
-          ? agentMenuItems
-          : [];
+  const menuItems = role === UserRole.Vip || role === UserRole.Brand ? vipMenuItems : agentMenuItems;
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
+
   const handleLogout = async () => {
+    setIsPending(true);
+    setDrawerOpen(false);
     try {
-      setDrawerOpen(false);
-      startTransition(async () => {
-        await LogOut();
-        await signOutAction();
-        setMessageCount(0);
-        clearAll();
-      });
+      await LogOut();
+      await signOutAction();
+      clearAll();
     } catch (error) {
       openToaster('Error during logging out. ' + error);
+      setIsPending(false);
+    } finally {
+      setMessageCount(0);
     }
   };
 
@@ -171,7 +157,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                               zIndex: 1,
                             }}
                           >
-                            {messageCount > 99 ? '99+' : messageCount}
+                            {messageCount}
                           </Box>
                         </Box>
                       )}
