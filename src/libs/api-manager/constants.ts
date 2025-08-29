@@ -1,5 +1,3 @@
-import { PostType } from '@/helpers/enums';
-
 const Endpoints = {
   login: '/wp/v2/login',
   vipSignup: '/wp/v2/signup/vip',
@@ -10,13 +8,6 @@ const Endpoints = {
   getBrands: '/wp/v2/brand-profiles',
   getDashboardContent: '/wp/v2/vip-profiles/dashboard-content',
   getDashboard: '/wp/v2/profiles/dashboard',
-  getBrandDetails: (brandId: number, type?: PostType) => {
-    if (type) {
-      return `/wp/v2/brand-profiles/${brandId}?post_type=${type}`;
-    } else {
-      return `/wp/v2/brand-profiles/${brandId}`;
-    }
-  },
   getBrandProducts: (brandId: number) => `/wc/v3/products?brand_profile_id=${brandId}`,
   getBrandProductDetails: (oppId: number, productId: number) => `/wp/v2/opportunities/${oppId}/product/${productId}`,
   getProducts: `/wc/v3/products?page=1&per_page=99`,
@@ -85,6 +76,7 @@ const Endpoints = {
   getProfileBuilder: '/wp/v2/profile-builder-questions',
   getMessageCount: '/wp/v2/vip-profiles/orders/unread-messages-count',
   getCountries: '/wp/v2/shipping-countries',
+  updateSocials: '/wp/v2/update-social-handles',
 };
 
 export { Endpoints };

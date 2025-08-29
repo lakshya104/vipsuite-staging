@@ -261,7 +261,9 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   return (
     <Box className="opportunity-detail-page" component="main">
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        <ArrowBackBtn />
+        <span style={{ marginRight: '20px' }}>
+          <ArrowBackBtn />
+        </span>
         {he.decode(opportunity?.title?.rendered || '')}
       </Typography>
       <Box>

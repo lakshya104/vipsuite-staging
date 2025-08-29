@@ -50,7 +50,9 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, userRole }) 
   return (
     <Box className="product-detail" mb={10}>
       <Typography className="page-title" variant="h2" component="h1" align="center">
-        <ArrowBackBtn />
+        <span style={{ marginRight: '20px' }}>
+          <ArrowBackBtn />
+        </span>
         {he.decode(event?.title?.rendered || '')}
       </Typography>
       <EventContainer event={event} />

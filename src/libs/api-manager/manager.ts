@@ -18,7 +18,7 @@ import { LoginFormValues } from '@/features/LoginForm/loginTypes';
 import { auth } from '@/auth';
 import { Instance, InstanceWithoutHeaders, InstanceWithTokenOnly } from './instance';
 import { Question } from '@/interfaces/events';
-import { PostType } from '@/helpers/enums';
+import { EditSocialLinksRequestBody } from '@/components/ProfileComponents/types';
 
 export const GetToken = async () => {
   const session = await auth();
@@ -200,15 +200,6 @@ export const GetEditVipProfile = async (token: string, vipId: number) => {
   }
 };
 
-export const GetDashboardContent = async () => {
-  try {
-    const response = await Instance.get(Endpoints.getDashboardContent);
-    return { data: response.data, error: null };
-  } catch (error) {
-    return { data: null, error };
-  }
-};
-
 export const GetDashboard = async () => {
   try {
     const response = await Instance.get(Endpoints.getDashboard);
@@ -227,27 +218,6 @@ export const GetVipSearch = async (keyword: string) => {
       throw new Error(error.message);
     }
     throw new Error('Failed to fetch search results');
-  }
-};
-
-export const GetBrandDetails = async (id: number, type?: PostType) => {
-  try {
-    const response = await Instance.get(Endpoints.getBrandDetails(id, type));
-    return { data: response.data, error: null };
-  } catch (error) {
-    return { data: null, error };
-  }
-};
-
-export const GetBrandProducts = async (id: number) => {
-  try {
-    const response = await Instance.get(Endpoints.getBrandProducts(id));
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Failed to fetch Brand Products');
   }
 };
 
@@ -843,5 +813,16 @@ export const GetShippingCountries = async () => {
     return { data: response.data, error: null };
   } catch (error) {
     return { data: null, error };
+  }
+};
+
+export const UpdateSocials = async (formData: EditSocialLinksRequestBody) => {
+  try {
+    const response = await Instance.post(Endpoints.updateSocials, formData);
+    return response.data;
+  } catch (error) {
+    console.error('Error during updating Social Links:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during updating socials';
+    throw new Error(errorMessage);
   }
 };

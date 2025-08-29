@@ -22,31 +22,34 @@ Instance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-Instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.error(
-      'Unexpected server error :',
-      error?.message,
-      'error message :',
-      error?.response?.data?.message,
-      'error status code : ',
-      error?.response?.data?.code,
-    );
-    if (error.response) {
-      const message = error.response?.data?.message || 'An error occurred';
-      return Promise.reject(new Error(message));
-    } else if (error.request) {
-      console.error('No response received:', error?.request);
-      return Promise.reject(new Error('No response received from the server.'));
-    } else {
-      console.error('Error', error?.message);
-      return Promise.reject(new Error('An error occurred while setting up the request.'));
-    }
-  },
-);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleAxiosResponseError(error: any) {
+  console.error(
+    'Unexpected server error :',
+    error?.message,
+    'error message :',
+    error?.response?.data?.message,
+    'error status code : ',
+    error?.response?.data?.code,
+  );
+  if (error.status === 500) {
+    const message = 'An unexpected error occurred on the server. Please try again later.';
+    return Promise.reject(new Error(message));
+  } else if (error.response) {
+    const message = error.response?.data?.message || error?.message || 'An error occurred';
+    return Promise.reject(new Error(message));
+  } else if (error.request) {
+    console.error('No response received:', error?.request);
+    return Promise.reject(new Error('No response received from the server.'));
+  } else {
+    console.error('Error', error?.message);
+    return Promise.reject(new Error('An error occurred while setting up the request.'));
+  }
+}
+
+Instance.interceptors.response.use((response) => {
+  return response;
+}, handleAxiosResponseError);
 
 const InstanceWithTokenOnly = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -68,31 +71,9 @@ InstanceWithTokenOnly.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-InstanceWithTokenOnly.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.error(
-      'Unexpected server error :',
-      error?.message,
-      'error message :',
-      error?.response?.data?.message,
-      'error status code : ',
-      error?.response?.data?.code,
-    );
-    if (error.response) {
-      const message = error.response?.data?.message || 'An error occurred';
-      return Promise.reject(new Error(message));
-    } else if (error.request) {
-      console.error('No response received:', error?.request);
-      return Promise.reject(new Error('No response received from the server.'));
-    } else {
-      console.error('Error', error?.message);
-      return Promise.reject(new Error('An error occurred while setting up the request.'));
-    }
-  },
-);
+InstanceWithTokenOnly.interceptors.response.use((response) => {
+  return response;
+}, handleAxiosResponseError);
 
 const InstanceWithoutHeaders = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -101,30 +82,8 @@ const InstanceWithoutHeaders = axios.create({
   },
 });
 
-InstanceWithoutHeaders.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.error(
-      'Unexpected server error :',
-      error?.message,
-      'error message :',
-      error?.response?.data?.message,
-      'error status code : ',
-      error?.response?.data?.code,
-    );
-    if (error.response) {
-      const message = error.response?.data?.message || 'An error occurred';
-      return Promise.reject(new Error(message));
-    } else if (error.request) {
-      console.error('No response received:', error?.request);
-      return Promise.reject(new Error('No response received from the server.'));
-    } else {
-      console.error('Error', error?.message);
-      return Promise.reject(new Error('An error occurred while setting up the request.'));
-    }
-  },
-);
+InstanceWithoutHeaders.interceptors.response.use((response) => {
+  return response;
+}, handleAxiosResponseError);
 
 export { Instance, InstanceWithoutHeaders, InstanceWithTokenOnly };
