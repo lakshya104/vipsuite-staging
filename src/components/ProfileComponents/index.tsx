@@ -18,6 +18,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { defaultValues, EditSocialLinksRequestBody, EditSocialLinksSchema } from './types';
 import InputTextFormField from '../InputTextFormField';
+import InputForm from '../InputForm/InputForm';
 
 interface ProfileComponentProps {
   profileDetails: UserProfile;
@@ -260,13 +261,14 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                             name="instagram_handle"
                             control={control}
                             render={({ field }) => (
-                              <InputTextFormField
+                              <InputForm
                                 {...field}
-                                control={control}
+                                type="text"
                                 name="instagram_handle"
                                 placeholder="Instagram"
                                 autoFill={true}
-                                errors={errors}
+                                error={!!errors['instagram_handle']}
+                                helperText={errors['instagram_handle']?.message}
                               />
                             )}
                           />
