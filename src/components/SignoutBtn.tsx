@@ -6,11 +6,13 @@ import { LogOut } from '@/libs/api-manager/manager';
 import Toaster from './Toaster';
 import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
-import { useMessageCountStore, useUserStatusStore } from '@/store/useStore';
+import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
 
 const SignoutBtn = () => {
   const [isPending, startTransition] = useTransition();
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const clearInstaInfo = useInstaInfo((state) => state.clearAll);
+  const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
   const { clearAll } = useUserStatusStore();
   const { setMessageCount } = useMessageCountStore();
   const handleLogout = async () => {
@@ -20,6 +22,8 @@ const SignoutBtn = () => {
         await signOutAction();
         setMessageCount(0);
         clearAll();
+        clearInstaInfo();
+        clearTiktokInfo();
       });
     } catch (error) {
       openToaster(en.signOutButton.errorMessage + error);

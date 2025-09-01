@@ -10,8 +10,3 @@ export const EditSocialLinksSchema = z.object({
   instagram_handle: instagramValidation,
   tiktok_handle: tiktokValidation,
 });
-
-export const defaultValues = {
-  instagram_handle: '',
-  tiktok_handle: '',
-};

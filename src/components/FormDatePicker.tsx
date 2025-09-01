@@ -47,7 +47,6 @@ const FormDatePicker = <T extends FieldValues>({
                 textField: {
                   error: !!error || showFutureDateError,
                   helperText: showFutureDateError ? en.common.future : error?.message && en.common.fieldErrorMessage,
-                  inputProps: { readOnly: true },
                   FormHelperTextProps: {
                     sx: { mt: 0 },
                   },
@@ -90,7 +89,6 @@ export const FormDateTimePicker = <T extends FieldValues>({
               textField: {
                 error: !!error,
                 helperText: error?.message,
-                inputProps: { readOnly: true },
               },
             }}
           />
@@ -117,7 +115,6 @@ export const FormTimePicker = <T extends FieldValues>({ name, control, label }: 
               textField: {
                 error: !!error,
                 helperText: error?.message,
-                inputProps: { readOnly: true },
               },
             }}
           />

@@ -7,6 +7,7 @@ import ErrorFallback from './ErrorFallback';
 import { paths, withSearchParams } from '@/helpers/paths';
 import en from '@/helpers/lang';
 import { signOutAction } from '@/libs/actions';
+import { useInstaInfo, useTiktokInfo } from '@/store/useStore';
 
 interface ErrorToasterProps {
   errorMessage: string;
@@ -20,6 +21,8 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
   login = false,
 }) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const clearInstaInfo = useInstaInfo((state) => state.clearAll);
+  const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
 
   useEffect(() => {
     const signOutUser = async () => {
@@ -30,12 +33,15 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
         }),
       });
       await signOutAction();
+      clearInstaInfo();
+      clearTiktokInfo();
     };
     if (login) {
       signOutUser();
     } else if (errorMessage) {
       openToaster(errorMessage);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorMessage, login, openToaster]);
 
   return (

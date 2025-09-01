@@ -1,11 +1,13 @@
 'use client';
 import React, { useEffect, useState, useTransition } from 'react';
 import { get } from 'lodash';
-import { expiryDate, formatDateWithMonth } from '@/helpers/utils';
-import { UserProfile } from '@/interfaces';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Backdrop, Box, Button, CircularProgress, Grid2, Paper, Typography } from '@mui/material';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import AddIcon from '@mui/icons-material/Add';
+import { UserProfile } from '@/interfaces';
+import { expiryDate, formatDateWithMonth } from '@/helpers/utils';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
 import { DeleteAccount, UpdateSocials } from '@/libs/api-manager/manager';
@@ -14,10 +16,7 @@ import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import DialogConfirmBox from '../Dialog/DialogConfirm';
 import { useInstaInfo, useTiktokInfo } from '@/store/useStore';
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { defaultValues, EditSocialLinksRequestBody, EditSocialLinksSchema } from './types';
-import InputTextFormField from '../InputTextFormField';
+import { EditSocialLinksRequestBody, EditSocialLinksSchema } from './types';
 import InputForm from '../InputForm/InputForm';
 
 interface ProfileComponentProps {
@@ -74,25 +73,22 @@ export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }
 
 export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
   const [openForm, setOpenForm] = useState({
-    openForm: false,
     openInsta: false,
     openTiktok: false,
   });
-  const [socialLinks, setSocialLinks] = useState({
-    instagram_handle: get(profileDetails, 'acf.instagram_handle', ''),
-    tiktok_handle: get(profileDetails, 'acf.tiktok_handle', ''),
-  });
   const [loading, setLoading] = useState(false);
-  const { instaInfo, clearAll: clearInstaData } = useInstaInfo();
-  const { tiktokInfo, clearAll: clearTiktokData } = useTiktokInfo();
-  const clearInstaInfo = useInstaInfo((state) => state.clearAll);
-  const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
+  const { instaInfo, setInstaInfo } = useInstaInfo();
+  const { tiktokInfo, setTiktokInfo } = useTiktokInfo();
   const instaHydrated = useInstaInfo((state) => state.hydrated);
   const tiktokHydrated = useTiktokInfo((state) => state.hydrated);
   const hydrated = instaHydrated && tiktokHydrated;
   const setInstaHydrated = useInstaInfo((state) => state.setHydrated);
   const setTiktokHydrated = useTiktokInfo((state) => state.setHydrated);
 
+  const [socialLinks, setSocialLinks] = useState({
+    instagram_handle: get(profileDetails, 'acf.instagram_handle', '') || instaInfo.username,
+    tiktok_handle: get(profileDetails, 'acf.tiktok_handle', '') || tiktokInfo.username,
+  });
   const {
     control,
     handleSubmit,
@@ -100,7 +96,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     formState: { errors },
   } = useForm<EditSocialLinksRequestBody>({
     resolver: zodResolver(EditSocialLinksSchema),
-    defaultValues: defaultValues,
+    defaultValues: socialLinks,
   });
 
   useEffect(() => {
@@ -109,13 +105,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
       setTiktokHydrated(true);
     }, 500);
   }, [setInstaHydrated, setTiktokHydrated]);
-
-  useEffect(() => {
-    if (hydrated) {
-      clearInstaInfo();
-      clearTiktokInfo();
-    }
-  }, [hydrated, clearInstaInfo, clearTiktokInfo]);
 
   useEffect(() => {
     if (instaInfo.username) {
@@ -223,130 +212,204 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
         await UpdateSocials(updatedFormData);
       }
       setSocialLinks({
-        instagram_handle: data.instagram_handle || get(profileDetails, 'acf.instagram_handle', '') || 'N/A',
-        tiktok_handle: data.tiktok_handle || get(profileDetails, 'acf.tiktok_handle', '') || 'N/A',
+        instagram_handle: data.instagram_handle || get(profileDetails, 'acf.instagram_handle', ''),
+        tiktok_handle: data.tiktok_handle || get(profileDetails, 'acf.tiktok_handle', ''),
+      });
+      setInstaInfo({
+        username: data.instagram_handle || '',
+        code: instaInfo.code,
+        followers: instaInfo.followers,
+        picture: instaInfo.picture,
+        expires: instaInfo.expires || 0,
+      });
+      setTiktokInfo({
+        username: data.tiktok_handle || '',
+        code: tiktokInfo.code,
+        refreshCode: tiktokInfo.refreshCode,
+        followers: tiktokInfo.followers,
+        expires: tiktokInfo.expires || 0,
+        picture: tiktokInfo.picture || '',
       });
     } catch (error) {
-      console.log('Error submitting form:', error);
+      console.error('Error submitting form:', error);
     } finally {
       setLoading(false);
       setOpenForm({
-        openForm: false,
         openInsta: false,
         openTiktok: false,
       });
-      clearInstaData();
-      clearTiktokData();
+      reset();
     }
   };
 
   return (
     <Grid2 container>
-      {openForm.openForm ? (
+      {openForm.openInsta || openForm.openTiktok ? (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: '100%' }}>
-          {(openForm.openInsta || openForm.openTiktok) && (
-            <>
-              <Grid2 size={{ xs: 12 }} sx={{ width: '100%' }} className="user-profile__details-item">
-                <Paper elevation={0}>
-                  <Grid2 container>
-                    <Grid2 size={{ xs: 4 }}>
-                      <Typography variant="body1" fontWeight="500">
-                        Instagram
-                      </Typography>
-                    </Grid2>
-                    <Grid2 size={{ xs: 8, md: 4 }}>
-                      {openForm.openInsta ? (
-                        <>
-                          <Controller
-                            name="instagram_handle"
-                            control={control}
-                            render={({ field }) => (
-                              <InputForm
-                                {...field}
-                                type="text"
-                                name="instagram_handle"
-                                placeholder="Instagram"
-                                autoFill={true}
-                                error={!!errors['instagram_handle']}
-                                helperText={errors['instagram_handle']?.message}
-                              />
-                            )}
-                          />
-                          <Box sx={{ mt: -3 }}>
-                            <Button
-                              sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
-                              disabled={!hydrated || !!instaInfo.code}
-                              onClick={openInstagramAuth}
-                            >
-                              {getInstagramButtonText()}
-                            </Button>
-                            <Button
-                              disabled={loading}
-                              sx={{ textDecoration: loading ? 'underline' : '', textTransform: 'capitalize' }}
-                              type="submit"
-                            >
-                              {en.signUpForm.continue}
-                            </Button>
-                          </Box>
-                        </>
-                      ) : (
-                        <Typography variant="body2">{socialLinks.instagram_handle || 'N/A'}</Typography>
-                      )}
-                    </Grid2>
+          <>
+            <Grid2 size={{ xs: 12 }} sx={{ width: '100%' }} className="user-profile__details-item">
+              <Paper elevation={0}>
+                <Grid2 container>
+                  <Grid2 size={{ xs: 4 }}>
+                    <Typography variant="body1" fontWeight="500">
+                      Instagram
+                    </Typography>
                   </Grid2>
-                </Paper>
-              </Grid2>
-              <Grid2 size={{ xs: 12 }} sx={{ width: '100%' }} className="user-profile__details-item">
-                <Paper elevation={0}>
-                  <Grid2 container>
-                    <Grid2 size={{ xs: 4 }}>
-                      <Typography variant="body1" fontWeight="500">
-                        Tik-Tok
-                      </Typography>
-                    </Grid2>
-                    <Grid2 size={{ xs: 8, md: 4 }}>
-                      {openForm.openTiktok ? (
-                        <>
-                          <Controller
-                            name="tiktok_handle"
-                            control={control}
-                            render={({ field }) => (
-                              <InputTextFormField
-                                {...field}
-                                control={control}
-                                name="tiktok_handle"
-                                placeholder="Tik-Tok"
-                                autoFill={true}
-                                errors={errors}
-                              />
-                            )}
-                          />
-                          <Box sx={{ mt: -3 }}>
-                            <Button
-                              sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
-                              disabled={!hydrated || !!instaInfo.code}
-                              onClick={openTikTokAuth}
-                            >
-                              {getTikTokText()}
-                            </Button>
-                            <Button
-                              disabled={loading}
-                              sx={{ textDecoration: loading ? 'underline' : '', textTransform: 'capitalize' }}
-                              type="submit"
-                            >
-                              {en.signUpForm.continue}
-                            </Button>
-                          </Box>
-                        </>
-                      ) : (
-                        <Typography variant="body2">{socialLinks.tiktok_handle || 'N/A'}</Typography>
-                      )}
-                    </Grid2>
+                  <Grid2 size={{ xs: 8, md: 4 }}>
+                    {openForm.openInsta ? (
+                      <>
+                        <Controller
+                          name="instagram_handle"
+                          control={control}
+                          render={({ field }) => (
+                            <InputForm
+                              {...field}
+                              type="text"
+                              name="instagram_handle"
+                              placeholder="Instagram"
+                              autoFill={true}
+                              error={!!errors['instagram_handle']}
+                              helperText={errors['instagram_handle']?.message}
+                            />
+                          )}
+                        />
+                        <Box sx={{ mt: -3 }}>
+                          <Button
+                            sx={{
+                              textDecoration: !hydrated || !!instaInfo.code || !loading ? 'underline' : '',
+                              textTransform: 'capitalize',
+                              mr: 1,
+                            }}
+                            disabled={!hydrated || !!instaInfo.code || loading}
+                            onClick={openInstagramAuth}
+                          >
+                            {getInstagramButtonText()}
+                          </Button>
+                          <Button
+                            disabled={loading}
+                            sx={{ textDecoration: !loading ? 'underline' : '', textTransform: 'capitalize' }}
+                            type="submit"
+                          >
+                            {loading ? 'Saving...' : 'Save'}
+                          </Button>
+                        </Box>
+                      </>
+                    ) : socialLinks.instagram_handle ? (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="body2">{socialLinks.instagram_handle}</Typography>
+                        <Button
+                          onClick={() =>
+                            setOpenForm({
+                              openInsta: true,
+                              openTiktok: false,
+                            })
+                          }
+                        >
+                          <EditNoteIcon />
+                        </Button>
+                      </Box>
+                    ) : (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}>
+                        <Button
+                          onClick={() =>
+                            setOpenForm({
+                              openInsta: true,
+                              openTiktok: false,
+                            })
+                          }
+                          sx={{ border: '1px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
+                        >
+                          <Typography variant="body2">Add</Typography>
+                          <AddIcon />
+                        </Button>
+                      </Box>
+                    )}
                   </Grid2>
-                </Paper>
-              </Grid2>
-            </>
-          )}
+                </Grid2>
+              </Paper>
+            </Grid2>
+            <Grid2 size={{ xs: 12 }} sx={{ width: '100%' }} className="user-profile__details-item">
+              <Paper elevation={0}>
+                <Grid2 container>
+                  <Grid2 size={{ xs: 4 }}>
+                    <Typography variant="body1" fontWeight="500">
+                      Tik-Tok
+                    </Typography>
+                  </Grid2>
+                  <Grid2 size={{ xs: 8, md: 4 }}>
+                    {openForm.openTiktok ? (
+                      <>
+                        <Controller
+                          name="tiktok_handle"
+                          control={control}
+                          render={({ field }) => (
+                            <InputForm
+                              {...field}
+                              type="text"
+                              name="tiktok_handle"
+                              placeholder="Tik-Tok"
+                              autoFill={true}
+                              error={!!errors['tiktok_handle']}
+                              helperText={errors['tiktok_handle']?.message}
+                            />
+                          )}
+                        />
+                        <Box sx={{ mt: -3 }}>
+                          <Button
+                            sx={{
+                              textDecoration: !hydrated || !!instaInfo.code || !loading ? 'underline' : '',
+                              textTransform: 'capitalize',
+                              mr: 1,
+                            }}
+                            disabled={!hydrated || !!instaInfo.code || loading}
+                            onClick={openTikTokAuth}
+                          >
+                            {getTikTokText()}
+                          </Button>
+                          <Button
+                            disabled={loading}
+                            sx={{ textDecoration: !loading ? 'underline' : '', textTransform: 'capitalize' }}
+                            type="submit"
+                          >
+                            {loading ? 'Saving...' : 'Save'}
+                          </Button>
+                        </Box>
+                      </>
+                    ) : socialLinks.tiktok_handle ? (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="body2">{socialLinks.tiktok_handle}</Typography>
+                        <Button
+                          onClick={() =>
+                            setOpenForm({
+                              openInsta: false,
+                              openTiktok: true,
+                            })
+                          }
+                        >
+                          <EditNoteIcon />
+                        </Button>
+                      </Box>
+                    ) : (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}>
+                        <Button
+                          onClick={() =>
+                            setOpenForm({
+                              openInsta: false,
+                              openTiktok: true,
+                            })
+                          }
+                          sx={{ border: '1px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
+                        >
+                          <Typography variant="body2">Add</Typography>
+                          <AddIcon />
+                        </Button>
+                      </Box>
+                    )}
+                  </Grid2>
+                </Grid2>
+              </Paper>
+            </Grid2>
+          </>
         </Box>
       ) : (
         socialData.map((item, index) => (
@@ -365,7 +428,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                       <Button
                         onClick={() =>
                           setOpenForm({
-                            openForm: true,
                             openInsta: item.name === 'instagram_handle',
                             openTiktok: item.name === 'tiktok_handle',
                           })
@@ -379,12 +441,11 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                       <Button
                         onClick={() =>
                           setOpenForm({
-                            openForm: true,
                             openInsta: item.name === 'instagram_handle',
                             openTiktok: item.name === 'tiktok_handle',
                           })
                         }
-                        sx={{ border: '1px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
+                        sx={{ border: '0.5px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
                       >
                         <Typography variant="body2">Add</Typography>
                         <AddIcon />

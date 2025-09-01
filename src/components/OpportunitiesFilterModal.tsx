@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, CircularProgress, IconButton, ImageList, Modal } from '@mui/material';
@@ -63,7 +62,8 @@ const OpportunitiesFilterModal: React.FC<OpportunitiesFilterModalProps> = ({
                 >
                   <Box className="filter-modal__list-icon">
                     {category?.emoji_url && (
-                      <Image
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
                         src={category?.emoji_url || DefaultImageFallback.Placeholder}
                         alt={`${category?.name} icon`}
                         width={30}

@@ -25,7 +25,7 @@ import { signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
-import { useMessageCountStore, useUserStatusStore } from '@/store/useStore';
+import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
 
 const vipMenuItems = [
   {
@@ -62,6 +62,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const { clearAll } = useUserStatusStore();
   const { setMessageCount } = useMessageCountStore();
   const menuItems = role === UserRole.Vip || role === UserRole.Brand ? vipMenuItems : agentMenuItems;
+  const clearInstaInfo = useInstaInfo((state) => state.clearAll);
+  const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const toggleDrawer = (open: boolean) => () => {
@@ -74,6 +76,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
     try {
       await LogOut();
       await signOutAction();
+      clearInstaInfo();
+      clearTiktokInfo();
       clearAll();
     } catch (error) {
       openToaster('Error during logging out. ' + error);
