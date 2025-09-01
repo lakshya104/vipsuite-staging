@@ -1,20 +1,16 @@
 'use client';
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Backdrop, Box, Button, CircularProgress, Grid2, Paper, Typography } from '@mui/material';
+import { Box, Button, Grid2, Paper, Typography } from '@mui/material';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import AddIcon from '@mui/icons-material/Add';
 import { UserProfile } from '@/interfaces';
 import { expiryDate, formatDateWithMonth } from '@/helpers/utils';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
-import { DeleteAccount, UpdateSocials } from '@/libs/api-manager/manager';
-import { signOutAction } from '@/libs/actions';
-import UseToaster from '@/hooks/useToaster';
-import Toaster from '../Toaster';
-import DialogConfirmBox from '../Dialog/DialogConfirm';
+import { UpdateSocials } from '@/libs/api-manager/manager';
 import { useInstaInfo, useTiktokInfo } from '@/store/useStore';
 import { EditSocialLinksRequestBody, EditSocialLinksSchema } from './types';
 import InputForm from '../InputForm/InputForm';
@@ -463,11 +459,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
 };
 
 export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDetails, isAgent, isBrand }) => {
-  const [isPending, startTransition] = useTransition();
-  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('error');
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-
   const contactData = [
     ...(isBrand
       ? [
@@ -516,26 +507,6 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
     );
   }
 
-  const toggleDialog = () => {
-    setOpenDialog((prev) => !prev);
-  };
-
-  const handleDeleteAccount = async () => {
-    try {
-      startTransition(async () => {
-        const response = await DeleteAccount();
-        setToasterType('success');
-        openToaster(response.message || en.profilePage.profileTabs.contacts.successAccountDelete);
-        setTimeout(async () => {
-          await signOutAction();
-        }, 2000);
-      });
-    } catch (error) {
-      setToasterType('error');
-      openToaster(en.profilePage.profileTabs.contacts.deletAccountError + error);
-    }
-  };
-
   return (
     <Grid2 className="user-profile__wrapper" container>
       {filteredContactData.map((item, index) => (
@@ -563,28 +534,6 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
           </Paper>
         </Grid2>
       ))}
-      <Box alignItems="center" width="100%">
-        <Typography
-          variant="body1"
-          className="user-profile__delete-account"
-          onClick={toggleDialog}
-          sx={{ cursor: 'pointer', fontWeight: 400, textAlign: 'center', textDecoration: 'underline', mt: 2 }}
-        >
-          {en.profilePage.profileTabs.contacts.deleteAccount}
-        </Typography>
-      </Box>
-      <DialogConfirmBox
-        open={openDialog}
-        onClose={toggleDialog}
-        onConfirm={() => handleDeleteAccount()}
-        title={en.common.deleteAccount}
-        description={en.common.deleteAccountMessage}
-        confirmText={en.common.delete}
-      />
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
-      <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </Grid2>
   );
 };

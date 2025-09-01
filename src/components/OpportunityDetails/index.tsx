@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { isEmpty, map } from 'lodash';
+import { first, isEmpty, map } from 'lodash';
 import { Box, CardContent, Typography, Button, Grid2, Backdrop, CircularProgress } from '@mui/material';
 import he from 'he';
 import OpportunityTabs from '@/components/OpportunityTabs';
@@ -35,6 +35,7 @@ import {
   VipOptions,
 } from '@/interfaces';
 import VipOrderForm from '../VipOrderForm';
+import FullScreenDialog from '../FullScreenDialog';
 
 interface OpportunityDetailsCardProps {
   opportunity: OpportunityDetails;
@@ -46,6 +47,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const [isPending, setIsPending] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
   const [toasterMessage, setToasterMessage] = useState<string>('');
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
@@ -53,7 +55,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     ? opportunity?.acf?.web_detail_images?.map(
         (item) => item?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder,
       )
-    : [opportunity.acf.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
+    : [opportunity?.acf?.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
   const showVipOptions = userRole === UserRole.Agent && isEmpty(opportunity?.acf?.grouped_products);
   const [vipsLoading, setVipsLoading] = useState<boolean>(showVipOptions ? true : false);
   const [vipSchemas, setVipSchemas] = useState(() => (!showVipOptions ? vipOptionalSchema : vipInitialSchema));
@@ -61,6 +63,17 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     vip_profile_ids: vipSchemas.profileId,
     vip_profile_names: vipSchemas.profileName,
   });
+
+  const dialogBoxContent = {
+    title: '',
+    subTitle: en.opportunities.dialogText.subtitleText,
+    description: en.opportunities.dialogText.description,
+    image: opportunity?.acf?.web_detail_images
+      ? first(opportunity?.acf?.web_detail_images)?.sizes['vs-container']
+      : opportunity?.acf?.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder,
+    buttonText: en.selectAddress.dialog.orderBtn,
+  };
+
   const {
     handleSubmit,
     control,
@@ -125,11 +138,8 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const handleForm = async (data: RsvpFormValues) => {
     if (!(userRole === UserRole.Agent)) setBtnDisable(true);
     try {
-      const res = await SendRsvp(data);
-      handleToasterMessage('success', res?.message);
-      setTimeout(() => {
-        router.push(withSearchParams(() => paths.root.inbox.getHref(), { isOrderTab: 'true' }));
-      }, 1500);
+      await SendRsvp(data);
+      setIsDialogOpen(true);
     } catch (error) {
       handleToasterMessage('error', String(error));
       setBtnDisable(false);
@@ -320,6 +330,15 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         setOpen={closeToaster}
         message={error}
         severity={toasterType as 'error' | 'success' | 'warning' | 'info'}
+      />
+      <FullScreenDialog
+        isOpen={isDialogOpen}
+        onClose={() => {
+          setIsPending(true);
+          router.push(withSearchParams(() => paths.root.inbox.getHref(), { isOrderTab: 'true' }));
+          setIsDialogOpen(false);
+        }}
+        content={dialogBoxContent}
       />
     </Box>
   );

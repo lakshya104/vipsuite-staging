@@ -21,7 +21,8 @@ export interface AddressInput {
   address_line_2: string;
   city: string;
   postcode: string;
-  state: string;
+  state?: string;
+  region?: string;
   country: string;
   phone?: string;
 }

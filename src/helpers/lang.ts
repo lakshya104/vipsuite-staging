@@ -24,6 +24,7 @@ const en = {
     delete: 'Yes, Delete',
     deleteAccount: 'Delete Account',
     deleteAccountMessage: 'Are you sure you want to delete your account?',
+    settings: 'Settings',
   },
   helperText: {
     noAccount: "Don't have an account?",
@@ -412,6 +413,10 @@ const en = {
       success: 'Response submitted successfully',
       error: 'Error submitting response',
     },
+    dialogText: {
+      subtitleText: 'Thanks for your request',
+      description: 'The team will be in touch if your request has been approved by the brand',
+    },
     offer: 'The Offer',
     ask: 'The Ask',
     description: 'Description',
@@ -666,7 +671,6 @@ const en = {
       addressLineTwoRequired: 'Address line 2 is required.',
       cityRequired: 'City is required.',
       postcodeRequired: 'Invalid postal code. Please enter a valid postal code.',
-      stateRequired: 'State is required.',
       countryRequired: 'Country is required.',
     },
   },

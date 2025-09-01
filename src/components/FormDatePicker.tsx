@@ -35,6 +35,7 @@ const FormDatePicker = <T extends FieldValues>({
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              desktopModeMediaQuery="(min-width:0px)"
               disableFuture={selectFutureDate ? false : true}
               className="date-picker"
               label={label && label}
@@ -77,6 +78,7 @@ export const FormDateTimePicker = <T extends FieldValues>({
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
+            desktopModeMediaQuery="(min-width:0px)"
             disableFuture={selectFutureDate ? false : true}
             className="date-time-picker"
             label={label && label}
@@ -106,6 +108,7 @@ export const FormTimePicker = <T extends FieldValues>({ name, control, label }: 
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
+            desktopModeMediaQuery="(min-width:0px)"
             className="time-picker"
             label={label && label}
             value={value ? dayjs(value, 'HH:mm:ss') : null}

@@ -41,7 +41,7 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
     } else if (errorMessage) {
       openToaster(errorMessage);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorMessage, login, openToaster]);
 
   return (

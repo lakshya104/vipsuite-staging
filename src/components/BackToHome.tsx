@@ -1,7 +1,8 @@
 'use client';
-import React, { useTransition } from 'react';
-import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
+import { Box, Button } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import revalidatePathAction, { createSkipCookie } from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import { UserRole } from '@/helpers/enums';
@@ -12,7 +13,6 @@ interface BackToHomeProps {
 }
 
 const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
-  const [isPending, startTransition] = useTransition();
   const { clearVipIdStore } = useEditVipIdStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,14 +26,12 @@ const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
         : paths.root.myVips.getHref();
 
   const handleBack = async () => {
-    startTransition(async () => {
-      revalidatePathAction(paths.root.profile.getHref());
-      if (role === UserRole.Vip || role === UserRole.Agent) {
-        await createSkipCookie();
-      }
-      router.push(redirectPath);
-      clearVipIdStore();
-    });
+    revalidatePathAction(paths.root.profile.getHref());
+    if (role === UserRole.Vip || role === UserRole.Agent) {
+      await createSkipCookie();
+    }
+    router.push(redirectPath);
+    clearVipIdStore();
   };
 
   return (
@@ -41,9 +39,6 @@ const BackToHome: React.FC<BackToHomeProps> = ({ role }) => {
       <Button onClick={handleBack}>
         <span style={{ textDecoration: 'underline', textTransform: 'capitalize' }}>Skip</span>
       </Button>
-      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={isPending}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </Box>
   );
 };

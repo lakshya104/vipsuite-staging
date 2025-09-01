@@ -26,7 +26,7 @@ type FormFieldNames =
   | 'address_line_2'
   | 'city'
   | 'postcode'
-  | 'state'
+  | 'region'
   | 'country'
   | 'phone'
   | 'company';
@@ -63,7 +63,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
       address_line_2: defaultValues.address_line_2 || '',
       city: defaultValues.city || '',
       postcode: defaultValues.postcode || '',
-      state: defaultValues.state || '',
+      region: defaultValues.state || '',
       country: defaultValues.country_code || '',
       phone: defaultValues.phone || '',
       company: defaultValues.company || '',
@@ -73,7 +73,13 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
   const onSubmit = async (data: AddAddressFormValue) => {
     setIsLoading(true);
     try {
-      await addUpdateAddress(data, addressId);
+      const apiData = {
+        ...data,
+        state: data.region,
+      };
+      delete apiData.region;
+
+      await addUpdateAddress(apiData, addressId);
       if (search === 'order-journey') {
         if (isRequestedProduct) {
           router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isRequestOnly: 'true' }));

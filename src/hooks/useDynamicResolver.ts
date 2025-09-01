@@ -1,6 +1,7 @@
-import { filter, find, isArray, isString, map, reduce } from 'lodash';
+import { filter, find, isArray, map, reduce } from 'lodash';
 import { Section, Question, ACF, ProfileQuestionType } from '@/interfaces';
 import { ChildDob } from '@/features/DynamicProfileBuilderStepRenderer';
+import { isNonEmptyString } from '@/helpers/utils';
 
 export function createDynamicResolver(section: Section, profileDetail: ACF, allCityOptions: string[]) {
   return reduce(
@@ -17,7 +18,7 @@ export function createDynamicResolver(section: Section, profileDetail: ACF, allC
 
           if (
             otherOption &&
-            isString(profileValue) &&
+            isNonEmptyString(profileValue) &&
             !choicesTexts.some((text) => text.toLowerCase() === profileValue.toLowerCase())
           ) {
             // Transform to "Other: [value]" format
@@ -27,9 +28,10 @@ export function createDynamicResolver(section: Section, profileDetail: ACF, allC
           }
         } else if (q.input_type === ProfileQuestionType.CityList) {
           const hasOtherOption = allCityOptions.some((city) => city.toLowerCase() === 'other');
+
           if (
             hasOtherOption &&
-            isString(profileValue) &&
+            isNonEmptyString(profileValue) &&
             !allCityOptions.some((city) => city.toLowerCase() === profileValue.toLowerCase())
           ) {
             acc[q.unique_id] = `Other: ${profileValue}`;

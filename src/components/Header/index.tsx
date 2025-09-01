@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import Image from 'next/image';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import './Header.scss';
 import { ProgressBarLink } from '../ProgressBar';
@@ -26,6 +26,8 @@ import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
 import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
+import { DeleteAccount } from '@/libs/api-manager/manager';
+import DialogConfirmBox from '../Dialog/DialogConfirm';
 
 const vipMenuItems = [
   {
@@ -61,13 +63,22 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const { messageCount } = useMessageCountStore();
   const { clearAll } = useUserStatusStore();
   const { setMessageCount } = useMessageCountStore();
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const menuItems = role === UserRole.Vip || role === UserRole.Brand ? vipMenuItems : agentMenuItems;
+
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('error');
   const clearInstaInfo = useInstaInfo((state) => state.clearAll);
   const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
+  };
+
+  const toggleDialog = () => {
+    setDrawerOpen(false);
+    setOpenDialog((prev) => !prev);
   };
 
   const handleLogout = async () => {
@@ -84,6 +95,28 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       setIsPending(false);
     } finally {
       setMessageCount(0);
+    }
+  };
+
+  const handleSettingsToggle = () => {
+    setSettingsOpen(!settingsOpen);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setIsPending(true);
+      const response = await DeleteAccount();
+      setToasterType('success');
+      openToaster(response.message || en.profilePage.profileTabs.contacts.successAccountDelete);
+      setTimeout(async () => {
+        await signOutAction();
+        clearAll();
+      }, 2000);
+    } catch (error) {
+      setToasterType('error');
+      openToaster(en.profilePage.profileTabs.contacts.deletAccountError + error);
+    } finally {
+      setIsPending(false);
     }
   };
 
@@ -190,27 +223,57 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                       <Box>
                         {item.icon}
                         <Typography variant="body1">{item.label}</Typography>
+                        <ChevronRight />
                       </Box>
-                      <ChevronRightIcon />
                     </Box>
                   </ProgressBarLink>
                 ))}
+                <Box className="drawer-menu__item" onClick={handleSettingsToggle}>
+                  <Box>
+                    <Image src="/img/settings-icon.svg" alt="Logo" width={20} height={20} />
+                    <Typography variant="body1">{en.common.settings}</Typography>
+                    {!settingsOpen ? <ChevronRight /> : <ExpandMore />}
+                  </Box>
+
+                  {settingsOpen && (
+                    <Box
+                      className="drawer-menu__sub-item"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleDialog();
+                      }}
+                    >
+                      <Box>
+                        <Image src="/img/user.svg" alt="Logo" width={20} height={20} />
+                        <Typography variant="body1">{en.common.deleteAccount}</Typography>
+                      </Box>
+                    </Box>
+                  )}
+                </Box>
                 <Box className="drawer-menu__item" onClick={handleLogout}>
                   <Box>
                     <Image src="/img/signout.svg" alt="Logo" width={20} height={20} />
                     <Typography variant="body1">{en.common.signOut}</Typography>
+                    <ChevronRight />
                   </Box>
-                  <ChevronRightIcon />
                 </Box>
               </Box>
             </Box>
           </Drawer>
         </Toolbar>
       </AppBar>
+      <DialogConfirmBox
+        open={openDialog}
+        onClose={toggleDialog}
+        onConfirm={() => handleDeleteAccount()}
+        title={en.common.deleteAccount}
+        description={en.common.deleteAccountMessage}
+        confirmText={en.common.delete}
+      />
       <Backdrop sx={{ color: '#fff', zIndex: 100000 }} open={isPending}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Box, Container } from '@mui/material';
 import '../opportunities.scss';
+import '../../basket/basket.scss';
 import OpportunityDetailsPage from '@/site-pages/OpportunitiesDetailsPage';
 import OpportunityDetailsLoading from '@/site-pages/OpportunitiesDetailsPage/loading';
 
