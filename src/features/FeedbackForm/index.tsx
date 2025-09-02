@@ -124,7 +124,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
     <>
       {isSubmitted ? null : (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className="feedback-form">
-          <Typography variant="h2" mb={2}>
+          <Typography variant="h5" fontWeight={500} mb={2} sx={{ fontSize: { xs: '1rem', md: '1.45rem' } }}>
             {en.feedbackForm.formTitle}
           </Typography>
 
