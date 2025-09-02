@@ -6,6 +6,7 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DoneIcon from '@mui/icons-material/Done';
+import { isEqual } from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputForm from '../../components/InputForm/InputForm';
 import { AgentSignUpFormFields } from '@/data';
@@ -16,7 +17,6 @@ import Toaster from '@/components/Toaster';
 import { AgentSignUp, VerifyEmail, VerifyEmailCode } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
 import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
-import { isEqual } from 'lodash';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
 
@@ -115,7 +115,7 @@ const AgentSignupForm = () => {
         await VerifyEmail(email);
         setToasterType('success');
         setToasterOpen(true);
-        setError('OTP has been sent to your email');
+        setError('Activation code has been sent to your email');
         setCodeSent(true);
         setPreviousEmail(email);
       } else {
@@ -266,9 +266,9 @@ const AgentSignupForm = () => {
                           </Button>
                         )}
                         {isCodeSent && !isCodeVerified && (
-                          <>
+                          <Box sx={{ mt: -2 }}>
                             <InputForm
-                              placeholder={en.signUpForm.enterOtp}
+                              placeholder="Enter activation code"
                               type="number"
                               value={verificationCode}
                               error={toasterType !== 'success' && !!error}
@@ -277,32 +277,51 @@ const AgentSignupForm = () => {
                                 setVerificationCode(e.target.value);
                                 setError('');
                               }}
+                              sx={{ position: 'relative' }}
                             />
-                            <Button
-                              onClick={() => {
-                                if (!isVerificationLoading && !isCodeVerified) {
-                                  handleCodeVerification(field.value.toString());
-                                }
+                            {toasterType !== 'error' && (
+                              <Box className="input-helper">
+                                <Typography>{en.signUpForm.otpHelper}</Typography>
+                              </Box>
+                            )}
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 1,
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                               }}
-                              disabled={isVerificationLoading}
-                              className="button button--white"
                             >
-                              {isVerificationLoading && !isResending ? 'Verifying...' : en.signUpForm.verifyOtp}
-                            </Button>
-                            <Button
-                              onClick={async () => {
-                                if (!isResending) {
-                                  setIsResending(true);
-                                  await handleEmailVerification(field.value.toString());
-                                  setIsResending(false);
-                                }
-                              }}
-                              disabled={isResending || isVerificationLoading}
-                              className="button button--white"
-                            >
-                              {isResending ? 'Resending...' : en.signUpForm.resendOtp}
-                            </Button>
-                          </>
+                              <Button
+                                onClick={() => {
+                                  if (!isVerificationLoading && !isCodeVerified) {
+                                    handleCodeVerification(field.value.toString());
+                                  }
+                                }}
+                                disabled={isVerificationLoading}
+                                className="button button--white"
+                                sx={{ width: '80%' }}
+                              >
+                                {isVerificationLoading && !isResending ? 'Verifying...' : en.signUpForm.verifyOtp}
+                              </Button>
+                              <Button
+                                onClick={async () => {
+                                  if (!isResending) {
+                                    setIsResending(true);
+                                    await handleEmailVerification(field.value.toString());
+                                    setIsResending(false);
+                                  }
+                                }}
+                                disabled={isResending || isVerificationLoading}
+                                className="button button--white"
+                                sx={{ width: '80%', marginLeft: '0 !important' }}
+                              >
+                                {isResending ? 'Resending...' : en.signUpForm.resendOtp}
+                              </Button>
+                            </Box>
+                          </Box>
                         )}
                       </Box>
                     )}

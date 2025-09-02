@@ -28,7 +28,6 @@ import en from '@/helpers/lang';
 import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
 import { DeleteAccount } from '@/libs/api-manager/manager';
 import DialogConfirmBox from '../Dialog/DialogConfirm';
-
 const vipMenuItems = [
   {
     label: 'Basket',
@@ -74,6 +73,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
+    setSettingsOpen(false);
   };
 
   const toggleDialog = () => {
@@ -84,6 +84,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const handleLogout = async () => {
     setIsPending(true);
     setDrawerOpen(false);
+    setSettingsOpen(false);
     try {
       await LogOut();
       await signOutAction();
@@ -117,6 +118,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       openToaster(en.profilePage.profileTabs.contacts.deletAccountError + error);
     } finally {
       setIsPending(false);
+      setSettingsOpen(false);
     }
   };
 
@@ -244,7 +246,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                       }}
                     >
                       <Box>
-                        <Image src="/img/user.svg" alt="Logo" width={20} height={20} />
+                        <Image src="/img/delete-icon.svg" alt="Logo" width={20} height={20} />
                         <Typography variant="body1">{en.common.deleteAccount}</Typography>
                       </Box>
                     </Box>

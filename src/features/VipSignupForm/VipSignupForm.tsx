@@ -182,7 +182,7 @@ const VipSignupForm = () => {
         await VerifyEmail(email);
         setToasterType('success');
         setToasterOpen(true);
-        setError('OTP has been sent to your email');
+        setError('Activation code has been sent to your email');
         setCodeSent(true);
         setPreviousEmail(email);
       } else {
@@ -344,9 +344,9 @@ const VipSignupForm = () => {
                         </Button>
                       )}
                       {isCodeSent && !isCodeVerified && (
-                        <>
+                        <Box sx={{ mt: -2 }}>
                           <InputForm
-                            placeholder="Enter OTP"
+                            placeholder="Enter activation code"
                             type="number"
                             value={verificationCode}
                             error={toasterType !== 'success' && !!error}
@@ -355,32 +355,51 @@ const VipSignupForm = () => {
                               setVerificationCode(e.target.value);
                               setError('');
                             }}
+                            sx={{ position: 'relative' }}
                           />
-                          <Button
-                            onClick={() => {
-                              if (!isVerificationLoading && !isCodeVerified) {
-                                handleCodeVerification(field.value);
-                              }
+                          {toasterType !== 'error' && (
+                            <Box className="input-helper">
+                              <Typography>{en.signUpForm.otpHelper}</Typography>
+                            </Box>
+                          )}
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 1,
+                              width: '100%',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                             }}
-                            disabled={isVerificationLoading}
-                            className="button button--white"
                           >
-                            {isVerificationLoading && !isResending ? 'Verifying...' : en.signUpForm.verifyOtp}
-                          </Button>
-                          <Button
-                            onClick={async () => {
-                              if (!isResending) {
-                                setIsResending(true);
-                                await handleEmailVerification(field.value);
-                                setIsResending(false);
-                              }
-                            }}
-                            disabled={isResending || isVerificationLoading}
-                            className="button button--white"
-                          >
-                            {isResending ? 'Resending...' : en.signUpForm.resendOtp}
-                          </Button>
-                        </>
+                            <Button
+                              onClick={() => {
+                                if (!isVerificationLoading && !isCodeVerified) {
+                                  handleCodeVerification(field.value);
+                                }
+                              }}
+                              disabled={isVerificationLoading}
+                              className="button button--white"
+                              sx={{ width: '80%' }}
+                            >
+                              {isVerificationLoading && !isResending ? 'Verifying...' : en.signUpForm.verifyOtp}
+                            </Button>
+                            <Button
+                              onClick={async () => {
+                                if (!isResending) {
+                                  setIsResending(true);
+                                  await handleEmailVerification(field.value);
+                                  setIsResending(false);
+                                }
+                              }}
+                              disabled={isResending || isVerificationLoading}
+                              className="button button--white"
+                              sx={{ width: '80%', marginLeft: '0 !important' }}
+                            >
+                              {isResending ? 'Resending...' : en.signUpForm.resendOtp}
+                            </Button>
+                          </Box>
+                        </Box>
                       )}
                     </Box>
                   )}

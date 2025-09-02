@@ -71,7 +71,7 @@ export const cityValidation = z.string().min(1, { message: en.address.errorMessa
 
 export const postcodeValidation = z.string().min(1, { message: en.address.errorMessage.postcodeRequired });
 
-export const regionValidation = z.string();
+export const stateValidation = z.string();
 
 export const countryValidation = z.string().min(1, { message: en.address.errorMessage.countryRequired });
 

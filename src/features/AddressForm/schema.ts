@@ -9,7 +9,7 @@ import {
   lastNameValidation,
   phoneRequiredValidation,
   homePostcodeValidation,
-  regionValidation,
+  stateValidation,
 } from '@/helpers/validations';
 import { QuestionType } from '@/helpers/enums';
 
@@ -20,7 +20,7 @@ export const formSchema = z.object({
   address_line_2: addressValidationTwo,
   city: cityValidation,
   postcode: homePostcodeValidation,
-  region: regionValidation,
+  state: stateValidation,
   country: countryValidation,
   phone: phoneRequiredValidation,
   company: companyValidation,
@@ -34,7 +34,6 @@ export type AddAddressFormValue = {
   city: string;
   postcode: string;
   state?: string;
-  region?: string;
   country: string;
   phone: string;
   company?: string | undefined;
@@ -73,8 +72,8 @@ export const addNewAddressField = [
     type: QuestionType.Text,
   },
   {
-    name: 'region',
-    placeholder: 'Region',
+    name: 'state',
+    placeholder: 'State',
     type: QuestionType.Text,
   },
   {

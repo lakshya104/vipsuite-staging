@@ -245,6 +245,19 @@ form {
       @include mixins.fontSize(11);
     }
   }
+  .input-helper {
+   padding: 0 mixins.rem(14);
+    margin-top: mixins.rem(4);
+    width: 100%;
+    @include mixins.flex(space-between, center);
+    @include mixins.absolute(bottom 127px left 0);
+    p {
+      color: var(--color-textBlack-60);
+      font-weight: 400;
+      line-height: 1.27;
+      @include mixins.fontSize(11);
+    }
+  }
   .date-picker {
     button {
       .site-dialog & {

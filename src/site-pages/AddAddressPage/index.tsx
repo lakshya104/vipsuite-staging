@@ -11,7 +11,7 @@ const AddAddressPage = async () => {
     address_line_1: '',
     address_line_2: '',
     city: '',
-    region: '',
+    state: '',
     country: '',
     phone: '',
     postcode: '',
