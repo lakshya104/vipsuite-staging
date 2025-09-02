@@ -14,6 +14,9 @@ import { UpdateSocials } from '@/libs/api-manager/manager';
 import { useInstaInfo, useTiktokInfo } from '@/store/useStore';
 import { EditSocialLinksRequestBody, EditSocialLinksSchema } from './types';
 import InputForm from '../InputForm/InputForm';
+import revalidatePathAction from '@/libs/actions';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '../Toaster';
 
 interface ProfileComponentProps {
   profileDetails: UserProfile;
@@ -80,11 +83,32 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   const hydrated = instaHydrated && tiktokHydrated;
   const setInstaHydrated = useInstaInfo((state) => state.setHydrated);
   const setTiktokHydrated = useTiktokInfo((state) => state.setHydrated);
+  const [socialLinks, setSocialLinks] = useState(() => ({
+    instagram_handle: instaInfo.username,
+    tiktok_handle: tiktokInfo.username,
+  }));
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
-  const [socialLinks, setSocialLinks] = useState({
-    instagram_handle: get(profileDetails, 'acf.instagram_handle', '') || instaInfo.username,
-    tiktok_handle: get(profileDetails, 'acf.tiktok_handle', '') || tiktokInfo.username,
-  });
+  useEffect(() => {
+    setInstaInfo({
+      username: instaInfo.username || get(profileDetails, 'acf.instagram_handle', '') || '',
+      code: instaInfo.code,
+      followers: instaInfo.followers,
+      picture: instaInfo.picture,
+      expires: instaInfo.expires || 0,
+    });
+    setTiktokInfo({
+      username: tiktokInfo.username || get(profileDetails, 'acf.tiktok_handle', '') || '',
+      code: tiktokInfo.code,
+      refreshCode: tiktokInfo.refreshCode,
+      followers: tiktokInfo.followers,
+      expires: tiktokInfo.expires || 0,
+      picture: tiktokInfo.picture || '',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     control,
     handleSubmit,
@@ -193,8 +217,8 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   const onSubmit = async (data: EditSocialLinksRequestBody) => {
     try {
       setLoading(true);
-      const updatedFormData = {
-        ...data,
+      const updatedTiktokFormData = {
+        tiktok_handle: data.tiktok_handle,
         instagram_follower_count: instaInfo.followers,
         instagram_access_token: instaInfo.code,
         instagram_profile_image_url: instaInfo.picture,
@@ -204,31 +228,51 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
         tiktok_refresh_token: tiktokInfo.refreshCode,
         tiktok_token_expiry: expiryDate(tiktokInfo.expires),
       };
-      if (data.instagram_handle || data.tiktok_handle) {
-        await UpdateSocials(updatedFormData);
+      const updatedInstagramFormData = {
+        instagram_handle: data.instagram_handle,
+        instagram_follower_count: instaInfo.followers,
+        instagram_access_token: instaInfo.code,
+        instagram_profile_image_url: instaInfo.picture,
+        instagram_token_expiry: expiryDate(instaInfo.expires),
+      };
+      if (data.instagram_handle && openForm.openInsta) {
+        const res = await UpdateSocials(updatedInstagramFormData);
+        setToasterType('success');
+        openToaster(res.message || 'Socials updates successfully');
+      } else if (data.tiktok_handle && openForm.openTiktok) {
+        const res = await UpdateSocials(updatedTiktokFormData);
+        setToasterType('success');
+        openToaster(res.message || 'Socials updates successfully');
       }
-      setSocialLinks({
-        instagram_handle: data.instagram_handle || get(profileDetails, 'acf.instagram_handle', ''),
-        tiktok_handle: data.tiktok_handle || get(profileDetails, 'acf.tiktok_handle', ''),
-      });
-      setInstaInfo({
-        username: data.instagram_handle || '',
-        code: instaInfo.code,
-        followers: instaInfo.followers,
-        picture: instaInfo.picture,
-        expires: instaInfo.expires || 0,
-      });
-      setTiktokInfo({
-        username: data.tiktok_handle || '',
-        code: tiktokInfo.code,
-        refreshCode: tiktokInfo.refreshCode,
-        followers: tiktokInfo.followers,
-        expires: tiktokInfo.expires || 0,
-        picture: tiktokInfo.picture || '',
-      });
+      await revalidatePathAction('/profile');
     } catch (error) {
       console.error('Error submitting form:', error);
+      setToasterType('error');
+      openToaster(error?.toString() || 'Failed to update socials');
     } finally {
+      setSocialLinks({
+        instagram_handle: data.instagram_handle || instaInfo.username,
+        tiktok_handle: data.tiktok_handle || tiktokInfo.username,
+      });
+      if (openForm.openInsta && data.instagram_handle) {
+        setInstaInfo({
+          username: data.instagram_handle || '',
+          code: instaInfo.code,
+          followers: instaInfo.followers,
+          picture: instaInfo.picture,
+          expires: instaInfo.expires || 0,
+        });
+      }
+      if (openForm.openTiktok && data.tiktok_handle) {
+        setTiktokInfo({
+          username: data.tiktok_handle || '',
+          code: tiktokInfo.code,
+          refreshCode: tiktokInfo.refreshCode,
+          followers: tiktokInfo.followers,
+          expires: tiktokInfo.expires || 0,
+          picture: tiktokInfo.picture || '',
+        });
+      }
       setLoading(false);
       setOpenForm({
         openInsta: false,
@@ -353,11 +397,11 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                         <Box sx={{ mt: -3 }}>
                           <Button
                             sx={{
-                              textDecoration: !hydrated || !!instaInfo.code || !loading ? 'underline' : '',
+                              textDecoration: !hydrated || !!tiktokInfo.code || !loading ? 'underline' : '',
                               textTransform: 'capitalize',
                               mr: 1,
                             }}
-                            disabled={!hydrated || !!instaInfo.code || loading}
+                            disabled={!hydrated || !!tiktokInfo.code || loading}
                             onClick={openTikTokAuth}
                           >
                             {getTikTokText()}
@@ -454,6 +498,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
           </Grid2>
         ))
       )}
+      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
     </Grid2>
   );
 };

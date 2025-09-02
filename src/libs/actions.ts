@@ -1,14 +1,14 @@
 'use server';
 
-import { revalidateTag as revalidate, revalidatePath } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { AuthError } from 'next-auth';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
+import { redirect } from 'next/navigation';
 import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
 import { cookies } from 'next/headers';
 import { GetSession } from './api-manager/manager';
 import { CookieName } from '@/helpers/enums';
-import { isRedirectError } from 'next/dist/client/components/redirect-error';
-import { redirect } from 'next/navigation';
 
 export const loginServerAction = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -48,10 +48,6 @@ export const signOutAction = async () => {
   await signOut({ redirect: false });
   redirect('/login');
 };
-
-export async function revalidateTag(name: string) {
-  revalidate(name);
-}
 
 export default async function revalidatePathAction(path: string) {
   revalidatePath(path);
