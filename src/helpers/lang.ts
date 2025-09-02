@@ -804,7 +804,7 @@ const en = {
     avgEngagementInsta: 'Avg. Instagram Engagement',
     avgEngagementTikTok: 'Avg. TikTok Engagement',
     enterOtp: 'Enter activation code',
-    otpHelper: 'Remember to check your spam folder',
+    otpHelper: 'Do not forget to check your spam folder.',
   },
   referVip: {
     formError: 'Error during submitting the form.',
