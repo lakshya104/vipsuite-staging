@@ -246,7 +246,7 @@ form {
     }
   }
   .input-helper {
-   padding: 0 mixins.rem(14);
+    padding: 0 mixins.rem(14);
     margin-top: mixins.rem(4);
     width: 100%;
     @include mixins.flex(space-between, center);

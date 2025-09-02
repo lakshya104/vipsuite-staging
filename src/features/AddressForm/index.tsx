@@ -73,7 +73,6 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
   const onSubmit = async (data: AddAddressFormValue) => {
     setIsLoading(true);
     try {
-
       await addUpdateAddress(data, addressId);
       if (search === 'order-journey') {
         if (isRequestedProduct) {

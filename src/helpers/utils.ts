@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { z } from 'zod';
 import { Question } from '@/interfaces/events';
 import en from './lang';
 
-dayjs.extend(relativeTime);
 dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(relativeTime);
 
 export function calculateAge(dateOfBirth: string | undefined): number {
   if (!dateOfBirth) return 0;
@@ -250,7 +252,8 @@ export const extractDate = (timestamp: string) => {
 };
 
 export const calculateRelativeTime = (date: string): string => {
-  return dayjs.utc(date).local().startOf('second').fromNow();
+  const parsed = dayjs.tz(date, 'Europe/London').local();
+  return parsed.startOf('second').fromNow();
 };
 
 export const isNonEmptyString = (str: string | undefined | null): boolean => {

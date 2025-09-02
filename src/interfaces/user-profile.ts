@@ -6,8 +6,8 @@ export interface ChildInfo {
 }
 
 export interface ContactInfo {
-  email: string;
-  secondary_email: string;
+  email?: string;
+  secondary_email?: string;
   contact_me_directly: boolean;
 }
 

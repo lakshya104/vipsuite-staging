@@ -49,10 +49,7 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
     stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly ?? true,
-    commercialOpportunitiesEmail: profileDetail.commercial_opportunities_contacts?.email || '',
-    commercialOpportunitiesSecondaryEmail: profileDetail.commercial_opportunities_contacts?.secondary_email || '',
-    commercialOpportunitiesContactMeDirectly:
-      profileDetail.commercial_opportunities_contacts?.contact_me_directly ?? true,
+    commercialOpportunitiesContactMeDirectly: true,
   };
   const { additionalContactContent, sectionTitle, sectionDescription } = sectionDetails;
   const contacts = [
@@ -65,11 +62,6 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
       section: additionalContactContent?.stylist_field_label,
       name: 'stylist',
       description: additionalContactContent?.stylist_field_description,
-    },
-    {
-      section: additionalContactContent?.gifting_field_label,
-      name: 'commercialOpportunities',
-      description: additionalContactContent?.gifting_field_description,
     },
   ];
 
@@ -92,8 +84,6 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
     stylistEmail: false,
     stylistSecondaryEmail: false,
     stylistContactMeDirectly: defaultValues.stylistContactMeDirectly,
-    commercialOpportunitiesEmail: false,
-    commercialOpportunitiesSecondaryEmail: false,
     commercialOpportunitiesContactMeDirectly: defaultValues.commercialOpportunitiesContactMeDirectly,
   });
 
@@ -130,8 +120,6 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
           contact_me_directly: data.stylistContactMeDirectly || false,
         },
         commercial_opportunities_contacts: {
-          email: data.commercialOpportunitiesEmail || '',
-          secondary_email: data.commercialOpportunitiesSecondaryEmail || '',
           contact_me_directly: data.commercialOpportunitiesContactMeDirectly || false,
         },
       };
