@@ -89,6 +89,14 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   }));
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+  const clearInstaInfo = useInstaInfo((state) => state.clearAll);
+  const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
+  useEffect(() => {
+    if (hydrated) {
+      clearInstaInfo();
+      clearTiktokInfo();
+    }
+  }, [hydrated, clearInstaInfo, clearTiktokInfo]);
 
   useEffect(() => {
     setSocialLinks({
@@ -233,7 +241,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
           instagram_handle: data?.instagram_handle ?? prev.instagram_handle ?? '',
         }));
         setToasterType('success');
-        openToaster(res.message || 'Socials updates successfully');
+        openToaster(res.message || 'Socials updated successfully');
       } else if (data.tiktok_handle && openForm.openTiktok) {
         const res = await UpdateSocials(updatedTiktokFormData);
         setSocialLinks((prev) => ({
@@ -241,7 +249,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
           tiktok_handle: data.tiktok_handle ?? prev.tiktok_handle ?? '',
         }));
         setToasterType('success');
-        openToaster(res.message || 'Socials updates successfully');
+        openToaster(res.message || 'Socials updated successfully');
       }
       await revalidatePathAction('/profile');
     } catch (error) {
