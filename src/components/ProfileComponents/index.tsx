@@ -76,38 +76,26 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     openTiktok: false,
   });
   const [loading, setLoading] = useState(false);
-  const { instaInfo, setInstaInfo } = useInstaInfo();
-  const { tiktokInfo, setTiktokInfo } = useTiktokInfo();
+  const { instaInfo } = useInstaInfo();
+  const { tiktokInfo } = useTiktokInfo();
   const instaHydrated = useInstaInfo((state) => state.hydrated);
   const tiktokHydrated = useTiktokInfo((state) => state.hydrated);
   const hydrated = instaHydrated && tiktokHydrated;
   const setInstaHydrated = useInstaInfo((state) => state.setHydrated);
   const setTiktokHydrated = useTiktokInfo((state) => state.setHydrated);
   const [socialLinks, setSocialLinks] = useState(() => ({
-    instagram_handle: instaInfo.username,
-    tiktok_handle: tiktokInfo.username,
+    instagram_handle: get(profileDetails, 'acf.instagram_handle', ''),
+    tiktok_handle: get(profileDetails, 'acf.tiktok_handle', ''),
   }));
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
   useEffect(() => {
-    setInstaInfo({
-      username: instaInfo.username || get(profileDetails, 'acf.instagram_handle', '') || '',
-      code: instaInfo.code,
-      followers: instaInfo.followers,
-      picture: instaInfo.picture,
-      expires: instaInfo.expires || 0,
+    setSocialLinks({
+      instagram_handle: get(profileDetails, 'acf.instagram_handle', '') || '',
+      tiktok_handle: get(profileDetails, 'acf.tiktok_handle', '') || '',
     });
-    setTiktokInfo({
-      username: tiktokInfo.username || get(profileDetails, 'acf.tiktok_handle', '') || '',
-      code: tiktokInfo.code,
-      refreshCode: tiktokInfo.refreshCode,
-      followers: tiktokInfo.followers,
-      expires: tiktokInfo.expires || 0,
-      picture: tiktokInfo.picture || '',
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [profileDetails]);
 
   const {
     control,
@@ -116,7 +104,10 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     formState: { errors },
   } = useForm<EditSocialLinksRequestBody>({
     resolver: zodResolver(EditSocialLinksSchema),
-    defaultValues: socialLinks,
+    defaultValues: {
+      instagram_handle: socialLinks.instagram_handle || '',
+      tiktok_handle: socialLinks.tiktok_handle || '',
+    },
   });
 
   useEffect(() => {
@@ -237,10 +228,18 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
       };
       if (data.instagram_handle && openForm.openInsta) {
         const res = await UpdateSocials(updatedInstagramFormData);
+        setSocialLinks((prev) => ({
+          ...prev,
+          instagram_handle: data?.instagram_handle ?? prev.instagram_handle ?? '',
+        }));
         setToasterType('success');
         openToaster(res.message || 'Socials updates successfully');
       } else if (data.tiktok_handle && openForm.openTiktok) {
         const res = await UpdateSocials(updatedTiktokFormData);
+        setSocialLinks((prev) => ({
+          ...prev,
+          tiktok_handle: data.tiktok_handle ?? prev.tiktok_handle ?? '',
+        }));
         setToasterType('success');
         openToaster(res.message || 'Socials updates successfully');
       }
@@ -250,35 +249,11 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
       setToasterType('error');
       openToaster(error?.toString() || 'Failed to update socials');
     } finally {
-      setSocialLinks({
-        instagram_handle: data.instagram_handle || instaInfo.username,
-        tiktok_handle: data.tiktok_handle || tiktokInfo.username,
-      });
-      if (openForm.openInsta && data.instagram_handle) {
-        setInstaInfo({
-          username: data.instagram_handle || '',
-          code: instaInfo.code,
-          followers: instaInfo.followers,
-          picture: instaInfo.picture,
-          expires: instaInfo.expires || 0,
-        });
-      }
-      if (openForm.openTiktok && data.tiktok_handle) {
-        setTiktokInfo({
-          username: data.tiktok_handle || '',
-          code: tiktokInfo.code,
-          refreshCode: tiktokInfo.refreshCode,
-          followers: tiktokInfo.followers,
-          expires: tiktokInfo.expires || 0,
-          picture: tiktokInfo.picture || '',
-        });
-      }
       setLoading(false);
       setOpenForm({
         openInsta: false,
         openTiktok: false,
       });
-      reset();
     }
   };
 

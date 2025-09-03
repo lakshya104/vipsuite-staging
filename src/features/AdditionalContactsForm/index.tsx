@@ -120,7 +120,7 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
           contact_me_directly: data.stylistContactMeDirectly || false,
         },
         commercial_opportunities_contacts: {
-          contact_me_directly: data.commercialOpportunitiesContactMeDirectly || false,
+          contact_me_directly: true,
         },
       };
 
