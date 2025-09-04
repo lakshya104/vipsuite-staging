@@ -92,7 +92,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       clearTiktokInfo();
       clearAll();
     } catch (error) {
-      openToaster('Error during logging out. ' + error);
+      console.error('Error during logging out. ' + error);
       setIsPending(false);
     } finally {
       setMessageCount(0);

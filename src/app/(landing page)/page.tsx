@@ -20,9 +20,10 @@ export default async function Page(props: PageProps) {
   const param = (await props.searchParams).grantAccess;
   const cookie = await getAccessCookie();
   const isGrantCookie = cookie?.value === GrantAccessObj.Value;
+
   if (
-    process.env.NEXT_PUBLIC_NODE_ENV !== 'production' &&
-    fullUrl.includes('vipsuite-dev') &&
+    process.env.NEXT_PUBLIC_NODE_ENV === 'production' &&
+    fullUrl.includes(process.env.NEXT_PUBLIC_SITE_URL || 'fallback') &&
     param === GrantAccessObj.Value &&
     !isGrantCookie
   ) {
@@ -30,7 +31,11 @@ export default async function Page(props: PageProps) {
   }
 
   // if (process.env.NEXT_PUBLIC_NODE_ENV === 'production' && fullUrl.includes('thevipsuite.co.uk')) {
-  if (process.env.NEXT_PUBLIC_NODE_ENV !== 'production' && fullUrl.includes('vipsuite-dev') && !isGrantCookie) {
+  if (
+    process.env.NEXT_PUBLIC_NODE_ENV !== 'production' &&
+    fullUrl.includes(process.env.NEXT_PUBLIC_SITE_URL || 'fallback') &&
+    !isGrantCookie
+  ) {
     return <ComingSoonPage />;
   } else {
     redirect('/login');

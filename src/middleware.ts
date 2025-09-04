@@ -9,8 +9,8 @@ export default auth((req) => {
 
   // if (process.env.NEXT_PUBLIC_NODE_ENV === 'production' && nextUrl.origin.includes('thevipsuite.co.uk')) {
   if (
-    process.env.NEXT_PUBLIC_NODE_ENV !== 'production' &&
-    nextUrl.origin.includes('vipsuite-dev') &&
+    process.env.NEXT_PUBLIC_NODE_ENV === 'production' &&
+    nextUrl.origin.includes(process.env.NEXT_PUBLIC_SITE_URL || 'fallback') &&
     !isGrantCookie
   ) {
     if (nextUrl.pathname === '/') {

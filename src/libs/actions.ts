@@ -45,6 +45,7 @@ export const loginServerAction = async (values: LoginFormValues) => {
 };
 
 export const signOutAction = async () => {
+  (await cookies()).delete(GrantAccessObj.Name);
   await signOut({ redirect: false });
   redirect('/login');
 };
