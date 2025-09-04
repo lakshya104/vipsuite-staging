@@ -22,7 +22,7 @@ export default async function Page(props: PageProps) {
   const isGrantCookie = cookie?.value === GrantAccessObj.Value;
   if (
     process.env.NEXT_PUBLIC_NODE_ENV !== 'production' &&
-    fullUrl.includes('localhost:3000') &&
+    fullUrl.includes('vipsuite-dev') &&
     param === GrantAccessObj.Value &&
     !isGrantCookie
   ) {
