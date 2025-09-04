@@ -199,18 +199,6 @@ export const useInstaInfo = create<InstaInfoState>()(
   ),
 );
 
-export const resetInstaInfoStore = () => {
-  localStorage.removeItem('insta-info-storage');
-  useInstaInfo.setState(
-    {
-      instaInfo: { code: '', followers: '', picture: '', username: '', expires: null },
-      hydrated: false,
-    },
-    true,
-  );
-  (useInstaInfo as any).persist?.rehydrate?.();
-};
-
 interface TiktokInfoState {
   tiktokInfo: {
     code: string;
@@ -248,18 +236,6 @@ export const useTiktokInfo = create<TiktokInfoState>()(
     },
   ),
 );
-
-export const resetTiktokInfoStore = () => {
-  localStorage.removeItem('tiktok-info-storage');
-  useTiktokInfo.setState(
-    {
-      tiktokInfo: { code: '', followers: '', picture: '', username: '', expires: 0, refreshCode: '' },
-      hydrated: false,
-    },
-    true,
-  );
-  (useInstaInfo as any).persist?.rehydrate?.();
-};
 
 interface UserStatusState {
   lastUpdateTime: number;

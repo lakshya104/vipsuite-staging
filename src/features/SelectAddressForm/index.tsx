@@ -62,7 +62,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
                 <Typography gutterBottom variant="h3" component="h2">
                   {add?.first_name} {add?.last_name}
                 </Typography>
-                <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}, ${add?.state},`}</Typography>
+                <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}${add?.state ? `, ${add.state}` : ''},`}</Typography>
                 <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
                 <Typography variant="body2">
                   {add?.company ? `${add.company} , (${add?.phone})` : `(${add?.phone})`}

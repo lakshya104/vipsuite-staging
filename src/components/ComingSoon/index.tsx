@@ -8,6 +8,7 @@ import Toaster from '../Toaster';
 import './comingsoon.scss';
 import { ComingSoonData } from '@/interfaces/public-page';
 import en from '@/helpers/lang';
+import ShowHtml from '../ShowHtml';
 
 interface ComingSoonProps {
   comingSoondata: ComingSoonData;
@@ -55,9 +56,9 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ comingSoondata }) => {
         </Typography>
       )}
       {comingSoondata?.description && (
-        <Typography className="coming-soon__desc" gutterBottom variant="body1" align="center">
-          {comingSoondata?.description}
-        </Typography>
+        <Box className="coming-soon__desc">
+          <ShowHtml text={comingSoondata?.description} />
+        </Box>
       )}
       <Box className="coming-soon__form" component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField

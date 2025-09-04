@@ -23,6 +23,11 @@ export enum CookieName {
   IsAgent = 'isAgent',
 }
 
+export enum GrantAccessObj {
+  Name = 'GrantAccess',
+  Value = '123456',
+}
+
 export enum QuestionType {
   Text = 'text',
   TextArea = 'textarea',

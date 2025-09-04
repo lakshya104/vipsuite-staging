@@ -8,7 +8,7 @@ import { signIn, signOut } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
 import { cookies } from 'next/headers';
 import { GetSession } from './api-manager/manager';
-import { CookieName } from '@/helpers/enums';
+import { CookieName, GrantAccessObj } from '@/helpers/enums';
 
 export const loginServerAction = async (values: LoginFormValues) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -64,8 +64,13 @@ export async function deleteVipCookies() {
   await Promise.all([(await cookies()).delete(CookieName.SkipProfile)]);
 }
 
-export async function getVipIdCookie() {
-  return (await cookies()).get(CookieName.ProfileId);
+export async function getAccessCookie() {
+  return (await cookies()).get('GrantAccess');
+}
+
+export async function createGrantAccessCookie() {
+  const cookieStore = await cookies();
+  cookieStore.set(GrantAccessObj.Name, GrantAccessObj.Value);
 }
 
 export async function getAuthData() {
