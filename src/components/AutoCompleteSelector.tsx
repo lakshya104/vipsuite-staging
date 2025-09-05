@@ -59,6 +59,9 @@ const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
                   '& .MuiAutocomplete-clearIndicator': {
                     px: '8px',
                     bgcolor: '#fffff7',
+                    '&:hover': {
+                      bgcolor: '#fffff7',
+                    },
                   },
                   cursor: disabled ? 'not-allowed !important' : 'pointer !important',
                   opacity: disabled ? 0.7 : 1,

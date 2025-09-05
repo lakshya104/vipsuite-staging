@@ -5,7 +5,6 @@ import { get } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid2, Paper, Typography } from '@mui/material';
-import EditNoteIcon from '@mui/icons-material/EditNote';
 import { ProfileBuilderData, Section, UserProfile } from '@/interfaces';
 import { expiryDate, formatDateWithMonth } from '@/helpers/utils';
 import ErrorFallback from '../ErrorFallback';
@@ -407,8 +406,16 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               openTiktok: false,
                             })
                           }
+                          sx={{
+                            textDecoration: 'underline',
+                            textTransform: 'capitalize',
+                            p: 0,
+                            minWidth: 0,
+                            fontWeight: 500,
+                            ml: 1.5,
+                          }}
                         >
-                          <EditNoteIcon />
+                          Edit
                         </Button>
                       </Box>
                     ) : (
@@ -420,9 +427,15 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               openTiktok: false,
                             })
                           }
-                          sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
+                          sx={{
+                            textDecoration: 'underline',
+                            textTransform: 'capitalize',
+                            p: 0,
+                            minWidth: 0,
+                            fontWeight: 500,
+                          }}
                         >
-                          <Typography variant="body2">Add</Typography>
+                          Add
                         </Button>
                       </Box>
                     )}
@@ -435,7 +448,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                 <Grid2 container>
                   <Grid2 size={{ xs: 4 }}>
                     <Typography variant="body1" fontWeight="500">
-                      Tik-Tok
+                      TikTok
                     </Typography>
                   </Grid2>
                   <Grid2 size={{ xs: 8, md: 4 }}>
@@ -449,7 +462,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               {...field}
                               type="text"
                               name="tiktok_handle"
-                              placeholder="Tik-Tok"
+                              placeholder="TikTok"
                               autoFill={true}
                               error={!!errors['tiktok_handle']}
                               helperText={errors['tiktok_handle']?.message}
@@ -487,8 +500,16 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               openTiktok: true,
                             })
                           }
+                          sx={{
+                            textDecoration: 'underline',
+                            textTransform: 'capitalize',
+                            p: 0,
+                            minWidth: 0,
+                            fontWeight: 500,
+                            ml: 1.5,
+                          }}
                         >
-                          <EditNoteIcon />
+                          Edit
                         </Button>
                       </Box>
                     ) : (
@@ -500,9 +521,15 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               openTiktok: true,
                             })
                           }
-                          sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
+                          sx={{
+                            textDecoration: 'underline',
+                            textTransform: 'capitalize',
+                            p: 0,
+                            minWidth: 0,
+                            fontWeight: 500,
+                          }}
                         >
-                          <Typography variant="body2">Add</Typography>
+                          Add
                         </Button>
                       </Box>
                     )}
@@ -533,8 +560,16 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                             openTiktok: item.name === 'tiktok_handle',
                           })
                         }
+                        sx={{
+                          textDecoration: 'underline',
+                          textTransform: 'capitalize',
+                          p: 0,
+                          minWidth: 0,
+                          fontWeight: 500,
+                          ml: 1.5,
+                        }}
                       >
-                        <EditNoteIcon />
+                        Edit
                       </Button>
                     </Box>
                   ) : (
@@ -546,9 +581,15 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                             openTiktok: item.name === 'tiktok_handle',
                           })
                         }
-                        sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
+                        sx={{
+                          textDecoration: 'underline',
+                          textTransform: 'capitalize',
+                          p: 0,
+                          minWidth: 0,
+                          fontWeight: 500,
+                        }}
                       >
-                        <Typography variant="body2">Add</Typography>
+                        Add
                       </Button>
                     </Box>
                   )}

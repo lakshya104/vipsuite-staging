@@ -629,7 +629,7 @@ const en = {
       social: {
         title: 'Social',
         instagram: 'Instagram',
-        tikTok: 'Tik-Tok',
+        tikTok: 'TikTok',
       },
       contacts: {
         title: 'Contacts',
