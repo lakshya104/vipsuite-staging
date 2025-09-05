@@ -23,14 +23,21 @@ const FormDatePicker = <T extends FieldValues>({
   selectFutureDate,
   rules,
 }: FormDatePickerProps<T>) => {
-  const yesterday = dayjs().subtract(1, 'day');
+  const today = dayjs();
+  const futureValidator = (val: string | number | Date | dayjs.Dayjs | null | undefined) => {
+    if (!val) return true;
+    if (!selectFutureDate && dayjs(val).isAfter(today)) {
+      return en.common.future;
+    }
+    return true;
+  };
   return (
     <Controller
       name={name}
       control={control}
-      rules={rules}
+      rules={{ ...(rules ?? {}), validate: futureValidator }}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        const isFutureDate = value && dayjs(value).isAfter(yesterday);
+        const isFutureDate = value && dayjs(value).isAfter(today);
         const showFutureDateError = !selectFutureDate && isFutureDate;
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,7 +47,7 @@ const FormDatePicker = <T extends FieldValues>({
               className="date-picker"
               label={label && label}
               format="DD/MM/YYYY"
-              maxDate={selectFutureDate ? undefined : yesterday}
+              maxDate={selectFutureDate ? undefined : today}
               value={value ? dayjs(value as string) : null}
               onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : '')}
               slotProps={{
@@ -69,7 +76,7 @@ export const FormDateTimePicker = <T extends FieldValues>({
   label,
   selectFutureDate,
 }: FormDatePickerProps<T>) => {
-  const yesterday = dayjs().subtract(1, 'day');
+  const today = dayjs();
 
   return (
     <Controller
@@ -83,7 +90,7 @@ export const FormDateTimePicker = <T extends FieldValues>({
             className="date-time-picker"
             label={label && label}
             format="DD/MM/YYYY HH:mm"
-            maxDate={selectFutureDate ? undefined : yesterday}
+            maxDate={selectFutureDate ? undefined : today}
             value={value ? dayjs(value as string, 'YYYY-MM-DDTHH:mm:ss') : null}
             onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DDTHH:mm:ss') : '')}
             slotProps={{

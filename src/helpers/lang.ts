@@ -624,6 +624,7 @@ const en = {
         born: 'Born',
         resides: 'Resides',
         interests: 'Interests',
+        ethnicity: 'Ethnicity',
       },
       social: {
         title: 'Social',
@@ -633,6 +634,8 @@ const en = {
       contacts: {
         title: 'Contacts',
         email: 'Email',
+        eventContacts: 'Event Contacts',
+        stylistContacts: 'Stylist Contacts',
         secondary: 'Secondary',
         agentPhone: 'Phone Number',
         phone: 'Phone',

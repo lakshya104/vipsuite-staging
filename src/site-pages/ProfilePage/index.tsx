@@ -3,16 +3,19 @@ import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
 import ProfileTabs from '@/components/ProfileTabs';
 import { calculateAge } from '@/helpers/utils';
-import { GetProfile } from '@/libs/api-manager/manager';
+import { GetProfile, GetProfileBuilder } from '@/libs/api-manager/manager';
 import EditProfileBtn from '@/components/EditProfileBtn';
 import { DefaultImageFallback } from '@/helpers/enums';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
 
 const ProfilePage = async () => {
-  const { data: profileDetails, error: profileDetailsError } = await GetProfile();
-  if (profileDetailsError) {
-    return <ErrorHandler error={profileDetailsError} errMessage={en.profilePage.title} />;
+  const [
+    { data: profileDetails, error: profileDetailsError },
+    { data: profileBuilderData, error: profileBuilderError },
+  ] = await Promise.all([GetProfile(), GetProfileBuilder()]);
+  if (profileDetailsError || profileBuilderError) {
+    return <ErrorHandler error={profileDetailsError || profileBuilderError} errMessage={en.profilePage.title} />;
   }
   const age = calculateAge(profileDetails?.acf?.date_of_birth);
 
@@ -36,7 +39,7 @@ const ProfilePage = async () => {
         <EditProfileBtn profileId={profileDetails?.profile_id} />
       </Box>
       <Box>
-        <ProfileTabs profileData={profileDetails} />
+        <ProfileTabs profileData={profileDetails} profileBuilderData={profileBuilderData} />
       </Box>
     </>
   );

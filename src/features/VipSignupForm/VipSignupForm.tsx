@@ -99,29 +99,29 @@ const VipSignupForm = () => {
     }
   }, [hydrated, clearInstaInfo, clearTiktokInfo]);
 
-  const openInstagramAuth = () => {
-    const width = 600;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-    window.open(
-      process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL,
-      'InstagramAuth',
-      `width=${width},height=${height},left=${left},top=${top}`,
-    );
-  };
+  // const openInstagramAuth = () => {
+  //   const width = 600;
+  //   const height = 600;
+  //   const left = window.screenX + (window.outerWidth - width) / 2;
+  //   const top = window.screenY + (window.outerHeight - height) / 2;
+  //   window.open(
+  //     process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL,
+  //     'InstagramAuth',
+  //     `width=${width},height=${height},left=${left},top=${top}`,
+  //   );
+  // };
 
-  const openTikTokAuth = () => {
-    const width = 600;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-    window.open(
-      `https://www.tiktok.com/v2/auth/authorize/?client_key=${process.env.NEXT_PUBLIC_TIKTOK_CLIENT_ID}&response_type=code&scope=user.info.basic,user.info.stats&redirect_uri=${process.env.NEXT_PUBLIC_TIKTOK_CALLBACK_URL}`,
-      'TikTokAuth',
-      `width=${width},height=${height},left=${left},top=${top}`,
-    );
-  };
+  // const openTikTokAuth = () => {
+  //   const width = 600;
+  //   const height = 600;
+  //   const left = window.screenX + (window.outerWidth - width) / 2;
+  //   const top = window.screenY + (window.outerHeight - height) / 2;
+  //   window.open(
+  //     `https://www.tiktok.com/v2/auth/authorize/?client_key=${process.env.NEXT_PUBLIC_TIKTOK_CLIENT_ID}&response_type=code&scope=user.info.basic,user.info.stats&redirect_uri=${process.env.NEXT_PUBLIC_TIKTOK_CALLBACK_URL}`,
+  //     'TikTokAuth',
+  //     `width=${width},height=${height},left=${left},top=${top}`,
+  //   );
+  // };
 
   const onSubmit = async (formData: VipSignUpRequestBody) => {
     if (!isCodeVerified) {
@@ -244,25 +244,25 @@ const VipSignupForm = () => {
     }
   };
 
-  const getInstagramButtonText = () => {
-    if (!hydrated) {
-      return en.signUpForm.loading;
-    }
-    if (instaInfo.code) {
-      return en.signUpForm.authorisedInstagram;
-    }
-    return en.signUpForm.authoriseInstagram;
-  };
+  // const getInstagramButtonText = () => {
+  //   if (!hydrated) {
+  //     return en.signUpForm.loading;
+  //   }
+  //   if (instaInfo.code) {
+  //     return en.signUpForm.authorisedInstagram;
+  //   }
+  //   return en.signUpForm.authoriseInstagram;
+  // };
 
-  const getTikTokText = () => {
-    if (!hydrated) {
-      return en.signUpForm.loading;
-    }
-    if (tiktokInfo.code) {
-      return en.signUpForm.authorisedTiktok;
-    }
-    return en.signUpForm.authoriseTiktok;
-  };
+  // const getTikTokText = () => {
+  //   if (!hydrated) {
+  //     return en.signUpForm.loading;
+  //   }
+  //   if (tiktokInfo.code) {
+  //     return en.signUpForm.authorisedTiktok;
+  //   }
+  //   return en.signUpForm.authoriseTiktok;
+  // };
 
   return (
     <>
@@ -418,7 +418,7 @@ const VipSignupForm = () => {
                 <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
-            {name === 'instagram_handle' && (
+            {/* {name === 'instagram_handle' && (
               <Box className="verify-button">
                 <Button
                   className="button button--white"
@@ -439,7 +439,7 @@ const VipSignupForm = () => {
                   {getTikTokText()}
                 </Button>
               </Box>
-            )}
+            )} */}
           </Box>
         ))}
         <Button

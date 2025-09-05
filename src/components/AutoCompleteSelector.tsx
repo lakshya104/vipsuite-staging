@@ -56,8 +56,8 @@ const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
                 error={!!fieldState.error}
                 placeholder={placeholder}
                 sx={{
-                  '& .mui-1x7n7v0-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-clearIndicator': {
-                    paddingX: '8px',
+                  '& .MuiAutocomplete-clearIndicator': {
+                    px: '8px',
                     bgcolor: '#fffff7',
                   },
                   cursor: disabled ? 'not-allowed !important' : 'pointer !important',

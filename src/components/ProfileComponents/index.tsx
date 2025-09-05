@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
@@ -5,8 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid2, Paper, Typography } from '@mui/material';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import AddIcon from '@mui/icons-material/Add';
-import { UserProfile } from '@/interfaces';
+import { ProfileBuilderData, Section, UserProfile } from '@/interfaces';
 import { expiryDate, formatDateWithMonth } from '@/helpers/utils';
 import ErrorFallback from '../ErrorFallback';
 import en from '@/helpers/lang';
@@ -22,18 +22,102 @@ interface ProfileComponentProps {
   profileDetails: UserProfile;
   isAgent?: boolean;
   isBrand?: boolean;
+  profileBuilderData?: ProfileBuilderData;
 }
 
-export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails }) => {
+export const BioComponent: React.FC<ProfileComponentProps> = ({ profileDetails, profileBuilderData }) => {
+  const [extractedInterests, setExtractedInterests] = useState<Record<string, string[]>>();
+
+  const extractAnswersFromSections = (userAcf: any, sections: Section[]): Record<string, string[]> => {
+    const results: Record<string, string[]> = {};
+    sections.forEach((section) => {
+      const answers: string[] = [];
+      section.questions.forEach((question) => {
+        const { unique_id, question_title } = question;
+        const value = userAcf[unique_id];
+
+        if (value !== undefined && value !== null) {
+          if (Array.isArray(value) && value.length > 0) {
+            answers.push(`${question_title}: ${value.join(', ')}`);
+          } else if (typeof value === 'boolean') {
+            answers.push(`${question_title}: ${value ? 'Yes' : 'No'}`);
+          } else if (typeof value === 'string' && value.trim() !== '') {
+            answers.push(`${question_title}: ${value}`);
+          }
+        }
+      });
+
+      if (answers.length > 0) {
+        results[section.section_title] = answers;
+      }
+    });
+
+    return results;
+  };
+
+  useEffect(() => {
+    const getProfileQuestions = async () => {
+      try {
+        const interestSections = profileBuilderData?.sections.slice(3, 5);
+        if (interestSections) {
+          const interestsString = extractAnswersFromSections(profileDetails.acf ?? {}, interestSections);
+          setExtractedInterests(interestsString);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getProfileQuestions();
+  }, [profileBuilderData?.sections, profileDetails.acf]);
+  const getDynamicValue = (obj: Record<string, any> | undefined, keyPrefix: string) => {
+    if (!obj) return '';
+    const foundKey = Object.keys(obj).find((key) => key.startsWith(keyPrefix));
+    return foundKey ? obj[foundKey] : '';
+  };
+
+  const bornCity = getDynamicValue(profileDetails?.acf, 'city_of_birth');
+  const bornCountry = getDynamicValue(profileDetails?.acf, 'country_of_birth');
+  const bornValue = [bornCity, bornCountry].filter(Boolean).join(', ');
+
+  const residesCity = getDynamicValue(profileDetails?.acf, 'city_of_residence');
+  const residesCountry = getDynamicValue(profileDetails?.acf, 'country_of_residence');
+  const residesValue = [residesCity, residesCountry].filter(Boolean).join(', ');
+
+  const ethnicity = getDynamicValue(profileDetails?.acf, 'ethnicity');
+
+  const formatExtractedInterests = (extractedInterests: Record<string, string[]> | undefined) => {
+    if (!extractedInterests) return '';
+
+    const allInterests: string[] = [];
+
+    Object.values(extractedInterests).forEach((sectionAnswers) => {
+      sectionAnswers.forEach((answer) => {
+        const booleanMatch = answer.match(/^(.*): (Yes|No)$/);
+        if (booleanMatch) {
+          allInterests.push(`${booleanMatch[1]} - ${booleanMatch[2]}`);
+        } else {
+          const parts = answer.split(':');
+          if (parts.length > 1) {
+            allInterests.push(parts.slice(1).join(':').trim());
+          } else {
+            allInterests.push(answer.trim());
+          }
+        }
+      });
+    });
+
+    return allInterests.join(', ');
+  };
+
   const dateOfBirth = get(profileDetails, 'acf.date_of_birth', '');
   const bioData = [
     { label: en.profilePage.profileTabs.bio.dob, value: dateOfBirth && formatDateWithMonth(dateOfBirth) },
-    { label: en.profilePage.profileTabs.bio.born, value: get(profileDetails, 'acf.birth_place', '') },
-    { label: en.profilePage.profileTabs.bio.resides, value: get(profileDetails, 'acf.nationality', '') },
+    { label: en.profilePage.profileTabs.bio.born, value: bornValue },
+    { label: en.profilePage.profileTabs.bio.resides, value: residesValue },
+    { label: en.profilePage.profileTabs.bio.ethnicity, value: ethnicity },
     {
       label: en.profilePage.profileTabs.bio.interests,
-      value:
-        get(profileDetails, 'acf.interests', []).length > 0 ? get(profileDetails, 'acf.interests', []).join(', ') : '',
+      value: formatExtractedInterests(extractedInterests),
     },
   ];
   const filteredBioData = bioData.filter((data) => data.value !== '');
@@ -153,29 +237,29 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     }));
   };
 
-  const openInstagramAuth = () => {
-    const width = 600;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-    window.open(
-      process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL,
-      'InstagramAuth',
-      `width=${width},height=${height},left=${left},top=${top}`,
-    );
-  };
+  // const openInstagramAuth = () => {
+  //   const width = 600;
+  //   const height = 600;
+  //   const left = window.screenX + (window.outerWidth - width) / 2;
+  //   const top = window.screenY + (window.outerHeight - height) / 2;
+  //   window.open(
+  //     process.env.NEXT_PUBLIC_INSTAGRAM_CALLBACK_URL,
+  //     'InstagramAuth',
+  //     `width=${width},height=${height},left=${left},top=${top}`,
+  //   );
+  // };
 
-  const openTikTokAuth = () => {
-    const width = 600;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-    window.open(
-      `https://www.tiktok.com/v2/auth/authorize/?client_key=${process.env.NEXT_PUBLIC_TIKTOK_CLIENT_ID}&response_type=code&scope=user.info.basic,user.info.stats&redirect_uri=${process.env.NEXT_PUBLIC_TIKTOK_CALLBACK_URL}`,
-      'TikTokAuth',
-      `width=${width},height=${height},left=${left},top=${top}`,
-    );
-  };
+  // const openTikTokAuth = () => {
+  //   const width = 600;
+  //   const height = 600;
+  //   const left = window.screenX + (window.outerWidth - width) / 2;
+  //   const top = window.screenY + (window.outerHeight - height) / 2;
+  //   window.open(
+  //     `https://www.tiktok.com/v2/auth/authorize/?client_key=${process.env.NEXT_PUBLIC_TIKTOK_CLIENT_ID}&response_type=code&scope=user.info.basic,user.info.stats&redirect_uri=${process.env.NEXT_PUBLIC_TIKTOK_CALLBACK_URL}`,
+  //     'TikTokAuth',
+  //     `width=${width},height=${height},left=${left},top=${top}`,
+  //   );
+  // };
 
   const socialData: {
     platform: string;
@@ -193,25 +277,25 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
       name: 'tiktok_handle',
     },
   ];
-  const getInstagramButtonText = () => {
-    if (!hydrated) {
-      return en.signUpForm.loading;
-    }
-    if (instaInfo.code) {
-      return en.signUpForm.authorisedInstagram;
-    }
-    return en.signUpForm.authoriseInstagram;
-  };
+  // const getInstagramButtonText = () => {
+  //   if (!hydrated) {
+  //     return en.signUpForm.loading;
+  //   }
+  //   if (instaInfo.code) {
+  //     return en.signUpForm.authorisedInstagram;
+  //   }
+  //   return en.signUpForm.authoriseInstagram;
+  // };
 
-  const getTikTokText = () => {
-    if (!hydrated) {
-      return en.signUpForm.loading;
-    }
-    if (tiktokInfo.code) {
-      return en.signUpForm.authorisedTiktok;
-    }
-    return en.signUpForm.authoriseTiktok;
-  };
+  // const getTikTokText = () => {
+  //   if (!hydrated) {
+  //     return en.signUpForm.loading;
+  //   }
+  //   if (tiktokInfo.code) {
+  //     return en.signUpForm.authorisedTiktok;
+  //   }
+  //   return en.signUpForm.authoriseTiktok;
+  // };
 
   const onSubmit = async (data: EditSocialLinksRequestBody) => {
     try {
@@ -297,7 +381,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                           )}
                         />
                         <Box sx={{ mt: -3 }}>
-                          <Button
+                          {/* <Button
                             sx={{
                               textDecoration: !hydrated || !!instaInfo.code || !loading ? 'underline' : '',
                               textTransform: 'capitalize',
@@ -307,7 +391,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                             onClick={openInstagramAuth}
                           >
                             {getInstagramButtonText()}
-                          </Button>
+                          </Button> */}
                           <Button
                             disabled={loading}
                             sx={{ textDecoration: !loading ? 'underline' : '', textTransform: 'capitalize' }}
@@ -340,10 +424,9 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               openTiktok: false,
                             })
                           }
-                          sx={{ border: '1px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
+                          sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
                         >
                           <Typography variant="body2">Add</Typography>
-                          <AddIcon />
                         </Button>
                       </Box>
                     )}
@@ -378,7 +461,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                           )}
                         />
                         <Box sx={{ mt: -3 }}>
-                          <Button
+                          {/* <Button
                             sx={{
                               textDecoration: !hydrated || !!tiktokInfo.code || !loading ? 'underline' : '',
                               textTransform: 'capitalize',
@@ -388,7 +471,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                             onClick={openTikTokAuth}
                           >
                             {getTikTokText()}
-                          </Button>
+                          </Button> */}
                           <Button
                             disabled={loading}
                             sx={{ textDecoration: !loading ? 'underline' : '', textTransform: 'capitalize' }}
@@ -421,10 +504,9 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                               openTiktok: true,
                             })
                           }
-                          sx={{ border: '1px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
+                          sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
                         >
                           <Typography variant="body2">Add</Typography>
-                          <AddIcon />
                         </Button>
                       </Box>
                     )}
@@ -468,10 +550,9 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
                             openTiktok: item.name === 'tiktok_handle',
                           })
                         }
-                        sx={{ border: '0.5px solid', borderColor: 'grey.500', borderRadius: 2, padding: 0.5 }}
+                        sx={{ textDecoration: 'underline', textTransform: 'capitalize' }}
                       >
                         <Typography variant="body2">Add</Typography>
-                        <AddIcon />
                       </Button>
                     </Box>
                   )}
@@ -501,6 +582,24 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
       primary: get(profileDetails, 'email', ''),
       secondary: get(profileDetails, 'acf.secondary_email', ''),
     },
+    ...(!profileDetails.acf.event_contacts?.contact_me_directly
+      ? [
+          {
+            type: en.profilePage.profileTabs.contacts.eventContacts,
+            primary: get(profileDetails, 'acf.event_contacts.email', ''),
+            secondary: get(profileDetails, 'acf.event_contacts.secondary_email', ''),
+          },
+        ]
+      : []),
+    ...(!profileDetails.acf.stylist_contacts?.contact_me_directly
+      ? [
+          {
+            type: en.profilePage.profileTabs.contacts.stylistContacts,
+            primary: get(profileDetails, 'acf.stylist_contacts.email', ''),
+            secondary: get(profileDetails, 'acf.stylist_contacts.secondary_email', ''),
+          },
+        ]
+      : []),
     {
       type: isAgent ? en.profilePage.profileTabs.contacts.agentPhone : en.profilePage.profileTabs.contacts.phone,
       primary: get(profileDetails, 'acf.phone', ''),
