@@ -138,7 +138,6 @@ const VipSignupForm = () => {
           instagram_access_token: instaInfo.code,
           instagram_profile_image_url: instaInfo.picture,
           instagram_token_expiry: expiryDate(instaInfo.expires),
-          tiktok_handle: tiktokInfo.username,
           tiktok_follower_count: tiktokInfo.followers,
           tiktok_access_token: tiktokInfo.code,
           tiktok_refresh_token: tiktokInfo.refreshCode,
