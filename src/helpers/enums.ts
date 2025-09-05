@@ -23,11 +23,6 @@ export enum CookieName {
   IsAgent = 'isAgent',
 }
 
-export const GrantAccessObj = {
-  Name: 'GrantAccess',
-  Value: process.env.NEXT_PUBLIC_GRANT_ACCESS_KEY || '',
-} as const;
-
 export enum QuestionType {
   Text = 'text',
   TextArea = 'textarea',

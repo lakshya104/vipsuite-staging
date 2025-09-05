@@ -1,17 +1,12 @@
 import { auth } from './auth';
 import { DEFAULT_LOGIN_REDIRECT, publicRoutes, authRoutes, apiAuthPrefix, protectedRoutes } from '../routes';
-import { GrantAccessObj } from './helpers/enums';
 
 export default auth((req) => {
   const { nextUrl } = req;
-  const grantCookie = req.cookies.get(GrantAccessObj.Name);
-  const isGrantCookie = grantCookie?.value === GrantAccessObj.Value;
-
-  // if (process.env.NEXT_PUBLIC_NODE_ENV === 'production' && nextUrl.origin.includes('thevipsuite.co.uk')) {
+  const host = req.headers.get('host');
   if (
     process.env.NEXT_PUBLIC_NODE_ENV === 'production' &&
-    nextUrl.origin.includes(process.env.NEXT_PUBLIC_SITE_URL || 'fallback') &&
-    !isGrantCookie
+    (host?.startsWith('comingsoon') || host?.startsWith('app'))
   ) {
     if (nextUrl.pathname === '/') {
       return;
