@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/material';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputForm from '../../components/InputForm/InputForm';
 import { AgentEditProfileFields } from '@/data';
@@ -13,7 +13,6 @@ import Toaster from '@/components/Toaster';
 import { AgentProfileUpdate } from '@/libs/api-manager/manager';
 import { ACF, AgentEditFormDataObject } from '@/interfaces';
 import revalidatePathAction from '@/libs/actions';
-import { isEmpty } from 'lodash';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
 
@@ -28,16 +27,16 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
   const [error, setError] = useState<string>('');
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const router = useRouter();
-  const initialVipExamples = profileDetails?.examples_of_vip_managed
-    ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
-    : [{ value: '' }];
+  // const initialVipExamples = profileDetails?.examples_of_vip_managed
+  //   ? profileDetails.examples_of_vip_managed.map((example: string) => ({ value: example.trim() }))
+  //   : [{ value: '' }];
 
   const defaultValues = {
     first_name: profileDetails?.first_name || '',
     last_name: profileDetails?.last_name || '',
     phone: profileDetails?.phone || '',
     company_name: profileDetails?.company_name || '',
-    vip_examples: initialVipExamples,
+    // vip_examples: initialVipExamples,
   };
 
   const {
@@ -49,24 +48,24 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
     defaultValues,
   });
 
-  const { fields, append } = useFieldArray({
-    control,
-    name: 'vip_examples',
-  });
+  // const { fields, append } = useFieldArray({
+  //   control,
+  //   name: 'vip_examples',
+  // });
 
-  const addAnotherVip = () => {
-    append({ value: '' });
-  };
+  // const addAnotherVip = () => {
+  //   append({ value: '' });
+  // };
 
   const onSubmit = async (formData: AgentEditProfileValues) => {
     setError('');
     setIspending(true);
     try {
-      const allVipExamples = formData.vip_examples
-        .filter((example) => example.value.trim() !== '')
-        .map((example) => ({
-          text: example.value.trim(),
-        }));
+      // const allVipExamples = formData.vip_examples
+      //   .filter((example) => example.value.trim() !== '')
+      //   .map((example) => ({
+      //     text: example.value.trim(),
+      //   }));
 
       const formDataObj: AgentEditFormDataObject = {
         acf: {
@@ -74,7 +73,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
           last_name: formData.last_name || '',
           phone: formData.phone || '',
           company_name: formData.company_name || '',
-          examples_of_vip_managed: allVipExamples,
+          // examples_of_vip_managed: allVipExamples,
         },
       };
       const response = await AgentProfileUpdate(agentId, formDataObj, token);
@@ -134,7 +133,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
             )}
           </Box>
         ))}
-        {fields?.map((field, index) => (
+        {/* {fields?.map((field, index) => (
           <Controller
             key={field.id}
             name={`vip_examples.${index}.value`}
@@ -154,7 +153,7 @@ const AgentEditProfileForm: React.FC<AgentEditProfileFormProps> = ({ profileDeta
           <Box className="input-text">
             <Typography sx={{ textDecoration: 'underline' }}>{en.signUpForm.addVip}</Typography>
           </Box>
-        </Box>
+        </Box> */}
         <Button type="submit" disabled={isPending} className="button button--black" fullWidth>
           {isPending ? en.signUpForm.loading : en.signUpForm.continue}
         </Button>

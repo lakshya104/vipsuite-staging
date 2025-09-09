@@ -6,8 +6,8 @@ import {
   passwordValidation,
   phoneValidation,
   requiredEmailValidation,
-  vipExamplesValidation,
-  vipManagedValidation,
+  // vipExamplesValidation,
+  // vipManagedValidation,
 } from '@/helpers/validations';
 
 export const AgentSignupSchema = z.object({
@@ -17,8 +17,8 @@ export const AgentSignupSchema = z.object({
   password: passwordValidation,
   phone: phoneValidation,
   company_name: companyValidation,
-  examples_of_vip_managed: vipManagedValidation,
-  vip_examples: vipExamplesValidation,
+  // examples_of_vip_managed: vipManagedValidation,
+  // vip_examples: vipExamplesValidation,
 });
 
 export interface AgentSignupValues {
@@ -39,5 +39,5 @@ export const defaultValues = {
   password: '',
   phone: '',
   company_name: '',
-  examples_of_vip_managed: '',
+  // examples_of_vip_managed: '',
 };

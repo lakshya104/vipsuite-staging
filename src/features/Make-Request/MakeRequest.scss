@@ -10,7 +10,7 @@
   padding: mixins.rem(16);
   width: 100%;
   flex-direction: column;
-  @include mixins.flex(flex-end, center);
+  @include mixins.flex(center, center);
   &-inner {
     width: 100%;
     max-width: 350px;

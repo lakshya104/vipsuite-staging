@@ -2,14 +2,17 @@
 import React from 'react';
 import Image from 'next/image';
 import { Box, Typography } from '@mui/material';
-import { filter, first, isEmpty } from 'lodash';
+import { filter, first, isEmpty, map } from 'lodash';
 import he from 'he';
 import FeedbackForm from '@/features/FeedbackForm';
 import { formatDate, formatString } from '@/helpers/utils';
 import OrderItem from './OrderItem';
 import { Order } from '@/interfaces';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, QuestionType } from '@/helpers/enums';
 import en from '@/helpers/lang';
+import Link from 'next/link';
+import dayjs from 'dayjs';
+import { Question } from '@/interfaces/events';
 
 interface OrderDetailsContainerProps {
   orderDetail: Order;
@@ -29,6 +32,40 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
     orderStatus === 'rsvp' ||
     orderStatus === 'lookbook' ||
     (orderStatus === 'product' && isEmpty(orderDetail?.line_items));
+
+  const formatAnswer = (q: Question): { title: string; answer: string; type?: string } | null => {
+    if (!q.answer) return null;
+
+    switch (q.input_type) {
+      case QuestionType.Date:
+        return {
+          title: q.title,
+          answer: dayjs(q.answer).format('DD/MM/YYYY'),
+        };
+
+      case QuestionType.DateTime:
+        return {
+          title: q.title,
+          answer: dayjs(q.answer).format('DD/MM/YYYY HH:mm'),
+        };
+
+      case QuestionType.CheckBoxes:
+        return {
+          title: q.title,
+          answer: Array.isArray(q.answer) ? q.answer.join(', ') : q.answer,
+        };
+
+      case QuestionType.FileUpload:
+        return { title: q.title, answer: q.answer, type: QuestionType.FileUpload };
+
+      default:
+        return {
+          title: q.title,
+          answer: typeof q.answer === 'string' ? q.answer.trim() : q.answer,
+        };
+    }
+  };
+  const formattedResponse = orderDetail?.questions && map(orderDetail.questions, (q: Question) => formatAnswer(q));
 
   return (
     <>
@@ -52,6 +89,19 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               {en.myOrders.status} {formatString(orderDetail?.status)}
             </Typography>
           </>
+        )}
+        {orderDetail?.tracking_url && (
+          <Typography variant="body1">
+            {en.myOrders.trackOrder}{' '}
+            <Link
+              href={orderDetail?.tracking_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'underline' }}
+            >
+              {en.myOrders.clickHere}
+            </Link>
+          </Typography>
         )}
       </Box>
       <Box className="order-product__items">
@@ -102,6 +152,36 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
           </Box>
         )}
       </Box>
+      {!isEmpty(formattedResponse) && (
+        <Box mb={5}>
+          <Typography gutterBottom variant="h3">
+            {en.myOrders.yourResponse}
+          </Typography>
+          {map(formattedResponse, (res, index) => {
+            return (
+              <Box key={index} my={2}>
+                <Typography fontWeight={500} fontSize={'16px'}>
+                  {res?.title}
+                </Typography>
+                {res?.type && res.type === QuestionType.FileUpload ? (
+                  <Typography sx={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                    <Link
+                      href={res.answer}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'underline', wordBreak: 'break-word' }}
+                    >
+                      {res.answer}
+                    </Link>
+                  </Typography>
+                ) : (
+                  <Typography sx={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>{res?.answer}</Typography>
+                )}
+              </Box>
+            );
+          })}
+        </Box>
+      )}
       {!orderDetail?.is_feedback_provided && isInterested && (
         <FeedbackForm type={orderType} orderId={orderDetail?.id} />
       )}

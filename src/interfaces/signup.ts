@@ -37,7 +37,7 @@ export type AgentSignUpRequestBody = {
   password: string;
   phone: string;
   company_name: string;
-  examples_of_vip_managed: string[];
+  // examples_of_vip_managed: string[];
 };
 
 export type RsvpFormValues = {
@@ -53,7 +53,7 @@ export interface AgentEditFormDataObject {
     last_name: string;
     phone: string;
     company_name: string;
-    examples_of_vip_managed: Array<{ text: string }>;
+    // examples_of_vip_managed: Array<{ text: string }>;
   };
 }
 

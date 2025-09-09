@@ -4,47 +4,48 @@
 
 @use '../../styles/mixins';
 
-.gray-card__details {
-  overflow: hidden;
-  min-height: 100vh;
-  padding: mixins.rem(16);
-  width: 100%;
-  flex-direction: column;
-  @include mixins.flex(flex-end, center);
-  &-inner {
-    width: 100%;
-    max-width: 350px;
-    margin: mixins.rem(33) 0;
-    flex-direction: column;
-    @include mixins.flex;
-    h2 {
-      font-weight: 500;
-      line-height: 1.07;
-      letter-spacing: -0.03em;
-      margin-bottom: mixins.rem(20);
-      color: var(--color-white);
-      @include mixins.fontSize(28);
-    }
-    > p {
-      font-weight: 400;
-      line-height: 1.43;
-      letter-spacing: -0.01em;
-      margin-bottom: mixins.rem(32);
-      color: var(--color-textBlack-40);
-      @include mixins.fontSize(16);
-    }
-  }
-  form {
-    width: 100%;
-    flex-direction: column;
-    margin-top: auto;
-    @include mixins.flex;
-    .MuiFormControl-root {
-      margin-bottom: mixins.rem(16);
-    }
-    .button--white {
-      margin-top: mixins.rem(30);
-      margin-bottom: mixins.rem(7);
-    }
-  }
-}
+// .gray-card__details {
+//   overflow: hidden;
+//   min-height: 100vh;
+//   padding: mixins.rem(16);
+//   width: 100%;
+//   flex-direction: column;
+
+//   // @include mixins.flex(center, center);
+//   &-inner {
+//     width: 100%;
+//     max-width: 350px;
+//     margin: mixins.rem(33) 0;
+//     flex-direction: column;
+//     @include mixins.flex;
+//     h2 {
+//       font-weight: 500;
+//       line-height: 1.07;
+//       letter-spacing: -0.03em;
+//       margin-bottom: mixins.rem(20);
+//       color: var(--color-white);
+//       @include mixins.fontSize(28);
+//     }
+//     > p {
+//       font-weight: 400;
+//       line-height: 1.43;
+//       letter-spacing: -0.01em;
+//       margin-bottom: mixins.rem(32);
+//       color: var(--color-textBlack-40);
+//       @include mixins.fontSize(16);
+//     }
+//   }
+//   form {
+//     width: 100%;
+//     flex-direction: column;
+//     margin-top: auto;
+//     @include mixins.flex;
+//     .MuiFormControl-root {
+//       margin-bottom: mixins.rem(16);
+//     }
+//     .button--white {
+//       margin-top: mixins.rem(30);
+//       margin-bottom: mixins.rem(7);
+//     }
+//   }
+// }

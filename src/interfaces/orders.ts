@@ -1,3 +1,4 @@
+import { Question } from './events';
 import { ImageSizes } from './opportunitiesDetails';
 
 export interface Order {
@@ -70,6 +71,8 @@ export interface Order {
     };
   };
   order_created_for: string;
+  tracking_url?: string;
+  questions?: Question[];
 }
 
 interface Address {

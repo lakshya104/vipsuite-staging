@@ -4,7 +4,7 @@ import {
   firstNameValidation,
   lastNameValidation,
   phoneValidation,
-  vipExamplesValidation,
+  // vipExamplesValidation,
 } from '@/helpers/validations';
 
 export const AgentEditProfileSchema = z.object({
@@ -12,7 +12,7 @@ export const AgentEditProfileSchema = z.object({
   last_name: lastNameValidation,
   phone: phoneValidation,
   company_name: companyValidation,
-  vip_examples: vipExamplesValidation,
+  // vip_examples: vipExamplesValidation,
 });
 
 export interface AgentEditProfileValues {
@@ -20,6 +20,6 @@ export interface AgentEditProfileValues {
   last_name: string;
   phone: string;
   company_name: string;
-  examples_of_vip_managed?: string;
-  vip_examples: { value: string }[];
+  // examples_of_vip_managed?: string;
+  // vip_examples: { value: string }[];
 }

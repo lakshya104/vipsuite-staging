@@ -487,6 +487,9 @@ const en = {
     status: 'Status:',
     location: 'Location:',
     description: 'Description:',
+    trackOrder: 'Track your order:',
+    clickHere: 'Click here',
+    yourResponse: 'Your Responses:',
   },
   feedbackForm: {
     formTitle: 'Feel free to upload your insights from your content should you want the brand to see.',

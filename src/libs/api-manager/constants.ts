@@ -26,8 +26,7 @@ const Endpoints = {
   forgotPassword: '/wp/v2/forgot-password',
   resetPassword: '/wp/v2/reset-password',
   getAllOrders: (customerId: number, page: number) => `/wc/v3/orders?customer=${customerId}&page=${page}`,
-  getOrderById: (id: number) =>
-    `/wc/v3/orders/${id}?_fields=meta_data,status,id,opportunity,line_items,date_created,location,is_feedback_provided`,
+  getOrderById: (id: number) => `/wc/v3/orders/${id}`,
   getVipCart: '/wp/v2/vip-profiles/cart',
   addItemToCart: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,
   removeVipCartItem: (id: number) => `/wp/v2/vip-profiles/cart/${id}`,

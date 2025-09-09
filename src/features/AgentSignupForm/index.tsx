@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Backdrop, Box, Button, CircularProgress, Dialog, InputAdornment, Typography } from '@mui/material';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DoneIcon from '@mui/icons-material/Done';
@@ -46,14 +46,14 @@ const AgentSignupForm = () => {
     defaultValues,
   });
 
-  const { fields, append } = useFieldArray({
-    control,
-    name: 'vip_examples',
-  });
+  // const { fields, append } = useFieldArray({
+  //   control,
+  //   name: 'vip_examples',
+  // });
 
-  const addAnotherVip = () => {
-    append({ value: '' });
-  };
+  // const addAnotherVip = () => {
+  //   append({ value: '' });
+  // };
 
   // eslint-disable-next-line no-unused-vars
   const onSubmit: (formData: AgentSignupValues) => Promise<void> = async (formData) => {
@@ -64,10 +64,10 @@ const AgentSignupForm = () => {
       setIsPending(true);
       setError('');
       try {
-        const allVipExamples = [
-          formData.examples_of_vip_managed,
-          ...formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== ''),
-        ].filter(Boolean);
+        // const allVipExamples = [
+        //   formData.examples_of_vip_managed,
+        //   ...formData.vip_examples.map((example) => example.value.trim()).filter((value) => value !== ''),
+        // ].filter(Boolean);
 
         const data = {
           first_name: formData?.first_name,
@@ -76,7 +76,7 @@ const AgentSignupForm = () => {
           password: formData?.password,
           phone: formData?.phone,
           company_name: formData?.company_name,
-          examples_of_vip_managed: allVipExamples,
+          // examples_of_vip_managed: allVipExamples,
         };
         const response = await AgentSignUp(data);
         if (response && response.error) {
@@ -343,7 +343,7 @@ const AgentSignupForm = () => {
           </Box>
         ))}
 
-        {fields.map((field, index) => (
+        {/* {fields.map((field, index) => (
           <Controller
             key={field.id}
             name={`vip_examples.${index}.value`}
@@ -364,7 +364,7 @@ const AgentSignupForm = () => {
           <Box className="input-text">
             <Typography sx={{ textDecoration: 'underline' }}>{en.signUpForm.addVip}</Typography>
           </Box>
-        </Box>
+        </Box> */}
         <Button
           type="submit"
           disabled={isPending || isCodeVerificationFailed}

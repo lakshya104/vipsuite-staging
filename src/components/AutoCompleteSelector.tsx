@@ -1,5 +1,14 @@
 import React from 'react';
-import { FormControl, Autocomplete, TextField, FormHelperText, Paper, MenuItem, ListItemText } from '@mui/material';
+import {
+  FormControl,
+  Autocomplete,
+  TextField,
+  FormHelperText,
+  Paper,
+  MenuItem,
+  ListItemText,
+  Box,
+} from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -74,13 +83,20 @@ const AutoCompleteSelector: React.FC<AutoCompleteSelectorProps> = ({
                 <MenuItem {...props} key={`${option.value}${index}`} value={option.value}>
                   <ListItemText primary={option.label} key={`${index}${option.value}`} />
                   {isSelected && (
-                    <CheckIcon
-                      sx={{
-                        marginLeft: 'auto',
-                        color: 'primary.main',
-                        fontSize: '1.2rem',
-                      }}
-                    />
+                    <Box sx={{ position: 'relative', mr: 1.35 }}>
+                      <CheckIcon
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '4%',
+                          transform: 'translate(-50%, -50%)',
+                          fontSize: '1.2rem',
+                          bgcolor: 'rgba(227,227,220,255)',
+                          width: '50px',
+                          height: '25px',
+                        }}
+                      />
+                    </Box>
                   )}
                 </MenuItem>
               );

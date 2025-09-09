@@ -47,13 +47,13 @@ export const AgentSignUpFormFields: AgentSignUpFormField[] = [
   { name: 'password', placeholder: 'Password', label: 'Password', autocomplete: 'new-password', type: 'password' },
   { name: 'company_name', placeholder: 'Company Name', label: 'Company Name', autocomplete: 'c-name', type: 'text' },
   { name: 'phone', placeholder: 'Phone Number', label: 'Phone Number', autocomplete: 'tel', type: 'tel' },
-  {
-    name: 'examples_of_vip_managed',
-    placeholder: 'Example of VIP Managed',
-    label: 'Example of VIP Managed',
-    autocomplete: 'off',
-    type: 'text',
-  },
+  // {
+  //   name: 'examples_of_vip_managed',
+  //   placeholder: 'Example of VIP Managed',
+  //   label: 'Example of VIP Managed',
+  //   autocomplete: 'off',
+  //   type: 'text',
+  // },
 ];
 
 type BrandSignUpFormField = {
