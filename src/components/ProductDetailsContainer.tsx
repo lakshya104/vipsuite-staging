@@ -37,6 +37,25 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAg
     autoplay: true,
     autoplaySpeed: 5000,
     pauseOnHover: true,
+    appendDots: (dots: React.ReactNode) => (
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '-50px', // Position dots below the slider
+          width: '100%',
+          textAlign: 'center',
+          '& ul': {
+            margin: 0,
+            padding: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 1,
+          },
+        }}
+      >
+        {dots}
+      </Box>
+    ),
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const SliderComponent = Slider as unknown as React.ComponentType<any>;
@@ -52,7 +71,33 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAg
           className="opportunity-product__detail"
           sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}
         >
-          <Box sx={{ position: 'relative', marginBottom: 4, width: { xs: '100%', md: '50%' } }}>
+          <Box
+            sx={{
+              position: 'relative',
+              marginBottom: 2,
+              width: { xs: '100%', md: '50%' },
+              '& .slick-dots': {
+                position: 'static',
+                bottom: 'auto',
+                '& li': {
+                  margin: '0 0',
+                  '& button': {
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    border: 'none',
+                    '&:before': {
+                      display: 'none',
+                    },
+                  },
+                  '&.slick-active button': {
+                    backgroundColor: 'black',
+                  },
+                },
+              },
+            }}
+          >
             {product?.gallery_images?.length > 1 ? (
               <SliderComponent {...settings}>
                 {product?.gallery_images.map((src, index) => (
@@ -70,6 +115,8 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAg
                       src={src?.sizes['vs-container']}
                       alt={`Slide ${index + 1}`}
                       height={500}
+                      unoptimized={true}
+                      quality={100}
                       width={500}
                       placeholder="blur"
                       blurDataURL={DefaultImageFallback.LandscapePlaceholder}
