@@ -151,7 +151,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               )}
               {isNonEmptyString(orderDetail?.order_created_for) && (
                 <Typography gutterBottom variant="body1">
-                 {en.myOrders.orderedFor} {orderDetail?.order_created_for}
+                  {en.myOrders.orderedFor} {orderDetail?.order_created_for}
                 </Typography>
               )}
             </Box>

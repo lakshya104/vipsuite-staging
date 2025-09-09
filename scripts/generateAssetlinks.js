@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const packageName = process.env.NEXT_PUBLIC_APP_PACKAGE_NAME || 'com.vip.app';
+const shaKey = process.env.NEXT_PUBLIC_ANDROID_SHA_KEY || 'shaKey';
 
 const assetlinks = [
   {
@@ -11,9 +12,7 @@ const assetlinks = [
     target: {
       namespace: 'android_app',
       package_name: packageName,
-      sha256_cert_fingerprints: [
-        'DF:30:DC:32:F6:2C:7D:EA:62:4F:BF:47:4B:F7:0B:9F:CC:B9:7D:AF:EF:84:28:D9:2F:58:5A:21:88:C1:2F:5D',
-      ],
+      sha256_cert_fingerprints: [shaKey],
     },
   },
 ];

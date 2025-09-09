@@ -4,13 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 const packageName = process.env.NEXT_PUBLIC_APP_PACKAGE_NAME || 'com.vip.app';
+const teamId = process.env.NEXT_PUBLIC_APPLE_TEAM_ID || 'teamId';
 
 const aasaLinks = {
   applinks: {
     apps: [],
     details: [
       {
-        appID: `KLT4AKNXLR.${packageName}`,
+        appID: `${teamId}.${packageName}`,
         components: [
           {
             '/': '/reset-password',
