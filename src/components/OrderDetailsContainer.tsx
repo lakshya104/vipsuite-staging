@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { filter, first, isEmpty, map } from 'lodash';
 import he from 'he';
 import FeedbackForm from '@/features/FeedbackForm';
-import { formatDate, formatString } from '@/helpers/utils';
+import { formatDate, formatString, isNonEmptyString } from '@/helpers/utils';
 import OrderItem from './OrderItem';
 import { Order } from '@/interfaces';
 import { DefaultImageFallback, QuestionType } from '@/helpers/enums';
@@ -113,6 +113,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               item={item}
               isRelatedOpportunity={isRelatedOpportunity}
               title={he.decode(orderDetail?.opportunity?.title || '')}
+              createdFor={orderDetail?.order_created_for}
             />
           ))}
         {showList && (
@@ -146,6 +147,11 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
                 <Typography variant="body1">
                   {en.myOrders.description}{' '}
                   {first(filter(orderDetail?.meta_data, (item) => item.key === 'lookbook_order_data'))?.value}
+                </Typography>
+              )}
+              {isNonEmptyString(orderDetail?.order_created_for) && (
+                <Typography gutterBottom variant="body1">
+                 {en.myOrders.orderedFor} {orderDetail?.order_created_for}
                 </Typography>
               )}
             </Box>

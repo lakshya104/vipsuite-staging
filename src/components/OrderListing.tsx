@@ -106,7 +106,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                       )}
                       {isNonEmptyString(order?.order_created_for) && (
                         <Typography gutterBottom variant="body1">
-                          Ordered For: {order.order_created_for}
+                          {en.myOrders.orderedFor} {order.order_created_for}
                         </Typography>
                       )}
                     </Box>

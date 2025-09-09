@@ -490,6 +490,7 @@ const en = {
     trackOrder: 'Track your order:',
     clickHere: 'Click here',
     yourResponse: 'Your Responses:',
+    orderedFor: 'Ordered For:',
   },
   feedbackForm: {
     formTitle: 'Feel free to upload your insights from your content should you want the brand to see.',

@@ -4,13 +4,15 @@ import { Box, Typography } from '@mui/material';
 import { DefaultImageFallback } from '@/helpers/enums';
 import { LineItem } from '@/interfaces';
 import en from '@/helpers/lang';
+import { isNonEmptyString } from '@/helpers/utils';
 
 interface OrderItemProps {
   item: LineItem;
   isRelatedOpportunity?: boolean;
   title?: string;
+  createdFor?: string;
 }
-const OrderItem: React.FC<OrderItemProps> = ({ item, isRelatedOpportunity = false, title = '' }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ item, isRelatedOpportunity = false, title = '', createdFor }) => {
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>
       <Image
@@ -36,6 +38,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ item, isRelatedOpportunity = fals
         {isRelatedOpportunity && (
           <Typography variant="body1">
             {en.common.relatedOpportunity}: {title}
+          </Typography>
+        )}
+        {isNonEmptyString(createdFor) && (
+          <Typography gutterBottom variant="body1">
+            {en.myOrders.orderedFor} {createdFor}
           </Typography>
         )}
       </Box>
