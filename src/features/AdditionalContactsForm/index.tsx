@@ -22,7 +22,7 @@ interface AdditionalContactsProps {
   // eslint-disable-next-line no-unused-vars
   handleLoading: (bool: boolean) => void;
   // eslint-disable-next-line no-unused-vars
-  openToaster: (message?: string, onClose?: () => void) => void;
+  openToaster: (message: string, onClose?: () => void) => void;
   sectionDetails: {
     additionalContactContent: AdditionalContactContent;
     sectionTitle: string;

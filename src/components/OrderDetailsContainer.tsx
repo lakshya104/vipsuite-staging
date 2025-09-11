@@ -27,6 +27,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
       ? orderDetail?.meta_data.find((item) => item.key === 'response')?.value === 'interested'
       : true;
   const response = orderDetail?.meta_data.find((item) => item.key === 'response')?.value;
+  const brandName = orderDetail?.meta_data.find((item) => item.key === 'brand_name')?.value;
   const isRelatedOpportunity = orderType === 'order' && !isEmpty(orderDetail?.line_items);
   const showList =
     orderStatus === 'rsvp' ||
@@ -128,6 +129,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               <Typography gutterBottom variant="h2">
                 {he.decode(orderDetail?.opportunity?.title || '')}
               </Typography>
+              {brandName && <Typography variant="body1">{brandName}</Typography>}
               {(orderDetail?.opportunity?.start_date || orderDetail?.opportunity?.end_date) && (
                 <Typography variant="body1">
                   <Typography component="span">Date: </Typography>

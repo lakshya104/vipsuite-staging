@@ -99,7 +99,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
 
   useEffect(() => {
     const fetchAgentVips = async () => {
-      if (!showVipOptions || (!showVipOptions && !opportunity?.acf?.is_lookbook_available)) return;
+      if (!showVipOptions && !opportunity?.acf?.is_lookbook_available) return;
       setVipsLoading(true);
       try {
         const response = await GetAllVips();

@@ -5,7 +5,8 @@ import { paths, withSearchParams } from '@/helpers/paths';
 const UseToaster = () => {
   const [toasterOpen, setToasterOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const openToaster = useCallback((message: string = 'Unexpected Error Occured', onClose?: () => void) => {
+  const openToaster = useCallback((message: string, onClose?: () => void) => {
+    if (!message) return;
     if (
       message.toLowerCase().includes('expired') ||
       message.toLowerCase().includes('token') ||
