@@ -29,9 +29,16 @@ interface ItemRequestFormProps {
   isRequestOnly: boolean;
   children: React.ReactNode;
   isUserAgent: boolean;
+  userRole: UserRole;
 }
 
-const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnly, children, isUserAgent }) => {
+const ItemRequestForm: React.FC<ItemRequestFormProps> = ({
+  product,
+  isRequestOnly,
+  children,
+  isUserAgent,
+  userRole,
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [productId, setProductId] = useState<number>(product.id);
   const [openESignModel, setOpenESignModel] = useState<boolean>(false);
@@ -146,7 +153,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
             const payload = {
               opportunity_id: product?.opportunity_id,
               ...(isUserAgent && payloadWithVipData),
-              order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+              order_by: userRole,
             };
             const addToCart = await AddItemToCart(item?.id, payload);
             await revalidatePathAction(paths.root.basket.getHref());
@@ -163,7 +170,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({ product, isRequestOnl
                 questions: payloadWithQuestionsData,
                 opportunity_id: product?.opportunity_id,
                 ...(isUserAgent && payloadWithVipData),
-                order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+                order_by: userRole,
               };
               const addToCart = await AddItemToCart(item.id, payload);
               await revalidatePathAction(paths.root.basket.getHref());

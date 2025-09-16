@@ -174,7 +174,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       is_pleases: 'interested',
       ...(updatedPayload && { questions: updatedPayload }),
       ...(showVipOptions && payloadWithVipData),
-      order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
+      order_by: userRole,
     };
     await handleForm(rsvp);
   };
@@ -193,7 +193,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       rsvp_post: opportunity.id,
       is_pleases: 'interested',
       ...(showVipOptions && payloadWithVipData),
-      order_by: userRole === UserRole.Agent ? UserRole.Agent : UserRole.Vip,
+      order_by: userRole,
     };
     await handleForm(rsvp);
   };

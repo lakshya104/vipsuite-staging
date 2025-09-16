@@ -15,15 +15,17 @@ import { paths } from '@/helpers/paths';
 import { vipInitialSchema, vipOptionalSchema, VipOptions } from '@/interfaces';
 import OrderEventButton from './OrderEventButton';
 import VipOrderForm from './VipOrderForm';
+import { UserRole } from '@/helpers/enums';
 
 interface EventsDialogProps {
   event: EventDetails;
   isUserAgent: boolean;
   vipsLoading: boolean;
   vipOptions: VipOptions[];
+  userRole: UserRole;
 }
 
-const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOptions, vipsLoading }) => {
+const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOptions, vipsLoading, userRole }) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [confirmationOpen, setConfirmationOpen] = useState<boolean>(false);
   const router = useRouter();
@@ -126,6 +128,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
           eventId={event?.id}
           handleToasterMessage={handleToasterMessage}
           vipOptions={vipOptions}
+          userRole={userRole}
         />
       )}
 
@@ -138,6 +141,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
             handleToasterMessage={handleToasterMessage}
             vipPayloadData={vipPayloadData}
             isUserAgent={isUserAgent}
+            userRole={userRole}
           />
         </DialogContent>
       </Dialog>

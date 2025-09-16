@@ -22,9 +22,17 @@ interface RSVPProps {
     [key: string]: string;
   };
   isUserAgent: boolean;
+  userRole: UserRole;
 }
 
-const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage, isUserAgent, vipPayloadData }) => {
+const RSVP: React.FC<RSVPProps> = ({
+  onConfirmation,
+  event,
+  handleToasterMessage,
+  isUserAgent,
+  vipPayloadData,
+  userRole,
+}) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [formState, setFormState] = useState({
     showForm: false,
@@ -46,7 +54,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
         is_pleases: data.notAvailable !== 'yes' ? 'not-interested' : 'not-available',
         reason: reasonText,
         ...(isUserAgent && vipPayloadData),
-        order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+        order_by: userRole,
       };
 
       try {
@@ -67,7 +75,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       rsvp_post: event.id,
       is_pleases: 'interested',
       ...(isUserAgent && vipPayloadData),
-      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+      order_by: userRole,
     };
     try {
       const res = await SendRsvp(rsvp);
@@ -127,7 +135,7 @@ const RSVP: React.FC<RSVPProps> = ({ onConfirmation, event, handleToasterMessage
       is_pleases: 'interested',
       ...(updatedPayload && { questions: updatedPayload }),
       ...(isUserAgent && vipPayloadData),
-      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+      order_by: userRole,
     };
     try {
       const res = await SendRsvp(rsvp);

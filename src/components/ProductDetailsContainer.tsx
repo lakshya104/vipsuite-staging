@@ -12,15 +12,16 @@ import ArrowBackBtn from './ArrowBackBtn';
 import RedeemBox from './RedeemBox';
 import HighEndItemMessage from './HighEndItemMessage';
 import ShowHtml from './ShowHtml';
-import { DefaultImageFallback } from '@/helpers/enums';
+import { DefaultImageFallback, UserRole } from '@/helpers/enums';
 import en from '@/helpers/lang';
 
 interface ProductsContainerProps {
   product: Product;
   isUserAgent: boolean;
+  userRole: UserRole;
 }
 
-const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAgent }) => {
+const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAgent, userRole }) => {
   const isRequestOnly = product?.acf?.is_request_only || false;
   const showOffers =
     get(find(product?.meta_data, { key: 'show_offers' }), 'value') === '1' || product?.acf?.show_offers || false;
@@ -151,7 +152,12 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAg
             </Typography>
             {isHighEndItem && <HighEndItemMessage />}
             <ShowHtml text={product?.description} />
-            <ItemRequestForm product={product} isRequestOnly={isRequestOnly} isUserAgent={isUserAgent}>
+            <ItemRequestForm
+              product={product}
+              isRequestOnly={isRequestOnly}
+              isUserAgent={isUserAgent}
+              userRole={userRole}
+            >
               {showOffers && <RedeemBox fetchOffers={showOffers} />}
             </ItemRequestForm>
           </Box>

@@ -24,7 +24,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({ opportuni
   if (!product || isUndefined(product)) {
     return <ErrorFallback errorMessage={en.products.errMessage} />;
   }
-  return <ProductDetailsContainer product={product} isUserAgent={userRole === UserRole.Agent} />;
+  return <ProductDetailsContainer product={product} isUserAgent={userRole === UserRole.Agent} userRole={userRole} />;
 };
 
 export default ProductDetailsPage;

@@ -800,6 +800,7 @@ const en = {
     addEmail: 'Add a PA or Staff Email',
     optional: 'Optional',
     phoneCode: 'Including the country code with + sign',
+    socialHandleHelper: 'Please add your handle name without the @',
     continue: 'Continue',
     login: 'Login here',
     alreadyAccount: 'Already have an account?',

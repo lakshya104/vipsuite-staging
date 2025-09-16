@@ -34,4 +34,4 @@ if (!fs.existsSync(targetDir)) {
 }
 
 fs.writeFileSync(targetFile, JSON.stringify(aasaLinks, null, 2));
-console.log(`apple-app-site-association generated with package: ${packageName}`);
+console.log(`apple-app-site-association generated with package: ${packageName} and teamId: ${teamId}`);

@@ -10,6 +10,8 @@ import DashboardContentComponent from './DashboardContent';
 import DashboardCard from './DashboardCard';
 import ErrorFallback from './ErrorFallback';
 import en from '@/helpers/lang';
+import { useUserInfoStore } from '@/store/useStore';
+import { UserRole } from '@/helpers/enums';
 
 interface DashboardItemsContainerProps {
   dashboardData: DashboardData;
@@ -21,6 +23,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
   const [isPending, setIsPending] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const { userRoleStore: userRole } = useUserInfoStore();
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -86,8 +89,15 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
       dashboardContent={dashboardData?.static_dashboard_questions}
       showMakeRequest={dashboardData?.show_make_request_form}
       formRequests={dashboardData?.dynamic_dashboard_questions}
+      userRole={userRole}
     />
   );
+
+  const isDashboardContentEmpty =
+    isEmpty(dashboardData?.dynamic_dashboard_questions) &&
+    !dashboardData?.show_make_request_form &&
+    userRole &&
+    userRole === UserRole.Brand;
 
   const renderContent = () => {
     if (searchQuery) {
@@ -106,11 +116,13 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
               ))}
             </Grid2>
           ) : (
-            <ErrorFallback
-              errorMessage={en.listEmptyMessage.noItems}
-              hideSubtext={true}
-              subtext={en.listEmptyMessage.noData}
-            />
+            isDashboardContentEmpty && (
+              <ErrorFallback
+                errorMessage={en.listEmptyMessage.noItems}
+                hideSubtext={true}
+                subtext={en.listEmptyMessage.noData}
+              />
+            )
           )}
         </>
       );
@@ -127,6 +139,15 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
                 <DashboardCard item={item} />
               </Grid2>
             ))}
+          {isDashboardContentEmpty &&
+            isEmpty(dashboardData?.dashboard_cards) &&
+            isEmpty(dashboardData?.dashboard_content) && (
+              <ErrorFallback
+                errorMessage={en.listEmptyMessage.noItems}
+                hideSubtext={true}
+                subtext={en.listEmptyMessage.noData}
+              />
+            )}
         </Grid2>
       </>
     );

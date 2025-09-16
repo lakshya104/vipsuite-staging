@@ -25,4 +25,4 @@ if (!fs.existsSync(targetDir)) {
 }
 
 fs.writeFileSync(targetFile, JSON.stringify(assetlinks, null, 2));
-console.log(`assetlinks.json generated with package: ${packageName}`);
+console.log(`assetlinks.json generated with package: ${packageName} and shaKey: ${shaKey}`);

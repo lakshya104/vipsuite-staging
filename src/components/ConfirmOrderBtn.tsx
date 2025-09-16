@@ -80,7 +80,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     ...(isRequestedProduct && { status: 'request-only' }),
     ...(isLookbookOrder && { status: 'lookbook-order' }),
     ...(isLookbookOrder && {
-      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+      order_by: userRoleStore && userRoleStore,
       ...(isUserAgent && {
         vip_profile_ids: agentVipLookbookInfo?.vip_profile_ids || null,
         vip_profile_names: agentVipLookbookInfo?.vip_profile_names || null,
@@ -121,7 +121,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
               quantity: 1,
               questions: requestOnlyQuestions,
               opportunity_id: opportunityId,
-              order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+              order_by: userRoleStore && userRoleStore,
               ...(isUserAgent && {
                 vip_profile_ids: agentVipInfo?.vip_profile_ids || null,
                 vip_profile_names: agentVipInfo?.vip_profile_names || null,
@@ -132,7 +132,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
             product_id: item.id,
             quantity: 1,
             opportunity_id: item.opportunity_id,
-            order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+            order_by: userRoleStore && userRoleStore,
             ...(item.questions ? { questions: item.questions } : {}),
             ...(isUserAgent && {
               vip_profile_ids: item?.vip_profile_ids || null,

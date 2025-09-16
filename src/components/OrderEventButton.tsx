@@ -19,6 +19,7 @@ interface OrderEventButtonProps {
   // eslint-disable-next-line no-unused-vars
   handleToasterMessage: (type: 'error' | 'success', message: string) => void;
   disabled: boolean;
+  userRole: UserRole;
 }
 
 const OrderEventButton: React.FC<OrderEventButtonProps> = ({
@@ -28,6 +29,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
   vipOptions,
   handleToasterMessage,
   disabled,
+  userRole,
 }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [vipSchemas, setVipSchemas] = useState(() => (!isUserAgent ? vipOptionalSchema : vipInitialSchema));
@@ -62,7 +64,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
       post_type: 'event',
       rsvp_post: eventId,
       ...(isUserAgent && payloadWithVipData),
-      order_by: isUserAgent ? UserRole.Agent : UserRole.Vip,
+      order_by: userRole,
       is_pleases: 'interested',
     };
     try {

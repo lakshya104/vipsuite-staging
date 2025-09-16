@@ -118,7 +118,13 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, userRole }) 
         </>
       )}
       {event?.acf?.show_offers && <RedeemBox fetchOffers={event?.acf?.show_offers} />}
-      <EventsDialog event={event} isUserAgent={isUserAgent} vipOptions={vipOptions} vipsLoading={vipsLoading} />
+      <EventsDialog
+        event={event}
+        isUserAgent={isUserAgent}
+        vipOptions={vipOptions}
+        vipsLoading={vipsLoading}
+        userRole={userRole}
+      />
     </Box>
   );
 };

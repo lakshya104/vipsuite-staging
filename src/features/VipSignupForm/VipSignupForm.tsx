@@ -417,6 +417,11 @@ const VipSignupForm = () => {
                 <Typography>{en.signUpForm.optional}</Typography>
               </Box>
             )}
+            {(name === 'instagram_handle' || name === 'tiktok_handle') && (
+              <Box className="input-text">
+                <Typography>{en.signUpForm.socialHandleHelper}</Typography>
+              </Box>
+            )}
             {/* {name === 'instagram_handle' && (
               <Box className="verify-button">
                 <Button

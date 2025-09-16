@@ -19,6 +19,7 @@ import { auth } from '@/auth';
 import { Instance, InstanceWithoutHeaders, InstanceWithTokenOnly } from './instance';
 import { Question } from '@/interfaces/events';
 import { EditSocialLinksRequestBody } from '@/components/ProfileComponents/types';
+import { UserRole } from '@/helpers/enums';
 
 export const GetToken = async () => {
   const session = await auth();
@@ -513,7 +514,7 @@ export const AddItemToCart = async (
     opportunity_id: string;
     vip_profile_ids?: string;
     vip_profile_names?: string;
-    order_by?: string;
+    order_by?: UserRole;
   },
 ) => {
   try {
