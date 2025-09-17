@@ -400,7 +400,7 @@ const en = {
   opportunities: {
     clearFilter: 'Clear Filter',
     featuredTag: 'Featured',
-    productHeading: 'Products',
+    productHeading: 'Browse Options',
     searchPlaceholder: 'Search for opportunities...',
     results: 'Results for',
     singleResult: 'Result for',
@@ -452,9 +452,9 @@ const en = {
       submit: 'Submit',
     },
     confirmationRsvp: {
-      title: 'RSVP Confirmed!',
+      title: 'Request received!',
       description:
-        'Please check your email for your event confirmation and details. If you have any additional questions, please contact one of the team on info@thevipsuite.co.uk',
+        'Please keep an eye on your emails for further updates. If you have any additional questions please email our team at concierge@TheVIPSuite.co.uk',
       cta: 'Back to All Events',
     },
   },
@@ -598,6 +598,8 @@ const en = {
   },
   selectAddress: {
     selectAdd: 'Select Address',
+    vipSubHead: `If you're a VIP requesting something please use a delivery address.`,
+    brandSubHead: 'If you are brand ordering a service please use a billing address.',
     addBtn: 'Add',
     dialog: {
       requestTitle: 'Request Confirmed',

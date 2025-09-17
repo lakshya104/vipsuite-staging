@@ -10,6 +10,8 @@ import ErrorFallback from '@/components/ErrorFallback';
 import { useSearchParams } from 'next/navigation';
 import en from '@/helpers/lang';
 import { paths, withSearchParams } from '@/helpers/paths';
+import { useUserInfoStore } from '@/store/useStore';
+import { UserRole } from '@/helpers/enums';
 
 interface SelectAddressFormProps {
   addresses: Address[];
@@ -31,6 +33,7 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
   const isRequestedProduct = searchParams.get('isRequestOnly');
   const isLookbookOrder = searchParams.get('isLookbook');
   const postId = searchParams.get('postId');
+  const { userEmailStore, userRoleStore } = useUserInfoStore();
   const handleAddressChange = (address: Address) => {
     setSelectedAddress((prevAdd) => (prevAdd === address ? null : address));
   };
@@ -56,17 +59,24 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
       </Box>
       {addresses.length > 0 ? (
         <>
+          <Box className="address__border">
+            <Typography variant="body1" fontWeight={400} align="center" mb={1}>
+              {userRoleStore === UserRole.Brand ? en.selectAddress.brandSubHead : en.selectAddress.vipSubHead}
+            </Typography>
+          </Box>
           {addresses.map((add, index) => (
             <Box className="address__list" key={index}>
-              <Box className="address__list-info">
-                <Typography gutterBottom variant="h3" component="h2">
-                  {add?.first_name} {add?.last_name}
-                </Typography>
-                <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}${add?.state ? `, ${add.state}` : ''},`}</Typography>
-                <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
-                <Typography variant="body2">
-                  {add?.company ? `${add.company} , (${add?.phone})` : `(${add?.phone})`}
-                </Typography>
+              <Box>
+                <Box className="address__list-info">
+                  <Typography gutterBottom variant="h3" component="h2">
+                    {add?.first_name} {add?.last_name}
+                  </Typography>
+                  <Typography variant="body2">{`${add?.address_line_1}, ${add?.address_line_2}, ${add?.city}${add?.state ? `, ${add.state}` : ''},`}</Typography>
+                  <Typography variant="body2">{`${add?.country}, ${add?.postcode},`}</Typography>
+                  <Typography variant="body2">
+                    {add?.company ? `${add.company} , (${add?.phone})` : `(${add?.phone})`}
+                  </Typography>
+                </Box>
               </Box>
               <Checkbox checked={selectedAddress === add} onChange={() => handleAddressChange(add)} />
             </Box>
@@ -77,6 +87,8 @@ const SelectAddressForm: React.FC<SelectAddressFormProps> = ({
               cartData={cartData}
               startTransition={startTransition}
               signatureData={signatureData}
+              userRole={userRoleStore}
+              userEmail={userEmailStore}
             />
           </Box>
         </>

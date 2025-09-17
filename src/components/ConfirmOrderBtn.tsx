@@ -7,7 +7,7 @@ import { Address, Cart } from '@/interfaces';
 import { CreateOrder } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
-import { useLookbookOrder, useProductImageStore, useRequestOnlyStore, useUserInfoStore } from '@/store/useStore';
+import { useLookbookOrder, useProductImageStore, useRequestOnlyStore } from '@/store/useStore';
 import { revalidateAllData } from '@/libs/actions';
 import FullScreenDialog from './FullScreenDialog';
 import { DefaultImageFallback, UserRole } from '@/helpers/enums';
@@ -19,6 +19,8 @@ interface ConfirmOrderBtnProps {
   cartData: Cart;
   startTransition: typeof import('react').startTransition;
   signatureData: string;
+  userRole: UserRole | null;
+  userEmail: string | null;
 }
 
 const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
@@ -26,6 +28,8 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
   cartData,
   startTransition,
   signatureData,
+  userEmail,
+  userRole,
 }) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -46,9 +50,8 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     agentVipInfo,
   } = useRequestOnlyStore();
   const { productImage } = useProductImageStore();
-  const { userEmailStore, userRoleStore } = useUserInfoStore();
   const cartItems = get(cartData, 'items', []);
-  const isUserAgent = userRoleStore === UserRole.Agent;
+  const isUserAgent = userRole === UserRole.Agent;
 
   const dialogBoxContent = {
     title:
@@ -80,7 +83,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     ...(isRequestedProduct && { status: 'request-only' }),
     ...(isLookbookOrder && { status: 'lookbook-order' }),
     ...(isLookbookOrder && {
-      order_by: userRoleStore && userRoleStore,
+      order_by: userRole && userRole,
       ...(isUserAgent && {
         vip_profile_ids: agentVipLookbookInfo?.vip_profile_ids || null,
         vip_profile_names: agentVipLookbookInfo?.vip_profile_names || null,
@@ -107,7 +110,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
     set_paid: true,
     billing: {
       ...address,
-      email: userEmailStore ?? '',
+      email: userEmail ?? '',
       phone: selectedAddress?.phone,
     },
     shipping: {
@@ -121,7 +124,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
               quantity: 1,
               questions: requestOnlyQuestions,
               opportunity_id: opportunityId,
-              order_by: userRoleStore && userRoleStore,
+              order_by: userRole && userRole,
               ...(isUserAgent && {
                 vip_profile_ids: agentVipInfo?.vip_profile_ids || null,
                 vip_profile_names: agentVipInfo?.vip_profile_names || null,
@@ -132,7 +135,7 @@ const ConfirmOrderBtn: React.FC<ConfirmOrderBtnProps> = ({
             product_id: item.id,
             quantity: 1,
             opportunity_id: item.opportunity_id,
-            order_by: userRoleStore && userRoleStore,
+            order_by: userRole && userRole,
             ...(item.questions ? { questions: item.questions } : {}),
             ...(isUserAgent && {
               vip_profile_ids: item?.vip_profile_ids || null,

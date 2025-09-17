@@ -2,10 +2,10 @@
 import React, { Fragment, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop, CircularProgress } from '@mui/material';
+import { first, get } from 'lodash';
 import { Address, Cart } from '@/interfaces';
 import BasketCard from '@/components/BasketCard';
 import SelectAddressForm from '../SelectAddressForm';
-import { first, get } from 'lodash';
 import { DefaultImageFallback } from '@/helpers/enums';
 
 interface OrderJourneyProps {

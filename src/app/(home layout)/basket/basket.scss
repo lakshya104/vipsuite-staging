@@ -87,6 +87,11 @@
       }
     }
   }
+  &__border {
+    padding: mixins.rem(16) 0;
+    border-top: mixins.rem(1) solid var(--color-textBlack-10);
+    align-items: center;
+  }
   &__list {
     display: grid;
     grid-template-columns: auto 28px;

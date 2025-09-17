@@ -99,7 +99,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
 
   useEffect(() => {
     const fetchAgentVips = async () => {
-      if (!showVipOptions && !opportunity?.acf?.is_lookbook_available) return;
+      if ((!showVipOptions && !opportunity?.acf?.is_lookbook_available) || userRole !== UserRole.Agent) return;
       setVipsLoading(true);
       try {
         const response = await GetAllVips();
@@ -116,6 +116,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
       }
     };
     fetchAgentVips();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showVipOptions, opportunity?.acf?.is_lookbook_available]);
 
   useEffect(() => {
