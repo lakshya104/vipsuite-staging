@@ -58,6 +58,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   const onSubmit = async (formData: BrandSignupValues) => {
     if (!isCodeVerified) {
       setError(en.signUpForm.verifyEmail);
+      setToasterType('error');
       setToasterOpen(true);
     } else {
       setIsPending(true);
@@ -76,6 +77,7 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
         if (response && response.error) {
           setError(`Error: ${response.error}`);
           setIsPending(false);
+          setToasterType('error');
           setToasterOpen(true);
         } else {
           reset();
@@ -117,8 +119,8 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
         console.error(en.signUpForm.emailError);
       }
     } catch (error) {
+      setToasterType('error');
       if (typeof error === 'string') {
-        setToasterType('error');
         setError(error);
       } else {
         if (error instanceof Error) {

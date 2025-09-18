@@ -59,6 +59,7 @@ const AgentSignupForm = () => {
   const onSubmit: (formData: AgentSignupValues) => Promise<void> = async (formData) => {
     if (!isCodeVerified) {
       setError(en.signUpForm.verifyEmail);
+      setToasterType('error');
       setToasterOpen(true);
     } else {
       setIsPending(true);
@@ -81,6 +82,7 @@ const AgentSignupForm = () => {
         const response = await AgentSignUp(data);
         if (response && response.error) {
           setError(`Error: ${response.error}`);
+          setToasterType('error');
           setToasterOpen(true);
           setIsPending(false);
         } else {
@@ -123,8 +125,8 @@ const AgentSignupForm = () => {
         console.error(en.signUpForm.emailError);
       }
     } catch (error) {
+      setToasterType('error');
       if (typeof error === 'string') {
-        setToasterType('error');
         setError(error);
       } else {
         if (error instanceof Error) {

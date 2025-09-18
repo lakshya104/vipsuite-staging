@@ -22,7 +22,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
   const [searchResults, setSearchResults] = useState<DashboardItem[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 750);
   const { userRoleStore: userRole } = useUserInfoStore();
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

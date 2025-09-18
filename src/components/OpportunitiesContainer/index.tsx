@@ -27,7 +27,7 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const [searchQuery, setSearchQuery] = useState<string>(isSearchApplied ? isSearchApplied : '');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 750);
   const [isClearing, setIsClearing] = useState<boolean>(false);
 
   useEffect(() => {

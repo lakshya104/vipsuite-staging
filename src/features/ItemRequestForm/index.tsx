@@ -253,13 +253,21 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({
       product?.questions &&
       (await Promise.all(
         product?.questions.map(async (field) => {
-          const key = field?.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const key = field?.title?.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const value = data[key];
           let answer;
-          if (field?.input_type === 'file_upload' && field?.is_required) {
-            answer = await convertToBase64(data[key]);
-          } else {
-            answer = data[key];
+
+          try {
+            if (field?.input_type === 'file_upload' && value instanceof File) {
+              answer = await convertToBase64(value);
+            } else {
+              answer = value;
+            }
+          } catch (error) {
+            console.error(`Failed to process field "${field?.title}" (key: ${key}):`, error);
+            answer = null; // fallback so the payload still has a valid structure
           }
+
           return {
             ...field,
             answer,

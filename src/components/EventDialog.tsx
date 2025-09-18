@@ -125,10 +125,12 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
           disabled={!!event?.acf?.is_rsvp}
           isUserAgent={isUserAgent}
           vipsLoading={vipsLoading}
-          eventId={event?.id}
           handleToasterMessage={handleToasterMessage}
           vipOptions={vipOptions}
           userRole={userRole}
+          onConfirmation={handleConfirmationOpen}
+          event={event}
+          vipPayloadData={vipPayloadData}
         />
       )}
 

@@ -21,7 +21,7 @@ const EventCards: React.FC<EventCardsProps> = ({ eventsData }) => {
   const isSearchApplied = searchParams.get('search');
   const [searchQuery, setSearchQuery] = useState<string>(isSearchApplied ? isSearchApplied : '');
   const [isPending, startTransition] = useTransition();
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 750);
   const [isClearing, setIsClearing] = useState<boolean>(false);
 
   useUpdateEffect(() => {

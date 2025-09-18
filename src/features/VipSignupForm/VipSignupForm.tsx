@@ -146,6 +146,7 @@ const VipSignupForm = () => {
         const response = await VipSignUp(updatedFormData);
         if (response?.error) {
           setError(response.error);
+          setToasterType('error');
           setToasterOpen(true);
         } else {
           setApplicationReviewDialogOpen(true);
@@ -189,8 +190,8 @@ const VipSignupForm = () => {
         console.error(en.signUpForm.emailError);
       }
     } catch (error) {
+      setToasterType('error');
       if (typeof error === 'string') {
-        setToasterType('error');
         setError(error);
       } else {
         if (error instanceof Error) {
