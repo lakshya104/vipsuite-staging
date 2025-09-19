@@ -453,8 +453,8 @@ const en = {
     },
     confirmationRsvp: {
       title: 'Request received!',
-      description:
-        'Please keep an eye on your emails for further updates. If you have any additional questions please email our team at concierge@TheVIPSuite.co.uk',
+      descriptionOne: 'Please keep an eye on your emails for further updates.',
+      descriptionTwo: 'If you have any additional questions please email our team at concierge@TheVIPSuite.co.uk',
       cta: 'Back to All Events',
     },
   },

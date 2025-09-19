@@ -38,7 +38,7 @@ const Endpoints = {
     } else if (oppId) {
       return `/wp/v2/opportunities?opportunity-category=${oppId}&per_page=99&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
     } else if (search) {
-      return `/wp/v2/opportunities?search=${search}&per_page=99&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
+      return `/wp/v2/vip-profiles/search?keyword=${search}&post_type=opportunity`;
     } else {
       return `/wp/v2/opportunities?page=1&per_page=99&_fields=id,title,opportunity-category,acf.is_featured,acf.featured_image.sizes.vs-container-half,acf.is_lookbook_available,acf.lookbook_description,acf.lookbook_heading,acf.lookbook_pdf,acf.brand_id`;
     }

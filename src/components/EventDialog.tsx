@@ -154,12 +154,15 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
         onClose={handleClose}
         aria-labelledby="confirmation-dialog-title"
       >
-        <DialogContent>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           <Typography id="confirmation-dialog-title" variant="h6" component="h1" gutterBottom>
             {en.events.confirmationRsvp.title}
           </Typography>
           <Typography variant="body1" paragraph>
-            {en.events.confirmationRsvp.description}
+            {en.events.confirmationRsvp.descriptionOne}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            {en.events.confirmationRsvp.descriptionTwo}
           </Typography>
           <DialogActions>
             <Button

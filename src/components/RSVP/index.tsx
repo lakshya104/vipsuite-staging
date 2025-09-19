@@ -116,12 +116,18 @@ const RSVP: React.FC<RSVPProps> = ({
     setIsPending(true);
     const updatedPayload = await Promise.all(
       event.acf.questions.map(async (field) => {
-        const key = field.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const key = field?.title?.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const value = data[key];
         let answer;
-        if (field?.input_type === 'file_upload' && field?.is_required) {
-          answer = await convertToBase64(data[key]);
-        } else {
-          answer = data[key];
+        try {
+          if (field?.input_type === 'file_upload' && value instanceof File) {
+            answer = await convertToBase64(value);
+          } else {
+            answer = value;
+          }
+        } catch (error) {
+          console.error(`Failed to process field "${field?.title}" (key: ${key}):`, error);
+          answer = null;
         }
         return {
           ...field,
