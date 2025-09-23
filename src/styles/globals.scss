@@ -606,32 +606,32 @@ section {
   }
 }
 
-@media screen and (max-width: 600px) {
-  input,
-  textarea,
-  select,
-  button {
-    font-size: 16px !important;
-  }
-}
+// @media screen and (max-width: 600px) {
+//   input,
+//   textarea,
+//   select,
+//   button {
+//     font-size: 16px !important;
+//   }
+// }
 
-.MuiInput-underline:before,
-.MuiInput-underline:after,
-.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-  backface-visibility: hidden;
-  transform-origin: 50% 50%;
-  -webkit-transform: translateZ(0); /* force GPU compositing */
-}
+// .MuiInput-underline:before,
+// .MuiInput-underline:after,
+// .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+//   backface-visibility: hidden;
+//   transform-origin: 50% 50%;
+//   -webkit-transform: translateZ(0); /* force GPU compositing */
+// }
 
-input,
-textarea {
-  -webkit-text-size-adjust: 100%;
-}
+// input,
+// textarea {
+//   -webkit-text-size-adjust: 100%;
+// }
 
-input,
-textarea,
-select,
-button {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+// input,
+// textarea,
+// select,
+// button {
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }

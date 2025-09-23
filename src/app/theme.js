@@ -72,21 +72,6 @@ const theme = createTheme(baseTheme, {
           },
         },
       },
-      MuiInputBase: {
-        styleOverrides: {
-          input: {
-            fontSize: '16px',
-            lineHeight: '1.4',
-          },
-        },
-      },
-      MuiOutlinedInput: {
-        styleOverrides: {
-          input: {
-            fontSize: '16px',
-          },
-        },
-      },
     },
     MuiButton: {
       styleOverrides: {
