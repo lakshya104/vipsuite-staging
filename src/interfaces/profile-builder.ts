@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import en from '@/helpers/lang';
 import { ACF } from '@/interfaces';
 export interface ProfileBuilderOptions {
   representation_options: string[];
@@ -186,6 +187,7 @@ export const vipSectionData = (options: string[]): Section => {
           condition: 'has_one_of_values',
           question_values: '',
         },
+        field_instructions: en.signUpForm.socialHandleHelper,
       },
       {
         unique_id: 'tiktok_handle',
@@ -201,6 +203,7 @@ export const vipSectionData = (options: string[]): Section => {
           condition: 'has_one_of_values',
           question_values: '',
         },
+        field_instructions: en.signUpForm.socialHandleHelper,
       },
       {
         unique_id: 'avg_engagement_instagram',

@@ -628,8 +628,8 @@ export const VerifyEmail = async (email: string) => {
     const response = await Instance.post(Endpoints.verifyEmail, { email });
     return response.data;
   } catch (error) {
-    console.error('Error sending verification code:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending verification code';
+    console.error('Error sending Activation code:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending activation code';
     throw new Error(errorMessage);
   }
 };
@@ -639,7 +639,7 @@ export const VerifyEmailCode = async (email: string, code: string) => {
     return response.data;
   } catch (error) {
     console.error('Error verifying code:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending verification code';
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during sending activation code';
     throw new Error(errorMessage);
   }
 };
