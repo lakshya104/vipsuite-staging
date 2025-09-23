@@ -20,6 +20,7 @@
   --color-darkgray: #1b1b1b;
   --color-very-darkgray: #111111;
   --font-family: 'Graphik', serif;
+  --form-bg: #fffff7;
 }
 
 body {
@@ -606,32 +607,39 @@ section {
   }
 }
 
-// @media screen and (max-width: 600px) {
-//   input,
-//   textarea,
-//   select,
-//   button {
-//     font-size: 16px !important;
-//   }
-// }
+@media screen and (max-width: 600px) {
+  input,
+  textarea,
+  select,
+  button {
+    font-size: 16px !important;
+  }
+}
 
-// .MuiInput-underline:before,
-// .MuiInput-underline:after,
-// .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-//   backface-visibility: hidden;
-//   transform-origin: 50% 50%;
-//   -webkit-transform: translateZ(0); /* force GPU compositing */
-// }
+.MuiInput-underline:before,
+.MuiInput-underline:after,
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  backface-visibility: hidden;
+  transform-origin: 50% 50%;
+}
 
-// input,
-// textarea {
-//   -webkit-text-size-adjust: 100%;
-// }
+input,
+textarea {
+  -webkit-text-size-adjust: 100%;
+}
 
-// input,
-// textarea,
-// select,
-// button {
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-// }
+input,
+textarea,
+select,
+button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.MuiInputLabel-outlined.MuiInputLabel-shrink,
+.MuiInputLabel-outlined.Mui-focused {
+  background: var(--form-bg);
+  padding: 0 8px;
+  display: inline-block;
+  z-index: 1;
+}
