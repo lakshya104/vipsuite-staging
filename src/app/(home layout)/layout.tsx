@@ -26,6 +26,7 @@ export default async function HomeSectionLayout({
       email,
       profile_id,
       last_login_at = '',
+      brand_name,
     } = session ?? {};
 
     if (
@@ -33,7 +34,7 @@ export default async function HomeSectionLayout({
       ((role === UserRole.Vip && is_profile_builder_progressed !== 1) ||
         (role !== UserRole.Vip && !last_login_at.length))
     ) {
-      return <ApplicationAcceptedDialog name={first_name} role={role} />;
+      return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
     }
 
     return (

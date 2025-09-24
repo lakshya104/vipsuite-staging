@@ -11,7 +11,9 @@ const BrandSignupPage = async () => {
   const brandSignupOptions = get(signupContent, 'business_options', ['']);
   return (
     <>
-      <Typography component="p">{brandSignupContent}</Typography>
+      <Typography component="p" sx={{ color: '#a4a49f !important' }}>
+        {brandSignupContent}
+      </Typography>
       <BrandSignupForm brandSignupOptions={brandSignupOptions} />
     </>
   );

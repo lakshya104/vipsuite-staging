@@ -460,9 +460,9 @@ const en = {
   },
   lookBookForm: {
     fieldErrMessage: 'This field is required',
-    btn: 'Request Items from Lookbook',
+    btn: 'Make an Enquiry',
     formSubTitle: 'Request Form',
-    description: 'Please let us know which items you would like to request. Include size and colour if needed.',
+    description: 'Please provide details of your enquiry or request below.',
     placeholder: 'e.g. Red dress on Page 4 in size 12',
     submitText: 'Submit Request',
   },

@@ -13,9 +13,10 @@ import { createSkipCookie } from '@/libs/actions';
 interface ApplicationAcceptedDialogProps {
   name: string;
   role: UserRole;
+  brandName: string;
 }
 
-const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ name, role }) => {
+const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ name, role, brandName }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const handleAcceptDialogChange = async () => {
@@ -55,7 +56,7 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
             />
             <Typography variant="h3">
               {role === UserRole.Brand ? en.customBrandAcceptedScreen.welcomeTxt : en.customAcceptedScreen.welcomeTxt},{' '}
-              {name}
+              {role === UserRole.Brand && brandName ? brandName : name}
             </Typography>
             <Typography variant="body1">
               {role === UserRole.Brand

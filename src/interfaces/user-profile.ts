@@ -71,4 +71,5 @@ export type Session = {
   last_name: string;
   is_profile_builder_progressed?: number;
   last_login_at: string;
+  brand_name: string;
 };

@@ -11,7 +11,6 @@ import { BrandSignUpFormFields } from '@/data';
 import InputForm from '../../components/InputForm/InputForm';
 import './BrandSignupForm.scss';
 import { BrandSignupSchema, BrandSignupValues, defaultValues } from './types';
-import SelectBox from '@/components/SelectBox';
 import Toaster from '@/components/Toaster';
 import { BrandSignUp, VerifyEmail, VerifyEmailCode } from '@/libs/api-manager/manager';
 import { isValidEmail } from '@/helpers/utils';
@@ -19,6 +18,7 @@ import ApplicationReviewDialog from '@/components/ApplicationReviewDialog';
 import { isEqual } from 'lodash';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
+import SelectBoxWithoutLabel from '@/components/SelectBoxWithOutLabel';
 
 interface BrandSignupFormProps {
   brandSignupOptions: string[];
@@ -175,15 +175,14 @@ const BrandSignupForm: React.FC<BrandSignupFormProps> = ({ brandSignupOptions })
   return (
     <>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className="signup-form">
-        {BrandSignUpFormFields.map(({ name, placeholder, autocomplete, type, label }) => (
+        {BrandSignUpFormFields.map(({ name, placeholder, autocomplete, type }) => (
           <Box key={name} className="signup__item">
             {type === 'select' ? (
-              <SelectBox
+              <SelectBoxWithoutLabel
                 name={name}
                 control={control}
                 placeholder={placeholder}
                 options={brandOptions}
-                label={label || 'select'}
                 errors={errors}
               />
             ) : (
