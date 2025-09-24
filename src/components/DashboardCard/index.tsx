@@ -114,7 +114,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
             <>
               {(item?.acf?.event_start_date || item?.acf?.event_end_date) && (
                 <Typography variant="body2">
-                  <Typography component="span" sx={{ fontWeight: '500' }}>
+                  <Typography component="span" sx={{ fontWeight: '500', color: 'white !important' }}>
                     {en.events.date}
                   </Typography>{' '}
                   <>
@@ -126,7 +126,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
               )}
               {item?.acf?.event_location && item.acf.event_location.trim() !== '' && (
                 <Typography variant="body2">
-                  <Typography component="span" fontWeight={500}>
+                  <Typography component="span" sx={{ fontWeight: '500', color: 'white !important' }}>
                     Location:
                   </Typography>{' '}
                   {item.acf.event_location}
