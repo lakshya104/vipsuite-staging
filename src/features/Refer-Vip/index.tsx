@@ -4,7 +4,6 @@ import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/materi
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import InputForm from '@/components/InputForm/InputForm';
 import { ReferVipSchema } from './types';
 import { ReferVipFormFields } from '@/data';
 import './ReferVip.scss';
