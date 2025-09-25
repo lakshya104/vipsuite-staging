@@ -12,6 +12,7 @@ import Toaster from '@/components/Toaster';
 import UseToaster from '@/hooks/useToaster';
 import { ReferaVIP } from '@/libs/api-manager/manager';
 import en from '@/helpers/lang';
+import InputTextFormField from '@/components/InputTextFormField';
 
 type FormValues = z.infer<typeof ReferVipSchema>;
 
@@ -26,7 +27,7 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ description, closeDialog })
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
@@ -68,14 +69,12 @@ const ReferVIPForm: React.FC<ReferVIPFormProps> = ({ description, closeDialog })
           <Box component="form" onSubmit={handleSubmit(onSubmit)} className="gray-card__form">
             {ReferVipFormFields.map((field) => (
               <Box key={field.name}>
-                <InputForm
-                  label={field.label}
+                <InputTextFormField
+                  errors={errors}
+                  name={field.name as keyof FormValues}
+                  noLabel={true}
                   placeholder={field.placeholder}
-                  type={field.type}
-                  autoComplete={field.autocomplete}
-                  {...register(field.name as keyof FormValues)}
-                  error={Boolean(errors[field.name as keyof FormValues])}
-                  helperText={errors[field.name as keyof FormValues]?.message}
+                  control={control}
                 />
               </Box>
             ))}
