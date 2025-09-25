@@ -182,7 +182,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                             sx={{
                               position: 'absolute',
                               top: '-8px',
-                              right: '-12px',
+                              right: '-16px',
                               background: 'red',
                               color: 'white',
                               borderRadius: '50%',

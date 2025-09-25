@@ -65,6 +65,11 @@ export const RenderSingleSelectInput: React.FC<RenderSingleSelectInputProps> = (
                       />
                     }
                     label={choice.text}
+                    sx={{
+                      '& .MuiCheckbox-root.Mui-checked ~ .MuiFormControlLabel-label': {
+                        color: 'white !important',
+                      },
+                    }}
                   />
                 );
               })}
@@ -156,6 +161,11 @@ export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
                         />
                       }
                       label={choice.text}
+                      sx={{
+                        '& .MuiCheckbox-root.Mui-checked ~ .MuiFormControlLabel-label': {
+                          color: 'white !important',
+                        },
+                      }}
                     />
                     {choice.text.toLowerCase() === 'other' && isOtherSelected && (
                       <Box sx={{ mt: 1, p: '0px !important' }}>

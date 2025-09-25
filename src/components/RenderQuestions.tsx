@@ -218,6 +218,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
                   <input
                     type="file"
                     hidden
+                    accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,application/pdf"
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {

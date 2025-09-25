@@ -220,6 +220,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                   <input
                     type="file"
                     hidden
+                    accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,application/pdf"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
