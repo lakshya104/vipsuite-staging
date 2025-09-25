@@ -1,5 +1,5 @@
 import { Question } from '@/interfaces/events';
-import React from 'react';
+import React, { useState } from 'react';
 import DynamicQuestionTitle from './DynamicQuestionTitle';
 import InputTextFormField, { InputTextAreaFormField } from './InputTextFormField';
 import { QuestionType } from '@/helpers/enums';
@@ -39,6 +39,36 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
       : [...field.value, value];
 
     field.onChange(newValue);
+  };
+
+  const [fileError, setFileError] = useState('');
+  const validateFile = (file: File) => {
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      throw new Error('File size must be less than 10MB');
+    }
+
+    const allowedTypes: { [key: string]: boolean } = {
+      'image/png': true,
+      'image/jpeg': true,
+      'application/pdf': true,
+      'application/msword': true,
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': true,
+    };
+
+    if (!allowedTypes[file.type]) {
+      throw new Error('Invalid file type. Only PNG, JPG, PDF, DOC, and DOCX files are allowed.');
+    }
+
+    const fileName = file.name.toLowerCase();
+    const allowedExtensions = ['.png', '.jpg', '.jpeg', '.pdf', '.doc', '.docx'];
+    const hasValidExtension = allowedExtensions.some((ext) => fileName.endsWith(ext));
+
+    if (!hasValidExtension) {
+      throw new Error('Invalid file extension.');
+    }
+
+    return true;
   };
 
   const renderForm = (question: Question) => {
@@ -208,7 +238,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
                         {fileName}
                       </Typography>
                     </Box>
-                  ) : errors[fieldName] ? (
+                  ) : errors[fieldName] || fileError ? (
                     <span style={{ color: '#d32f2f', textTransform: 'capitalize', fontWeight: 'lighter' }}>
                       Upload a file
                     </span>
@@ -219,14 +249,46 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
                     type="file"
                     hidden
                     accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,application/pdf"
+                    // onChange={async (e) => {
+                    //   const file = e.target.files?.[0];
+                    //   if (file) {
+                    //     try {
+                    //       onChange(file);
+                    //       setFileName(file.name);
+                    //     } catch (error) {
+                    //       console.error(en.renderQuestions.errorconversion, error);
+                    //     }
+                    //   }
+                    // }}
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         try {
+                          // Clear previous errors
+                          setFileError('');
+
+                          // Validate the file
+                          validateFile(file);
+
+                          // If validation passes, proceed
                           onChange(file);
                           setFileName(file.name);
                         } catch (error) {
                           console.error(en.renderQuestions.errorconversion, error);
+
+                          // Set error state to display to user
+                          setFileError(
+                            typeof error === 'object' && error !== null && 'message' in error
+                              ? String((error as { message: unknown }).message)
+                              : 'An error occurred',
+                          );
+
+                          // Clear the file input
+                          e.target.value = '';
+                          setFileName('');
+
+                          // Clear the form field
+                          onChange(null);
                         }
                       }
                     }}

@@ -49,6 +49,36 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
     defaultValues,
   });
 
+  const [fileError, setFileError] = useState('');
+  const validateFile = (file: File) => {
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      throw new Error('File size must be less than 10MB');
+    }
+
+    const allowedTypes: { [key: string]: boolean } = {
+      'image/png': true,
+      'image/jpeg': true,
+      'application/pdf': true,
+      'application/msword': true,
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': true,
+    };
+
+    if (!allowedTypes[file.type]) {
+      throw new Error('Invalid file type. Only PNG, JPG, PDF, DOC, and DOCX files are allowed.');
+    }
+
+    const fileName = file.name.toLowerCase();
+    const allowedExtensions = ['.png', '.jpg', '.jpeg', '.pdf', '.doc', '.docx'];
+    const hasValidExtension = allowedExtensions.some((ext) => fileName.endsWith(ext));
+
+    if (!hasValidExtension) {
+      throw new Error('Invalid file extension.');
+    }
+
+    return true;
+  };
+
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -221,11 +251,43 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                     type="file"
                     hidden
                     accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,application/pdf"
-                    onChange={(e) => {
+                    // onChange={(e) => {
+                    //   const file = e.target.files?.[0];
+                    //   if (file) {
+                    //     onChange(file);
+                    //     setFileName(file.name);
+                    //   }
+                    // }}
+                    onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        onChange(file);
-                        setFileName(file.name);
+                        try {
+                          // Clear previous errors
+                          setFileError('');
+
+                          // Validate the file
+                          validateFile(file);
+
+                          // If validation passes, proceed
+                          onChange(file);
+                          setFileName(file.name);
+                        } catch (error) {
+                          console.error(en.renderQuestions.errorconversion, error);
+
+                          // Set error state to display to user
+                          setFileError(
+                            typeof error === 'object' && error !== null && 'message' in error
+                              ? String((error as { message: unknown }).message)
+                              : 'An error occurred',
+                          );
+
+                          // Clear the file input
+                          e.target.value = '';
+                          setFileName('');
+
+                          // Clear the form field
+                          onChange(null);
+                        }
                       }
                     }}
                   />
@@ -233,7 +295,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
               )}
             />
           </Box>
-          {errors.screenshot && (
+          {(errors.screenshot?.message || fileError) && (
             <Typography
               sx={{
                 color: '#d32f2f !important',
@@ -242,10 +304,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                 fontSize: '0.75rem !important',
               }}
             >
-              {errors.screenshot.message}
+              {errors.screenshot?.message ??
+                'Error: File must be less than 10MB and of type PNG, JPG, PDF, DOC, or DOCX.'}
             </Typography>
           )}
-
           <Btn
             look="light"
             width="100%"
