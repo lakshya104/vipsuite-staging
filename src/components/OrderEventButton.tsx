@@ -67,7 +67,29 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
       }),
     };
     setVipPayloadData(payloadWithVipData);
-    setShowForm(true);
+    if (event?.acf?.questions) {
+      setShowForm(true);
+    } else {
+      setIsPending(true);
+      const rsvp = {
+        post_type: 'event',
+        rsvp_post: event.id,
+        is_pleases: 'interested',
+        ...(isUserAgent && payloadWithVipData),
+        order_by: userRole,
+      };
+      try {
+        const res = await SendRsvp(rsvp);
+        handleToasterMessage('success', res?.message);
+        await revalidatePathAction(paths.root.eventDetails.getHref(event?.id));
+        onConfirmation();
+      } catch (error) {
+        handleToasterMessage('error', String(error));
+      } finally {
+        setShowForm(false);
+        setIsPending(false);
+      }
+    }
   };
 
   const handleVipSchemas = (schemas: { profileId: z.ZodArray<z.ZodString, 'many'>; profileName: z.ZodString }) => {

@@ -168,7 +168,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
           {map(formattedResponse, (res, index) => {
             return (
               <Box key={index} my={2}>
-                <Typography fontWeight={500} fontSize={'16px'}>
+                <Typography fontWeight={600} fontSize={'16px'}>
                   {res?.title}
                 </Typography>
                 {res?.type && res.type === QuestionType.FileUpload ? (

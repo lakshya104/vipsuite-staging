@@ -43,11 +43,6 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
 
   const [fileError, setFileError] = useState('');
   const validateFile = (file: File) => {
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      throw new Error('File size must be less than 10MB');
-    }
-
     const allowedTypes: { [key: string]: boolean } = {
       'image/png': true,
       'image/jpeg': true,
@@ -205,11 +200,14 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
               render={({ field: { onChange } }) => (
                 <Button
                   className="button"
-                  style={{ border: errors[fieldName] ? '1px solid #d32f2f' : '1px solid black', padding: '25px 0' }}
+                  style={{
+                    border: errors[fieldName] || fileError ? '1px solid #d32f2f' : '1px solid black',
+                    padding: '25px 0',
+                  }}
                   sx={{ display: 'flex', flexDirection: 'column' }}
                   component="label"
                   startIcon={
-                    !fileName && errors[fieldName] ? (
+                    !fileName && (errors[fieldName] || fileError) ? (
                       <ErrorIcon color="error" />
                     ) : (
                       !fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />
@@ -249,45 +247,19 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
                     type="file"
                     hidden
                     accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,application/pdf"
-                    // onChange={async (e) => {
-                    //   const file = e.target.files?.[0];
-                    //   if (file) {
-                    //     try {
-                    //       onChange(file);
-                    //       setFileName(file.name);
-                    //     } catch (error) {
-                    //       console.error(en.renderQuestions.errorconversion, error);
-                    //     }
-                    //   }
-                    // }}
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         try {
-                          // Clear previous errors
                           setFileError('');
-
-                          // Validate the file
                           validateFile(file);
-
-                          // If validation passes, proceed
                           onChange(file);
                           setFileName(file.name);
                         } catch (error) {
                           console.error(en.renderQuestions.errorconversion, error);
-
-                          // Set error state to display to user
-                          setFileError(
-                            typeof error === 'object' && error !== null && 'message' in error
-                              ? String((error as { message: unknown }).message)
-                              : 'An error occurred',
-                          );
-
-                          // Clear the file input
+                          setFileError('File must be of type PNG, JPG, PDF, DOC, or DOCX.');
                           e.target.value = '';
                           setFileName('');
-
-                          // Clear the form field
                           onChange(null);
                         }
                       }
@@ -296,9 +268,9 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
                 </Button>
               )}
             />
-            {errors[fieldName] && (
+            {(errors[fieldName] || fileError) && (
               <Typography className="field-error Mui-error" sx={{ mt: '-10px' }} color="error">
-                {en.common.fieldErrorMessage}
+                {fileError ? fileError : en.common.fieldErrorMessage}
               </Typography>
             )}
           </Box>
@@ -315,7 +287,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
           {en.renderQuestions.answerQuestion}
         </Typography>
       )}
-      {questions.map((item) => renderForm(item))}
+      {questions?.map((item) => renderForm(item))}
     </>
   );
 };

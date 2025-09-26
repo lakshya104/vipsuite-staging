@@ -51,11 +51,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
 
   const [fileError, setFileError] = useState('');
   const validateFile = (file: File) => {
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      throw new Error('File size must be less than 10MB');
-    }
-
     const allowedTypes: { [key: string]: boolean } = {
       'image/png': true,
       'image/jpeg': true,
@@ -220,7 +215,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                   sx={{ display: 'flex', flexDirection: 'column' }}
                   component="label"
                   startIcon={
-                    !fileName && errors.screenshot ? (
+                    !fileName && (errors.screenshot || fileError) ? (
                       <ErrorIcon color="error" />
                     ) : (
                       !fileName && <Image src="/img/Upload.png" alt="Upload" width={20} height={20} />
@@ -240,7 +235,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                       <CheckCircleOutlineIcon color="success" />
                       <Typography textAlign="center">{fileName}</Typography>
                     </Box>
-                  ) : errors.screenshot ? (
+                  ) : errors.screenshot || fileError ? (
                     <span style={{ color: '#d32f2f', textTransform: 'capitalize' }}>
                       {en.feedbackForm.fieldPlaceholders.screenshot}
                     </span>
@@ -251,41 +246,19 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                     type="file"
                     hidden
                     accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,application/pdf"
-                    // onChange={(e) => {
-                    //   const file = e.target.files?.[0];
-                    //   if (file) {
-                    //     onChange(file);
-                    //     setFileName(file.name);
-                    //   }
-                    // }}
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         try {
-                          // Clear previous errors
                           setFileError('');
-
-                          // Validate the file
                           validateFile(file);
-
-                          // If validation passes, proceed
                           onChange(file);
                           setFileName(file.name);
                         } catch (error) {
                           console.error(en.renderQuestions.errorconversion, error);
-
-                          // Set error state to display to user
-                          setFileError(
-                            typeof error === 'object' && error !== null && 'message' in error
-                              ? String((error as { message: unknown }).message)
-                              : 'An error occurred',
-                          );
-
-                          // Clear the file input
+                          setFileError('File must of type PNG, JPG, PDF, DOC, or DOCX.');
                           e.target.value = '';
                           setFileName('');
-
-                          // Clear the form field
                           onChange(null);
                         }
                       }
@@ -304,8 +277,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
                 fontSize: '0.75rem !important',
               }}
             >
-              {errors.screenshot?.message ??
-                'Error: File must be less than 10MB and of type PNG, JPG, PDF, DOC, or DOCX.'}
+              {fileError ? fileError : errors.screenshot?.message}
             </Typography>
           )}
           <Btn
