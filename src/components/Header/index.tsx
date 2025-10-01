@@ -21,7 +21,7 @@ import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { UserRole } from '@/helpers/enums';
-import { signOutAction } from '@/libs/actions';
+import { deleteVipCookies, signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
@@ -87,7 +87,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
     setSettingsOpen(false);
     try {
       await LogOut();
-      await signOutAction();
+      await Promise.all([signOutAction(), deleteVipCookies()]);
       clearInstaInfo();
       clearTiktokInfo();
       clearAll();

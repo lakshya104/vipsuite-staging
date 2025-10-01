@@ -11,8 +11,16 @@ interface OrderItemProps {
   isRelatedOpportunity?: boolean;
   title?: string;
   createdFor?: string;
+  brandName: string;
 }
-const OrderItem: React.FC<OrderItemProps> = ({ item, isRelatedOpportunity = false, title = '', createdFor }) => {
+
+const OrderItem: React.FC<OrderItemProps> = ({
+  item,
+  isRelatedOpportunity = false,
+  title = '',
+  createdFor,
+  brandName,
+}) => {
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>
       <Image
@@ -27,7 +35,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ item, isRelatedOpportunity = fals
           {item?.name}
         </Typography>
         <Typography gutterBottom variant="body1">
-          {item?.brand_name}
+          {brandName}
         </Typography>
         {item?.variation_id !== 0 &&
           item?.meta_data?.map((attr, index) => (

@@ -115,6 +115,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               isRelatedOpportunity={isRelatedOpportunity}
               title={he.decode(orderDetail?.opportunity?.title || '')}
               createdFor={orderDetail?.order_created_for}
+              brandName={brandName || item?.brand_name}
             />
           ))}
         {showList && (

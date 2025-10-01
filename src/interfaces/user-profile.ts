@@ -70,6 +70,7 @@ export type Session = {
   first_name: string;
   last_name: string;
   is_profile_builder_progressed?: number;
+  is_profile_completed?: number;
   last_login_at: string;
   brand_name: string;
 };

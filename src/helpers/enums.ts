@@ -20,6 +20,7 @@ export enum DefaultImageFallback {
 export enum CookieName {
   ProfileId = 'profileId',
   SkipProfile = 'skip',
+  ProfileCompleted = 'profileCompleted',
   IsAgent = 'isAgent',
 }
 

@@ -9,6 +9,7 @@ export interface VipApiResponse {
   profile_id: number;
   first_name: string;
   last_name: string;
+  is_profile_completed?: number;
 }
 
 export interface AgentVipsPayload {

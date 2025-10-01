@@ -23,6 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           is_profile_builder_progressed: user?.is_profile_builder_progressed,
           last_login_at: user?.last_login_at,
           brand_name: user?.brand_name,
+          is_profile_completed: user?.is_profile_completed,
         };
         token.user = userData;
       }

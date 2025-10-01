@@ -60,8 +60,14 @@ export async function revalidateAllData() {
 export async function createSkipCookie() {
   (await cookies()).set(CookieName.SkipProfile, 'true');
 }
+
+export async function createProfileCompletedCookie() {
+  (await cookies()).set(CookieName.ProfileCompleted, 'true');
+}
+
 export async function deleteVipCookies() {
-  await Promise.all([(await cookies()).delete(CookieName.SkipProfile)]);
+  const cookieStore = await cookies();
+  await Promise.all([cookieStore.delete(CookieName.SkipProfile), cookieStore.delete(CookieName.ProfileCompleted)]);
 }
 
 export async function getAuthData() {

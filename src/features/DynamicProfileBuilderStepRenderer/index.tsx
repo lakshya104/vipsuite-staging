@@ -34,7 +34,7 @@ import { useVisibility } from '@/hooks/useVisibility';
 import { createDynamicResolver } from '@/hooks/useDynamicResolver';
 import AdditionalContactsForm from '../AdditionalContactsForm';
 import { MessageDialogBox } from '@/components/Dialog';
-import revalidatePathAction from '@/libs/actions';
+import revalidatePathAction, { createProfileCompletedCookie } from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import VipAddedDialog from '@/components/VipAddedDialog';
 
@@ -256,8 +256,8 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   };
 
   const getInputTypeFromId = (id: string): ProfileQuestionType | undefined => {
-    const question = find(section.questions, (q) => q.unique_id === id);
-    return question ? question.input_type : undefined;
+    const question = find(section?.questions, (q) => q?.unique_id === id);
+    return question ? question?.input_type : undefined;
   };
 
   const onSubmit = async (data: Record<string, string | string[] | ChildDob[] | null>) => {
@@ -265,7 +265,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     const errorsToSet: Record<string, { type: string; message: string }> = {};
 
     forEach(section.questions, (q: Question) => {
-      if (!visibleQuestions[q.unique_id]) return;
+      if (!visibleQuestions[q?.unique_id]) return;
 
       const value = data[q.unique_id];
       if (q.validations.includes('required') && !isBoolean(value)) {
@@ -344,12 +344,17 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     const updatedProfile = { ...localProfileDetail, ...transformedData };
     setLocalProfileDetail(updatedProfile);
     const profile = {
-      title: localProfileDetail.first_name + ' ' + localProfileDetail.last_name,
+      title: localProfileDetail?.first_name + ' ' + localProfileDetail?.last_name,
       acf: {
-        first_name: localProfileDetail.first_name,
-        last_name: localProfileDetail.last_name,
+        first_name: localProfileDetail?.first_name,
+        last_name: localProfileDetail?.last_name,
         ...transformedData,
       },
+      ...(sectionNumber === totalSteps - 1 && {
+        meta: {
+          is_profile_completed: 1,
+        },
+      }),
     };
     try {
       setIsLoading(true);
@@ -357,10 +362,10 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
         await UpdateProfile(profileId, profile);
       } else {
         const profileWithTitle = {
-          title: transformedData.first_name + ' ' + transformedData.last_name,
+          title: transformedData?.first_name + ' ' + transformedData?.last_name,
           acf: {
-            first_name: localProfileDetail.first_name,
-            last_name: localProfileDetail.last_name,
+            first_name: localProfileDetail?.first_name,
+            last_name: localProfileDetail?.last_name,
             ...transformedData,
           },
         };
@@ -371,7 +376,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
           return false;
         }
         if (response?.id) {
-          setProfileId(response.id);
+          setProfileId(response?.id);
           setVipId(response?.id);
           setShouldVipEdit(true);
         }
@@ -381,6 +386,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
         setSubmitted(false);
         setIsLoading(false);
       } else if (sectionNumber === totalSteps - 1) {
+        await createProfileCompletedCookie();
         if (isAgent) {
           setVipAddedDialogOpen(true);
           clearVipIdStore();
@@ -577,6 +583,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
                       formClassName="profile-builder__form-group"
                       boxClassName="profile-builder__form-row"
                       maxChoices={maxChoices ? parseInt(maxChoices) : undefined}
+                      inputType={inputType}
                     />
                   )}
                   {helperText && (
@@ -597,6 +604,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
                     title={title}
                     formClassName="profile-builder__checkbox-group"
                     maxChoices={maxChoices ? parseInt(maxChoices) : undefined}
+                    inputType={inputType}
                   />
                   {helperText && (
                     <Typography variant="body2" mt={-4} fontSize={'0.75rem'} ml={0.5} color="rgba(0, 0, 0, 0.6)" mb={3}>

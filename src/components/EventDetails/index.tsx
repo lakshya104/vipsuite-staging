@@ -33,10 +33,12 @@ const EventDetailsCard: React.FC<EventDetailsCardProps> = ({ event, userRole }) 
       try {
         const response = await GetAllVips();
         setVipOptions(
-          response.data.map((vip: VipApiResponse) => ({
-            value: vip?.profile_id ? vip?.profile_id.toString() : null,
-            label: vip?.first_name + ' ' + vip?.last_name,
-          })),
+          response?.data
+            ?.filter((vip: VipApiResponse) => vip?.is_profile_completed === 1)
+            ?.map((vip: VipApiResponse) => ({
+              value: vip?.profile_id ? vip?.profile_id.toString() : null,
+              label: vip?.first_name + ' ' + vip?.last_name,
+            })),
         );
       } catch (error) {
         console.error('Error fetching agent VIPs:', error);

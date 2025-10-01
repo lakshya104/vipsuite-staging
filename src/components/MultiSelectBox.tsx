@@ -61,26 +61,34 @@ const MultiSelectBox = <T extends FieldValues>({
               return selectedLabels.join(', ');
             }}
           >
-            <MenuItem disabled value="">
-              {placeholder ? placeholder : 'Select multiple'}
-            </MenuItem>
-            {options?.map((option) => {
-              const isSelected = ((field.value || []) as string[]).includes(option.value);
-              return (
-                <MenuItem key={option.value} value={option.value}>
-                  <ListItemText primary={option.label} />
-                  {isSelected && (
-                    <CheckIcon
-                      sx={{
-                        marginLeft: 'auto',
-                        color: 'primary.main',
-                        fontSize: '1.2rem',
-                      }}
-                    />
-                  )}
-                </MenuItem>
-              );
-            })}
+            {options && options?.length > 0 && (
+              <MenuItem disabled value="">
+                {placeholder ? placeholder : 'Select multiple'}
+              </MenuItem>
+            )}
+            {options && options.length > 0 ? (
+              options.map((option) => {
+                const isSelected = ((field.value || []) as string[]).includes(option.value);
+                return (
+                  <MenuItem key={option.value} value={option.value}>
+                    <ListItemText primary={option.label} />
+                    {isSelected && (
+                      <CheckIcon
+                        sx={{
+                          marginLeft: 'auto',
+                          color: 'primary.main',
+                          fontSize: '1.2rem',
+                        }}
+                      />
+                    )}
+                  </MenuItem>
+                );
+              })
+            ) : (
+              <MenuItem disabled value="">
+                No options
+              </MenuItem>
+            )}
           </Select>
         )}
       />

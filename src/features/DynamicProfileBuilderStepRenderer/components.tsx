@@ -94,6 +94,7 @@ interface RenderMultiSelectInputProps {
   formClassName: string;
   boxClassName?: string;
   maxChoices?: number;
+  inputType: ProfileQuestionType;
 }
 
 export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
@@ -104,6 +105,7 @@ export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
   title,
   boxClassName,
   maxChoices,
+  inputType,
 }) => {
   return (
     <Controller
@@ -163,7 +165,7 @@ export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
                       label={choice.text}
                       sx={{
                         '& .MuiCheckbox-root.Mui-checked ~ .MuiFormControlLabel-label': {
-                          color: 'white !important',
+                          color: inputType === ProfileQuestionType.ButtonGroup ? 'white !important' : '',
                         },
                       }}
                     />
