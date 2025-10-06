@@ -76,6 +76,7 @@ const Endpoints = {
   getMessageCount: '/wp/v2/vip-profiles/orders/unread-messages-count',
   getCountries: '/wp/v2/shipping-countries',
   updateSocials: '/wp/v2/update-social-handles',
+  unsubscribe: '/wp/v2/unsubscribe-emails',
 };
 
 export { Endpoints };

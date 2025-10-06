@@ -827,3 +827,14 @@ export const UpdateSocials = async (formData: EditSocialLinksRequestBody) => {
     throw new Error(errorMessage);
   }
 };
+
+export const unsubscribeMe = async (token: string, user_id: string) => {
+  try {
+    const response = await Instance.post(Endpoints.unsubscribe, { token, user_id });
+    return response.data;
+  } catch (error) {
+    console.error('Error during unsubscribing:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during unsubscribing';
+    throw new Error(errorMessage);
+  }
+};

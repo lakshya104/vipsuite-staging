@@ -829,6 +829,31 @@ const en = {
     submit: 'Submit',
     enterRequest: 'Type here',
   },
+  unsubscribe: {
+    loading: {
+      title: 'Processing Your Request',
+      descriptions: ['Please wait while we unsubscribe you from our mailing list...'],
+    },
+    success: {
+      title: 'Successfully Unsubscribed',
+      descriptions: [
+        "We're sorry to see you go. If you change your mind, you can always resubscribe from our website.",
+      ],
+    },
+    error: {
+      title: 'Unsubscribe Failed',
+      descriptions: [
+        'We encountered an error while processing your request.',
+        'Please try again or contact our support team for assistance.',
+      ],
+    },
+    invalid: {
+      title: 'Invalid Unsubscribe Link',
+      descriptions: [
+        'The unsubscribe link you clicked is invalid or has expired. Please try clicking the link in your email again.',
+      ],
+    },
+  },
 };
 
 export default en;

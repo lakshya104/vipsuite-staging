@@ -7,11 +7,7 @@ const UseToaster = () => {
   const [error, setError] = useState<string>('');
   const openToaster = useCallback((message: string, onClose?: () => void) => {
     if (!message) return;
-    if (
-      message.toLowerCase().includes('expired') ||
-      message.toLowerCase().includes('token') ||
-      message.toLowerCase().includes('logged')
-    ) {
+    if (message.toLowerCase().includes('expired') || message.toLowerCase().includes('logged')) {
       signOut({
         callbackUrl: withSearchParams(() => paths.auth.login.getHref(), {
           'token-expired': 'true',

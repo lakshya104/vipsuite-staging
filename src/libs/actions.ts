@@ -57,10 +57,6 @@ export async function revalidateAllData() {
   revalidatePath('/', 'layout');
 }
 
-// export async function createSkipCookie() {
-//   (await cookies()).set(CookieName.SkipProfile, 'true');
-// }
-
 export async function createSkipCookie() {
   (await cookies()).set({
     name: CookieName.SkipProfile,
@@ -72,10 +68,6 @@ export async function createSkipCookie() {
     secure: true,
   });
 }
-
-// export async function createProfileCompletedCookie() {
-//   (await cookies()).set(CookieName.ProfileCompleted, 'true');
-// }
 
 export async function createProfileCompletedCookie() {
   (await cookies()).set({
