@@ -53,17 +53,14 @@ const InputTextFormField = <T extends FieldValues>({
             value={value}
             error={!!errors[name]}
             helperText={typeof errors[name]?.message === 'string' ? errors[name]?.message : ''}
-            sx={{ borderRadius: '50px', '& .MuiOutlinedInput-root': { borderRadius: '50px' } }}
-            // inputProps={{
-            //   ...(autoFill && {
-            //     onAnimationStart: makeAnimationStartHandler(setFieldHasValue),
-            //   }),
-            // }}
-            // InputLabelProps={{
-            //   ...(autoFill && {
-            //     shrink: fieldHasValue,
-            //   }),
-            // }}
+            sx={{
+              borderRadius: '50px',
+              '& .MuiOutlinedInput-root': { borderRadius: '50px' },
+              '& .MuiInputBase-input::placeholder': {
+                color: noLabel ? 'rgba(0, 0, 0, 0.6) !important' : '',
+                opacity: 1,
+              },
+            }}
             slotProps={{
               input: {
                 ...(autoFill && {

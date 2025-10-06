@@ -75,10 +75,6 @@ const theme = createTheme(baseTheme, {
     },
     MuiButton: {
       styleOverrides: {
-        // root: {
-        //   backgroundColor: '#ff0000', // Example: Change button background color to red
-        //   color: '#ffffff', // Example: Change button text color to white
-        // },
         button: {
           backgroundColor: 'blue',
         },

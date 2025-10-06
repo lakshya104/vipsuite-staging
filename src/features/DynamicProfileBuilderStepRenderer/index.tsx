@@ -400,6 +400,8 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
       openToaster(error?.toString() || 'Failed to update profile');
       console.error('Failed to update profile:', error);
       setIsLoading(false);
+    } finally {
+      window.scrollTo({ top: 0 });
     }
   };
 

@@ -722,6 +722,7 @@ const en = {
     addError: 'Error while selecting Profile:',
     addText: 'Add',
     pageTitle: 'My VIPs',
+    profileIncomplete: 'Profile incomplete',
   },
   vipProfileBuilder: {
     errMessage: 'Not able to edit Profile currently.',

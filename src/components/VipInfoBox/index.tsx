@@ -4,6 +4,7 @@ import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './VipInfoBox.scss';
+import en from '@/helpers/lang';
 
 interface VipInfoBoxProps {
   image: string;
@@ -56,7 +57,7 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
             </Typography>
             {isIncomplete && (
               <Typography variant="subtitle1" fontSize={12} color="#635656" gutterBottom>
-                Profile incomplete
+                {en.myVipsPage.profileIncomplete}
               </Typography>
             )}
           </Box>
