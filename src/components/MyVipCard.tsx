@@ -18,6 +18,7 @@ interface MyVipCardProps {
   link: string;
   vipId: string;
   is_referenced?: boolean;
+  isIncomplete?: boolean;
 }
 
 const MyVipCard: React.FC<MyVipCardProps> = ({
@@ -28,6 +29,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
   tiktokFollowers,
   vipId,
   is_referenced,
+  isIncomplete,
 }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -57,6 +59,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
         tiktokFollowers={tiktokFollowers}
         handleClick={handleClick}
         is_referenced={is_referenced}
+        isIncomplete={isIncomplete}
       />
       <Backdrop sx={{ color: 'black', zIndex: 100000 }} open={isLoading}>
         <CircularProgress color="inherit" />

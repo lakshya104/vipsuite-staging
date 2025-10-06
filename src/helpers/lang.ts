@@ -827,7 +827,7 @@ const en = {
     title: 'Make a Request',
     submitting: 'Submitting',
     submit: 'Submit',
-    enterRequest: 'Enter your request',
+    enterRequest: 'Type here',
   },
 };
 

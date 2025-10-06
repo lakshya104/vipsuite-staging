@@ -56,6 +56,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
                 instaFollowers={item?.instagram_follower_count}
                 tiktokFollowers={item?.tiktok_follower_count}
                 is_referenced={item?.referenced}
+                isIncomplete={item?.is_profile_completed === 0}
               />
             );
           })}

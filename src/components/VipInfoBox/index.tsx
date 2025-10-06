@@ -13,6 +13,7 @@ interface VipInfoBoxProps {
   handleClick: () => void;
   isAgentCard?: boolean;
   is_referenced?: boolean;
+  isIncomplete?: boolean;
 }
 
 const VipInfoBox: React.FC<VipInfoBoxProps> = ({
@@ -23,6 +24,7 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   handleClick,
   isAgentCard,
   is_referenced,
+  isIncomplete,
 }) => {
   const itemImage = image || DefaultImageFallback.PersonPlaceholder;
 
@@ -40,10 +42,23 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
       <Box className="imageContainer">
         <Image src={itemImage} width={100} height={100} alt={name} className="profileImage" />
         <Box className="info">
-          <Box className="editProfileContainer">
+          <Box
+            className="editProfileContainer"
+            sx={{
+              flexDirection: 'column',
+              display: 'flex',
+              alignItems: 'flex-start !important',
+              justifyContent: 'start',
+            }}
+          >
             <Typography variant="body1" className="name" gutterBottom>
               {name} {is_referenced ? '(Referenced Profile)' : ''}
             </Typography>
+            {isIncomplete && (
+              <Typography variant="subtitle1" fontSize={12} color="#635656" gutterBottom>
+                Profile incomplete
+              </Typography>
+            )}
           </Box>
           {!isAgentCard && (
             <Typography variant="body2" className="socialFollowers">

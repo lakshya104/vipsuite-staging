@@ -9,4 +9,5 @@ export interface MyVips {
   instagram_follower_count: string;
   tiktok_follower_count: string;
   referenced?: boolean;
+  is_profile_completed?: number;
 }
