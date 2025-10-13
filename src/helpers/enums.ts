@@ -22,6 +22,8 @@ export enum CookieName {
   SkipProfile = 'skip',
   ProfileCompleted = 'profileCompleted',
   IsAgent = 'isAgent',
+  VipAdded = 'isVipAdded',
+  IncompleteVipId = 'incompleteVipId',
 }
 
 export enum QuestionType {

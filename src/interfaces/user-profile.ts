@@ -73,4 +73,5 @@ export type Session = {
   is_profile_completed?: number;
   last_login_at: string;
   brand_name: string;
+  vip_profiles_count?: number;
 };

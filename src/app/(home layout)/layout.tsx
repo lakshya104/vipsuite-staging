@@ -4,13 +4,15 @@ import { redirect } from 'next/navigation';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import HomeHeader from '@/components/Header';
 import HomeFooter from '@/components/HomeFooter';
-import { GetSession } from '@/libs/api-manager/manager';
+import { GetAllVips, GetSession } from '@/libs/api-manager/manager';
 import { CookieName, UserRole } from '@/helpers/enums';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
 import StoreUserDetails from '@/components/StoreUserDetails';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
+import { paths } from '@/helpers/paths';
+import { MyVips } from '@/interfaces';
 
 export default async function HomeSectionLayout({
   children,
@@ -20,6 +22,7 @@ export default async function HomeSectionLayout({
   try {
     const [session, cookieStore] = await Promise.all([GetSession(), cookies()]);
     const isSkipped = cookieStore.get(CookieName.SkipProfile);
+    const isVipAdded = cookieStore.get(CookieName.VipAdded);
     const isProfileCompleted = cookieStore.get(CookieName.ProfileCompleted);
     const {
       role,
@@ -31,6 +34,7 @@ export default async function HomeSectionLayout({
       last_login_at = '',
       brand_name,
       is_profile_completed = 0,
+      vip_profiles_count = 0,
     } = session ?? {};
 
     if (role === UserRole.Vip) {
@@ -38,12 +42,35 @@ export default async function HomeSectionLayout({
         return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
       }
       if (is_profile_completed !== 1 && !isProfileCompleted) {
-        redirect('/vip-profile-builder');
+        redirect(paths.root.vipProfileBuilder.getHref());
       }
     }
 
-    if (!isSkipped && role !== UserRole.Vip && !last_login_at.length) {
+    if (!isSkipped && role === UserRole.Brand && !last_login_at.length) {
       return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
+    }
+
+    if (role === UserRole.Agent) {
+      if (!isSkipped && !last_login_at.length) {
+        return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
+      } else if (!isVipAdded) {
+        if (vip_profiles_count === 0) {
+          redirect(paths.root.agentProfileBuilder.getHref());
+        }
+        if (vip_profiles_count === 1) {
+          let allVips: MyVips[] = [];
+          try {
+            const response = await GetAllVips();
+            allVips = response?.data;
+          } catch (err) {
+            console.error('Error fetching VIPs:', err);
+          }
+          const firstVip = allVips?.[0];
+          if (firstVip?.profile_id && firstVip?.is_profile_completed === 0) {
+            redirect(`/api/set-vip-cookie?vipId=${firstVip?.profile_id}`);
+          }
+        }
+      }
     }
 
     return (

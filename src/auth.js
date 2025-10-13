@@ -24,6 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           last_login_at: user?.last_login_at,
           brand_name: user?.brand_name,
           is_profile_completed: user?.is_profile_completed,
+          vip_profiles_count: user?.vip_profiles_count,
         };
         token.user = userData;
       }

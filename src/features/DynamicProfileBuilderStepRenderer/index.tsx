@@ -34,7 +34,7 @@ import { useVisibility } from '@/hooks/useVisibility';
 import { createDynamicResolver } from '@/hooks/useDynamicResolver';
 import AdditionalContactsForm from '../AdditionalContactsForm';
 import { MessageDialogBox } from '@/components/Dialog';
-import revalidatePathAction, { createProfileCompletedCookie } from '@/libs/actions';
+import revalidatePathAction, { createProfileCompletedCookie, createVipAddedCookie } from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import VipAddedDialog from '@/components/VipAddedDialog';
 
@@ -388,6 +388,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
       } else if (sectionNumber === totalSteps - 1) {
         await createProfileCompletedCookie();
         if (isAgent) {
+          await createVipAddedCookie();
           setVipAddedDialogOpen(true);
           clearVipIdStore();
         } else if (isProfileEdit) {

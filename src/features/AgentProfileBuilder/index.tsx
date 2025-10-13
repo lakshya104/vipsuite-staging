@@ -10,15 +10,17 @@ import DynamicProfileBuilderStepRenderer from '../DynamicProfileBuilderStepRende
 interface ProfileBuilderInterFace {
   token: string;
   profileBuilderData: ProfileBuilderData;
+  incompleteVipId?: string | undefined;
 }
 
-const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profileBuilderData }) => {
+const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profileBuilderData, incompleteVipId }) => {
   const [profileDetail, setProfileDetail] = useState<ACF>({ first_name: '', last_name: '' });
   const searchParams = useSearchParams();
   const isEditVip = searchParams.get('edit');
+  const isIncompleteEditVip = searchParams.get('editVip') === 'true';
   const { editVipId, shouldVipEdit } = useEditVipIdStore();
   const [id, setId] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -37,25 +39,38 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
   useEffect(() => {
     if (!isHydrated) return;
     const initializeProfile = async () => {
-      setIsLoading(true);
       if ((isEditVip || shouldVipEdit) && editVipId) {
         const numericId = Number(editVipId);
         setId(numericId);
         await fetchVipProfile(numericId);
       }
-      setIsLoading(false);
     };
 
     initializeProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHydrated]);
 
+  useEffect(() => {
+    if (incompleteVipId && isIncompleteEditVip) {
+      const initializeProfile = async () => {
+        const numericId = Number(incompleteVipId);
+        setId(numericId);
+        await fetchVipProfile(numericId);
+      };
+      initializeProfile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incompleteVipId, isIncompleteEditVip]);
+
   const fetchVipProfile = async (profileId: number) => {
+    setIsLoading(true);
     try {
       const response: UserProfile = await GetEditVipProfile(token, profileId);
-      setProfileDetail(response.acf);
+      setProfileDetail(response?.acf);
     } catch {
       setProfileDetail({ first_name: '', last_name: '' });
+    } finally {
+      setIsLoading(false);
     }
   };
   if (!isHydrated || isLoading) {

@@ -4,14 +4,12 @@ import { Backdrop, Box, Button, CircularProgress, Typography } from '@mui/materi
 import en from '@/helpers/lang';
 import '../../app/(auth)/on-boarding/style.scss';
 import './VipAddedDialog.scss';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { paths } from '@/helpers/paths';
 
 const VipAddedDialog = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isProfileEdit = searchParams.get('isProfileEdit');
 
   const handleAddAnotherVip = async () => {
     setLoading(true);
@@ -26,7 +24,7 @@ const VipAddedDialog = () => {
   const handleContinue = async () => {
     setLoading(true);
     try {
-      router.push(isProfileEdit ? paths.root.profile.getHref() : paths.root.myVips.getHref());
+      router.push(paths.root.home.getHref());
       router.refresh();
     } catch (error) {
       console.error(error);

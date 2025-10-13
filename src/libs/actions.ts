@@ -81,9 +81,26 @@ export async function createProfileCompletedCookie() {
   });
 }
 
+export async function createVipAddedCookie() {
+  (await cookies()).set({
+    name: CookieName.VipAdded,
+    value: 'true',
+    maxAge: 60 * 60 * 24 * 30,
+    path: '/',
+    httpOnly: false,
+    sameSite: 'none',
+    secure: true,
+  });
+}
+
 export async function deleteVipCookies() {
   const cookieStore = await cookies();
-  await Promise.all([cookieStore.delete(CookieName.SkipProfile), cookieStore.delete(CookieName.ProfileCompleted)]);
+  await Promise.all([
+    cookieStore.delete(CookieName.SkipProfile),
+    cookieStore.delete(CookieName.ProfileCompleted),
+    cookieStore.delete(CookieName.VipAdded),
+    cookieStore.delete(CookieName.IncompleteVipId),
+  ]);
 }
 
 export async function getAuthData() {
