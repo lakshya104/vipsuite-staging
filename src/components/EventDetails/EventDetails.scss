@@ -63,6 +63,9 @@ div.product-detail {
     }
   }
   &__item {
+    @media only screen and (max-width: 767px) {
+      height: 372px;
+    }
     position: relative;
     height: 485px;
     background-size: cover;

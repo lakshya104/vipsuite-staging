@@ -28,7 +28,7 @@ const ApplicationAcceptedDialog: React.FC<ApplicationAcceptedDialogProps> = ({ n
       } else if (role === UserRole.Brand) {
         await router.push(paths.root.home.getHref());
       } else if (role === UserRole.Agent) {
-        await router.push(paths.root.home.getHref());
+        await router.push(paths.root.agentProfileBuilder.getHref());
       }
     } catch (error) {
       console.error(error);

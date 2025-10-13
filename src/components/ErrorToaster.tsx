@@ -47,7 +47,12 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
   return (
     <Fragment>
       <ErrorFallback errorMessage={message} />
-      <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity="error" />
+      <Toaster
+        open={toasterOpen}
+        setOpen={closeToaster}
+        message={error.includes('Server Action or Route Handler') ? 'Session invalid, please login again.' : error}
+        severity="error"
+      />
     </Fragment>
   );
 };

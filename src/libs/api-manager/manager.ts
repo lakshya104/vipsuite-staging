@@ -830,7 +830,7 @@ export const UpdateSocials = async (formData: EditSocialLinksRequestBody) => {
 
 export const unsubscribeMe = async (token: string, user_id: string) => {
   try {
-    const response = await Instance.post(Endpoints.unsubscribe, { token, user_id });
+    const response = await InstanceWithoutHeaders.post(Endpoints.unsubscribe, { token, user_id });
     return response.data;
   } catch (error) {
     console.error('Error during unsubscribing:', error);

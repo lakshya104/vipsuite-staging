@@ -85,6 +85,7 @@ export interface EventDetails {
     is_featured: boolean;
     associated_brand: number;
     event_image: EventImage;
+    event_listing_image: EventImage;
     event_start_date: string;
     event_end_date: string;
     event_location: string;

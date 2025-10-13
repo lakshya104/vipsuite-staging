@@ -28,7 +28,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<UserRole | ''>('');
   const router = useRouter();
-  const { clearAll } = useUserInfoStore();
+  const { tokenStore } = useUserInfoStore();
   const searchParams = useSearchParams();
   const isTokenExpired = searchParams.get('token-expired');
   const tokenExpiryError = searchParams.get('error');
@@ -36,11 +36,17 @@ const LoginForm = () => {
   useEffect(() => {
     const deleteCookies = async () => {
       await deleteVipCookies();
-      clearAll();
     };
     deleteCookies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (tokenStore) {
+      router.push(paths.root.home.getHref());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tokenStore]);
 
   useEffect(() => {
     if (isTokenExpired) {

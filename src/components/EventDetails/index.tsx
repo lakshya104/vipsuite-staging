@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import he from 'he';
 import { EventDetails } from '@/interfaces/events';
@@ -136,7 +136,10 @@ interface EventContainerProps {
 }
 
 const EventContainer = ({ event }: EventContainerProps) => {
-  const eventImageUrl = event?.acf?.event_image?.sizes?.['vs-container'] || DefaultImageFallback.LandscapePlaceholder;
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const eventImageUrl = isMobile
+    ? event?.acf?.event_listing_image?.sizes?.medium_large
+    : event?.acf?.event_image?.sizes?.['vs-container'] || DefaultImageFallback.LandscapePlaceholder;
   const brandLogo = event?.acf?.brand_logo?.url;
 
   return (

@@ -1,3 +1,4 @@
+import { UnsubscribeState } from '@/site-pages/UnsubscribePage';
 import { Typography } from '@mui/material';
 import { map } from 'lodash';
 import React from 'react';
@@ -6,11 +7,12 @@ export interface ContentConfig {
   icon: React.ReactNode;
   title: string;
   descriptions: string[];
+  state: UnsubscribeState;
 }
 
-const ContentDisplay: React.FC<ContentConfig> = ({ icon, title, descriptions }) => (
+const ContentDisplay: React.FC<ContentConfig> = ({ icon, title, descriptions, state }) => (
   <>
-    {icon}
+    {state !== 'idle' && icon}
     <Typography sx={{ fontSize: '32px', fontWeight: '600', color: '#1a1a1a', mb: 1.5 }}>{title}</Typography>
     {map(descriptions, (desc, index) => (
       <Typography
@@ -25,6 +27,7 @@ const ContentDisplay: React.FC<ContentConfig> = ({ icon, title, descriptions }) 
         {desc}
       </Typography>
     ))}
+    {state === 'idle' && icon}
   </>
 );
 

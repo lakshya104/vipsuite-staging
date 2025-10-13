@@ -197,6 +197,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type, orderId }) => {
             placeholder={en.feedbackForm.fieldPlaceholders.url}
             errors={errors}
             noLabel={true}
+            blackPlaceholder={true}
           />
 
           <Typography mb={1} variant="body1">

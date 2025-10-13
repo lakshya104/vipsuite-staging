@@ -45,6 +45,7 @@ export interface Acf {
   associated_brand_profile: number;
   featured_image: FeaturedImage;
   web_detail_images: FeaturedImage[];
+  mobile_app_detail_images: FeaturedImage[];
   short_description: string;
   description: string;
   is_lookbook_available: boolean;

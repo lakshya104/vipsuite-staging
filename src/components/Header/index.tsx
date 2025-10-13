@@ -25,7 +25,13 @@ import { deleteVipCookies, signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
-import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
+import {
+  useInstaInfo,
+  useMessageCountStore,
+  useTiktokInfo,
+  useUserInfoStore,
+  useUserStatusStore,
+} from '@/store/useStore';
 import { DeleteAccount } from '@/libs/api-manager/manager';
 import DialogConfirmBox from '../Dialog/DialogConfirm';
 const vipMenuItems = [
@@ -69,6 +75,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('error');
   const clearInstaInfo = useInstaInfo((state) => state.clearAll);
   const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
+  const { clearAll: clearUserInfo } = useUserInfoStore();
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
   const toggleDrawer = (open: boolean) => () => {
@@ -90,6 +97,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       await Promise.all([signOutAction(), deleteVipCookies()]);
       clearInstaInfo();
       clearTiktokInfo();
+      clearUserInfo();
       clearAll();
     } catch (error) {
       console.error('Error during logging out. ' + error);

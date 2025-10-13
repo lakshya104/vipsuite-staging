@@ -63,7 +63,7 @@ const en = {
   onBoarding: {
     applyAs: 'Apply as',
     vip: 'VIP',
-    agency: 'Agencies',
+    agency: 'Talent Agent',
     brand: 'Brands & PR',
   },
   login: {
@@ -831,6 +831,10 @@ const en = {
     enterRequest: 'Type here',
   },
   unsubscribe: {
+    idle: {
+      title: 'Unsubscribe from All Emails',
+      descriptions: ['Would you like to unsubscribe from all future emails?'],
+    },
     loading: {
       title: 'Processing Your Request',
       descriptions: ['Please wait while we unsubscribe you from our mailing list...'],
@@ -838,7 +842,8 @@ const en = {
     success: {
       title: 'Successfully Unsubscribed',
       descriptions: [
-        "We're sorry to see you go. If you change your mind, you can always resubscribe from our website.",
+        "We're sorry to see you go. Please note you will no longer have access to gifting, events or paid opportunities.",
+        'If you change your mind, you can always resubscribe from our website.',
       ],
     },
     error: {

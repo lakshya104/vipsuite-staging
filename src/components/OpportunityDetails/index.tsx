@@ -51,11 +51,6 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const [vipOptions, setVipOptions] = useState<VipOptions[]>([]);
-  const images = opportunity?.acf?.web_detail_images
-    ? opportunity?.acf?.web_detail_images?.map(
-        (item) => item?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder,
-      )
-    : [opportunity?.acf?.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
   const showVipOptions = userRole === UserRole.Agent && isEmpty(opportunity?.acf?.grouped_products);
   const [vipsLoading, setVipsLoading] = useState<boolean>(showVipOptions ? true : false);
   const [vipSchemas, setVipSchemas] = useState(() => (!showVipOptions ? vipOptionalSchema : vipInitialSchema));
@@ -280,7 +275,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
         {he.decode(opportunity?.title?.rendered || '')}
       </Typography>
       <Box>
-        <ImageSlider images={images} withLikeIcon={true} item={opportunity} />
+        <ImageSlider item={opportunity} />
       </Box>
       {opportunity?.acf?.show_description ? (
         <Box>

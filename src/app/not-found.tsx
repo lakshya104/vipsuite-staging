@@ -14,18 +14,11 @@ export default function NotFound() {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#f8f9fa',
-      }}
-    >
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: ' #fffff7' }}>
       <Box
         sx={{
           padding: '24px 48px',
-          backgroundColor: 'white',
+          bgcolor: '#fffff7',
           borderBottom: '1px solid #e0e0e0',
           display: 'flex',
           alignItems: 'center',
@@ -94,14 +87,7 @@ export default function NotFound() {
           </Button>
         </Box>
       </Box>
-      <Box
-        sx={{
-          padding: '24px',
-          textAlign: 'center',
-          borderTop: '1px solid #e0e0e0',
-          backgroundColor: 'white',
-        }}
-      >
+      <Box component="footer" sx={{ p: 3, textAlign: 'center', borderTop: '1px solid #e0e0e0', bgcolor: '#fffff7' }}>
         <Typography sx={{ fontSize: '14px', color: '#999' }}>
           © {new Date().getFullYear()} The VIP Suite. All rights reserved.
         </Typography>

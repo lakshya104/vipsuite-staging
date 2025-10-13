@@ -6,6 +6,7 @@ import { GetSession } from '@/libs/api-manager/manager';
 import ProgressProvider from '@/libs/providers/ProgressProvider';
 import { UserRole } from '@/helpers/enums';
 import UnauthorizedMessage from '@/components/UnauthorizedMessage';
+import StoreUserDetails from '@/components/StoreUserDetails';
 
 export default async function AuthLayout({
   children,
@@ -24,6 +25,12 @@ export default async function AuthLayout({
         </Toolbar>
       </Box>
       <Box className="profile-builder__main">
+        <StoreUserDetails
+          token={session?.token}
+          userEmail={session?.email}
+          userRole={session?.role}
+          vipId={session?.profile_id}
+        />
         <ProgressProvider color="black">{children}</ProgressProvider>
       </Box>
     </Box>

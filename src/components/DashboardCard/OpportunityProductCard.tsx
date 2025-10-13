@@ -41,7 +41,7 @@ const OpportunityProductCard: React.FC<OpportunityProductCardProps> = ({
           width={600}
           height={400}
           quality={75}
-          style={{ objectFit: 'cover', height: '450px' }}
+          style={{ minHeight: '372px', height: 'auto' }}
           placeholder="blur"
           blurDataURL={DefaultImageFallback.Placeholder}
           onError={(e) => {

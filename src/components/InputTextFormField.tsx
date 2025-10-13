@@ -11,6 +11,7 @@ interface InputTextFormFieldProps<T extends FieldValues> {
   noLabel?: boolean;
   autoFill?: boolean;
   onValueChange?: (value: string) => void;
+  blackPlaceholder?: boolean;
 }
 
 const InputTextFormField = <T extends FieldValues>({
@@ -21,6 +22,7 @@ const InputTextFormField = <T extends FieldValues>({
   noLabel,
   autoFill = false,
   onValueChange,
+  blackPlaceholder = false,
 }: InputTextFormFieldProps<T>) => {
   const [fieldHasValue, setFieldHasValue] = useState(autoFill ? false : true);
 
@@ -57,7 +59,7 @@ const InputTextFormField = <T extends FieldValues>({
               borderRadius: '50px',
               '& .MuiOutlinedInput-root': { borderRadius: '50px' },
               '& .MuiInputBase-input::placeholder': {
-                color: noLabel ? 'rgba(0, 0, 0, 0.6) !important' : '',
+                color: blackPlaceholder ? 'rgba(0, 0, 0, 0.6) !important' : '',
                 opacity: 1,
               },
             }}

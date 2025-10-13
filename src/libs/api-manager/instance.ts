@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthData } from '../actions';
+import { getAuthData, signOutAction } from '../actions';
 
 const Instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -23,7 +23,7 @@ Instance.interceptors.request.use(
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function handleAxiosResponseError(error: any) {
+async function handleAxiosResponseError(error: any) {
   console.error(
     'Unexpected server error :',
     error?.message,
@@ -35,6 +35,9 @@ function handleAxiosResponseError(error: any) {
   if (error.status === 500) {
     const message = 'An unexpected error occurred on the server. Please try again later.';
     return Promise.reject(new Error(message));
+  } else if (error.status === 403 && error?.response?.data?.code === 'jwt_auth_bad_iss') {
+    await signOutAction();
+    return Promise.reject(new Error('Session expired'));
   } else if (error.response) {
     const message = error.response?.data?.message || error?.message || 'An error occurred';
     return Promise.reject(new Error(message));
