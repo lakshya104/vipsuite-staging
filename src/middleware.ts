@@ -25,7 +25,7 @@ export default auth((req) => {
     return Response.redirect(new URL('/home', nextUrl));
   }
   if (!isLoggedIn && isProtectedRoute) {
-    return Response.redirect(new URL('/login', nextUrl));
+    return Response.redirect(new URL('/on-boarding', nextUrl));
   }
 
   return;

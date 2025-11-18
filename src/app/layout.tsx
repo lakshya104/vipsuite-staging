@@ -8,9 +8,12 @@ import GetSessionForStatusUpdate from '@/components/GetSessionForStatusUpdate';
 
 export const dynamic = 'force-dynamic';
 
+const isProduction = process.env.VERCEL_ENV === 'production';
+
 export const metadata: Metadata = {
   title: 'THE VIP SUITE',
   description: 'By Run Ragged',
+  robots: isProduction ? { index: true, follow: true } : { index: false, follow: false },
 };
 
 export default async function RootLayout({

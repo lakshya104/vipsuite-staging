@@ -22,14 +22,52 @@
     @include mixins.relative;
     span {
       text-align: center;
-      width: mixins.rem(14);
-      height: mixins.rem(14);
-      display: block;
+      width: mixins.rem(16);
+      height: mixins.rem(16);
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
       color: var(--color-marble);
       font-weight: 500;
       background-color: var(--color-red);
       @include mixins.border-radius(50%);
-      @include mixins.absolute(top 0 right -5px);
+      @include mixins.absolute(top -3px right -8px);
+      @include mixins.fontSize(10);
+    }
+  }
+  &__icon2 {
+    display: inline-block;
+    @include mixins.relative;
+    span {
+      text-align: center;
+      width: mixins.rem(20);
+      height: mixins.rem(18);
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      color: var(--color-marble);
+      font-weight: 500;
+      background-color: var(--color-red);
+      @include mixins.border-radius(50%);
+      @include mixins.absolute(top -4px right -10px);
+      @include mixins.fontSize(10);
+    }
+  }
+  &__icon3 {
+    display: inline-block;
+    @include mixins.relative;
+    span {
+      text-align: center;
+      width: mixins.rem(22);
+      height: mixins.rem(20);
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      color: var(--color-marble);
+      font-weight: 500;
+      background-color: var(--color-red);
+      @include mixins.border-radius(50%);
+      @include mixins.absolute(top -7px right -12px);
       @include mixins.fontSize(10);
     }
   }

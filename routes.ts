@@ -23,7 +23,6 @@ export const protectedRoutes = [
   /^\/messages(\/\d+)$/,
   /^\/help-faq$/,
   /^\/inbox$/,
-  /^\/login-security$/,
   /^\/my-addresses(\/edit\/\d+|\/add)?$/,
   /^\/my-events(\/\d+)$/,
   /^\/my-orders(\/\d+)$/,

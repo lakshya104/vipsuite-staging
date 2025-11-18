@@ -26,10 +26,18 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ role = UserRole.Vip }) => {
         return (
           <Stack key={item.href} alignItems="center">
             <ProgressBarLink href={item.href}>
-              <Box className="footer-menu__icon">
+              <Box
+                className={
+                  messageCount > 99
+                    ? 'footer-menu__icon3'
+                    : messageCount > 9
+                      ? 'footer-menu__icon2'
+                      : 'footer-menu__icon'
+                }
+              >
                 <Image src={isActive ? item.srcselected : item.src} alt={item.alt} width={24} height={24} />
                 {(item.label === 'Inbox' || item.label === 'My Orders') && (
-                  <span className="label">{messageCount}</span>
+                  <span className="label">{messageCount > 99 ? '99+' : messageCount}</span>
                 )}
               </Box>
               <Typography variant="caption">{item.label}</Typography>

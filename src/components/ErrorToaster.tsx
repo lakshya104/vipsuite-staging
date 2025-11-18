@@ -6,8 +6,8 @@ import { signOut } from 'next-auth/react';
 import ErrorFallback from './ErrorFallback';
 import { paths, withSearchParams } from '@/helpers/paths';
 import en from '@/helpers/lang';
-import { signOutAction } from '@/libs/actions';
-import { useInstaInfo, useTiktokInfo } from '@/store/useStore';
+import { deleteVipCookies, signOutAction } from '@/libs/actions';
+import { useInstaInfo, useTiktokInfo, useUserInfoStore, useUserStatusStore } from '@/store/useStore';
 
 interface ErrorToasterProps {
   errorMessage: string;
@@ -23,9 +23,16 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const clearInstaInfo = useInstaInfo((state) => state.clearAll);
   const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);
+  const { clearAll: clearUserInfo } = useUserInfoStore();
+  const { clearAll } = useUserStatusStore();
 
   useEffect(() => {
     const signOutUser = async () => {
+      clearInstaInfo();
+      clearTiktokInfo();
+      clearAll();
+      clearUserInfo();
+      await deleteVipCookies();
       signOut({
         callbackUrl: withSearchParams(() => paths.auth.login.getHref(), {
           'token-expired': 'true',
@@ -33,8 +40,6 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
         }),
       });
       await signOutAction();
-      clearInstaInfo();
-      clearTiktokInfo();
     };
     if (login) {
       signOutUser();

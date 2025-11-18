@@ -94,11 +94,12 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
     setSettingsOpen(false);
     try {
       await LogOut();
-      await Promise.all([signOutAction(), deleteVipCookies()]);
       clearInstaInfo();
       clearTiktokInfo();
       clearUserInfo();
       clearAll();
+      await deleteVipCookies();
+      await signOutAction();
     } catch (error) {
       console.error('Error during logging out. ' + error);
       setIsPending(false);
@@ -182,7 +183,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                           sx={{
                             display: 'inline-block',
                             position: 'relative',
-                            marginLeft: '4px',
+                            marginLeft: messageCount > 99 ? '12px' : messageCount > 9 ? '4px' : '1px',
                             verticalAlign: 'top',
                           }}
                         >
@@ -204,7 +205,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                               zIndex: 1,
                             }}
                           >
-                            {messageCount}
+                            {messageCount > 99 ? '99+' : messageCount}
                           </Box>
                         </Box>
                       )}

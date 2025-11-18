@@ -19,11 +19,12 @@ interface OrderDetailsContainerProps {
 }
 
 const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDetail }) => {
-  const orderType = orderDetail?.status === 'rsvp-request' ? 'event' : 'order';
+  const orderTypeMetadata = orderDetail?.meta_data.find((item) => item.key === 'type_of_order')?.value;
+  const orderType = orderTypeMetadata === 'rsvp_request' ? 'event' : 'order';
   const orderStatus =
-    orderDetail?.status === 'rsvp-request' ? 'rsvp' : orderDetail?.status === 'lookbook-order' ? 'lookbook' : 'product';
+    orderTypeMetadata === 'rsvp_request' ? 'rsvp' : orderTypeMetadata === 'lookbook_order' ? 'lookbook' : 'product';
   const isInterested =
-    orderDetail.status === 'rsvp-request'
+    orderTypeMetadata === 'rsvp_request'
       ? orderDetail?.meta_data.find((item) => item.key === 'response')?.value === 'interested'
       : true;
   const response = orderDetail?.meta_data.find((item) => item.key === 'response')?.value;
@@ -71,7 +72,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
   return (
     <>
       <Box my={2.5}>
-        {orderDetail.status === 'rsvp-request' ? (
+        {orderStatus === 'rsvp' ? (
           <>
             <Typography variant="body1">
               {en.myOrders.rsvpDate} {formatDate(orderDetail?.date_created)}
@@ -146,7 +147,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
                   {en.myOrders.location} {orderDetail.opportunity.location}
                 </Typography>
               )}
-              {orderDetail?.status === 'lookbook-order' && (
+              {orderStatus === 'lookbook' && (
                 <Typography variant="body1">
                   {en.myOrders.description}{' '}
                   {first(filter(orderDetail?.meta_data, (item) => item.key === 'lookbook_order_data'))?.value}

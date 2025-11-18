@@ -124,7 +124,7 @@ export const dobField: Question = {
 
 export const vipSectionData = (options: string[]): Section => {
   return {
-    section_title: 'VIP Details',
+    section_title: 'Add VIP',
     specific_section_type: SectionType.Basic,
     section_description: '',
     questions: [

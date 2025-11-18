@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "generate:assetlinks": "node scripts/generateAssetlinks.js && node scripts/generateAppleAppSiteAssociation.js",
-    "build": "yarn generate:assetlinks && next build",
+    "generate:robotstxt": "node scripts/generateRobots.js",
+    "build": "yarn generate:assetlinks && yarn generate:robotstxt && next build",
     "start": "next start",
     "lint": "next lint --no-cache",
     "lint:fix": "next eslint --no-cache --fix",

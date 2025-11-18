@@ -43,10 +43,10 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (tokenStore) {
-      router.push(paths.root.home.getHref());
+      window.location.reload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokenStore]);
+  }, []);
 
   useEffect(() => {
     if (isTokenExpired) {
