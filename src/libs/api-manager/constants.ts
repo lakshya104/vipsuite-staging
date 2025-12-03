@@ -77,6 +77,7 @@ const Endpoints = {
   getCountries: '/wp/v2/shipping-countries',
   updateSocials: '/wp/v2/update-social-handles',
   unsubscribe: '/wp/v2/unsubscribe-emails',
+  removeVipFromAgent: '/wp/v2/agent/delete-profile',
 };
 
 export { Endpoints };

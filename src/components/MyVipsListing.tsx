@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MyVipCard from './MyVipCard';
@@ -15,8 +15,14 @@ interface MyVipsListingProps {
 }
 
 const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
+  const [vips, setVips] = useState<MyVips[]>(myVips || []);
+
+  const handleVipRemoved = (vipId: string) => {
+    setVips((prev) => prev.filter((v) => String(v?.profile_id) !== String(vipId)));
+  };
+
   const renderVips = () => {
-    if (isEmpty(myVips) || !Array.isArray(myVips)) {
+    if (isEmpty(vips) || !Array.isArray(vips)) {
       return (
         <ErrorFallback
           errorMessage={en.listEmptyMessage.noVipListData}
@@ -25,7 +31,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
         />
       );
     } else {
-      const sortedVips = [...myVips].sort((a, b) => {
+      const sortedVips = [...vips].sort((a, b) => {
         if (!a?.first_name && !a?.last_name) return 1;
         if (!b?.first_name && !b?.last_name) return -1;
 
@@ -57,6 +63,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
                 tiktokFollowers={item?.tiktok_follower_count}
                 is_referenced={item?.referenced}
                 isIncomplete={item?.is_profile_completed === 0}
+                onRemoved={() => handleVipRemoved(String(item?.profile_id))}
               />
             );
           })}

@@ -5,7 +5,6 @@ export enum UserRole {
   Brand = 'brand',
 }
 
-
 export enum ProfileStatus {
   Approved = 'approved',
   Pending = 'pending',

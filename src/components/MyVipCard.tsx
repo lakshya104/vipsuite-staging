@@ -9,6 +9,7 @@ import VipInfoBox from './VipInfoBox';
 import ProfileReviewDialog from './ProfileReviewDialog';
 import en from '@/helpers/lang';
 import { useEditVipIdStore } from '@/store/useStore';
+import { removeFromVipList } from '@/libs/api-manager/manager';
 
 interface MyVipCardProps {
   image: string;
@@ -19,6 +20,7 @@ interface MyVipCardProps {
   vipId: string;
   is_referenced?: boolean;
   isIncomplete?: boolean;
+  onRemoved?: () => void;
 }
 
 const MyVipCard: React.FC<MyVipCardProps> = ({
@@ -30,6 +32,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
   vipId,
   is_referenced,
   isIncomplete,
+  onRemoved
 }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -50,6 +53,20 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
     }
   };
 
+  const removeFromVipListing = async (vipId: string) => {
+    try {
+      setLoading(true);
+      // Call API to remove VIP from the list
+      await removeFromVipList(vipId);
+      // Notify parent to remove VIP from UI
+      if (onRemoved) onRemoved();
+    } catch (error) {
+      console.error('Error removing VIP:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <VipInfoBox
@@ -58,6 +75,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
         instaFollowers={instaFollowers}
         tiktokFollowers={tiktokFollowers}
         handleClick={handleClick}
+        onDelete={() => removeFromVipListing(vipId)}
         is_referenced={is_referenced}
         isIncomplete={isIncomplete}
       />

@@ -633,6 +633,7 @@ export const VerifyEmail = async (email: string) => {
     throw new Error(errorMessage);
   }
 };
+
 export const VerifyEmailCode = async (email: string, code: string) => {
   try {
     const response = await Instance.post(Endpoints.verifyEmailCode, { email, code });
@@ -835,6 +836,17 @@ export const unsubscribeMe = async (token: string, user_id: string) => {
   } catch (error) {
     console.error('Error during unsubscribing:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during unsubscribing';
+    throw new Error(errorMessage);
+  }
+};
+
+export const removeFromVipList = async (vip_profile_id: string) => {
+  try {
+    const response = await Instance.post(Endpoints.removeVipFromAgent, { vip_profile_id });
+    return response.data;
+  } catch (error) {
+    console.error('Error when removing VIP from agent:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error during removing VIP from agent';
     throw new Error(errorMessage);
   }
 };
