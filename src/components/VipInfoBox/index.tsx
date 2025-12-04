@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './VipInfoBox.scss';
@@ -53,6 +54,28 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
     setIsDeleteDialogOpen(false);
   };
 
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+
+  const handleArrowClick = (e: React.MouseEvent<HTMLElement>) => {
+    // open menu instead of direct navigation
+    stopAllEvents(e);
+    setMenuAnchor(e.currentTarget);
+  };
+
+  const handleMenuClose = () => setMenuAnchor(null);
+
+  const handleMenuEdit = (e: React.MouseEvent<HTMLElement>) => {
+    stopAllEvents(e);
+    handleMenuClose();
+    handleClick();
+  };
+
+  const handleMenuDelete = (e: React.MouseEvent<HTMLElement>) => {
+    stopAllEvents(e);
+    handleMenuClose();
+    onDeleteIconClick(e as React.MouseEvent);
+  };
+
   return (
     <Box
       className="vipInfoBox"
@@ -70,16 +93,6 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
               <Typography variant="body1" className="name">
                 {name} {is_referenced && '(Referenced Profile)'}
               </Typography>
-
-              {onDelete && (
-                <IconButton
-                  size="small"
-                  aria-label={`delete ${name}`}
-                  onClick={onDeleteIconClick}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              )}
             </Box>
 
             {isIncomplete && (
@@ -106,10 +119,37 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
         </Box>
       </Box>
 
-      {/* RIGHT ARROW ICON */}
-      <IconButton onClick={is_referenced ? undefined : handleClick}>
+      {/* RIGHT ARROW ICON (opens menu) */}
+      <IconButton
+        aria-controls={menuAnchor ? 'vip-options-menu' : undefined}
+        aria-haspopup="true"
+        onClick={handleArrowClick}
+      >
         <ArrowForwardIosIcon className="arrowIcon" />
       </IconButton>
+
+      <Menu
+        id="vip-options-menu"
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor)}
+        onClose={handleMenuClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <MenuItem onClick={handleMenuEdit} disabled={is_referenced}>
+          <ListItemIcon>
+            <EditIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Edit</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleMenuDelete}>
+          <ListItemIcon>
+            <DeleteIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Delete</ListItemText>
+        </MenuItem>
+      </Menu>
 
       {/* CONFIRM DELETE DIALOG */}
       <DialogConfirmBox

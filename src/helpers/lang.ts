@@ -723,6 +723,8 @@ const en = {
     addText: 'Add',
     pageTitle: 'My VIPs',
     profileIncomplete: 'Profile incomplete',
+    deleteSuccess: 'VIP deleted successfully',
+    deleteError: 'Error deleting VIP',
   },
   vipProfileBuilder: {
     errMessage: 'Not able to edit Profile currently.',

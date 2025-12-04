@@ -1,5 +1,8 @@
 'use client';
 import React, { useState } from 'react';
+import UseToaster from '@/hooks/useToaster';
+import Toaster from '@/components/Toaster';
+import { removeFromVipList } from '@/libs/api-manager/manager';
 import { Box, Container, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MyVipCard from './MyVipCard';
@@ -16,9 +19,26 @@ interface MyVipsListingProps {
 
 const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
   const [vips, setVips] = useState<MyVips[]>(myVips || []);
+  const [deletingIds, setDeletingIds] = useState<string[]>([]);
+  const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+  const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
 
-  const handleVipRemoved = (vipId: string) => {
-    setVips((prev) => prev.filter((v) => String(v?.profile_id) !== String(vipId)));
+  const handleRemove = async (vipId: string) => {
+    try {
+      setDeletingIds((prev) => [...prev, String(vipId)]);
+      const res = await removeFromVipList(vipId);
+      setToasterType('success');
+      openToaster(res?.message || 'VIP removed successfully');
+      // remove from local state
+      setVips((prev) => prev.filter((v) => String(v?.profile_id) !== String(vipId)));
+    } catch (err) {
+      console.error('Error removing VIP:', err);
+      setToasterType('error');
+      const msg = (err as unknown as { message?: string })?.message || 'Failed to remove VIP.';
+      openToaster(msg);
+    } finally {
+      setDeletingIds((prev) => prev.filter((id) => id !== String(vipId)));
+    }
   };
 
   const renderVips = () => {
@@ -63,7 +83,8 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
                 tiktokFollowers={item?.tiktok_follower_count}
                 is_referenced={item?.referenced}
                 isIncomplete={item?.is_profile_completed === 0}
-                onRemoved={() => handleVipRemoved(String(item?.profile_id))}
+                onDelete={() => handleRemove(String(item?.profile_id))}
+                isDeleting={deletingIds.includes(String(item?.profile_id))}
               />
             );
           })}
@@ -85,6 +106,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
           </Typography>
         </Box>
         {renderVips()}
+        <Toaster open={toasterOpen} setOpen={closeToaster} message={error} severity={toasterType} />
       </Container>
     </Box>
   );
