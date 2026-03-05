@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { removeFromVipList } from '@/libs/api-manager/manager';
@@ -22,6 +22,18 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
+
+  useEffect(() => {
+    const handleShowToaster = (event: CustomEvent) => {
+      const { message, type } = event.detail;
+      setToasterType(type as 'error' | 'success' | 'warning' | 'info');
+      openToaster(message);
+    };
+    window.addEventListener('showToaster', handleShowToaster as EventListener);
+    return () => {
+      window.removeEventListener('showToaster', handleShowToaster as EventListener);
+    };
+  }, [openToaster]);
 
   const handleRemove = async (vipId: string) => {
     try {
@@ -85,6 +97,7 @@ const MyVipsListing: React.FC<MyVipsListingProps> = ({ myVips }) => {
                 isIncomplete={item?.is_profile_completed === 0}
                 onDelete={() => handleRemove(String(item?.profile_id))}
                 isDeleting={deletingIds.includes(String(item?.profile_id))}
+                profileCompletionUrl={item?.profile_completion_url}
               />
             );
           })}

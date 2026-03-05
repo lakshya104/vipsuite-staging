@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, IconButton, Typography, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import Image from 'next/image';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import EditIcon from '@mui/icons-material/Edit';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { DefaultImageFallback } from '@/helpers/enums';
 import './VipInfoBox.scss';
 import en from '@/helpers/lang';
@@ -14,11 +14,11 @@ interface VipInfoBoxProps {
   name: string;
   instaFollowers?: string;
   tiktokFollowers?: string;
-  handleClick: () => void;
   isAgentCard?: boolean;
   is_referenced?: boolean;
   onDelete?: () => void;
   isIncomplete?: boolean;
+  profileCompletionUrl?: string;
 }
 
 const VipInfoBox: React.FC<VipInfoBoxProps> = ({
@@ -26,11 +26,11 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   name,
   instaFollowers,
   tiktokFollowers,
-  handleClick,
   isAgentCard,
   is_referenced,
   onDelete,
   isIncomplete,
+  profileCompletionUrl,
 }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const itemImage = image || DefaultImageFallback.PersonPlaceholder;
@@ -64,16 +64,30 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
 
   const handleMenuClose = () => setMenuAnchor(null);
 
-  const handleMenuEdit = (e: React.MouseEvent<HTMLElement>) => {
-    stopAllEvents(e);
-    handleMenuClose();
-    handleClick();
-  };
-
   const handleMenuDelete = (e: React.MouseEvent<HTMLElement>) => {
     stopAllEvents(e);
     handleMenuClose();
     onDeleteIconClick(e as React.MouseEvent);
+  };
+
+  const handleCopyProfileUrl = async (e: React.MouseEvent<HTMLElement>) => {
+    stopAllEvents(e);
+    handleMenuClose();
+    if (profileCompletionUrl) {
+      try {
+        await navigator.clipboard.writeText(profileCompletionUrl);
+        const event = new CustomEvent('showToaster', {
+          detail: { message: 'Profile URL copied to clipboard', type: 'success' },
+        });
+        window.dispatchEvent(event);
+      } catch (error) {
+        console.error('Failed to copy profile URL:', error);
+        const event = new CustomEvent('showToaster', {
+          detail: { message: 'Failed to copy profile URL', type: 'error' },
+        });
+        window.dispatchEvent(event);
+      }
+    }
   };
 
   return (
@@ -125,7 +139,7 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
         aria-haspopup="true"
         onClick={handleArrowClick}
       >
-        <ArrowForwardIosIcon className="arrowIcon" />
+        <MoreVertIcon className="arrowIcon" />
       </IconButton>
 
       <Menu
@@ -137,12 +151,14 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <MenuItem onClick={handleMenuEdit} disabled={is_referenced}>
-          <ListItemIcon>
-            <EditIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Edit</ListItemText>
-        </MenuItem>
+        {profileCompletionUrl && (
+          <MenuItem onClick={handleCopyProfileUrl}>
+            <ListItemIcon>
+              <ContentCopyIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Copy Profile URL</ListItemText>
+          </MenuItem>
+        )}
         <MenuItem onClick={handleMenuDelete}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
@@ -157,8 +173,8 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Delete VIP"
-        description={`Are you sure you want to delete ${name}?`}
-        confirmText="Delete"
+        description={`Are you sure you want to delete ${name} VIP?`}
+        confirmText="Yes"
       />
     </Box>
   );

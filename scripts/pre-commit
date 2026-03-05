@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Pre-commit hook that runs yarn lint and yarn format
+# Exit with non-zero status if any command fails
+
+echo "Running pre-commit checks..."
+
+# Run yarn lint with ignore-engines
+echo "Running yarn lint..."
+if ! yarn --ignore-engines lint; then
+    echo "yarn lint failed. Commit aborted."
+    exit 1
+fi
+
+# Run yarn format with ignore-engines
+echo "Running yarn format..."
+if ! yarn --ignore-engines format; then
+    echo "yarn format failed. Commit aborted."
+    exit 1
+fi
+
+# Check if format made any changes to tracked files
+if ! git diff --quiet; then
+    echo "Files were formatted. Adding changes to commit..."
+    git add -u
+fi
+
+echo "Pre-commit checks passed!"
+exit 0

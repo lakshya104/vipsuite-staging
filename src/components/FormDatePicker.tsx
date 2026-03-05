@@ -12,49 +12,69 @@ interface FormDatePickerProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
   label?: string;
-  selectFutureDate?: boolean;
   rules?: RegisterOptions<T, Path<T>>;
+  minDate?: dayjs.Dayjs;
+  maxDate?: dayjs.Dayjs;
 }
 
 const FormDatePicker = <T extends FieldValues>({
   name,
   control,
   label,
-  selectFutureDate,
   rules,
+  minDate,
+  maxDate,
 }: FormDatePickerProps<T>) => {
-  const today = dayjs();
-  const futureValidator = (val: string | number | Date | dayjs.Dayjs | null | undefined) => {
-    if (!val) return true;
-    if (!selectFutureDate && dayjs(val).isAfter(today)) {
-      return en.common.future;
+  const getErrorMessage = (dateVal: dayjs.Dayjs) => {
+    if (!dateVal.isValid()) return 'Invalid date';
+
+    if (minDate && dateVal.isBefore(minDate)) {
+      return `Date must be on or after ${minDate.format('DD/MM/YYYY')}`;
     }
-    return true;
+
+    if (maxDate && dateVal.isAfter(maxDate)) {
+      return `Date must be on or before ${maxDate.format('DD/MM/YYYY')}`;
+    }
+
+    return null;
   };
+
+  const minMaxValidator = (val: string | number | Date | dayjs.Dayjs | null | undefined) => {
+    if (!val) return true;
+
+    const dateVal = dayjs(val);
+    return getErrorMessage(dateVal) ?? true;
+  };
+
   return (
     <Controller
       name={name}
       control={control}
-      rules={{ ...(rules ?? {}), validate: futureValidator }}
+      rules={{
+        ...(rules ?? {}),
+        validate: minMaxValidator,
+      }}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        const isFutureDate = value && dayjs(value).isAfter(today);
-        const showFutureDateError = !selectFutureDate && isFutureDate;
+        const dayjsValue = value ? dayjs(value as string, 'YYYY-MM-DD') : null;
+
+        const uiError = dayjsValue ? getErrorMessage(dayjsValue) : null;
+
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               desktopModeMediaQuery="(min-width:0px)"
-              disableFuture={selectFutureDate ? false : true}
               className="date-picker"
-              label={label && label}
+              label={label}
               format="DD/MM/YYYY"
-              maxDate={selectFutureDate ? undefined : today}
-              value={value ? dayjs(value as string) : null}
-              onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : '')}
+              minDate={minDate}
+              maxDate={maxDate}
+              value={dayjsValue}
+              onChange={(newValue) => onChange(newValue?.isValid() ? newValue.format('YYYY-MM-DD') : '')}
               slotProps={{
                 field: { clearable: true },
                 textField: {
-                  error: !!error || showFutureDateError,
-                  helperText: showFutureDateError ? en.common.future : error?.message && en.common.fieldErrorMessage,
+                  error: !!error || !!uiError,
+                  helperText: uiError || (error?.message && en.common.fieldErrorMessage),
                   FormHelperTextProps: {
                     sx: { mt: 0 },
                   },
@@ -74,35 +94,65 @@ export const FormDateTimePicker = <T extends FieldValues>({
   name,
   control,
   label,
-  selectFutureDate,
+  minDate,
+  maxDate,
 }: FormDatePickerProps<T>) => {
-  const today = dayjs();
+  const getErrorMessage = (dateVal: dayjs.Dayjs) => {
+    if (!dateVal.isValid()) return 'Invalid date';
+
+    if (minDate && dateVal.isBefore(minDate)) {
+      return `Date and time must be on or after ${minDate.format('DD/MM/YYYY HH:mm')}`;
+    }
+
+    if (maxDate && dateVal.isAfter(maxDate)) {
+      return `Date and time must be on or before ${maxDate.format('DD/MM/YYYY HH:mm')}`;
+    }
+
+    return null;
+  };
+
+  const minMaxValidator = (val: string | number | Date | dayjs.Dayjs | null | undefined) => {
+    if (!val) return true;
+
+    const dateVal = dayjs(val);
+    const error = getErrorMessage(dateVal);
+
+    return error ?? true;
+  };
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimePicker
-            desktopModeMediaQuery="(min-width:0px)"
-            disableFuture={selectFutureDate ? false : true}
-            className="date-time-picker"
-            label={label && label}
-            format="DD/MM/YYYY HH:mm"
-            maxDate={selectFutureDate ? undefined : today}
-            value={value ? dayjs(value as string, 'YYYY-MM-DDTHH:mm:ss') : null}
-            onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DDTHH:mm:ss') : '')}
-            slotProps={{
-              field: { clearable: true },
-              textField: {
-                error: !!error,
-                helperText: error?.message,
-              },
-            }}
-          />
-        </LocalizationProvider>
-      )}
+      rules={{ validate: minMaxValidator }}
+      render={({ field: { onChange, value }, fieldState: { error } }) => {
+        const dayjsValue = value ? dayjs(value as string, 'YYYY-MM-DDTHH:mm:ss') : null;
+
+        const uiError = dayjsValue ? getErrorMessage(dayjsValue) : null;
+
+        return (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              desktopModeMediaQuery="(min-width:0px)"
+              className="date-time-picker"
+              label={label}
+              format="DD/MM/YYYY HH:mm"
+              minDateTime={minDate}
+              maxDateTime={maxDate}
+              value={dayjsValue}
+              closeOnSelect={false}
+              onChange={(newValue) => onChange(newValue?.isValid() ? newValue.format('YYYY-MM-DDTHH:mm:ss') : '')}
+              slotProps={{
+                field: { clearable: true },
+                textField: {
+                  error: !!error || !!uiError,
+                  helperText: error?.message || uiError,
+                },
+              }}
+            />
+          </LocalizationProvider>
+        );
+      }}
     />
   );
 };

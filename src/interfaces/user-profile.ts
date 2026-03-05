@@ -16,8 +16,8 @@ export interface ACF {
   type_of_business?: string;
   city?: string;
   gender?: string;
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   created_by?: number;
   created_by_type?: string;
   email?: string;

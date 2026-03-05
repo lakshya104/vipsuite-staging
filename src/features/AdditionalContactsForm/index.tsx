@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormValues, additionalContactsFormSchema } from './schema';
 import './ProfileBuilder.scss';
 import { ACF, AdditionalContactContent } from '@/interfaces';
-import { UpdateProfile } from '@/libs/api-manager/manager';
+import { CompleteVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
 import en from '@/helpers/lang';
 import DynamicCustomStepper from '@/components/CustomStepper/DynamicCustomStepper';
 
@@ -28,6 +28,8 @@ interface AdditionalContactsProps {
     sectionTitle: string;
     sectionDescription?: string;
   };
+  forIncompleteVip?: boolean;
+  token?: string;
 }
 
 const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
@@ -41,6 +43,8 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
   handleLoading,
   openToaster,
   sectionDetails,
+  forIncompleteVip,
+  token,
 }) => {
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
@@ -133,7 +137,21 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
           commercial_opportunities_contacts: updatedProfileDetail.commercial_opportunities_contacts,
         },
       };
-      await UpdateProfile(id, profile);
+      if (forIncompleteVip) {
+        const profile = {
+          meta: {
+            is_profile_completed: 0,
+          },
+          acf: {
+            event_contacts: updatedProfileDetail.event_contacts,
+            stylist_contacts: updatedProfileDetail.stylist_contacts,
+            commercial_opportunities_contacts: updatedProfileDetail.commercial_opportunities_contacts,
+          },
+        };
+        await CompleteVipProfile(id.toString(), token || '', profile);
+      } else {
+        await UpdateProfile(id, profile);
+      }
       onNext(updatedProfileDetail);
       if (sectionNumber < totalSteps - 1) {
         nextSectionNumber();

@@ -13,6 +13,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { Control } from 'react-hook-form';
 import SelectBox from './SelectBox';
 import en from '@/helpers/lang';
+import dayjs from 'dayjs';
 
 interface RenderQuestionsProps {
   questions: Question[];
@@ -172,14 +173,24 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
         return (
           <Box key={fieldName} mb={2}>
             <DynamicQuestionTitle title={question?.title} isRequired={question?.is_required} />
-            <FormDatePicker name={fieldName} control={control} selectFutureDate={true} />
+            <FormDatePicker
+              name={fieldName}
+              control={control}
+              minDate={question?.start_date ? dayjs(question?.start_date) : undefined}
+              maxDate={question?.end_date ? dayjs(question?.end_date) : undefined}
+            />
           </Box>
         );
       case QuestionType.DateTime:
         return (
           <Box key={fieldName} mb={2}>
             <DynamicQuestionTitle title={question?.title} isRequired={question?.is_required} />
-            <FormDateTimePicker name={fieldName} control={control} selectFutureDate={true} />
+            <FormDateTimePicker
+              name={fieldName}
+              control={control}
+              minDate={question?.start_date_time ? dayjs(question?.start_date_time) : undefined}
+              maxDate={question?.end_date_time ? dayjs(question?.end_date_time) : undefined}
+            />
           </Box>
         );
       case QuestionType.Time:

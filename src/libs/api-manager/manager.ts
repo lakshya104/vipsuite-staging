@@ -850,3 +850,28 @@ export const removeFromVipList = async (vip_profile_id: string) => {
     throw new Error(errorMessage);
   }
 };
+
+export const GetAllVipsWithToken = async (token: string) => {
+  try {
+    const response = await InstanceWithoutHeaders.get(Endpoints.getAllVip, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const CompleteVipProfile = async (id: string, token: string, profile: UserProfile) => {
+  try {
+    const response = await InstanceWithoutHeaders.post(Endpoints.completeVipProfile(id, token), profile);
+    return response.data;
+  } catch (error) {
+    console.error('Error during completing VIP profile:', error);
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred during completing VIP profile';
+    throw new Error(errorMessage);
+  }
+};

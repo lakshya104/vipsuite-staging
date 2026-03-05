@@ -10,4 +10,5 @@ export interface MyVips {
   tiktok_follower_count: string;
   referenced?: boolean;
   is_profile_completed?: number;
+  profile_completion_url?: string;
 }

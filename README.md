@@ -38,3 +38,13 @@
     run below command to run development server:
         - if you are running first time : yarn install && yarn run dev
         - If you are not running first time : yarn run dev
+
+# Setup Git Hooks
+
+    To install pre-commit hooks that run linting and formatting:
+        - Run: ./scripts/setup-hooks.sh
+
+    This will install a pre-commit hook that:
+        - Runs yarn lint (with --ignore-engines for Node version compatibility)
+        - Runs yarn format (with --ignore-engines for Node version compatibility)
+        - Automatically adds formatted files to the commit

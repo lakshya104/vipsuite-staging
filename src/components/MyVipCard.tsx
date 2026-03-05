@@ -1,14 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import { Backdrop, CircularProgress, Dialog } from '@mui/material';
-import { useRouter } from 'next/navigation';
 import { MessageDialogBox } from './Dialog';
 import { UserRole } from '@/helpers/enums';
 import { vipRejectedBoxContent } from '@/data';
 import VipInfoBox from './VipInfoBox';
 import ProfileReviewDialog from './ProfileReviewDialog';
-import en from '@/helpers/lang';
-import { useEditVipIdStore } from '@/store/useStore';
 
 interface MyVipCardProps {
   image: string;
@@ -21,38 +18,38 @@ interface MyVipCardProps {
   isIncomplete?: boolean;
   onDelete?: () => void;
   isDeleting?: boolean;
+  profileCompletionUrl?: string;
 }
 
 const MyVipCard: React.FC<MyVipCardProps> = ({
   image,
   name,
   instaFollowers,
-  link,
   tiktokFollowers,
-  vipId,
   is_referenced,
   isIncomplete,
   onDelete,
   isDeleting,
+  profileCompletionUrl,
 }) => {
-  const router = useRouter();
-  const [isLoading, setLoading] = useState<boolean>(false);
+  // const router = useRouter();
+  // const [isLoading, setLoading] = useState<boolean>(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState<boolean>(false);
   const [isVipRejectedDialogOpen, setIsVipRejectedDialogOpen] = useState<boolean>(false);
-  const { setVipId } = useEditVipIdStore();
+  // const { setVipId } = useEditVipIdStore();
 
-  const handleClick = async () => {
-    try {
-      if (!is_referenced) {
-        setLoading(true);
-        setVipId(vipId);
-        router.push(link);
-      }
-    } catch (error) {
-      console.error(en.myVipsPage.addError, error);
-      setLoading(false);
-    }
-  };
+  // const handleClick = async () => {
+  //   try {
+  //     if (!is_referenced) {
+  //       setLoading(true);
+  //       setVipId(vipId);
+  //       router.push(link);
+  //     }
+  //   } catch (error) {
+  //     console.error(en.myVipsPage.addError, error);
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -61,12 +58,12 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
         name={name}
         instaFollowers={instaFollowers}
         tiktokFollowers={tiktokFollowers}
-        handleClick={handleClick}
         onDelete={onDelete}
         is_referenced={is_referenced}
         isIncomplete={isIncomplete}
+        profileCompletionUrl={profileCompletionUrl}
       />
-      <Backdrop sx={{ color: 'black', zIndex: 100000 }} open={isLoading || Boolean(isDeleting)}>
+      <Backdrop sx={{ color: 'black', zIndex: 100000 }} open={Boolean(isDeleting)}>
         <CircularProgress color="inherit" />
       </Backdrop>
 

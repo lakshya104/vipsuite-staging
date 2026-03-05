@@ -117,6 +117,10 @@ export interface Question {
   is_required: boolean;
   choices: Choice[] | null;
   answer?: string;
+  start_date?: string;
+  end_date?: string;
+  start_date_time?: string;
+  end_date_time?: string;
 }
 
 export interface EventImage {

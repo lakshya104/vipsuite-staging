@@ -14,6 +14,31 @@ interface MessagesDetailProps {
   messageDetail: MessageDetails;
 }
 
+export const linkifyText = (raw?: string) => {
+  if (!raw) return null;
+
+  const decoded = he.decode(raw);
+  const urlRegex = /((?:https?:\/\/|www\.)[^\s]+)/gi;
+
+  return decoded.split(urlRegex).map((part, index) => {
+    if (part.match(urlRegex)) {
+      const href = part.startsWith('www.') ? `https://${part}` : part;
+      return (
+        <a
+          key={index}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'blue', textDecoration: 'underline' }}
+        >
+          {part}
+        </a>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
+
 const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
   return (
     <>
@@ -31,7 +56,7 @@ const MessagesDetail: React.FC<MessagesDetailProps> = ({ messageDetail }) => {
             <Box className="inbox_content">
               {messageDetail.messages.map((message: MessageObject) => (
                 <Fragment key={message?.id}>
-                  <Typography variant="body1">{message?.content}</Typography>
+                  <Typography variant="body1">{linkifyText(message?.content)}</Typography>
                   <Typography className="inbox__date">
                     {calculateRelativeTime(message?.date_created?.date)} <span></span>
                     {extractDate(message?.date_created?.date)} <span></span>

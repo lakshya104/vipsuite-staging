@@ -20,9 +20,11 @@ const DynamicCustomStepper: React.FC<DynamicCustomStepperProps> = ({
       <IconButton disabled={sectionNumber === 0} onClick={() => sectionNumber > 0 && handleSectionChange()}>
         <ArrowBackIcon />
       </IconButton>
-      <Typography variant="body1">
-        {sectionNumber + 1} of {totalSteps}
-      </Typography>
+      {totalSteps > 1 && (
+        <Typography variant="body1">
+          {sectionNumber + 1} of {totalSteps}
+        </Typography>
+      )}
       <IconButton type="submit">
         <ArrowForwardIcon />
       </IconButton>

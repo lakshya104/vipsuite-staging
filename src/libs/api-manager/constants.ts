@@ -78,6 +78,7 @@ const Endpoints = {
   updateSocials: '/wp/v2/update-social-handles',
   unsubscribe: '/wp/v2/unsubscribe-emails',
   removeVipFromAgent: '/wp/v2/agent/delete-profile',
+  completeVipProfile: (id: string, token: string) => `/wp/v2/complete-vip-profile/${id}/${token}`,
 };
 
 export { Endpoints };

@@ -87,17 +87,13 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
   const renderDashboard = () => (
     <DashboardContentComponent
       dashboardContent={dashboardData?.static_dashboard_questions}
-      showMakeRequest={dashboardData?.show_make_request_form}
       formRequests={dashboardData?.dynamic_dashboard_questions}
       userRole={userRole}
     />
   );
 
   const isDashboardContentEmpty =
-    isEmpty(dashboardData?.dynamic_dashboard_questions) &&
-    !dashboardData?.show_make_request_form &&
-    userRole &&
-    userRole === UserRole.Brand;
+    isEmpty(dashboardData?.dynamic_dashboard_questions) && userRole && userRole === UserRole.Brand;
 
   const renderContent = () => {
     if (searchQuery) {

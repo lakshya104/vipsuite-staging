@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import HomeHeader from '@/components/Header';
 import HomeFooter from '@/components/HomeFooter';
-import { GetAllVips, GetSession } from '@/libs/api-manager/manager';
+import { GetSession } from '@/libs/api-manager/manager';
 import { CookieName, UserRole } from '@/helpers/enums';
 import ApplicationAcceptedDialog from '@/components/ApplicationAcceptedDialog';
 import StoreUserDetails from '@/components/StoreUserDetails';
@@ -12,7 +12,6 @@ import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
-import { MyVips } from '@/interfaces';
 
 export default async function HomeSectionLayout({
   children,
@@ -56,19 +55,6 @@ export default async function HomeSectionLayout({
       } else if (!isVipAdded) {
         if (vip_profiles_count === 0) {
           redirect(paths.root.agentProfileBuilder.getHref());
-        }
-        if (vip_profiles_count === 1) {
-          let allVips: MyVips[] = [];
-          try {
-            const response = await GetAllVips();
-            allVips = response?.data;
-          } catch (err) {
-            console.error('Error fetching VIPs:', err);
-          }
-          const firstVip = allVips?.[0];
-          if (firstVip?.profile_id && firstVip?.is_profile_completed === 0) {
-            redirect(`/api/set-vip-cookie?vipId=${firstVip?.profile_id}`);
-          }
         }
       }
     }

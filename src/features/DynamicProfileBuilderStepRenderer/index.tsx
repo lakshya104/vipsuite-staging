@@ -18,7 +18,7 @@ import InputTextFormField from '@/components/InputTextFormField';
 import FormDatePicker from '@/components/FormDatePicker';
 import AutoCompleteSelector from '@/components/AutoCompleteSelector';
 import DynamicCustomStepper from '@/components/CustomStepper/DynamicCustomStepper';
-import { CreateVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
+import { CompleteVipProfile, CreateVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -40,9 +40,11 @@ import VipAddedDialog from '@/components/VipAddedDialog';
 
 interface DynamicProfileBuilderStepRendererProps {
   id: number;
-  profileDetail: ACF;
+  profileDetail?: ACF;
   profileBuilderSections: ProfileBuilderData;
   isAgent?: boolean;
+  token?: string;
+  forIncompleteVip?: boolean;
 }
 
 export interface ChildDob {
@@ -54,12 +56,14 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   profileDetail,
   profileBuilderSections,
   isAgent = false,
+  forIncompleteVip = false,
+  token,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [profileId, setProfileId] = useState<number>(id);
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
-  const [localProfileDetail, setLocalProfileDetail] = useState<ACF>(() => profileDetail);
+  const [localProfileDetail, setLocalProfileDetail] = useState<ACF>(() => profileDetail || ({} as ACF));
   const [sectionNumber, setSectionNumber] = useState<number>(0);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [errMsg, setErrMsg] = useState<string>('');
@@ -72,7 +76,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     () => vipSectionData(profileBuilderSections.representation_options),
     [profileBuilderSections.representation_options],
   );
-  const agentSections = [addVipStaticSection, ...profileBuilderSections.sections];
+  const agentSections = [addVipStaticSection];
   const section = isAgent
     ? (agentSections[sectionNumber] as Section)
     : (profileBuilderSections?.sections[sectionNumber] as Section);
@@ -358,7 +362,25 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     };
     try {
       setIsLoading(true);
-      if (profileId) {
+      if (forIncompleteVip) {
+        const profile = {
+          acf: {
+            ...transformedData,
+          },
+          ...(sectionNumber === totalSteps - 1
+            ? {
+                meta: {
+                  is_profile_completed: 1,
+                },
+              }
+            : {
+                meta: {
+                  is_profile_completed: 0,
+                },
+              }),
+        };
+        await CompleteVipProfile(profileId.toString(), token || '', profile);
+      } else if (profileId) {
         await UpdateProfile(profileId, profile);
       } else {
         const profileWithTitle = {
@@ -371,6 +393,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
         };
         const response = await CreateVipProfile(profileWithTitle);
         if (response?.code === 'duplicate_profile') {
+          await createVipAddedCookie();
           setOpenDialog(true);
           setErrMsg(response.message || '');
           return false;
@@ -391,6 +414,8 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
           await createVipAddedCookie();
           setVipAddedDialogOpen(true);
           clearVipIdStore();
+        } else if (forIncompleteVip) {
+          router.push(paths.auth.onBoarding.getHref());
         } else if (isProfileEdit) {
           router.push(paths.root.profile.getHref());
         } else {
@@ -426,6 +451,8 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
           handleLoading={(state: boolean) => setIsLoading(state)}
           openToaster={openToaster}
           sectionDetails={sectionDetails}
+          forIncompleteVip={forIncompleteVip}
+          token={token}
         />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step1-form ">
