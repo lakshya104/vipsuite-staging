@@ -12,7 +12,6 @@ interface MyVipCardProps {
   name: string;
   instaFollowers: string;
   tiktokFollowers: string;
-  link: string;
   vipId: string;
   is_referenced?: boolean;
   isIncomplete?: boolean;
@@ -26,30 +25,15 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
   name,
   instaFollowers,
   tiktokFollowers,
+  vipId,
   is_referenced,
   isIncomplete,
   onDelete,
   isDeleting,
   profileCompletionUrl,
 }) => {
-  // const router = useRouter();
-  // const [isLoading, setLoading] = useState<boolean>(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState<boolean>(false);
   const [isVipRejectedDialogOpen, setIsVipRejectedDialogOpen] = useState<boolean>(false);
-  // const { setVipId } = useEditVipIdStore();
-
-  // const handleClick = async () => {
-  //   try {
-  //     if (!is_referenced) {
-  //       setLoading(true);
-  //       setVipId(vipId);
-  //       router.push(link);
-  //     }
-  //   } catch (error) {
-  //     console.error(en.myVipsPage.addError, error);
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <>
@@ -62,6 +46,7 @@ const MyVipCard: React.FC<MyVipCardProps> = ({
         is_referenced={is_referenced}
         isIncomplete={isIncomplete}
         profileCompletionUrl={profileCompletionUrl}
+        vipId={vipId}
       />
       <Backdrop sx={{ color: 'black', zIndex: 100000 }} open={Boolean(isDeleting)}>
         <CircularProgress color="inherit" />

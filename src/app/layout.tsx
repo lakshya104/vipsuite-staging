@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import '../styles/globals.scss';
 import ThemeRegistry from './ThemeRegistry';
-import GetSessionForStatusUpdate from '@/components/GetSessionForStatusUpdate';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,10 +27,7 @@ export default async function RootLayout({
       </head>
       <body>
         <AppRouterCacheProvider>
-          <ThemeRegistry options={{ key: 'mui-theme' }}>
-            <GetSessionForStatusUpdate />
-            {children}
-          </ThemeRegistry>
+          <ThemeRegistry options={{ key: 'mui-theme' }}>{children}</ThemeRegistry>
         </AppRouterCacheProvider>
         {process.env.NEXT_PUBLIC_GTM_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GTM_ID} />}
       </body>

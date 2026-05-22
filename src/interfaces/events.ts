@@ -111,6 +111,41 @@ export interface Choice {
   text: string;
 }
 
+export interface EventTiming {
+  event_time: string;
+}
+
+export interface DailyEventTiming {
+  event_timings: string;
+}
+
+export interface WeeklyEventTiming {
+  day: string;
+  event_timings: EventTiming[];
+}
+
+export interface MonthlyEventTiming {
+  date_of_month: string | number;
+  event_timing: EventTiming[];
+}
+
+export interface CalendarData {
+  start_date?: string | null;
+  end_date?: string | null;
+  frequency?: 'daily' | 'weekly' | 'monthly' | null;
+  daily_event_timing?: { event_timings: string }[] | null;
+  weekly_event_timing?: WeeklyEventTiming[] | null;
+  monthy_event_timings?: MonthlyEventTiming[] | null;
+}
+
+export interface SchedulerFields {
+  frequency?: 'daily' | 'weekly' | 'monthly' | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  weekdays?: string[] | null;
+  month_days?: (string | number)[] | null;
+}
+
 export interface Question {
   title: string;
   input_type: QuestionType;
@@ -121,6 +156,8 @@ export interface Question {
   end_date?: string;
   start_date_time?: string;
   end_date_time?: string;
+  calendar_data?: CalendarData;
+  scheduler_fields?: SchedulerFields;
 }
 
 export interface EventImage {

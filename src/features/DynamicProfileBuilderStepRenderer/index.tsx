@@ -18,6 +18,7 @@ import InputTextFormField from '@/components/InputTextFormField';
 import FormDatePicker from '@/components/FormDatePicker';
 import AutoCompleteSelector from '@/components/AutoCompleteSelector';
 import DynamicCustomStepper from '@/components/CustomStepper/DynamicCustomStepper';
+import dayjs from 'dayjs';
 import { CompleteVipProfile, CreateVipProfile, UpdateProfile } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '@/components/Toaster';
@@ -34,9 +35,14 @@ import { useVisibility } from '@/hooks/useVisibility';
 import { createDynamicResolver } from '@/hooks/useDynamicResolver';
 import AdditionalContactsForm from '../AdditionalContactsForm';
 import { MessageDialogBox } from '@/components/Dialog';
-import revalidatePathAction, { createProfileCompletedCookie, createVipAddedCookie } from '@/libs/actions';
+import revalidatePathAction, {
+  createProfileCompletedCookie,
+  createVipAddedCookie,
+  deleteIncompleteVipCookie,
+} from '@/libs/actions';
 import { useEditVipIdStore } from '@/store/useStore';
 import VipAddedDialog from '@/components/VipAddedDialog';
+import VipProfileCompleteDialog from '@/components/VipProfileCompleteDialog';
 
 interface DynamicProfileBuilderStepRendererProps {
   id: number;
@@ -45,6 +51,7 @@ interface DynamicProfileBuilderStepRendererProps {
   isAgent?: boolean;
   token?: string;
   forIncompleteVip?: boolean;
+  isIncompleteEditVip?: boolean;
 }
 
 export interface ChildDob {
@@ -58,6 +65,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   isAgent = false,
   forIncompleteVip = false,
   token,
+  isIncompleteEditVip = false,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -68,15 +76,18 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [errMsg, setErrMsg] = useState<string>('');
   const [vipAddedDialogOpen, setVipAddedDialogOpen] = useState<boolean>(false);
+  const [vipProfileCompleteDialogOpen, setVipProfileCompleteDialogOpen] = useState<boolean>(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const isProfileEdit = searchParams.get('profile-route');
+  const isAgentFromUrl = searchParams.get('agent');
   const { clearVipIdStore, setVipId, setShouldVipEdit } = useEditVipIdStore();
   const addVipStaticSection = useMemo<Section>(
     () => vipSectionData(profileBuilderSections.representation_options),
     [profileBuilderSections.representation_options],
   );
-  const agentSections = [addVipStaticSection];
+  const agentSections =
+    isIncompleteEditVip || forIncompleteVip ? [...profileBuilderSections.sections] : [addVipStaticSection];
   const section = isAgent
     ? (agentSections[sectionNumber] as Section)
     : (profileBuilderSections?.sections[sectionNumber] as Section);
@@ -220,7 +231,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   const handleDialogClose = async () => {
     setOpenDialog(false);
     await revalidatePathAction(paths.root.myVips.getHref());
-    router.push(paths.root.myVips.getHref());
+    router.push(paths.root.home.getHref()); // Redirect to home page
   };
 
   const kidsAgeQuestion = useMemo(
@@ -262,6 +273,11 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   const getInputTypeFromId = (id: string): ProfileQuestionType | undefined => {
     const question = find(section?.questions, (q) => q?.unique_id === id);
     return question ? question?.input_type : undefined;
+  };
+
+  const getMaxAllowedChoicesFromId = (id: string): string | undefined => {
+    const question = find(section?.questions, (q) => q?.unique_id === id);
+    return question ? question?.max_allowed_choices : undefined;
   };
 
   const onSubmit = async (data: Record<string, string | string[] | ChildDob[] | null>) => {
@@ -333,6 +349,13 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
             })
             .filter((val) => val !== null);
           const inputType = getInputTypeFromId(key);
+          const maxAllowedChoices = getMaxAllowedChoicesFromId(key);
+
+          // For single-select checkboxes (max_allowed_choices === '1'), return first value as string
+          if (maxAllowedChoices === '1' && transformedValues.length > 0) {
+            return [key, transformedValues[0]];
+          }
+
           return [
             key,
             transformedValues.length > 0 ? transformedValues : inputType === ProfileQuestionType.KidsAge ? [] : null,
@@ -367,17 +390,19 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
           acf: {
             ...transformedData,
           },
-          ...(sectionNumber === totalSteps - 1
+          ...(sectionNumber === totalSteps - 1 || isIncompleteEditVip
             ? {
                 meta: {
                   is_profile_completed: 1,
                 },
               }
-            : {
-                meta: {
-                  is_profile_completed: 0,
-                },
-              }),
+            : !isIncompleteEditVip
+              ? {
+                  meta: {
+                    is_profile_completed: 0,
+                  },
+                }
+              : {}),
         };
         await CompleteVipProfile(profileId.toString(), token || '', profile);
       } else if (profileId) {
@@ -410,12 +435,21 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
         setIsLoading(false);
       } else if (sectionNumber === totalSteps - 1) {
         await createProfileCompletedCookie();
-        if (isAgent) {
+        if (isAgent && !forIncompleteVip) {
           await createVipAddedCookie();
-          setVipAddedDialogOpen(true);
+          await deleteIncompleteVipCookie();
+          if (!isIncompleteEditVip) {
+            setVipAddedDialogOpen(true);
+          } else {
+            router.push(paths.root.home.getHref());
+          }
           clearVipIdStore();
         } else if (forIncompleteVip) {
-          router.push(paths.auth.onBoarding.getHref());
+          if (isAgentFromUrl === 'true') {
+            router.push(paths.root.home.getHref());
+          } else {
+            setVipProfileCompleteDialogOpen(true);
+          }
         } else if (isProfileEdit) {
           router.push(paths.root.profile.getHref());
         } else {
@@ -453,6 +487,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
           sectionDetails={sectionDetails}
           forIncompleteVip={forIncompleteVip}
           token={token}
+          isIncompleteEditVip={isIncompleteEditVip}
         />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="profile-builder__form step1-form ">
@@ -572,7 +607,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
             } else if (inputType === ProfileQuestionType.DatePicker) {
               return (
                 <Box key={id}>
-                  <FormDatePicker {...commonProps} label={title} />
+                  <FormDatePicker {...commonProps} label={title} maxDate={dayjs()} />
                   {helperText && (
                     <Typography variant="body2" mt={-4} fontSize={'0.75rem'} ml={1.5} color="rgba(0, 0, 0, 0.6)" mb={3}>
                       {helperText}
@@ -667,6 +702,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
                         rules={
                           q.validations.includes('required') ? { required: 'Date of birth is required' } : undefined
                         }
+                        maxDate={dayjs()}
                       />
                       {index === fields.length - 1 && (
                         <Box className="age-button-group">
@@ -711,6 +747,9 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
       />
       <Dialog open={vipAddedDialogOpen} fullScreen aria-labelledby="form-dialog-title">
         <VipAddedDialog />
+      </Dialog>
+      <Dialog open={vipProfileCompleteDialogOpen} fullScreen aria-labelledby="form-dialog-title">
+        <VipProfileCompleteDialog />
       </Dialog>
     </>
   );

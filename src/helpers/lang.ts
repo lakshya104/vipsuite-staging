@@ -158,10 +158,14 @@ const en = {
   addedVipStatusScreen: {
     thankyou: 'Thank you!',
     title: 'VIP Added',
-    vipAddedTitle: 'Thanks for adding a VIP. You can update your VIP’s profile at any time.',
+    vipAddedTitle: 'Thanks for adding a VIP.',
     addAnotherTitle: 'Would you like to add another VIP?',
     addAnotherVIP: 'Add Another VIP',
     continue: 'Continue',
+  },
+  vipProfileCompleteScreen: {
+    congratulations: 'Congratulations!',
+    profileComplete: 'Your profile setup is now complete.',
   },
   profileBuilder: {
     knownForScreen: {
@@ -642,6 +646,7 @@ const en = {
         email: 'Email',
         eventContacts: 'Event Contacts',
         stylistContacts: 'Stylist Contacts',
+        commercialOpportunitiesContacts: 'Commercial Contacts',
         secondary: 'Secondary',
         agentPhone: 'Phone Number',
         phone: 'Phone',

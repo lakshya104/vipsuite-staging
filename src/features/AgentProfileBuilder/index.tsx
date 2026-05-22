@@ -20,8 +20,8 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
   const isIncompleteEditVip = searchParams.get('editVip') === 'true';
   const { editVipId, shouldVipEdit } = useEditVipIdStore();
   const [id, setId] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(incompleteVipId && isIncompleteEditVip ? true : false);
+  const [isHydrated, setIsHydrated] = useState<boolean>(false);
 
   useEffect(() => {
     const unsubHydrate = useEditVipIdStore.persist.onFinishHydration(() => {
@@ -83,6 +83,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
       profileBuilderSections={profileBuilderData}
       profileDetail={profileDetail}
       isAgent={true}
+      isIncompleteEditVip={isIncompleteEditVip}
     />
   );
 };

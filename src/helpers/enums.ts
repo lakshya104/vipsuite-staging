@@ -36,6 +36,7 @@ export enum QuestionType {
   DateTime = 'datetime',
   Time = 'time',
   FileUpload = 'file_upload',
+  Calendar = 'calendar',
 }
 
 export enum PostType {

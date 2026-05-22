@@ -93,6 +93,23 @@ export async function createVipAddedCookie() {
   });
 }
 
+export async function createIncompleteVipIdCookie(vipId: string) {
+  (await cookies()).set({
+    name: CookieName.IncompleteVipId,
+    value: vipId,
+    maxAge: 60 * 60 * 24 * 30,
+    path: '/',
+    httpOnly: false,
+    sameSite: 'none',
+    secure: true,
+  });
+}
+
+export async function deleteIncompleteVipCookie() {
+  const cookieStore = await cookies();
+  cookieStore.delete(CookieName.IncompleteVipId);
+}
+
 export async function deleteVipCookies() {
   const cookieStore = await cookies();
   await Promise.all([

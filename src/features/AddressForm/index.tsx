@@ -77,8 +77,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
       if (search === 'order-journey') {
         if (isRequestedProduct) {
           router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isRequestOnly: 'true' }));
-        }
-        if (isLookbookOrder) {
+        } else if (isLookbookOrder) {
           if (postId) {
             router.push(withSearchParams(() => paths.root.basket.getHref(), { step: 1, isLookbook: 'true', postId }));
           } else {

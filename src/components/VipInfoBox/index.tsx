@@ -8,6 +8,9 @@ import { DefaultImageFallback } from '@/helpers/enums';
 import './VipInfoBox.scss';
 import en from '@/helpers/lang';
 import DialogConfirmBox from '../Dialog/DialogConfirm';
+import { useRouter } from 'next/navigation';
+import { paths, withSearchParams } from '@/helpers/paths';
+import { createIncompleteVipIdCookie } from '@/libs/actions';
 
 interface VipInfoBoxProps {
   image: string;
@@ -19,6 +22,7 @@ interface VipInfoBoxProps {
   onDelete?: () => void;
   isIncomplete?: boolean;
   profileCompletionUrl?: string;
+  vipId: string;
 }
 
 const VipInfoBox: React.FC<VipInfoBoxProps> = ({
@@ -31,8 +35,10 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   onDelete,
   isIncomplete,
   profileCompletionUrl,
+  vipId,
 }) => {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const router = useRouter();
   const itemImage = image || DefaultImageFallback.PersonPlaceholder;
 
   /** Fully stops event bubbling to prevent navigation */
@@ -52,6 +58,23 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
   const handleConfirmDelete = () => {
     if (onDelete) onDelete();
     setIsDeleteDialogOpen(false);
+    handleMenuClose();
+  };
+
+  const handleCompleteProfile = () => {
+    const id = profileCompletionUrl?.split('/').at(-2);
+    const token = profileCompletionUrl?.split('/').pop();
+    if (profileCompletionUrl && token && id) {
+      router.push(withSearchParams(() => paths.root.completeVipProfile.getHref(id, token), { agent: 'true' }));
+    }
+    handleMenuClose();
+  };
+
+  const handleEditProfile = async () => {
+    await createIncompleteVipIdCookie(vipId);
+    const editUrl = withSearchParams(() => paths.root.agentProfileBuilder.getHref(), { editVip: 'true' });
+    router.push(editUrl);
+    handleMenuClose();
   };
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
@@ -74,8 +97,9 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
     stopAllEvents(e);
     handleMenuClose();
     if (profileCompletionUrl) {
+      const profileLink = isIncomplete ? profileCompletionUrl : profileCompletionUrl + '?editVip=true';
       try {
-        await navigator.clipboard.writeText(profileCompletionUrl);
+        await navigator.clipboard.writeText(profileLink);
         const event = new CustomEvent('showToaster', {
           detail: { message: 'Profile URL copied to clipboard', type: 'success' },
         });
@@ -151,17 +175,36 @@ const VipInfoBox: React.FC<VipInfoBoxProps> = ({
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         onClick={(e) => e.stopPropagation()}
       >
+        {profileCompletionUrl && isIncomplete
+          ? [
+              <MenuItem key="complete-profile" onClick={handleCompleteProfile}>
+                <ListItemIcon>
+                  <Image src="/img/edit.png" width={18} height={18} alt="EditIcon" />
+                </ListItemIcon>
+                <ListItemText>Complete Profile</ListItemText>
+              </MenuItem>,
+            ]
+          : !is_referenced
+            ? [
+                <MenuItem key="edit-profile" onClick={handleEditProfile}>
+                  <ListItemIcon>
+                    <Image src="/img/edit.png" width={18} height={18} alt="EditIcon" />
+                  </ListItemIcon>
+                  <ListItemText>Edit Profile</ListItemText>
+                </MenuItem>,
+              ]
+            : []}
         {profileCompletionUrl && (
-          <MenuItem onClick={handleCopyProfileUrl}>
+          <MenuItem key="copy-profile" onClick={handleCopyProfileUrl}>
             <ListItemIcon>
-              <ContentCopyIcon fontSize="small" />
+              <ContentCopyIcon fontSize="small" style={{ color: 'black' }} />
             </ListItemIcon>
             <ListItemText>Copy Profile URL</ListItemText>
           </MenuItem>
         )}
-        <MenuItem onClick={handleMenuDelete}>
+        <MenuItem key="delete" onClick={handleMenuDelete}>
           <ListItemIcon>
-            <DeleteIcon fontSize="small" />
+            <DeleteIcon fontSize="small" style={{ color: 'black' }} />
           </ListItemIcon>
           <ListItemText>Delete</ListItemText>
         </MenuItem>

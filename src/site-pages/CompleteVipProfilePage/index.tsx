@@ -1,8 +1,8 @@
 import React from 'react';
 import ErrorHandler from '@/components/ErrorHandler';
-import CompleteVipProfileBuilder from '@/features/CompleteVipProfileBuilder';
 import { GetProfileBuilder } from '@/libs/api-manager/manager';
 import en from '@/helpers/lang';
+import CompleteVipForm from '@/features/CompleteVipForm';
 
 interface CompleteVipProfilePageProps {
   params: {
@@ -19,7 +19,9 @@ const CompleteVipProfilePage = async ({ params }: CompleteVipProfilePageProps) =
     return <ErrorHandler error={error} errMessage={en.agentProfileBuilder.errMessage} />;
   }
 
-  return <CompleteVipProfileBuilder profileBuilderData={data} token={params.token} incompleteVipId={incompleteVipId} />;
+  return (
+    <CompleteVipForm profileBuilderData={data} token={params.token} incompleteVipId={incompleteVipId.toString()} />
+  );
 };
 
 export default CompleteVipProfilePage;

@@ -637,6 +637,15 @@ export const ContactsComponent: React.FC<ProfileComponentProps> = ({ profileDeta
           },
         ]
       : []),
+    ...(!profileDetails.acf.commercial_opportunities_contacts?.contact_me_directly
+      ? [
+          {
+            type: en.profilePage.profileTabs.contacts.commercialOpportunitiesContacts,
+            primary: get(profileDetails, 'acf.commercial_opportunities_contacts.email', ''),
+            secondary: get(profileDetails, 'acf.commercial_opportunities_contacts.secondary_email', ''),
+          },
+        ]
+      : []),
     {
       type: isAgent ? en.profilePage.profileTabs.contacts.agentPhone : en.profilePage.profileTabs.contacts.phone,
       primary: get(profileDetails, 'acf.phone', ''),

@@ -875,3 +875,15 @@ export const CompleteVipProfile = async (id: string, token: string, profile: Use
     throw new Error(errorMessage);
   }
 };
+
+export const GetEditProfile = async (vipId: string, token: string) => {
+  try {
+    const response = await InstanceWithoutHeaders.get(Endpoints.getEditProfile(vipId, token));
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Failed to fetch vip profile');
+  }
+};

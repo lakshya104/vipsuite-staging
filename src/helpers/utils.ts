@@ -213,6 +213,7 @@ export const mapQuestionsToSchema = (questions: Question[]) => {
           case 'date':
           case 'datetime':
           case 'time':
+          case 'calendar':
             acc[fieldName] = question.is_required
               ? z.string().min(1, { message: en.common.fieldErrorMessage })
               : z.string().optional().or(z.literal(''));

@@ -109,6 +109,9 @@ export const paths = {
     helpFaq: {
       getHref: () => '/help-faq',
     },
+    completeVipProfile: {
+      getHref: (id: string, token: string) => `/complete-vip-profile/${id}/${token}`,
+    },
   },
 } as const;
 

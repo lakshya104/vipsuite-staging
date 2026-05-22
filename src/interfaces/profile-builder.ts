@@ -102,8 +102,8 @@ export interface AdditionalContactContent {
   events_field_description: string;
   stylist_field_label: string;
   stylist_field_description: string;
-  gifting_field_label: string;
-  gifting_field_description: string;
+  commercial_field_label: string;
+  commercial_field_description: string;
 }
 
 export const dobField: Question = {
@@ -241,8 +241,8 @@ export const vipSectionData = (options: string[]): Section => {
     additional_contacts_content: {
       events_field_description: '',
       events_field_label: '',
-      gifting_field_description: '',
-      gifting_field_label: '',
+      commercial_field_description: '',
+      commercial_field_label: '',
       stylist_field_description: '',
       stylist_field_label: '',
     },

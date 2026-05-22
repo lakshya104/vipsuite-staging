@@ -79,6 +79,7 @@ const Endpoints = {
   unsubscribe: '/wp/v2/unsubscribe-emails',
   removeVipFromAgent: '/wp/v2/agent/delete-profile',
   completeVipProfile: (id: string, token: string) => `/wp/v2/complete-vip-profile/${id}/${token}`,
+  getEditProfile: (id: string, token: string) => `/wp/v2/vip-profile-details/${id}/${token}`,
 };
 
 export { Endpoints };

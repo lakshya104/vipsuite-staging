@@ -14,6 +14,7 @@ import { Control } from 'react-hook-form';
 import SelectBox from './SelectBox';
 import en from '@/helpers/lang';
 import dayjs from 'dayjs';
+import SchedulerCalendar from './SchedulerCalendar';
 
 interface RenderQuestionsProps {
   questions: Question[];
@@ -198,6 +199,20 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
           <Box key={fieldName} mb={2}>
             <DynamicQuestionTitle title={question?.title} isRequired={question?.is_required} />
             <FormTimePicker name={fieldName} control={control} />
+          </Box>
+        );
+
+      case QuestionType.Calendar:
+        return (
+          <Box key={fieldName} mb={2}>
+            <DynamicQuestionTitle title={question?.title} isRequired={question?.is_required} />
+            <Controller
+              name={fieldName}
+              control={control}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <SchedulerCalendar question={question} value={value} onChange={onChange} error={error} />
+              )}
+            />
           </Box>
         );
 

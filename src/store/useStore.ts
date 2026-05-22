@@ -252,9 +252,10 @@ export const useUserStatusStore = create<UserStatusState>()(
       shouldUpdate: (cooldownMinutes = 5) => {
         const now = Date.now();
         const lastUpdate = get().lastUpdateTime;
-        return now - lastUpdate >= cooldownMinutes * 60 * 1000;
+        return lastUpdate === 0 || now - lastUpdate >= cooldownMinutes * 60 * 1000;
       },
       clearAll: () => {
+        set({ lastUpdateTime: 0 });
         useUserStatusStore.persist.clearStorage();
       },
     }),

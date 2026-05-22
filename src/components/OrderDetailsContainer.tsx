@@ -46,6 +46,7 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
         };
 
       case QuestionType.DateTime:
+      case QuestionType.Calendar:
         return {
           title: q.title,
           answer: dayjs(q.answer).format('DD/MM/YYYY HH:mm'),

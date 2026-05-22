@@ -30,6 +30,7 @@ interface AdditionalContactsProps {
   };
   forIncompleteVip?: boolean;
   token?: string;
+  isIncompleteEditVip?: boolean;
 }
 
 const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
@@ -45,6 +46,7 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
   sectionDetails,
   forIncompleteVip,
   token,
+  isIncompleteEditVip,
 }) => {
   const defaultValues: FormValues = {
     eventsEmail: profileDetail.event_contacts?.email || '',
@@ -53,7 +55,10 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
     stylistEmail: profileDetail.stylist_contacts?.email || '',
     stylistSecondaryEmail: profileDetail.stylist_contacts?.secondary_email || '',
     stylistContactMeDirectly: profileDetail.stylist_contacts?.contact_me_directly ?? true,
-    commercialOpportunitiesContactMeDirectly: true,
+    commercialOpportunitiesEmail: profileDetail.commercial_opportunities_contacts?.email || '',
+    commercialOpportunitiesSecondaryEmail: profileDetail.commercial_opportunities_contacts?.secondary_email || '',
+    commercialOpportunitiesContactMeDirectly:
+      profileDetail.commercial_opportunities_contacts?.contact_me_directly ?? true,
   };
   const { additionalContactContent, sectionTitle, sectionDescription } = sectionDetails;
   const contacts = [
@@ -67,6 +72,11 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
       name: 'stylist',
       description: additionalContactContent?.stylist_field_description,
     },
+    {
+      section: additionalContactContent?.commercial_field_label,
+      name: 'commercialOpportunities',
+      description: additionalContactContent?.commercial_field_description,
+    },
   ];
 
   const {
@@ -77,7 +87,7 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(additionalContactsFormSchema),
-    defaultValues: defaultValues,
+    defaultValues,
   });
 
   // Managing checkbox states
@@ -88,6 +98,8 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
     stylistEmail: false,
     stylistSecondaryEmail: false,
     stylistContactMeDirectly: defaultValues.stylistContactMeDirectly,
+    commercialOpportunitiesEmail: false,
+    commercialOpportunitiesSecondaryEmail: false,
     commercialOpportunitiesContactMeDirectly: defaultValues.commercialOpportunitiesContactMeDirectly,
   });
 
@@ -124,7 +136,9 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
           contact_me_directly: data.stylistContactMeDirectly || false,
         },
         commercial_opportunities_contacts: {
-          contact_me_directly: true,
+          email: data.commercialOpportunitiesEmail || '',
+          secondary_email: data.commercialOpportunitiesSecondaryEmail || '',
+          contact_me_directly: data.commercialOpportunitiesContactMeDirectly || false,
         },
       };
 
@@ -139,9 +153,17 @@ const AdditionalContactsForm: React.FC<AdditionalContactsProps> = ({
       };
       if (forIncompleteVip) {
         const profile = {
-          meta: {
-            is_profile_completed: 0,
-          },
+          ...(isIncompleteEditVip
+            ? {
+                meta: {
+                  is_profile_completed: 1,
+                },
+              }
+            : {
+                meta: {
+                  is_profile_completed: 0,
+                },
+              }),
           acf: {
             event_contacts: updatedProfileDetail.event_contacts,
             stylist_contacts: updatedProfileDetail.stylist_contacts,

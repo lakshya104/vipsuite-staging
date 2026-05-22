@@ -12,6 +12,7 @@ import ProgressProvider from '@/libs/providers/ProgressProvider';
 import ErrorHandler from '@/components/ErrorHandler';
 import en from '@/helpers/lang';
 import { paths } from '@/helpers/paths';
+import StatusUpdate from '@/components/StatusUpdate';
 
 export default async function HomeSectionLayout({
   children,
@@ -61,6 +62,7 @@ export default async function HomeSectionLayout({
 
     return (
       <>
+        <StatusUpdate />
         <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={profile_id} />
         <HomeHeader role={role} />
         <ProgressProvider color="black"> {children}</ProgressProvider>

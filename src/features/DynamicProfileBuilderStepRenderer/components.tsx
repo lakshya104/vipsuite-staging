@@ -28,6 +28,7 @@ interface RenderSingleSelectInputProps {
 }
 
 export const RenderSingleSelectInput: React.FC<RenderSingleSelectInputProps> = ({ id, options, control, type }) => {
+  // Single select input for yes/no questions and button group questions
   return (
     <Controller
       name={id}
@@ -75,7 +76,7 @@ export const RenderSingleSelectInput: React.FC<RenderSingleSelectInputProps> = (
               })}
             </Box>
             {fieldState.error && (
-              <Typography color="error" variant="caption">
+              <Typography color="error" variant="caption" sx={{ mt: -1.5 }}>
                 {fieldState.error.message}
               </Typography>
             )}
@@ -223,7 +224,7 @@ export const RenderMultiSelectInput: React.FC<RenderMultiSelectInputProps> = ({
               <Typography
                 color="error"
                 variant="caption"
-                sx={{ mt: fieldState.error.message?.includes('other') ? -4 : -1 }}
+                sx={{ mt: fieldState.error.message?.includes('other') ? -4 : -1.5 }}
               >
                 {fieldState.error.message}
               </Typography>

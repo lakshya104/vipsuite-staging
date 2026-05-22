@@ -45,13 +45,20 @@ export function createDynamicResolver(section: Section, profileDetail: ACF, allC
           const choicesTexts = map(q.choices, 'text');
           const otherOption = findOtherOption();
 
-          if (otherOption && isArray(profileValue)) {
+          // Handle both string and array profileValue for checkboxes
+          const profileValueArray = isArray(profileValue)
+            ? profileValue
+            : isNonEmptyString(profileValue)
+              ? [profileValue]
+              : [];
+
+          if (otherOption && profileValueArray.length > 0) {
             // Transform stored values to include "Other" option if needed
-            const valuesInChoices = filter(profileValue, (val) =>
+            const valuesInChoices = filter(profileValueArray, (val) =>
               choicesTexts.some((text) => text.toLowerCase() === (val as string)?.toLowerCase()),
             );
             const valuesNotInChoices = filter(
-              profileValue,
+              profileValueArray,
               (val) => !choicesTexts.some((text) => text.toLowerCase() === (val as string)?.toLowerCase()),
             );
 
@@ -63,10 +70,10 @@ export function createDynamicResolver(section: Section, profileDetail: ACF, allC
               }
               acc[q.unique_id] = transformedValue;
             } else {
-              acc[q.unique_id] = profileValue;
+              acc[q.unique_id] = profileValueArray;
             }
           } else {
-            acc[q.unique_id] = profileValue;
+            acc[q.unique_id] = profileValueArray;
           }
         } else {
           acc[q.unique_id] = profileValue;
