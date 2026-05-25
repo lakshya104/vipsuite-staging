@@ -34,6 +34,8 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
     orderStatus === 'rsvp' ||
     orderStatus === 'lookbook' ||
     (orderStatus === 'product' && isEmpty(orderDetail?.line_items));
+  const metaTitle = orderDetail?.meta_data?.find((item) => item.key === 'post_title')?.value
+  const metaImage = orderDetail?.meta_data?.find((item) => item.key === 'post_image')?.value
 
   const formatAnswer = (q: Question): { title: string; answer: string; type?: string } | null => {
     if (!q.answer) return null;
@@ -115,9 +117,10 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
               key={item?.id}
               item={item}
               isRelatedOpportunity={isRelatedOpportunity}
-              title={he.decode(orderDetail?.opportunity?.title || '')}
+              title={he.decode(orderDetail?.opportunity?.title || metaTitle || '')}
               createdFor={orderDetail?.order_created_for}
               brandName={brandName || item?.brand_name}
+              metaImage={metaImage}
             />
           ))}
         {showList && (
@@ -125,12 +128,12 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
             <Image
               height={110}
               width={110}
-              src={orderDetail?.opportunity?.image?.sizes?.medium || DefaultImageFallback.Placeholder}
-              alt={he.decode(orderDetail?.opportunity?.title || 'product-image')}
+              src={orderDetail?.opportunity?.image?.sizes?.medium || metaImage || DefaultImageFallback.Placeholder}
+              alt={he.decode(orderDetail?.opportunity?.title || metaTitle || 'product-image')}
             />
             <Box>
               <Typography gutterBottom variant="h2">
-                {he.decode(orderDetail?.opportunity?.title || '')}
+                {he.decode(orderDetail?.opportunity?.title || metaTitle || '')}
               </Typography>
               {brandName && <Typography variant="body1">{brandName}</Typography>}
               {(orderDetail?.opportunity?.start_date || orderDetail?.opportunity?.end_date) && (

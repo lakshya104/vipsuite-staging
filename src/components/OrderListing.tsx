@@ -63,6 +63,8 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                       ? order?.opportunity?.image?.sizes?.medium
                       : DefaultImageFallback.Placeholder;
             const isRelatedOpportunity = orderType === 'order' && !isEmpty(order?.line_items);
+            const metaTitle = order?.meta_data?.find((item) => item.key === 'post_title')?.value
+            const metaImage = order?.meta_data?.find((item) => item.key === 'post_image')?.value
 
             return (
               <ProgressBarLink
@@ -72,7 +74,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                 <Box className="order-product__item" display="flex" justifyContent="space-between" alignItems="center">
                   <Box display="flex" alignItems="center" justifyContent="center">
                     <Image
-                      src={productImage || DefaultImageFallback.Placeholder}
+                      src={productImage || metaImage || DefaultImageFallback.Placeholder}
                       alt="photo"
                       height={110}
                       width={110}
@@ -82,7 +84,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                     />
                     <Box sx={{ ml: { xs: 2, md: 3 } }}>
                       <Typography gutterBottom variant="h2">
-                        {he.decode(orderTitle || '')}
+                        {he.decode(orderTitle || metaTitle || '')}
                       </Typography>
                       {orderType === 'rsvp' ? (
                         <>
@@ -99,7 +101,7 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                           </Typography>
                           {isRelatedOpportunity && (
                             <Typography variant="body1">
-                              {en.common.relatedOpportunity}: {he.decode(order?.opportunity?.title || '')}
+                              {en.common.relatedOpportunity}: {he.decode(order?.opportunity?.title || metaTitle || '')}
                             </Typography>
                           )}
                         </>

@@ -12,6 +12,7 @@ interface OrderItemProps {
   title?: string;
   createdFor?: string;
   brandName: string;
+  metaImage?: string;
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({
@@ -20,6 +21,7 @@ const OrderItem: React.FC<OrderItemProps> = ({
   title = '',
   createdFor,
   brandName,
+  metaImage
 }) => {
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>
@@ -27,7 +29,7 @@ const OrderItem: React.FC<OrderItemProps> = ({
         height={110}
         width={110}
         style={{ width: '100%', height: '100%' }}
-        src={item?.image?.src || DefaultImageFallback.Placeholder}
+        src={item?.image?.src || metaImage || DefaultImageFallback.Placeholder}
         alt={item?.name || 'product-image'}
       />
       <Box>
