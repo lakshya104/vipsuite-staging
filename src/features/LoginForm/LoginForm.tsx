@@ -21,40 +21,32 @@ import { useUserInfoStore } from '@/store/useStore';
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string>('');
-  const [toasterOpen, setToasterOpen] = useState<boolean>(false);
-  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
-  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [userRole, setUserRole] = useState<UserRole | ''>('');
   const router = useRouter();
   const { tokenStore } = useUserInfoStore();
   const searchParams = useSearchParams();
   const isTokenExpired = searchParams.get('token-expired');
   const tokenExpiryError = searchParams.get('error');
+  const [error, setError] = useState<string>(() => (isTokenExpired ? tokenExpiryError || en.login.userLogin : ''));
+  const [toasterOpen, setToasterOpen] = useState<boolean>(() => !!isTokenExpired);
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<UserRole | ''>('');
 
   useEffect(() => {
     const deleteCookies = async () => {
       await deleteVipCookies();
     };
     deleteCookies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   useEffect(() => {
     if (tokenStore) {
       window.location.reload();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tokenStore]);
 
-  useEffect(() => {
-    if (isTokenExpired) {
-      setError(tokenExpiryError || en.login.userLogin);
-      setToasterOpen(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const {
     register,

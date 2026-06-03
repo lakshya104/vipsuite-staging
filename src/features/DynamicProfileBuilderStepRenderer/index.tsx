@@ -1,6 +1,6 @@
 'use client';
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { Backdrop, Box, Button, CircularProgress, Dialog, Typography } from '@mui/material';
 import isEqual from 'lodash/isEqual';
 import { filter, find, forEach, isArray, isBoolean, isEmpty, isString, map, sortBy } from 'lodash';
@@ -109,7 +109,6 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
   const {
     control,
     handleSubmit,
-    watch,
     setError,
     clearErrors,
     formState: { errors },
@@ -119,13 +118,13 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     mode: 'onChange',
     defaultValues: createDynamicResolver(section, localProfileDetail, allCityOptions),
   });
-  const formValues = watch();
+  const formValues = useWatch({ control });
   const prevFormValuesRef = useRef(formValues);
   const visibleQuestions = useVisibility(section, formValues);
   const prevVisibleQuestionsRef = useRef(visibleQuestions);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const fieldsToReset: Record<string, any> = {};
 
     forEach(section.questions, (q: Question) => {
@@ -255,14 +254,14 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
     if (kidsAgeQuestion?.unique_id) {
       const profileKids = localProfileDetail?.[kidsAgeQuestion.unique_id as keyof ACF];
       if (isEmpty(fields) && isEmpty(profileKids) && visibleQuestions[kidsAgeQuestion.unique_id]) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         append({ date_of_birth: '' } as any);
       }
     }
   }, [kidsAgeQuestion, localProfileDetail, fields, append, visibleQuestions]);
 
   const handleAddChild = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     append({ date_of_birth: '' } as any);
   };
 
@@ -571,7 +570,7 @@ const DynamicProfileBuilderStepRenderer: React.FC<DynamicProfileBuilderStepRende
                 </Box>
               );
             } else if (inputType === ProfileQuestionType.CityList) {
-              const parentCountry = formValues[relatedParentId] || '';
+              const parentCountry = (formValues[relatedParentId] || '') as string | string[] | ChildDob[];
               let cityOptions: string[] = [];
               if (relatedParentId) {
                 if (parentCountry && isString(parentCountry)) {

@@ -61,6 +61,7 @@ const DashboardItemsContainer: React.FC<DashboardItemsContainerProps> = ({ dashb
   }, [debouncedSearchQuery]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSearchResults();
   }, [fetchSearchResults]);
 

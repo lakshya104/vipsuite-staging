@@ -20,17 +20,6 @@ const CompleteVipForm: React.FC<ProfileBuilderInterFace> = ({ token, profileBuil
   const [isLoading, setIsLoading] = useState<boolean>(!!incompleteVipId);
   const [isEditing, setIsEditing] = useState<boolean>(!!isIncompleteEditVip);
 
-  useEffect(() => {
-    if (incompleteVipId) {
-      const initializeProfile = async () => {
-        setId(Number(incompleteVipId));
-        await fetchVipProfile(incompleteVipId);
-      };
-      initializeProfile();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [incompleteVipId]);
-
   const fetchVipProfile = async (profileId: string) => {
     setIsLoading(true);
     try {
@@ -45,6 +34,17 @@ const CompleteVipForm: React.FC<ProfileBuilderInterFace> = ({ token, profileBuil
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (incompleteVipId) {
+      const initializeProfile = async () => {
+        setId(Number(incompleteVipId));
+        await fetchVipProfile(incompleteVipId);
+      };
+      initializeProfile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incompleteVipId]);
 
   if (isLoading) {
     return <CustomLoader />;

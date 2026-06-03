@@ -142,7 +142,7 @@ const RequestItemFormButton: React.FC<RequestItemFormButtonProps> = ({
               {isUserAgent && (
                 <VipOrderForm
                   clearErrors={clearErrors}
-                  control={control}
+                  control={control as any}
                   errors={errors}
                   handleVipSchemas={handleVipSchemas}
                   vipOptions={vipOptions}

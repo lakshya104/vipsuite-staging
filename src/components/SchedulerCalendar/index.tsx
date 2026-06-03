@@ -36,13 +36,16 @@ const SchedulerCalendar: React.FC<SchedulerCalendarProps> = ({ question, value, 
 
   // Sync external value → internal state only (never write '' back to the form)
   useEffect(() => {
-    if (value) {
-      const parts = value.split(/[ T]/);
-      if (parts[0]) setSelectedDate(parts[0]);
-      if (parts[1]) setSelectedTime(normalizeTimeTo24Hour(parts[1]));
-    } else {
-      setSelectedTime(null);
-    }
+    if (typeof window === 'undefined') return;
+    const parts = value ? value.split(/[ T]/) : [];
+    window.requestAnimationFrame(() => {
+      if (value) {
+        if (parts[0]) setSelectedDate(parts[0]);
+        if (parts[1]) setSelectedTime(normalizeTimeTo24Hour(parts[1]));
+      } else {
+        setSelectedTime(null);
+      }
+    });
   }, [value]);
 
   const { minDate, maxDate, hasOpenEndedSchedule } = useMemo(() => {
@@ -89,7 +92,10 @@ const SchedulerCalendar: React.FC<SchedulerCalendarProps> = ({ question, value, 
   // Only reset visibleMonth when the schedule range actually changes (e.g. question prop swapped)
   const firstVisibleMonthKey = firstVisibleMonth.format('YYYY-MM');
   useEffect(() => {
-    setVisibleMonth(dayjs(firstVisibleMonthKey, 'YYYY-MM').startOf('month'));
+    if (typeof window === 'undefined') return;
+    window.requestAnimationFrame(() => {
+      setVisibleMonth(dayjs(firstVisibleMonthKey, 'YYYY-MM').startOf('month'));
+    });
   }, [firstVisibleMonthKey]);
 
   const isActiveOnDate = useCallback((q: Question, date: dayjs.Dayjs): boolean => {

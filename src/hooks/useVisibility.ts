@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { first, isArray } from 'lodash';
 import { Section, Question, ProfileQuestionType } from '@/interfaces';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export function useVisibility(section: Section, values: any) {
   return useMemo(() => {
     const vis: Record<string, boolean> = {};

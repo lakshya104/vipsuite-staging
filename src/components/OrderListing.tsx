@@ -63,8 +63,8 @@ const OrderListing: React.FC<OrderListingProps> = ({ allOrders, totalPages, curr
                       ? order?.opportunity?.image?.sizes?.medium
                       : DefaultImageFallback.Placeholder;
             const isRelatedOpportunity = orderType === 'order' && !isEmpty(order?.line_items);
-            const metaTitle = order?.meta_data?.find((item) => item.key === 'post_title')?.value
-            const metaImage = order?.meta_data?.find((item) => item.key === 'post_image')?.value
+            const metaTitle = order?.meta_data?.find((item) => item.key === 'post_title')?.value;
+            const metaImage = order?.meta_data?.find((item) => item.key === 'post_image')?.value;
 
             return (
               <ProgressBarLink

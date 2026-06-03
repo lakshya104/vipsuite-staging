@@ -33,9 +33,9 @@ export interface ACF {
   contact_me_directly?: boolean;
   date_of_birth?: string;
   number_of_children?: string | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   examples_of_vip_managed?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   child_info?: any;
   associated_brands?: boolean;
   secondary_email?: string | null;

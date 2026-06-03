@@ -58,7 +58,7 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({ product, isUserAg
       </Box>
     ),
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const SliderComponent = Slider as unknown as React.ComponentType<any>;
 
   return (

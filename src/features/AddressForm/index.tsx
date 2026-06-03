@@ -121,7 +121,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ defaultValues, addressId, shi
                 <AutoCompleteSelector
                   countryCodeOptions={countryOptions}
                   options={[]}
-                  control={control}
+                  control={control as any}
                   name="country"
                   label={placeholder}
                 />

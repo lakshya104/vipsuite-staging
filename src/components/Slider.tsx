@@ -27,7 +27,7 @@ const ImageSlider: React.FC<SliderProps> = ({ item }) => {
       ? images
       : [item?.acf?.featured_image?.sizes['vs-container'] || DefaultImageFallback.LandscapePlaceholder];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const SliderComponent = Slider as unknown as React.ComponentType<any>;
   const settings = {
     dots: images.length > 1 && true,

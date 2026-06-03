@@ -146,7 +146,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmitDynamic = async (data: Record<string, any>, payloadWithVipData?: AgentVipsPayload) => {
     setIsPending(true);
     const updatedPayload = await Promise.all(
@@ -175,7 +175,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
     await handleForm(rsvp);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmitSimple = async (data: any) => {
     setIsPending(true);
     const payloadWithVipData = {
@@ -299,7 +299,7 @@ const OpportunityDetailsCard: React.FC<OpportunityDetailsCardProps> = ({ opportu
             {showVipOptions && (
               <VipOrderForm
                 clearErrors={clearErrors}
-                control={control}
+                control={control as any}
                 errors={errors}
                 handleVipSchemas={handleVipSchemas}
                 vipOptions={vipOptions}

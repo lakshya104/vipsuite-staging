@@ -123,7 +123,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({
       {},
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const createOrder = async (item: any, payloadWithQuestionsData?: any, payloadWithVipData?: AgentVipsPayload) => {
     clearAllRequestStore();
     startTransition(async () => {
@@ -247,7 +247,7 @@ const ItemRequestForm: React.FC<ItemRequestFormProps> = ({
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmit = async (data: any) => {
     const payloadWithQuestionsData =
       product?.questions &&

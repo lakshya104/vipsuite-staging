@@ -50,7 +50,7 @@ export interface PageData {
 
 export interface CTA {
   cta_type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   link: any;
   cta_page: string | null;
   cta_url: string;

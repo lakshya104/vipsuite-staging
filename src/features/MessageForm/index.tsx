@@ -71,7 +71,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ orderId }) => {
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const getErrorMessage = (error: any): string => {
     if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
       return error.message;

@@ -17,14 +17,14 @@ interface VipSchemas {
 }
 
 interface VipOrderFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   control: Control<any>;
   errors: FieldErrors;
   vipsLoading: boolean;
   vipOptions: VipOption[];
   // eslint-disable-next-line no-unused-vars
   handleVipSchemas: (schemas: VipSchemas) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   clearErrors: any;
 }
 

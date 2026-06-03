@@ -77,7 +77,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
     openToaster(message);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmit = (data: any) => {
     const payloadWithVipData = {
       ...(isUserAgent && {
@@ -104,7 +104,7 @@ const EventsDialog: React.FC<EventsDialogProps> = ({ event, isUserAgent, vipOpti
           {isUserAgent && (
             <VipOrderForm
               clearErrors={clearErrors}
-              control={control}
+              control={control as any}
               errors={errors}
               handleVipSchemas={handleVipSchemas}
               vipOptions={vipOptions}

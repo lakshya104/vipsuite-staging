@@ -32,6 +32,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ item }) => {
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsClient(true);
   }, []);
 

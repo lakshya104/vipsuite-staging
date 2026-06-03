@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+ 
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -14,11 +14,7 @@ const aasaLinks = {
         appID: `${teamId}.${packageName}`,
         components: [
           {
-            '/': '/reset-password',
-            query: {
-              tnxref: '?*',
-              status: '?*',
-            },
+            '/': '*',
           },
         ],
       },

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { GetMessageCount, LastLogin } from '@/libs/api-manager/manager';
 import { useMessageCountStore, useUserStatusStore } from '@/store/useStore';
 
@@ -8,9 +8,7 @@ const StatusUpdate = () => {
   const { setMessageCount } = useMessageCountStore();
   const isUpdatingRef = useRef(false);
 
-  const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
-
-  const updateStatus = async () => {
+  const updateStatus = useCallback(async () => {
     if (isUpdatingRef.current) {
       console.log('Update already in progress, skipping...');
       return;
@@ -35,14 +33,13 @@ const StatusUpdate = () => {
     } finally {
       isUpdatingRef.current = false;
     }
-  };
+  }, [shouldUpdate, setLastUpdateTime, setMessageCount]);
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     updateStatus();
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible' && !isUpdatingRef.current) {
-        // Add a small delay to avoid immediate duplicate calls
         setTimeout(() => {
           if (document.visibilityState === 'visible') {
             updateStatus();
@@ -50,6 +47,7 @@ const StatusUpdate = () => {
         }, 1000);
       }
     };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
     const intervalId = setInterval(updateStatus, 5 * 60 * 1000);
 
@@ -57,7 +55,7 @@ const StatusUpdate = () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       clearInterval(intervalId);
     };
-  }, [shouldUpdate, setLastUpdateTime]);
+  }, [updateStatus]);
 
   return null;
 };

@@ -19,60 +19,75 @@ export default async function HomeSectionLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let session;
+  let cookieStore: Awaited<ReturnType<typeof cookies>> | undefined;
+  let caughtError: unknown = undefined;
+
   try {
-    const [session, cookieStore] = await Promise.all([GetSession(), cookies()]);
-    const isSkipped = cookieStore.get(CookieName.SkipProfile);
-    const isVipAdded = cookieStore.get(CookieName.VipAdded);
-    const isProfileCompleted = cookieStore.get(CookieName.ProfileCompleted);
-    const {
-      role,
-      is_profile_builder_progressed = 0,
-      first_name,
-      token,
-      email,
-      profile_id,
-      last_login_at = '',
-      brand_name,
-      is_profile_completed = 0,
-      vip_profiles_count = 0,
-    } = session ?? {};
-
-    if (role === UserRole.Vip) {
-      if (!isSkipped && is_profile_builder_progressed !== 1) {
-        return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
-      }
-      if (is_profile_completed !== 1 && !isProfileCompleted) {
-        redirect(paths.root.vipProfileBuilder.getHref());
-      }
-    }
-
-    if (!isSkipped && role === UserRole.Brand && !last_login_at.length) {
-      return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
-    }
-
-    if (role === UserRole.Agent) {
-      if (!isSkipped && !last_login_at.length) {
-        return <ApplicationAcceptedDialog name={first_name} role={role} brandName={brand_name} />;
-      } else if (!isVipAdded) {
-        if (vip_profiles_count === 0) {
-          redirect(paths.root.agentProfileBuilder.getHref());
-        }
-      }
-    }
-
-    return (
-      <>
-        <StatusUpdate />
-        <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={profile_id} />
-        <HomeHeader role={role} />
-        <ProgressProvider color="black"> {children}</ProgressProvider>
-        <HomeFooter role={role} />
-      </>
-    );
+    const sessionPromise = GetSession();
+    cookieStore = await cookies();
+    session = await sessionPromise;
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
     }
-    return <ErrorHandler errMessage={en.common.somethingWentWrongMessage} error={error} />;
+    caughtError = error;
   }
+
+  if (caughtError || !cookieStore) {
+    return <ErrorHandler errMessage={en.common.somethingWentWrongMessage} error={caughtError} />;
+  }
+
+  const isSkipped = cookieStore.get(CookieName.SkipProfile);
+  const isVipAdded = cookieStore.get(CookieName.VipAdded);
+  const isProfileCompleted = cookieStore.get(CookieName.ProfileCompleted);
+  const {
+    role,
+    is_profile_builder_progressed = 0,
+    first_name,
+    token,
+    email,
+    profile_id,
+    last_login_at = '',
+    brand_name,
+    is_profile_completed = 0,
+    vip_profiles_count = 0,
+  } = session ?? {};
+
+  if (!role || !token || !email || typeof profile_id !== 'number') {
+    return <ErrorHandler errMessage={en.common.somethingWentWrongMessage} error={new Error('Invalid session data')} />;
+  }
+
+  if (role === UserRole.Vip) {
+    if (!isSkipped && is_profile_builder_progressed !== 1) {
+      return <ApplicationAcceptedDialog name={first_name ?? ''} role={role} brandName={brand_name ?? ''} />;
+    }
+    if (is_profile_completed !== 1 && !isProfileCompleted) {
+      redirect(paths.root.vipProfileBuilder.getHref());
+    }
+  }
+
+  if (!isSkipped && role === UserRole.Brand && !last_login_at.length) {
+    return <ApplicationAcceptedDialog name={first_name ?? ''} role={role} brandName={brand_name ?? ''} />;
+  }
+
+  if (role === UserRole.Agent) {
+    if (!isSkipped && !last_login_at.length) {
+      return <ApplicationAcceptedDialog name={first_name ?? ''} role={role} brandName={brand_name ?? ''} />;
+    } else if (!isVipAdded) {
+      if (vip_profiles_count === 0) {
+        redirect(paths.root.agentProfileBuilder.getHref());
+      }
+    }
+  }
+
+  return (
+    <>
+      <StatusUpdate />
+      <StoreUserDetails token={token} userEmail={email} userRole={role} vipId={profile_id} />
+      <HomeHeader role={role} />
+      <ProgressProvider color="black"> {children}</ProgressProvider>
+      <HomeFooter role={role} />
+    </>
+  );
 }

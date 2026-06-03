@@ -19,7 +19,7 @@ import SchedulerCalendar from './SchedulerCalendar';
 interface RenderQuestionsProps {
   questions: Question[];
   control: Control;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   errors: any;
   fileName: string | null;
   setFileName: React.Dispatch<React.SetStateAction<string | null>>;
@@ -34,7 +34,7 @@ const RenderQuestions: React.FC<RenderQuestionsProps> = ({
   setFileName,
   noHeading = false,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const handleCheckboxChange = (field: any, value: string) => {
     const newValue = field.value.includes(value)
       ? field.value.filter((item: string) => item !== value)

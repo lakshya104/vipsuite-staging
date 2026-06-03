@@ -21,23 +21,31 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
   const { editVipId, shouldVipEdit } = useEditVipIdStore();
   const [id, setId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(incompleteVipId && isIncompleteEditVip ? true : false);
-  const [isHydrated, setIsHydrated] = useState<boolean>(false);
+  const [isHydrated, setIsHydrated] = useState<boolean>(() => useEditVipIdStore.persist.hasHydrated());
+
+  const fetchVipProfile = async (profileId: number) => {
+    setIsLoading(true);
+    try {
+      const response: UserProfile = await GetEditVipProfile(token, profileId);
+      setProfileDetail(response?.acf);
+    } catch {
+      setProfileDetail({ first_name: '', last_name: '' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const unsubHydrate = useEditVipIdStore.persist.onFinishHydration(() => {
       setIsHydrated(true);
     });
 
-    // If already hydrated, set immediately
-    if (useEditVipIdStore.persist.hasHydrated()) {
-      setIsHydrated(true);
-    }
-
     return () => unsubHydrate();
   }, []);
 
   useEffect(() => {
     if (!isHydrated) return;
+
     const initializeProfile = async () => {
       if ((isEditVip || shouldVipEdit) && editVipId) {
         const numericId = Number(editVipId);
@@ -62,17 +70,6 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [incompleteVipId, isIncompleteEditVip]);
 
-  const fetchVipProfile = async (profileId: number) => {
-    setIsLoading(true);
-    try {
-      const response: UserProfile = await GetEditVipProfile(token, profileId);
-      setProfileDetail(response?.acf);
-    } catch {
-      setProfileDetail({ first_name: '', last_name: '' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
   if (!isHydrated || isLoading) {
     return <CustomLoader />;
   }

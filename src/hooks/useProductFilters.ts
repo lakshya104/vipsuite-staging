@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { first, nth, take } from 'lodash';
 import * as z from 'zod';
 
@@ -11,27 +11,24 @@ export const useProductFilters = (product?: Product) => {
 
   const [selectedFilters, setSelectedFilters] = useState<FilterDropdown[]>([]);
 
-  const [dropdowns, setDropdowns] = useState<FilterDropdown[][]>([]);
+  const dropdowns = useMemo(() => {
+    const baseDropdown = getAttributes(productVariations, [], first(product_attributes)?.name);
+    if (!baseDropdown) return [];
 
-  useEffect(() => {
-    const firstDropDown = getAttributes(productVariations, [], first(product_attributes)?.name);
-
-    if (firstDropDown) {
-      setDropdowns([firstDropDown]);
+    const result: FilterDropdown[][] = [baseDropdown];
+    for (let index = 0; index < selectedFilters.length; index += 1) {
+      const nextIndex = index + 1;
+      const nextDropdown = getAttributes(productVariations, [...take(selectedFilters, nextIndex)], nth(product_attributes, nextIndex)?.name);
+      if (!nextDropdown) break;
+      result.push(nextDropdown);
     }
-  }, [product_attributes, productVariations]);
+
+    return result;
+  }, [productVariations, product_attributes, selectedFilters]);
 
   const onChangeDropDown = (selectedFilter: FilterDropdown, index: number) => {
     const newSelectedFilters = [...take(selectedFilters, index), selectedFilter];
-
-    const nextIndex = index + 1;
-
-    const nextDropdown = getAttributes(productVariations, newSelectedFilters, nth(product_attributes, nextIndex)?.name);
-
-    const newDropdowns = [...take(dropdowns, nextIndex), ...(nextDropdown ? [nextDropdown] : [])];
-
     setSelectedFilters(newSelectedFilters);
-    setDropdowns(newDropdowns);
   };
 
   const formSchema = useMemo(() => {
@@ -48,7 +45,6 @@ export const useProductFilters = (product?: Product) => {
           })
           .min(1, en.common.fieldErrorMessage);
         return acc;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }, {} as any),
     );
   }, [dropdowns]);

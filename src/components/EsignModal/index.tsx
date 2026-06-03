@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef } from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ 
 // @ts-expect-error
 import SignatureCanvas from 'react-signature-canvas';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, IconButton, Typography } from '@mui/material';

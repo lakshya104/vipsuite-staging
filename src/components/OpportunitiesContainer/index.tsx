@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback, useTransition } from 'react';
+import React, { useState, useCallback, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { isEmpty } from 'lodash';
 import { Box, CircularProgress, Backdrop, Grid2, Typography, Skeleton } from '@mui/material';
@@ -26,15 +26,9 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
   const isSearchApplied = searchParams.get('search');
   const [searchQuery, setSearchQuery] = useState<string>(isSearchApplied ? isSearchApplied : '');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const selectedCategoryId = isFilterApplied ? parseInt(isFilterApplied) : null;
   const [debouncedSearchQuery] = useDebounce(searchQuery, 750);
   const [isClearing, setIsClearing] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!selectedCategoryId && isFilterApplied) {
-      setSelectedCategoryId(parseInt(isFilterApplied));
-    }
-  }, [selectedCategoryId, isFilterApplied]);
 
   useUpdateEffect(() => {
     try {
@@ -53,11 +47,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
     }
   }, [debouncedSearchQuery, router]);
 
-  useEffect(() => {
-    if (!isFilterApplied) {
-      setSelectedCategoryId(null);
-    }
-  }, [isFilterApplied]);
 
   const handleFilter = (categoryId: number) => {
     try {
@@ -67,7 +56,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
       if (newCategoryId === null) {
         clearFilter();
       } else {
-        setSelectedCategoryId(newCategoryId);
         startTransition(() => {
           const params = new URLSearchParams(searchParams.toString());
           if (newCategoryId) {
@@ -90,7 +78,6 @@ const OpportunitiesContainer: React.FC<OpportunitiesContainerProps> = ({ opportu
         const params = new URLSearchParams(searchParams.toString());
         params.delete('opportunityCategory');
         router.push(`?${params.toString()}`);
-        setSelectedCategoryId(null);
         setIsFilterOpen(false);
       });
     } catch (error) {

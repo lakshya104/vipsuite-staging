@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 'use client';
 import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
@@ -182,6 +182,7 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
   }, [hydrated, clearInstaInfo, clearTiktokInfo]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSocialLinks({
       instagram_handle: get(profileDetails, 'acf.instagram_handle', '') || '',
       tiktok_handle: get(profileDetails, 'acf.tiktok_handle', '') || '',
@@ -208,13 +209,6 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     }, 500);
   }, [setInstaHydrated, setTiktokHydrated]);
 
-  useEffect(() => {
-    if (instaInfo.username) {
-      updateInstagramHandle(instaInfo.username);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [instaInfo.username]);
-
   const updateInstagramHandle = (username: string) => {
     reset((prevValues) => ({
       ...prevValues,
@@ -222,19 +216,26 @@ export const SocialComponent: React.FC<ProfileComponentProps> = ({ profileDetail
     }));
   };
 
-  useEffect(() => {
-    if (tiktokInfo.username) {
-      updateTiktokHandle(tiktokInfo.username);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tiktokInfo.username]);
-
   const updateTiktokHandle = (username: string) => {
     reset((prevValues) => ({
       ...prevValues,
       tiktok_handle: username,
     }));
   };
+
+  useEffect(() => {
+    if (instaInfo.username) {
+      updateInstagramHandle(instaInfo.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instaInfo.username]);
+
+  useEffect(() => {
+    if (tiktokInfo.username) {
+      updateTiktokHandle(tiktokInfo.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tiktokInfo.username]);
 
   // const openInstagramAuth = () => {
   //   const width = 600;

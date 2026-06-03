@@ -22,7 +22,7 @@ Instance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 async function handleAxiosResponseError(error: any) {
   console.error(
     'Unexpected server error :',

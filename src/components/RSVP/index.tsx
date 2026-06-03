@@ -111,7 +111,7 @@ const RSVP: React.FC<RSVPProps> = ({
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmitDynamic = async (data: any) => {
     setIsPending(true);
     const updatedPayload = await Promise.all(

@@ -39,34 +39,6 @@ const VipSignupForm = () => {
   const { tiktokInfo, clearAll: clearTiktokData } = useTiktokInfo();
   const [toasterType, setToasterType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
-  useEffect(() => {
-    if (instaInfo.username) {
-      updateInstagramHandle(instaInfo.username);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [instaInfo.username]);
-
-  const updateInstagramHandle = (username: string) => {
-    reset((prevValues) => ({
-      ...prevValues,
-      instagram_handle: username,
-    }));
-  };
-
-  useEffect(() => {
-    if (tiktokInfo.username) {
-      updateTiktokHandle(tiktokInfo.username);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tiktokInfo.username]);
-
-  const updateTiktokHandle = (username: string) => {
-    reset((prevValues) => ({
-      ...prevValues,
-      tiktok_handle: username,
-    }));
-  };
-
   const {
     control,
     handleSubmit,
@@ -76,6 +48,34 @@ const VipSignupForm = () => {
     resolver: zodResolver(VipSignupSchema),
     defaultValues: defaultValues,
   });
+
+  const updateInstagramHandle = (username: string) => {
+    reset((prevValues) => ({
+      ...prevValues,
+      instagram_handle: username,
+    }));
+  };
+
+  const updateTiktokHandle = (username: string) => {
+    reset((prevValues) => ({
+      ...prevValues,
+      tiktok_handle: username,
+    }));
+  };
+
+  useEffect(() => {
+    if (instaInfo.username) {
+      updateInstagramHandle(instaInfo.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instaInfo.username]);
+
+  useEffect(() => {
+    if (tiktokInfo.username) {
+      updateTiktokHandle(tiktokInfo.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tiktokInfo.username]);
 
   const clearInstaInfo = useInstaInfo((state) => state.clearAll);
   const clearTiktokInfo = useTiktokInfo((state) => state.clearAll);

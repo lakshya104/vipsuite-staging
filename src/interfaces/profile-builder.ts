@@ -20,7 +20,7 @@ export interface ProfileBuilderOptions {
 
 export interface ProfileBuilderStepsProps {
   profileDetail: ACF;
-  // eslint-disable-next-line no-unused-vars
+   
   onNext: (profileDetail: ACF) => void;
   onPrev: () => void;
   id: number;

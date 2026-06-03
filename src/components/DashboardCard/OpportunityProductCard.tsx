@@ -28,6 +28,7 @@ const OpportunityProductCard: React.FC<OpportunityProductCardProps> = ({
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsClient(true);
   }, []);
   const href = paths.root.productDetails.getHref(oppId, id);

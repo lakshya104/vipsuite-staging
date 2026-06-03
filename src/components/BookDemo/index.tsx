@@ -70,7 +70,7 @@ const BookDemo: React.FC<BookDemoProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmit = async (data: any) => {
     startTransition(async () => {
       try {

@@ -21,7 +21,7 @@ const OrderItem: React.FC<OrderItemProps> = ({
   title = '',
   createdFor,
   brandName,
-  metaImage
+  metaImage,
 }) => {
   return (
     <Box className="order-product__item" key={item?.id} display={'flex'}>

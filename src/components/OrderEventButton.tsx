@@ -58,7 +58,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
       vip_profile_names: '',
     },
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmitSimple = async (data: any) => {
     const payloadWithVipData = {
       ...(isUserAgent && {
@@ -108,7 +108,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
       reader.onerror = (error) => reject(error);
     });
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const onSubmitDynamic = async (data: any) => {
     setIsPending(true);
     const updatedPayload = await Promise.all(
@@ -157,7 +157,7 @@ const OrderEventButton: React.FC<OrderEventButtonProps> = ({
       {isUserAgent && (
         <VipOrderForm
           clearErrors={clearErrors}
-          control={control}
+          control={control as any}
           errors={errors}
           handleVipSchemas={handleVipSchemas}
           vipOptions={vipOptions}

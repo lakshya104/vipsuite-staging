@@ -1,50 +1,52 @@
 ### What is this repository for?
 
-- Quick summary: This repo is being used as front end for VIP SUIT
+- Quick summary: This repo is the front-end application for VIP SUIT.
 
-### How do I get set up?
+### Getting started
 
-## Installation
+## Prerequisites
 
-# Installation of git
+- Node.js: `24.16.0`
+- Yarn: `4.16.0`
+- Use `yarn` only not npm.
 
-    - Install git in system.
-    - clone the project from gitlab repo
-    - set up git flow :
-        - command to install git flow in linux :  sudo apt-get install git-flow
-        - start git flow using : git flow init
-    - switch to develop branch
-        - command : git checkout develop
+This repo includes `.nvmrc` to pin the required Node version.
 
-# Installation of nodejs
+## Install dependencies
 
-    - Install nodejs in system.
-    - Node version: 22.12.0
+Use Yarn only. npm installs are disabled for this repository.
 
-# Installation of yarn
+```bash
+cd vipsuit-frontend
+yarn install
+```
 
-    - Install yarn based on platform:
-        a. Mac : brew install yarn
+If you have not run `yarn install` before, this will also install Husky hooks.
 
-        b. linux: run following commands :
-            - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-            - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-            - sudo apt-get update && sudo apt-get install yarn
+## Run the development server
 
-    - Yarn version: 1.22.22
+```bash
+yarn dev
+```
 
-# Run the server :
+## Git hooks and commit checks
 
-    run below command to run development server:
-        - if you are running first time : yarn install && yarn run dev
-        - If you are not running first time : yarn run dev
+This project uses Husky and `lint-staged` with a strict commit pipeline.
 
-# Setup Git Hooks
+- `yarn prepare` installs Husky hooks
+- Pre-commit runs:
+  - `lint-staged` for staged files
+  - TypeScript type checking via `yarn typecheck`
 
-    To install pre-commit hooks that run linting and formatting:
-        - Run: ./scripts/setup-hooks.sh
+## Important repository settings
 
-    This will install a pre-commit hook that:
-        - Runs yarn lint (with --ignore-engines for Node version compatibility)
-        - Runs yarn format (with --ignore-engines for Node version compatibility)
-        - Automatically adds formatted files to the commit
+- `.nvmrc` defines the required Node version: `24.16.0`
+- `.npmrc` disables npm package-lock usage and enforces strict engines
+- `.yarnrc.yml` enables strict engine enforcement for Node/Yarn compatibility
+- `package.json` has `packageManager: "yarn@4.16.0"`
+
+## Notes
+
+- Always run `yarn install`, not `npm install`.
+- If you need to change Node versions, use `nvm use` before running Yarn.
+- If Husky hooks are not installed, run `yarn prepare`.

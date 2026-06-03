@@ -13,7 +13,7 @@ import { Control, Controller } from 'react-hook-form';
 import CheckIcon from '@mui/icons-material/Check';
 
 interface AutoCompleteSelectorProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   control: Control<any>;
   name: string;
   label: string;

@@ -34,8 +34,8 @@ const OrderDetailsContainer: React.FC<OrderDetailsContainerProps> = ({ orderDeta
     orderStatus === 'rsvp' ||
     orderStatus === 'lookbook' ||
     (orderStatus === 'product' && isEmpty(orderDetail?.line_items));
-  const metaTitle = orderDetail?.meta_data?.find((item) => item.key === 'post_title')?.value
-  const metaImage = orderDetail?.meta_data?.find((item) => item.key === 'post_image')?.value
+  const metaTitle = orderDetail?.meta_data?.find((item) => item.key === 'post_title')?.value;
+  const metaImage = orderDetail?.meta_data?.find((item) => item.key === 'post_image')?.value;
 
   const formatAnswer = (q: Question): { title: string; answer: string; type?: string } | null => {
     if (!q.answer) return null;
