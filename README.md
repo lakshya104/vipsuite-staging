@@ -6,7 +6,7 @@
 
 ## Prerequisites
 
-- Node.js: `24.16.0`
+- Node.js: `24.15.0`
 - Yarn: `4.16.0`
 - Use `yarn` only not npm.
 
