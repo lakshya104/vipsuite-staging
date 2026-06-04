@@ -6,7 +6,7 @@
     "dev": "next dev",
     "generate:assetlinks": "node scripts/generateAssetlinks.js && node scripts/generateAppleAppSiteAssociation.js",
     "generate:robotstxt": "node scripts/generateRobots.js",
-    "build": "yarn generate:assetlinks && yarn generate:robotstxt && next build",
+    "build": "yarn generate:assetlinks && yarn generate:robotstxt && corepack enable && next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
@@ -14,8 +14,7 @@
     "format:check": "npx prettier --check .",
     "typecheck": "tsc --noEmit",
     "lint-staged": "lint-staged",
-    "prepare": "husky install",
-    "vercel-build": "corepack enable && yarn build"
+    "prepare": "husky install"
   },
   "engines": {
     "node": "24.x",
