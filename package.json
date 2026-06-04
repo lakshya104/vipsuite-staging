@@ -6,7 +6,7 @@
     "dev": "next dev",
     "generate:assetlinks": "node scripts/generateAssetlinks.js && node scripts/generateAppleAppSiteAssociation.js",
     "generate:robotstxt": "node scripts/generateRobots.js",
-    "build": "yarn generate:assetlinks && yarn generate:robotstxt && corepack enable && next build",
+    "build": "yarn generate:assetlinks && yarn generate:robotstxt && next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
