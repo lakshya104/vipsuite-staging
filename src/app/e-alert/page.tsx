@@ -4,6 +4,13 @@ import Image from 'next/image';
 import AndroidIcon from '@mui/icons-material/Android';
 import AppleIcon from '@mui/icons-material/Apple';
 
+const playStoreUrl =
+  process.env.NEXT_PUBLIC_PLAY_STORE_URL ||
+  'https://play.google.com/store/apps/details?id=co.uk.thevipsuite';
+const appStoreUrl =
+  process.env.NEXT_PUBLIC_APP_STORE_URL ||
+  'https://apps.apple.com/us/app/the-vip-suite/id6744161390';
+
 export default async function Page() {
   return (
     <Box
@@ -37,10 +44,14 @@ export default async function Page() {
           flexDirection={{ xs: 'column', md: 'row' }}
         >
           <Button variant="outlined" startIcon={<AndroidIcon />}>
-            <a href="https://play.google.com/store/apps/details?id=co.uk.thevipsuite.predev">Download for Android</a>
+            <a href={playStoreUrl} target="_blank" rel="noopener noreferrer">
+              Download for Android
+            </a>
           </Button>
           <Button variant="outlined" startIcon={<AppleIcon />}>
-            <a href="https://apps.apple.com/app/idco.uk.thevipsuite.predev">Download for iOS</a>
+            <a href={appStoreUrl} target="_blank" rel="noopener noreferrer">
+              Download for iOS
+            </a>
           </Button>
         </Box>
       </Box>

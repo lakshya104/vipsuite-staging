@@ -1,0 +1,20 @@
+# Pre-commit hook that runs yarn lint and yarn format
+# Exit with non-zero status if any command fails
+
+echo "Running pre-commit checks..."
+
+# Run lint-staged on staged files
+echo "Running yarn lint-staged..."
+if ! yarn run lint-staged; then
+    echo "yarn lint-staged failed. Commit aborted."
+    exit 1
+fi
+
+# Run TypeScript typecheck
+echo "Running yarn typecheck..."
+if ! yarn run typecheck; then
+    echo "yarn typecheck failed. Commit aborted."
+    exit 1
+fi
+
+echo "Pre-commit checks passed!"

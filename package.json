@@ -3,7 +3,6 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "preinstall": "node -e \"const ua = process.env.npm_config_user_agent; if (ua && ua.startsWith('npm')) { console.error('npm install is disabled for this repo. Use yarn only.'); process.exit(1); }\"",
     "dev": "next dev",
     "generate:assetlinks": "node scripts/generateAssetlinks.js && node scripts/generateAppleAppSiteAssociation.js",
     "generate:robotstxt": "node scripts/generateRobots.js",
