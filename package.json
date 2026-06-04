@@ -14,11 +14,11 @@
     "format:check": "npx prettier --check .",
     "typecheck": "tsc --noEmit",
     "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "husky"
   },
   "engines": {
-    "node": "24.x",
-    "yarn": "4.x"
+    "node": "24.x"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
