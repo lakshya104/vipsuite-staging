@@ -1,10 +1,14 @@
- 
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
 const packageName = process.env.NEXT_PUBLIC_APP_PACKAGE_NAME || 'com.vip.app';
-const shaKey = process.env.NEXT_PUBLIC_ANDROID_SHA_KEY || 'shaKey';
+const signingShaKey = process.env.NEXT_PUBLIC_ANDROID_SIGNING_SHA_KEY || 'shaKey';
+const uploadShaKey = process.env.NEXT_PUBLIC_ANDROID_UPLOAD_SHA_KEY;
+let shaKeys = [signingShaKey];
+if (uploadShaKey) {
+  shaKeys.push(uploadShaKey);
+}
 
 const assetlinks = [
   {
@@ -12,7 +16,7 @@ const assetlinks = [
     target: {
       namespace: 'android_app',
       package_name: packageName,
-      sha256_cert_fingerprints: [shaKey],
+      sha256_cert_fingerprints: shaKeys,
     },
   },
 ];
@@ -25,4 +29,4 @@ if (!fs.existsSync(targetDir)) {
 }
 
 fs.writeFileSync(targetFile, JSON.stringify(assetlinks, null, 2));
-console.log(`assetlinks.json generated with package: ${packageName} and shaKey: ${shaKey}`);
+console.log(`assetlinks.json generated with package: ${packageName} and signing SHA key: ${signingShaKey}`);

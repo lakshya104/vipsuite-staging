@@ -7,6 +7,7 @@ import Toaster from './Toaster';
 import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
 import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
 const SignoutBtn = () => {
   const [isPending, startTransition] = useTransition();
@@ -16,18 +17,21 @@ const SignoutBtn = () => {
   const { clearAll } = useUserStatusStore();
   const { setMessageCount } = useMessageCountStore();
   const handleLogout = async () => {
-    try {
-      startTransition(async () => {
+    startTransition(async () => {
+      try {
         await LogOut();
-        await signOutAction();
         setMessageCount(0);
         clearAll();
         clearInstaInfo();
         clearTiktokInfo();
-      });
-    } catch (error) {
-      openToaster(en.signOutButton.errorMessage + error);
-    }
+        await signOutAction();
+      } catch (error) {
+        if (isRedirectError(error)) {
+          throw error;
+        }
+        openToaster(en.signOutButton.errorMessage + error);
+      }
+    });
   };
   return (
     <>

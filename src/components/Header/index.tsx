@@ -23,6 +23,7 @@ import Toaster from '../Toaster';
 import { UserRole } from '@/helpers/enums';
 import { deleteVipCookies, signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { paths } from '@/helpers/paths';
 import en from '@/helpers/lang';
 import {
@@ -101,6 +102,9 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       await deleteVipCookies();
       await signOutAction();
     } catch (error) {
+      if (isRedirectError(error)) {
+        throw error;
+      }
       console.error('Error during logging out. ' + error);
       setIsPending(false);
     } finally {
@@ -119,8 +123,15 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       setToasterType('success');
       openToaster(response.message || en.profilePage.profileTabs.contacts.successAccountDelete);
       setTimeout(async () => {
-        await signOutAction();
-        clearAll();
+        try {
+          clearAll();
+          await signOutAction();
+        } catch (error) {
+          if (isRedirectError(error)) {
+            throw error;
+          }
+          console.error('Error during deleting account. ' + error);
+        }
       }, 2000);
     } catch (error) {
       setToasterType('error');
