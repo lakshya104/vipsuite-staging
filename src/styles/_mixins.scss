@@ -247,7 +247,7 @@ $global-path: '../images';
 // Placeholder style
 // =======================================================
 @mixin optional-at-root($sel) {
-  @at-root #{if(not &, $sel, selector.append(&, $sel))} {
+  @at-root #{if(sass(not &): $sel; else: selector.append(&, $sel))} {
     @content;
   }
 }

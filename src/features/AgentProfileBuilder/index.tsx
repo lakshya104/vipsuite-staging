@@ -21,7 +21,7 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
   const { editVipId, shouldVipEdit } = useEditVipIdStore();
   const [id, setId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(incompleteVipId && isIncompleteEditVip ? true : false);
-  const [isHydrated, setIsHydrated] = useState<boolean>(() => useEditVipIdStore.persist.hasHydrated());
+  const [isHydrated, setIsHydrated] = useState<boolean>(false);
 
   const fetchVipProfile = async (profileId: number) => {
     setIsLoading(true);
@@ -36,6 +36,11 @@ const AgentProfileBuilder: React.FC<ProfileBuilderInterFace> = ({ token, profile
   };
 
   useEffect(() => {
+    if (useEditVipIdStore.persist.hasHydrated()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsHydrated(true);
+    }
+
     const unsubHydrate = useEditVipIdStore.persist.onFinishHydration(() => {
       setIsHydrated(true);
     });

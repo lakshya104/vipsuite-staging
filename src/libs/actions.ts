@@ -44,8 +44,59 @@ export const loginServerAction = async (values: LoginFormValues) => {
   }
 };
 
+const deleteCookie = (cookieStore: any, name: string) => {
+  // Clear the cookie for standard local development (HTTP)
+  cookieStore.delete({
+    name,
+    path: '/',
+  });
+
+  // Clear the cookie for secure environments (HTTPS / staging / production) with SameSite=None
+  cookieStore.delete({
+    name,
+    path: '/',
+    secure: true,
+    sameSite: 'none',
+  });
+
+  // Clear the cookie for secure environments with SameSite=Lax
+  cookieStore.delete({
+    name,
+    path: '/',
+    secure: true,
+    sameSite: 'lax',
+  });
+};
+
 export const signOutAction = async () => {
   await signOut({ redirect: false });
+  const cookieStore = await cookies();
+
+  // Explicitly clear session cookies to handle secure/HTTPS environments
+  const cookiesToClear = [
+    'authjs.session-token',
+    '__Secure-authjs.session-token',
+    'next-auth.session-token',
+    '__Secure-next-auth.session-token',
+    'authjs.callback-url',
+    '__Secure-authjs.callback-url',
+    'next-auth.callback-url',
+    '__Secure-next-auth.callback-url',
+    'authjs.csrf-token',
+    '__Secure-authjs.csrf-token',
+    'next-auth.csrf-token',
+    '__Secure-next-auth.csrf-token',
+  ];
+
+  cookiesToClear.forEach((cookie) => {
+    deleteCookie(cookieStore, cookie);
+  });
+
+  // Clear application specific cookies to remove all application data stored in cookies
+  Object.values(CookieName).forEach((cookie) => {
+    deleteCookie(cookieStore, cookie);
+  });
+
   redirect('/login');
 };
 
@@ -107,17 +158,15 @@ export async function createIncompleteVipIdCookie(vipId: string) {
 
 export async function deleteIncompleteVipCookie() {
   const cookieStore = await cookies();
-  cookieStore.delete(CookieName.IncompleteVipId);
+  deleteCookie(cookieStore, CookieName.IncompleteVipId);
 }
 
 export async function deleteVipCookies() {
   const cookieStore = await cookies();
-  await Promise.all([
-    cookieStore.delete(CookieName.SkipProfile),
-    cookieStore.delete(CookieName.ProfileCompleted),
-    cookieStore.delete(CookieName.VipAdded),
-    cookieStore.delete(CookieName.IncompleteVipId),
-  ]);
+  deleteCookie(cookieStore, CookieName.SkipProfile);
+  deleteCookie(cookieStore, CookieName.ProfileCompleted);
+  deleteCookie(cookieStore, CookieName.VipAdded);
+  deleteCookie(cookieStore, CookieName.IncompleteVipId);
 }
 
 export async function getAuthData() {

@@ -2,6 +2,9 @@ const nextConfig = require('eslint-config-next');
 const tsEslintPlugin = require('@typescript-eslint/eslint-plugin');
 
 module.exports = [
+  {
+    ignores: ['.yarn/**'],
+  },
   ...nextConfig,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],

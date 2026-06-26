@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { map } from 'lodash';
@@ -17,6 +17,13 @@ interface HomeFooterProps {
 const HomeFooter: React.FC<HomeFooterProps> = ({ role = UserRole.Vip }) => {
   const pathname = usePathname();
   const { messageCount } = useMessageCountStore();
+  const [isMounted, setIsMounted] = useState(false);
+  const displayMessageCount = isMounted ? messageCount : 0;
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+  }, []);
 
   const footerItems = role === UserRole.Brand ? brandFooterItems : vipFooterItems;
   return (
@@ -28,16 +35,16 @@ const HomeFooter: React.FC<HomeFooterProps> = ({ role = UserRole.Vip }) => {
             <ProgressBarLink href={item.href}>
               <Box
                 className={
-                  messageCount > 99
+                  displayMessageCount > 99
                     ? 'footer-menu__icon3'
-                    : messageCount > 9
+                    : displayMessageCount > 9
                       ? 'footer-menu__icon2'
                       : 'footer-menu__icon'
                 }
               >
                 <Image src={isActive ? item.srcselected : item.src} alt={item.alt} width={24} height={24} />
                 {(item.label === 'Inbox' || item.label === 'My Orders') && (
-                  <span className="label">{messageCount > 99 ? '99+' : messageCount}</span>
+                  <span className="label">{displayMessageCount > 99 ? '99+' : displayMessageCount}</span>
                 )}
               </Box>
               <Typography variant="caption">{item.label}</Typography>

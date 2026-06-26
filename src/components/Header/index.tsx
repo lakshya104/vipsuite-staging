@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   AppBar,
@@ -67,6 +67,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const { toasterOpen, error, openToaster, closeToaster } = UseToaster();
   const pathname = usePathname();
   const { messageCount } = useMessageCountStore();
+  const [isMounted, setIsMounted] = useState(false);
+  const displayMessageCount = isMounted ? messageCount : 0;
   const { clearAll } = useUserStatusStore();
   const { setMessageCount } = useMessageCountStore();
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
@@ -79,6 +81,12 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
   const { clearAll: clearUserInfo } = useUserInfoStore();
 
   const navLinks = role === UserRole.Brand ? brandNavLinks : vipNavLinks;
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+  }, []);
+
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
     setSettingsOpen(false);
@@ -194,7 +202,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                           sx={{
                             display: 'inline-block',
                             position: 'relative',
-                            marginLeft: messageCount > 99 ? '12px' : messageCount > 9 ? '4px' : '1px',
+                            marginLeft: displayMessageCount > 99 ? '12px' : displayMessageCount > 9 ? '4px' : '1px',
                             verticalAlign: 'top',
                           }}
                         >
@@ -216,7 +224,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
                               zIndex: 1,
                             }}
                           >
-                            {messageCount > 99 ? '99+' : messageCount}
+                            {displayMessageCount > 99 ? '99+' : displayMessageCount}
                           </Box>
                         </Box>
                       )}

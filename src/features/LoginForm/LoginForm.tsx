@@ -38,7 +38,6 @@ const LoginForm = () => {
       await deleteVipCookies();
     };
     deleteCookies();
-     
   }, []);
 
   useEffect(() => {
@@ -46,7 +45,6 @@ const LoginForm = () => {
       window.location.reload();
     }
   }, [tokenStore]);
-
 
   const {
     register,
@@ -141,7 +139,7 @@ const LoginForm = () => {
           </Link>
         </Typography>
       </Box>
-      <Button type="submit" disabled={isPending} fullWidth className="button button--white">
+      <Button type="submit" disabled={isPending} fullWidth className="button button--white" suppressHydrationWarning>
         {isPending ? en.helperText.loading : en.helperText.continue}
       </Button>
       <Typography className="signup-text">

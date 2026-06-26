@@ -1,5 +1,3 @@
-export const publicRoutes = ['/', '/comingsoon'];
-
 export const authRoutes = [
   '/login',
   '/forgot-password',
