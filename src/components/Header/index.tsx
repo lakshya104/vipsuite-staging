@@ -108,6 +108,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       clearUserInfo();
       clearAll();
       await deleteVipCookies();
+      localStorage.clear();
+      sessionStorage.clear();
       await signOutAction();
     } catch (error) {
       if (isRedirectError(error)) {
@@ -133,6 +135,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       setTimeout(async () => {
         try {
           clearAll();
+          localStorage.clear();
+          sessionStorage.clear();
           await signOutAction();
         } catch (error) {
           if (isRedirectError(error)) {

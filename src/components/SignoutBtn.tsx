@@ -24,6 +24,8 @@ const SignoutBtn = () => {
         clearAll();
         clearInstaInfo();
         clearTiktokInfo();
+        localStorage.clear();
+        sessionStorage.clear();
         await signOutAction();
       } catch (error) {
         if (isRedirectError(error)) {

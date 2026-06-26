@@ -33,6 +33,8 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
       clearAll();
       clearUserInfo();
       await deleteVipCookies();
+      localStorage.clear();
+      sessionStorage.clear();
       signOut({
         callbackUrl: withSearchParams(() => paths.auth.login.getHref(), {
           'token-expired': 'true',
