@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { AuthError } from 'next-auth';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { redirect } from 'next/navigation';
-import { signIn, signOut } from '@/auth';
+import { signIn } from '@/auth';
 import { LoginFormValues, LoginSchema } from '@/features/LoginForm/loginTypes';
 import { cookies } from 'next/headers';
 import { GetSession } from './api-manager/manager';
@@ -69,7 +69,6 @@ const deleteCookie = (cookieStore: any, name: string) => {
 };
 
 export const signOutAction = async () => {
-  await signOut({ redirect: false });
   const cookieStore = await cookies();
 
   // Explicitly clear session cookies to handle secure/HTTPS environments

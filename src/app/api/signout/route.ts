@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { signOut } from '@/auth';
 import { CookieName } from '@/helpers/enums';
 
 async function handleSignout(request: NextRequest) {
-  // 1. Sign out NextAuth session on the server side
-  try {
-    await signOut({ redirect: false });
-  } catch (error) {
-    console.error('Error signing out session:', error);
-  }
-
   // 2. Explicitly clear all cookies via Next.js cookie store as a fallback
   const cookieStore = await cookies();
   const cookiesToClear = [
