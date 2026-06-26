@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { signOut } from '@/auth';
 import { CookieName } from '@/helpers/enums';
 
-export async function GET(request: NextRequest) {
+async function handleSignout(request: NextRequest) {
   // 1. Sign out NextAuth session on the server side
   try {
     await signOut({ redirect: false });
@@ -44,4 +44,12 @@ export async function GET(request: NextRequest) {
   response.headers.set('Clear-Site-Data', '"*"');
 
   return response;
+}
+
+export async function GET(request: NextRequest) {
+  return handleSignout(request);
+}
+
+export async function POST(request: NextRequest) {
+  return handleSignout(request);
 }
