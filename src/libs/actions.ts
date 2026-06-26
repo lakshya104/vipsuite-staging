@@ -96,7 +96,7 @@ export const signOutAction = async () => {
     deleteCookie(cookieStore, cookie);
   });
 
-  redirect('/api/signout');
+  redirect('/login');
 };
 
 export default async function revalidatePathAction(path: string) {

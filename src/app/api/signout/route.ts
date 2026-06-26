@@ -29,8 +29,8 @@ async function handleSignout(request: NextRequest) {
   cookiesToClear.forEach(deleteCookie);
   Object.values(CookieName).forEach(deleteCookie);
 
-  // 3. Create redirect response to /login
-  const response = NextResponse.redirect(new URL('/login', request.url));
+  // 3. Create redirect response to /login using 303 (See Other) so browser always uses GET
+  const response = NextResponse.redirect(new URL('/login', request.url), { status: 303 });
 
   // 4. Set the Clear-Site-Data header to clear cookies, storage, and cache
   response.headers.set('Clear-Site-Data', '"*"');

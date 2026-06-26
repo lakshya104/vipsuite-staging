@@ -12,8 +12,9 @@ interface FooterProps {
   footerItems: WebsiteContent;
 }
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 const Footer: React.FC<FooterProps> = ({ footerItems }) => {
-  const currentYear = new Date().getFullYear();
   return (
     <Box className="site-footer" component="footer">
       <Container>
@@ -111,7 +112,7 @@ const Footer: React.FC<FooterProps> = ({ footerItems }) => {
       <Box className="site-footer__terms">
         <Container>
           <Box className="site-footer__terms-content">
-            <Typography variant="caption">The VIP Suite ® {currentYear}</Typography>
+            <Typography variant="caption">The VIP Suite ® {CURRENT_YEAR}</Typography>
             <Box className="site-footer__terms-links">
               {footerItems?.footer_bottom.map((item, index) => {
                 const href = getLastPathSegment(item?.url);

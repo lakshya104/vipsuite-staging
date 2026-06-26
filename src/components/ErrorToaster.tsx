@@ -2,11 +2,8 @@
 import React, { Fragment, useEffect } from 'react';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from './Toaster';
-import { signOut } from 'next-auth/react';
 import ErrorFallback from './ErrorFallback';
-import { paths, withSearchParams } from '@/helpers/paths';
 import en from '@/helpers/lang';
-import { deleteVipCookies, signOutAction } from '@/libs/actions';
 import { useInstaInfo, useTiktokInfo, useUserInfoStore, useUserStatusStore } from '@/store/useStore';
 
 interface ErrorToasterProps {
@@ -32,16 +29,11 @@ const ErrorToaster: React.FC<ErrorToasterProps> = ({
       clearTiktokInfo();
       clearAll();
       clearUserInfo();
-      await deleteVipCookies();
       localStorage.clear();
       sessionStorage.clear();
-      signOut({
-        callbackUrl: withSearchParams(() => paths.auth.login.getHref(), {
-          'token-expired': 'true',
-          error: errorMessage || en.errorToaster.userLogged,
-        }),
-      });
-      await signOutAction();
+      // Navigate directly via browser GET so /api/signout can clear cookies
+      // and send Clear-Site-Data header before redirecting to /login
+      window.location.href = `/api/signout`;
     };
     if (login) {
       signOutUser();

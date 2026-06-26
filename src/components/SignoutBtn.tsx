@@ -4,7 +4,6 @@ import { Backdrop, Button, CircularProgress, Typography } from '@mui/material';
 import UseToaster from '@/hooks/useToaster';
 import { LogOut } from '@/libs/api-manager/manager';
 import Toaster from './Toaster';
-import { signOutAction } from '@/libs/actions';
 import en from '@/helpers/lang';
 import { useInstaInfo, useMessageCountStore, useTiktokInfo, useUserStatusStore } from '@/store/useStore';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
@@ -26,7 +25,9 @@ const SignoutBtn = () => {
         clearTiktokInfo();
         localStorage.clear();
         sessionStorage.clear();
-        await signOutAction();
+        // Navigate directly via browser GET so /api/signout can clear cookies
+        // and send Clear-Site-Data header before redirecting to /login
+        window.location.href = '/api/signout';
       } catch (error) {
         if (isRedirectError(error)) {
           throw error;

@@ -21,7 +21,6 @@ import { LogOut } from '@/libs/api-manager/manager';
 import UseToaster from '@/hooks/useToaster';
 import Toaster from '../Toaster';
 import { UserRole } from '@/helpers/enums';
-import { deleteVipCookies, signOutAction } from '@/libs/actions';
 import { brandNavLinks, vipNavLinks } from '@/data';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { paths } from '@/helpers/paths';
@@ -107,10 +106,11 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
       clearTiktokInfo();
       clearUserInfo();
       clearAll();
-      await deleteVipCookies();
       localStorage.clear();
       sessionStorage.clear();
-      await signOutAction();
+      // Navigate directly via browser GET so /api/signout can clear cookies
+      // and send Clear-Site-Data header before redirecting to /login
+      window.location.href = '/api/signout';
     } catch (error) {
       if (isRedirectError(error)) {
         throw error;
@@ -137,11 +137,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ role }) => {
           clearAll();
           localStorage.clear();
           sessionStorage.clear();
-          await signOutAction();
+          window.location.href = '/api/signout';
         } catch (error) {
-          if (isRedirectError(error)) {
-            throw error;
-          }
           console.error('Error during deleting account. ' + error);
         }
       }, 2000);

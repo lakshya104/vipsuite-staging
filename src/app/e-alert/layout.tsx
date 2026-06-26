@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 
-export default function RootLayout({
+export default function EAlertLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,10 +22,5 @@ export default function RootLayout({
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <html lang="en">
-      <head />
-      <body>{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }
